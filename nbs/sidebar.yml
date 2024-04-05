@@ -2,4 +2,8 @@ website:
   sidebar:
     contents:
       - index.ipynb
-      - 00_orbit_visualization.ipynb
+      - 00_data_reader.ipynb
+      - 01_processing.ipynb
+      - 02_visualization.ipynb
+      - 03_statistics.ipynb
+      - orbits.html
