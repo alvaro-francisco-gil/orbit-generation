@@ -4,6 +4,6 @@ project:
 website:
   title: "orbit-generation-testing"
   site-url: "https://alvaro-francisco-gil.github.io/orbit-generation-testing"
-  description: "erere"
+  description: "Testing project to gerate orbits"
   repo-branch: main
   repo-url: "https://github.com/alvaro-francisco-gil/orbit-generation-testing"
