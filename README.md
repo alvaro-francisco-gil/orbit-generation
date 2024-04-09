@@ -83,7 +83,7 @@ pip install orbit_generation_testing
 ### Get Example Data
 
 ``` python
-orbit_data= get_example_mat_data()
+orbit_data= get_example_orbit_data()
 orbit_data.shape
 ```
 
