@@ -7,7 +7,6 @@ __all__ = ['visualize_static_orbits', 'export_dynamic_orbits_html']
 import numpy as np
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
-from pytest import raises
 
 # %% ../nbs/02_visualization.ipynb 7
 def visualize_static_orbits(data, time_instants=None, orbit_indices=None, show_legend=False, point_dict=None):
