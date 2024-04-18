@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  orbit-generation:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/workspace/data
+    ports:
+      - "8888:8888"
+    env_file: 
+      - .env
+    command: ["bash"]
