@@ -6,8 +6,8 @@
     },
     "customizations": {
         "vscode": {
-            "settings": { 
-                "terminal.integrated.shell.linux": "/bin/bash"
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
             },
             "extensions": [
                 "ms-python.python",
@@ -25,6 +25,8 @@
         8888
     ],
     "postCreateCommand": "echo 'Environment ready!'",
-    "remoteUser": "root"
+    "remoteUser": "root",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ]
 }
-

@@ -14,7 +14,6 @@ build/
 dist/
 *.so
 *.log
-data/
 .env
 tests/
 docs/
