@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
 RUN pip3 install --upgrade pip
 
 # Install Python dependencies including TensorFlow Keras and wandb
-RUN pip3 install h5py scipy numpy matplotlib plotly nbdev pandas pytest tsgm tensorflow-keras wandb
+RUN pip3 install h5py scipy numpy matplotlib plotly nbdev pandas pytest tsgm wandb
 
 # Copy the current directory contents into the container
 COPY . /workspace
