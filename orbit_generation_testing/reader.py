@@ -6,6 +6,7 @@ __all__ = ['load_orbit_data', 'get_orbit_features', 'get_orbit_data_and_labels',
 # %% ../nbs/00_data_reader.ipynb 2
 import h5py
 from scipy.io import loadmat
+import os
 import numpy as np
 from pathlib import Path
 import pandas as pd
@@ -52,7 +53,7 @@ def get_orbit_features(data_directory=None):
 
     :param data_directory: Optional; The directory where the MAT file is stored. If not specified, 
                            the function assumes a default directory relative to the script's location.
-    :type data_directory: pathlib.Path, optional
+    :type data_directory: str, optional
     
     :return: A DataFrame containing detailed orbit features such as family, positions, velocities, 
              Jacobi constant, period, and stability index.
@@ -61,13 +62,15 @@ def get_orbit_features(data_directory=None):
 
     # Set default data directory if not provided
     if data_directory is None:
-        data_directory = Path(__file__).parent / "Data"
+        # Get the directory of the current script
+        script_directory = os.path.dirname(__file__)
+        data_directory = os.path.join(script_directory, "Data")
     
     # Path to the MAT file containing orbit features
-    feat_route = data_directory / "EM_IC_ARRAY.mat"
+    feat_route = os.path.join(data_directory, "EM_IC_ARRAY.mat")
     
     # Load data from the MAT file
-    feat = load_orbit_data(feat_route, variable_name='out_EM')
+    feat_data = loadmat(feat_route)['out_EM']
     
     # Define column labels for the DataFrame
     column_labels = [
@@ -77,51 +80,46 @@ def get_orbit_features(data_directory=None):
     ]
     
     # Create a DataFrame from the loaded data
-    features = pd.DataFrame(feat, columns=column_labels)
+    features = pd.DataFrame(feat_data, columns=column_labels)
 
     return features
-
 
 # %% ../nbs/00_data_reader.ipynb 10
 def get_orbit_data_and_labels(data_directory=None):
     """
-    Load orbit data and corresponding labels from predefined locations relative to the script's execution directory.
+    Load orbit data from an HDF5 file and corresponding labels from a MAT file.
 
-    The function loads a specific dataset from an HDF5 file and a set of labels from a MAT file, both expected to be 
-    in a predefined directory structure. This setup is intended for demonstration or testing purposes, where the file 
-    structure and the dataset paths are known ahead of time.
+    If no data_directory is specified, a default relative path is used. The function expects specific 
+    file structures ('em_orbits.h5' and 'EM_IC_ARRAY.mat') within the directory.
 
     Returns:
         tuple: 
-            - orbit_data (numpy.ndarray): Array containing the reshaped orbit data from the HDF5 file. 
-              The data is reshaped and transposed to match the desired format for analysis.
-            - labels (pandas.Series): Series containing the orbit classification labels repeated to match 
-              the reshaped data.
+            - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis.
+            - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.
 
-    The reshaped data array involves transposing dimensions to reorganize the data for further processing.
-    Each row in the Series corresponds to a specific orbit with its classification.
+    The function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses.
+    Labels are extracted from a MAT file and matched to the reshaped orbit data.
     """
 
-    # Get Orbit Data
+    # Define the default data directory based on the script's location if not provided
     if data_directory is None:
-        data_directory = Path(__file__).parent / "Data"
-    hdf5_file_path = data_directory / "em_orbits.h5"
-    dataset_path = '/files/PERIODIC ORBITS'
+        data_directory = os.path.join(os.path.dirname(__file__), "Data")
     
-    data = load_orbit_data(str(hdf5_file_path), dataset_path=dataset_path)
-
-    # Reshape and transpose data for further processing
+    # Get Orbit Data
+    hdf5_file_path = os.path.join(data_directory, "em_orbits.h5")
+    with h5py.File(hdf5_file_path, 'r') as file:
+        data = np.array(file['/files/PERIODIC ORBITS'])
     reshaped_array = data.reshape(36071, 7, 5, 1500)
     orbit_data = reshaped_array.transpose(0, 2, 1, 3).reshape(36071 * 5, 7, 1500)
     
-    # Get Orbit Classes using the refactored function
-    features = get_orbit_features(data_directory)
-    # Extract and replicate the 'Orbit Family' labels
-    labels = features['Orbit Family'].repeat(5).reset_index(drop=True)
+    # Get Orbit Labels
+    labels_df = get_orbit_features(orbit_directory)
+    labels = pd.Series(labels_df['Orbit Family']).repeat(5).reset_index(drop=True)
 
     return orbit_data, labels
 
-# %% ../nbs/00_data_reader.ipynb 11
+
+# %% ../nbs/00_data_reader.ipynb 12
 def get_example_orbit_data():
     """
     Load orbit data from a hardcoded MAT file located in the `data` directory.

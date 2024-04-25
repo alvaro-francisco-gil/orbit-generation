@@ -1,0 +1,32 @@
+{
+    "name": "Orbit Generation",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-toolsai.jupyter",
+                "ms-python.vscode-pylint",
+                "ms-python.vscode-flake8",
+                "ms-python.vscode-black-formatter",
+                "ms-python.vscode-pytype",
+                "ms-python.vscode-isort"
+            ]
+        }
+    },
+    "forwardPorts": [
+        8888
+    ],
+    "postCreateCommand": "echo 'Environment ready!'",
+    "remoteUser": "root",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ]
+}
