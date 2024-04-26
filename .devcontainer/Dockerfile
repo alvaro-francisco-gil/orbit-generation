@@ -2,7 +2,7 @@
 FROM tensorflow/tensorflow:latest-gpu
 
 # Set the working directory in the container
-WORKDIR /workspace
+WORKDIR /orbit-generation-testing
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -20,7 +20,7 @@ RUN pip3 install --upgrade pip
 RUN pip3 install h5py scipy numpy matplotlib plotly nbdev pandas pytest tsgm wandb
 
 # Copy the current directory contents into the container
-COPY . /workspace
+COPY . /orbit-generation-testing
 
 # Command to run on container start
 CMD ["bash"]
