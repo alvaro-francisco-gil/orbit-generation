@@ -2,8 +2,8 @@ project:
   output-dir: docs
 
 website:
-  title: "orbit-generation-testing"
-  site-url: "https://alvaro-francisco-gil.github.io/orbit-generation-testing"
+  title: "orbit-generation"
+  site-url: "https://alvaro-francisco-gil.github.io/orbit-generation"
   description: "Testing project to gerate orbits"
   repo-branch: main
-  repo-url: "https://github.com/alvaro-francisco-gil/orbit-generation-testing"
+  repo-url: "https://github.com/alvaro-francisco-gil/orbit-generation"
