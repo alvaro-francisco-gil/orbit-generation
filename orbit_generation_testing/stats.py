@@ -7,6 +7,9 @@ __all__ = ['plot_histograms', 'calculate_overall_statistics']
 import numpy as np
 import matplotlib.pyplot as plt
 
+# %% ../nbs/04_statistics.ipynb 3
+from orbit_generation.reader import get_example_orbit_data
+
 # %% ../nbs/04_statistics.ipynb 6
 def plot_histograms(data):
     """

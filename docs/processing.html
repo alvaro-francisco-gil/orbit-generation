@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.552">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="Necessary scripts to read orbits from different formats">
 
-<title>orbit-generation-testing - processing</title>
+<title>orbit-generation - processing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -70,10 +104,10 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="orbit-generation-testing - processing">
+<meta property="og:title" content="orbit-generation - processing">
 <meta property="og:description" content="Necessary scripts to read orbits from different formats">
-<meta property="og:site_name" content="orbit-generation-testing">
-<meta name="twitter:title" content="orbit-generation-testing - processing">
+<meta property="og:site_name" content="orbit-generation">
+<meta name="twitter:title" content="orbit-generation - processing">
 <meta name="twitter:description" content="Necessary scripts to read orbits from different formats">
 <meta name="twitter:card" content="summary">
 </head>
@@ -86,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">orbit-generation-testing</span>
+    <span class="navbar-title">orbit-generation</span>
     </a>
   </div>
         <div class="quarto-navbar-tools tools-end">
@@ -141,13 +175,27 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">statistics</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_build_dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05_build_dataset.html</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#resample_3d_array" id="toc-resample_3d_array" class="nav-link active" data-scroll-target="#resample_3d_array">resample_3d_array</a></li>
+  <li><a href="#estimate_resampling_duration" id="toc-estimate_resampling_duration" class="nav-link" data-scroll-target="#estimate_resampling_duration">estimate_resampling_duration</a></li>
+  <li><a href="#average_downsample_3d_array" id="toc-average_downsample_3d_array" class="nav-link" data-scroll-target="#average_downsample_3d_array">average_downsample_3d_array</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -177,8 +225,51 @@ ul.task-list li input[type="checkbox"] {
 
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div id="cell-2" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.reader <span class="im">import</span> get_example_orbit_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-3" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>orbit_data<span class="op">=</span> get_example_orbit_data()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(200, 6, 300)</code></pre>
+</div>
+</div>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L12" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="resample_3d_array" class="level3">
+<h3 class="anchored" data-anchor-id="resample_3d_array">resample_3d_array</h3>
+<blockquote class="blockquote">
+<pre><code> resample_3d_array (data, axis, target_size)</code></pre>
+</blockquote>
+<p>*Resample a 3D numpy array along a specified axis using linear interpolation, with correct dimension handling.</p>
+<p>Parameters: data (numpy.ndarray): The original 3D array. axis (int): The axis along which to perform the interpolation (0, 1, or 2). target_size (int): The desired size of the specified axis after interpolation.</p>
+<p>Returns: numpy.ndarray: A new array with the specified axis resized to <code>target_size</code>.*</p>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L57" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="estimate_resampling_duration" class="level3">
+<h3 class="anchored" data-anchor-id="estimate_resampling_duration">estimate_resampling_duration</h3>
+<blockquote class="blockquote">
+<pre><code> estimate_resampling_duration (data, axis, target_size, num_samples=10)</code></pre>
+</blockquote>
+<p>*Estimate the duration of the resampling process for a 3D numpy array based on a sample.</p>
+<p>Parameters: data (numpy.ndarray): The original 3D numpy array. axis (int): The axis along which to perform the interpolation. target_size (int): The desired size of the specified axis after interpolation. num_samples (int): The number of random samples to test for estimating duration.</p>
+<p>Returns: float: Estimated total duration to process the entire dataset.*</p>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L89" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="average_downsample_3d_array" class="level3">
+<h3 class="anchored" data-anchor-id="average_downsample_3d_array">average_downsample_3d_array</h3>
+<blockquote class="blockquote">
+<pre><code> average_downsample_3d_array (data, axis, target_size)</code></pre>
+</blockquote>
+<p>*Downsample a 3D numpy array along a specified axis using averaging.</p>
+<p>Parameters: data (numpy.ndarray): The original 3D array. axis (int): The axis along which to perform the downsampling (0, 1, or 2). target_size (int): The desired size of the specified axis after downsampling.</p>
+<p>Returns: numpy.ndarray: A new array with the specified axis resized to <code>target_size</code>.*</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -262,7 +353,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/alvaro-francisco-gil\.github\.io\/orbit-generation-testing");
+      var filterRegex = new RegExp("https:\/\/alvaro-francisco-gil\.github\.io\/orbit-generation");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -595,4 +686,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation-testing/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
