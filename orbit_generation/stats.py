@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # %% ../nbs/04_statistics.ipynb 3
-from .reader import get_example_orbit_data
+from .data import get_example_orbit_data
 
 # %% ../nbs/04_statistics.ipynb 6
 def plot_histograms(data):

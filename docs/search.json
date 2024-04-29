@@ -1,10 +1,50 @@
 [
   {
+    "objectID": "data.html",
+    "href": "data.html",
+    "title": "data",
+    "section": "",
+    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
+    "crumbs": [
+      "data"
+    ]
+  },
+  {
+    "objectID": "data.html#loading-data",
+    "href": "data.html#loading-data",
+    "title": "data",
+    "section": "",
+    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
+    "crumbs": [
+      "data"
+    ]
+  },
+  {
+    "objectID": "data.html#save-data",
+    "href": "data.html#save-data",
+    "title": "data",
+    "section": "Save Data",
+    "text": "Save Data\n\nsource\n\nsave_data\n\n save_data (data:numpy.ndarray, file_name:str, file_type:str='hdf5')\n\nSave a numpy array to an HDF5 or a NumPy .npy file based on the specified file type.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe numpy array data to save.\n\n\nfile_name\nstr\n\nThe name of the file to save the data in.\n\n\nfile_type\nstr\nhdf5\nThe type of file to save (‘hdf5’ or ‘npy’).\n\n\nReturns\nNone",
+    "crumbs": [
+      "data"
+    ]
+  },
+  {
+    "objectID": "data.html#get-example-data",
+    "href": "data.html#get-example-data",
+    "title": "data",
+    "section": "Get Example Data",
+    "text": "Get Example Data\n\nsource\n\nget_example_orbit_data\n\n get_example_orbit_data ()\n\n*Load orbit data from a hardcoded MAT file located in the data directory.\nThe function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.\n:return: A numpy.ndarray containing the transposed data from the MAT file.*\n\ndata = get_example_orbit_data()\ndata.shape\n\n(200, 6, 300)",
+    "crumbs": [
+      "data"
+    ]
+  },
+  {
     "objectID": "processing.html",
     "href": "processing.html",
     "title": "processing",
     "section": "",
-    "text": "from orbit_generation.reader import get_example_orbit_data\n\n\norbit_data= get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nsource\n\nresample_3d_array\n\n resample_3d_array (data, axis, target_size)\n\n*Resample a 3D numpy array along a specified axis using linear interpolation, with correct dimension handling.\nParameters: data (numpy.ndarray): The original 3D array. axis (int): The axis along which to perform the interpolation (0, 1, or 2). target_size (int): The desired size of the specified axis after interpolation.\nReturns: numpy.ndarray: A new array with the specified axis resized to target_size.*\n\nsource\n\n\nestimate_resampling_duration\n\n estimate_resampling_duration (data, axis, target_size, num_samples=10)\n\n*Estimate the duration of the resampling process for a 3D numpy array based on a sample.\nParameters: data (numpy.ndarray): The original 3D numpy array. axis (int): The axis along which to perform the interpolation. target_size (int): The desired size of the specified axis after interpolation. num_samples (int): The number of random samples to test for estimating duration.\nReturns: float: Estimated total duration to process the entire dataset.*\n\nsource\n\n\naverage_downsample_3d_array\n\n average_downsample_3d_array (data, axis, target_size)\n\n*Downsample a 3D numpy array along a specified axis using averaging.\nParameters: data (numpy.ndarray): The original 3D array. axis (int): The axis along which to perform the downsampling (0, 1, or 2). target_size (int): The desired size of the specified axis after downsampling.\nReturns: numpy.ndarray: A new array with the specified axis resized to target_size.*",
+    "text": "from orbit_generation.data import get_example_orbit_data\n\n\norbit_data= get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nsource\n\nresample_3d_array\n\n resample_3d_array (data, axis, target_size)\n\n*Resample a 3D numpy array along a specified axis using linear interpolation, with correct dimension handling.\nParameters: data (numpy.ndarray): The original 3D array. axis (int): The axis along which to perform the interpolation (0, 1, or 2). target_size (int): The desired size of the specified axis after interpolation.\nReturns: numpy.ndarray: A new array with the specified axis resized to target_size.*\n\nsource\n\n\naverage_downsample_3d_array\n\n average_downsample_3d_array (data, axis, target_size)\n\n*Downsample a 3D numpy array along a specified axis using averaging.\nParameters: data (numpy.ndarray): The original 3D array. axis (int): The axis along which to perform the downsampling (0, 1, or 2). target_size (int): The desired size of the specified axis after downsampling.\nReturns: numpy.ndarray: A new array with the specified axis resized to target_size.*",
     "crumbs": [
       "processing"
     ]
@@ -50,6 +90,64 @@
     ]
   },
   {
+    "objectID": "data_reader.html",
+    "href": "data_reader.html",
+    "title": "reader",
+    "section": "",
+    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features."
+  },
+  {
+    "objectID": "data_reader.html#loading-data",
+    "href": "data_reader.html#loading-data",
+    "title": "reader",
+    "section": "",
+    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features."
+  },
+  {
+    "objectID": "data_reader.html#save-data",
+    "href": "data_reader.html#save-data",
+    "title": "reader",
+    "section": "Save Data",
+    "text": "Save Data\n\ndef save_data(data: np.ndarray,  # The numpy array data to save.\n              file_name: str,  # The name of the file to save the data in.\n              file_type: str = 'hdf5'  # The type of file to save ('hdf5' or 'npy').\n             ) -&gt; None:\n    \"\"\"\n    Save a numpy array to an HDF5 or a NumPy .npy file based on the specified file type.\n    \"\"\"\n    if file_type == 'hdf5':\n        # Open a new HDF5 file\n        with h5py.File(file_name, 'w') as f:\n            # Create a dataset in the file\n            f.create_dataset('orbit_data', data=data, compression='gzip', compression_opts=9)\n    elif file_type == 'npy':\n        # Save the array to a NumPy .npy file\n        np.save(file_name, data)\n    else:\n        raise ValueError(\"Unsupported file type specified. Use 'hdf5' or 'npy'.\")"
+  },
+  {
+    "objectID": "data_reader.html#get-example-data",
+    "href": "data_reader.html#get-example-data",
+    "title": "reader",
+    "section": "Get Example Data",
+    "text": "Get Example Data\n\nsource\n\nget_example_orbit_data\n\n get_example_orbit_data ()\n\n*Load orbit data from a hardcoded MAT file located in the data directory.\nThe function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.\n:return: A numpy.ndarray containing the transposed data from the MAT file.*\n\ndata = get_example_orbit_data()\ndata.shape\n\n(200, 6, 300)"
+  },
+  {
+    "objectID": "visualization.html",
+    "href": "visualization.html",
+    "title": "visualization",
+    "section": "",
+    "text": "from orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.constants import EM_POINTS\nfrom pytest import raises\n\nNameError: name 'mu' is not defined\nmat_data= get_example_orbit_data()\nmat_data.shape\n\n(200, 6, 300)",
+    "crumbs": [
+      "visualization"
+    ]
+  },
+  {
+    "objectID": "visualization.html#static",
+    "href": "visualization.html#static",
+    "title": "visualization",
+    "section": "Static",
+    "text": "Static\n\nsource\n\nvisualize_static_orbits\n\n visualize_static_orbits (data, time_instants=None, orbit_indices=None,\n                          show_legend=False, point_dict=None)\n\n*Visualizes orbits and highlights specified time instants for every orbit in orbit_indices with data shape (num_orbits, 6, num_time_points).\n:param data: numpy.ndarray, shape (num_orbits, 6, num_time_points), containing orbit data. :param time_instants: Optional[list[int]], time instants to highlight across selected orbits. If None or empty, no highlights are made. :param orbit_indices: Optional[list], indices of the orbits to visualize and highlight. If None, uses all orbits. :param show_legend: Optional[bool], indicates whether to show the legend. :param point_dict: Optional[dict], dictionary where keys are point names and values are the 3D coordinates of the points.*\n\nvisualize_static_orbits(data= mat_data,time_instants=[0], orbit_indices=[0,20,40], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\ntime_instants = [-1, 11]  # Out of bounds\nwith raises(ValueError):\n    visualize_static_orbits(mat_data, time_instants)\n\n#| test \"invalid orbit_indices raises ValueError\"\ntime_instants = [0, 9]  # Valid\norbit_indices = [201]  # Out of bounds\nwith raises(ValueError) as exception_info:\n    visualize_static_orbits(mat_data, time_instants, orbit_indices)\nassert \"Orbit index 201 is out of range.\" in str(exception_info.value)",
+    "crumbs": [
+      "visualization"
+    ]
+  },
+  {
+    "objectID": "visualization.html#dynamic",
+    "href": "visualization.html#dynamic",
+    "title": "visualization",
+    "section": "Dynamic",
+    "text": "Dynamic\n\nsource\n\nexport_dynamic_orbits_html\n\n export_dynamic_orbits_html (data, time_instants=None, orbit_indices=None,\n                             point_dict=None, filename='orbits.html')\n\n*Visualize orbits in 3D and save as an interactive HTML file with a clickable legend, for data organized as (num_orbits, 6, num_time_points). Includes the option to add named points to the visualization and highlights the positions of each orbit at given time_instants.\n:param data: Numpy array of shape (num_orbits, 6, num_time_points) :param time_instants: Optional[List of int], the time instants to highlight across all orbits. If None or empty, no highlights are made. :param orbit_indices: Optional; List of indices of the orbits to visualize :param filename: String, name of the file to save the HTML plot :param point_dict: Optional; Dictionary where keys are point names and values are the 3D coordinates of the points*\n\nexport_dynamic_orbits_html(data=mat_data, point_dict= EM_POINTS, time_instants=[0], orbit_indices=[1])\n\nVisualization saved to orbits.html\n\n\n\ndata = np.zeros((3, 6, 50))  # Dummy data with 3 orbits, 6 parameters, 50 time points\ntime_instants = [-1, 51]  # Invalid time_instants\norbit_indices = [0, 1]  # Valid orbit indices\nfilename = 'test_orbits.html'  # Filename for saving the HTML\nwith raises(ValueError):\n    export_dynamic_orbits_html(data, time_instants, orbit_indices, filename=filename)\n\n#| test \"invalid orbit_indices raises ValueError\"\ntime_instants = [10, 20]  # Valid time_instants\norbit_indices = [3, 4]  # Invalid orbit indices (out of range for given data)\nwith raises(ValueError):\n    export_dynamic_orbits_html(data, time_instants, orbit_indices, filename=filename)",
+    "crumbs": [
+      "visualization"
+    ]
+  },
+  {
     "objectID": "statistics.html",
     "href": "statistics.html",
     "title": "statistics",
@@ -70,83 +168,20 @@
     ]
   },
   {
-    "objectID": "visualization.html",
-    "href": "visualization.html",
-    "title": "visualization",
-    "section": "",
-    "text": "from orbit_generation.reader import get_example_orbit_data\nfrom pytest import raises\nmat_data= get_example_orbit_data()\nmat_data.shape\n\n(200, 6, 300)\nmu = 0.0122\nsystem_points={\n    'Moon': (1-mu,0,0),\n    'Earth': (-mu,0,0),\n    'Lagrange 1': (0.8369,0,0),\n    'Lagrange 2': (1.1557,0,0)\n}",
-    "crumbs": [
-      "visualization"
-    ]
-  },
-  {
-    "objectID": "visualization.html#static",
-    "href": "visualization.html#static",
-    "title": "visualization",
-    "section": "Static",
-    "text": "Static\n\nsource\n\nvisualize_static_orbits\n\n visualize_static_orbits (data, time_instants=None, orbit_indices=None,\n                          show_legend=False, point_dict=None)\n\n*Visualizes orbits and highlights specified time instants for every orbit in orbit_indices with data shape (num_orbits, 6, num_time_points).\n:param data: numpy.ndarray, shape (num_orbits, 6, num_time_points), containing orbit data. :param time_instants: Optional[list[int]], time instants to highlight across selected orbits. If None or empty, no highlights are made. :param orbit_indices: Optional[list], indices of the orbits to visualize and highlight. If None, uses all orbits. :param show_legend: Optional[bool], indicates whether to show the legend. :param point_dict: Optional[dict], dictionary where keys are point names and values are the 3D coordinates of the points.*\n\nvisualize_static_orbits(data= mat_data,time_instants=[0], orbit_indices=[0,20,40], point_dict=system_points)\n\n\n\n\n\n\n\n\n\ntime_instants = [-1, 11]  # Out of bounds\nwith raises(ValueError):\n    visualize_static_orbits(mat_data, time_instants)\n\n#| test \"invalid orbit_indices raises ValueError\"\ntime_instants = [0, 9]  # Valid\norbit_indices = [201]  # Out of bounds\nwith raises(ValueError) as exception_info:\n    visualize_static_orbits(mat_data, time_instants, orbit_indices)\nassert \"Orbit index 201 is out of range.\" in str(exception_info.value)",
-    "crumbs": [
-      "visualization"
-    ]
-  },
-  {
-    "objectID": "visualization.html#dynamic",
-    "href": "visualization.html#dynamic",
-    "title": "visualization",
-    "section": "Dynamic",
-    "text": "Dynamic\n\nsource\n\nexport_dynamic_orbits_html\n\n export_dynamic_orbits_html (data, time_instants=None, orbit_indices=None,\n                             point_dict=None, filename='orbits.html')\n\n*Visualize orbits in 3D and save as an interactive HTML file with a clickable legend, for data organized as (num_orbits, 6, num_time_points). Includes the option to add named points to the visualization and highlights the positions of each orbit at given time_instants.\n:param data: Numpy array of shape (num_orbits, 6, num_time_points) :param time_instants: Optional[List of int], the time instants to highlight across all orbits. If None or empty, no highlights are made. :param orbit_indices: Optional; List of indices of the orbits to visualize :param filename: String, name of the file to save the HTML plot :param point_dict: Optional; Dictionary where keys are point names and values are the 3D coordinates of the points*\n\nexport_dynamic_orbits_html(data=mat_data, point_dict= system_points, time_instants=[0], orbit_indices=[1])\n\nVisualization saved to orbits.html\n\n\n\ndata = np.zeros((3, 6, 50))  # Dummy data with 3 orbits, 6 parameters, 50 time points\ntime_instants = [-1, 51]  # Invalid time_instants\norbit_indices = [0, 1]  # Valid orbit indices\nfilename = 'test_orbits.html'  # Filename for saving the HTML\nwith raises(ValueError):\n    export_dynamic_orbits_html(data, time_instants, orbit_indices, filename=filename)\n\n#| test \"invalid orbit_indices raises ValueError\"\ntime_instants = [10, 20]  # Valid time_instants\norbit_indices = [3, 4]  # Invalid orbit indices (out of range for given data)\nwith raises(ValueError):\n    export_dynamic_orbits_html(data, time_instants, orbit_indices, filename=filename)",
-    "crumbs": [
-      "visualization"
-    ]
-  },
-  {
-    "objectID": "data_reader.html",
-    "href": "data_reader.html",
-    "title": "reader",
-    "section": "",
-    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
-    "crumbs": [
-      "reader"
-    ]
-  },
-  {
-    "objectID": "data_reader.html#loading-data",
-    "href": "data_reader.html#loading-data",
-    "title": "reader",
-    "section": "",
-    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
-    "crumbs": [
-      "reader"
-    ]
-  },
-  {
-    "objectID": "data_reader.html#save-data",
-    "href": "data_reader.html#save-data",
-    "title": "reader",
-    "section": "Save Data",
-    "text": "Save Data\n\ndef save_data(data: np.ndarray,  # The numpy array data to save.\n              file_name: str,  # The name of the file to save the data in.\n              file_type: str = 'hdf5'  # The type of file to save ('hdf5' or 'npy').\n             ) -&gt; None:\n    \"\"\"\n    Save a numpy array to an HDF5 or a NumPy .npy file based on the specified file type.\n    \"\"\"\n    if file_type == 'hdf5':\n        # Open a new HDF5 file\n        with h5py.File(file_name, 'w') as f:\n            # Create a dataset in the file\n            f.create_dataset('orbit_data', data=data, compression='gzip', compression_opts=9)\n    elif file_type == 'npy':\n        # Save the array to a NumPy .npy file\n        np.save(file_name, data)\n    else:\n        raise ValueError(\"Unsupported file type specified. Use 'hdf5' or 'npy'.\")",
-    "crumbs": [
-      "reader"
-    ]
-  },
-  {
-    "objectID": "data_reader.html#get-example-data",
-    "href": "data_reader.html#get-example-data",
-    "title": "reader",
-    "section": "Get Example Data",
-    "text": "Get Example Data\n\nsource\n\nget_example_orbit_data\n\n get_example_orbit_data ()\n\n*Load orbit data from a hardcoded MAT file located in the data directory.\nThe function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.\n:return: A numpy.ndarray containing the transposed data from the MAT file.*\n\ndata = get_example_orbit_data()\ndata.shape\n\n(200, 6, 300)",
-    "crumbs": [
-      "reader"
-    ]
-  },
-  {
     "objectID": "05_build_dataset.html",
     "href": "05_build_dataset.html",
     "title": "orbit-generation",
     "section": "",
-    "text": "source\n\nget_orbit_data_and_labels\n\n get_orbit_data_and_labels (data_directory=None)\n\n*Load orbit data from an HDF5 file and corresponding labels from a MAT file.\nIf no data_directory is specified, a default relative path is used. The function expects specific file structures (‘em_orbits.h5’ and ‘EM_IC_ARRAY.mat’) within the directory.\nReturns: tuple: - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis. - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.\nThe function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses. Labels are extracted from a MAT file and matched to the reshaped orbit data.*",
+    "text": "source\n\nget_orbit_data_and_labels\n\n get_orbit_data_and_labels (data_directory=None)\n\n*Load orbit data from an HDF5 file and corresponding labels from a MAT file.\nIf no data_directory is specified, a default relative path is used. The function expects specific file structures (‘em_orbits.h5’ and ‘EM_IC_ARRAY.mat’) within the directory.\nReturns: tuple: - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis. - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.\nThe function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses. Labels are extracted from a MAT file and matched to the reshaped orbit data.*"
+  },
+  {
+    "objectID": "05_dataset.html",
+    "href": "05_dataset.html",
+    "title": "orbit-generation",
+    "section": "",
+    "text": "source\n\nget_1p_em_dataset\n\n get_1p_em_dataset (data_directory=None)\n\n*Load orbit data from an HDF5 file and corresponding labels from a MAT file.\nIf no data_directory is specified, a default relative path is used. The function expects specific file structures (‘em_orbits.h5’ and ‘EM_IC_ARRAY.mat’) within the directory.\nReturns: tuple: - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis. - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.\nThe function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses. Labels are extracted from a MAT file and matched to the reshaped orbit data.*",
     "crumbs": [
-      "05_build_dataset.html"
+      "05_dataset.html"
     ]
   }
 ]
