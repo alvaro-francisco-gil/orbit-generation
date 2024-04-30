@@ -81,7 +81,7 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
 
     plt.show()
 
-# %% ../nbs/03_visualization.ipynb 11
+# %% ../nbs/03_visualization.ipynb 12
 def export_dynamic_orbits_html(data: np.ndarray,  # Orbit data as a 3D numpy array (num_orbits, 6, num_time_points).
                                time_instants: Optional[List[int]] = None,  # Time instants to highlight.
                                orbit_indices: Optional[List[int]] = None,  # Indices of orbits to visualize.

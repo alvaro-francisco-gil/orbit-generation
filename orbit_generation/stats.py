@@ -63,7 +63,7 @@ def plot_histograms_position(data: np.ndarray  # The orbit data array of shape (
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Adjust layout to make room for the main title
     plt.show()
 
-# %% ../nbs/04_statistics.ipynb 11
+# %% ../nbs/04_statistics.ipynb 12
 def plot_histograms_comparison(data1: np.ndarray,  # First orbit data array of shape (num_orbits, 6, num_time_points).
                                data2: np.ndarray,  # Second orbit data array of shape (num_orbits, 6, num_time_points).
                                ) -> None:
