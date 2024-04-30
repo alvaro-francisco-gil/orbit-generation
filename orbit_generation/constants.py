@@ -3,10 +3,10 @@
 # %% auto 0
 __all__ = ['MU', 'EM_POINTS', 'EM_ORBIT_TYPES']
 
-# %% ../nbs/00_constants.ipynb 1
+# %% ../nbs/00_constants.ipynb 2
 MU = 0.0122
 
-# %% ../nbs/00_constants.ipynb 2
+# %% ../nbs/00_constants.ipynb 3
 EM_POINTS={
     'Moon': (1-MU,0,0),
     'Earth': (-MU,0,0),
@@ -14,7 +14,7 @@ EM_POINTS={
     'Lagrange 2': (1.1557,0,0)
 }
 
-# %% ../nbs/00_constants.ipynb 3
+# %% ../nbs/00_constants.ipynb 4
 EM_ORBIT_TYPES = {
     1: "S_BN",
     2: "S_BS",

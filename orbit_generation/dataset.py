@@ -3,10 +3,10 @@
 # %% auto 0
 __all__ = ['get_5p_em_dataset', 'get_1p_em_dataset']
 
-# %% ../nbs/05_dataset.ipynb 1
+# %% ../nbs/05_dataset.ipynb 2
 import os
 
-# %% ../nbs/05_dataset.ipynb 2
+# %% ../nbs/05_dataset.ipynb 4
 def get_5p_em_dataset(data_directory=None):
     """
     Load orbit data from an HDF5 file and corresponding labels from a MAT file.
@@ -40,7 +40,7 @@ def get_5p_em_dataset(data_directory=None):
 
     return orbit_data, labels
 
-# %% ../nbs/05_dataset.ipynb 3
+# %% ../nbs/05_dataset.ipynb 6
 def get_1p_em_dataset(data_directory=None):
     """
     Load orbit data from an HDF5 file and corresponding labels from a MAT file.
