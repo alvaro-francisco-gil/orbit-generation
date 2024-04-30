@@ -16,13 +16,6 @@ def resample_3d_array(data: np.ndarray,  # The original 3D array to be resampled
                      ) -> np.ndarray:
     """
     Resample a 3D numpy array along a specified axis using linear interpolation.
-    Adjusts the size of a 3D array along a given axis by interpolating the existing data points
-    to match the target size specified. Uses linear interpolation suitable for continuous data.
-
-    Returns:
-        A new array with the axis of interest resampled to the new size.
-    Raises:
-        ValueError: If the specified axis is not one of 0, 1, or 2.
     """
     if axis not in [0, 1, 2]:  # Validate the axis to ensure it's within the correct range.
         raise ValueError("Invalid axis. Axis must be 0, 1, or 2.")
@@ -60,16 +53,6 @@ def average_downsample_3d_array(data: np.ndarray,  # The original 3D array to be
                                ) -> np.ndarray:
     """
     Downsample a 3D numpy array along a specified axis using averaging.
-
-    This method reduces the size of the array by averaging over fixed-size blocks
-    of the array along the specified axis. This downsampling is particularly useful
-    for reducing data volume while attempting to retain important statistical information.
-
-    Returns:
-        numpy.ndarray: A new array with the specified axis resized to `target_size`.
-        
-    Raises:
-        ValueError: If the specified axis is not one of 0, 1, or 2.
     """
     # Validate the axis to ensure it's within the correct range.
     if axis not in [0, 1, 2]:

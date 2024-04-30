@@ -239,7 +239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="static" class="level2">
 <h2 class="anchored" data-anchor-id="static">Static</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L12" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L13" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="visualize_static_orbits" class="level3">
 <h3 class="anchored" data-anchor-id="visualize_static_orbits">visualize_static_orbits</h3>
 <blockquote class="blockquote">
@@ -304,32 +304,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div id="cell-4" class="cell" data-execution_count="2">
+<div id="cell-4" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.data <span class="im">import</span> get_example_orbit_data</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.constants <span class="im">import</span> EM_POINTS</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>orbit_data<span class="op">=</span> get_example_orbit_data()</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.constants <span class="im">import</span> EM_POINTS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-5" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>orbit_data<span class="op">=</span> get_example_orbit_data()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
 <pre><code>(200, 6, 300)</code></pre>
 </div>
 </div>
-<div id="cell-5" class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data, orbit_indices<span class="op">=</span>[<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">70</span>,<span class="dv">140</span>,<span class="dv">190</span>], point_dict<span class="op">=</span>EM_POINTS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03_visualization_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
 <div id="cell-6" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data,time_instants<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">50</span>], orbit_indices<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">20</span>,<span class="dv">40</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data, orbit_indices<span class="op">=</span>[<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">70</span>,<span class="dv">140</span>,<span class="dv">190</span>], point_dict<span class="op">=</span>EM_POINTS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="03_visualization_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-7" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data,time_instants<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">50</span>], orbit_indices<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">20</span>,<span class="dv">40</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03_visualization_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -339,7 +340,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="dynamic" class="level2">
 <h2 class="anchored" data-anchor-id="dynamic">Dynamic</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L73" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L85" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="export_dynamic_orbits_html" class="level3">
 <h3 class="anchored" data-anchor-id="export_dynamic_orbits_html">export_dynamic_orbits_html</h3>
 <blockquote class="blockquote">
@@ -404,8 +405,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div id="cell-9" class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>export_dynamic_orbits_html(data<span class="op">=</span>orbit_data, filename<span class="op">=</span><span class="st">'../data/example_orbits.html'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-10" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>export_dynamic_orbits_html(data<span class="op">=</span>orbit_data, filename<span class="op">=</span><span class="st">'../data/example_orbits.html'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Visualization saved to ../data/example_orbits.html</code></pre>
 </div>
