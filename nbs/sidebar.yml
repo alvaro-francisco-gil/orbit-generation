@@ -2,9 +2,9 @@ website:
   sidebar:
     contents:
       - index.ipynb
-      - 01_data_reader.ipynb
+      - 00_constants.ipynb
+      - 01_data.ipynb
       - 02_processing.ipynb
       - 03_visualization.ipynb
       - 04_statistics.ipynb
-      - 05_build_dataset.ipynb
-      - orbits.html
+      - 05_dataset.ipynb
