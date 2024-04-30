@@ -239,14 +239,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="resample-by-interpolation" class="level2">
 <h2 class="anchored" data-anchor-id="resample-by-interpolation">Resample by Interpolation</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L12" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L13" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="resample_3d_array" class="level3">
 <h3 class="anchored" data-anchor-id="resample_3d_array">resample_3d_array</h3>
 <blockquote class="blockquote">
 <pre><code> resample_3d_array (data:numpy.ndarray, axis:int, target_size:int)</code></pre>
 </blockquote>
-<p>*Resample a 3D numpy array along a specified axis using linear interpolation. Adjusts the size of a 3D array along a given axis by interpolating the existing data points to match the target size specified. Uses linear interpolation suitable for continuous data.</p>
-<p>Returns: A new array with the axis of interest resampled to the new size. Raises: ValueError: If the specified axis is not one of 0, 1, or 2.*</p>
+<p><em>Resample a 3D numpy array along a specified axis using linear interpolation.</em></p>
 <table class="table">
 <thead>
 <tr class="header">
@@ -278,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div id="cell-4" class="cell">
+<div id="cell-4" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_resample_3d_array():</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Original 3D array</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> np.array([</span>
@@ -305,16 +304,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Invoke the test</span></span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>test_resample_3d_array()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[[[ 1  2]
-  [ 3  4]]
-
- [[ 7  8]
-  [ 9 10]]
-
- [[13 14]
-  [15 16]]]</code></pre>
-</div>
 </div>
 </section>
 </section>
@@ -328,10 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> average_downsample_3d_array (data:numpy.ndarray, axis:int,
                               target_size:int)</code></pre>
 </blockquote>
-<p>*Downsample a 3D numpy array along a specified axis using averaging.</p>
-<p>This method reduces the size of the array by averaging over fixed-size blocks of the array along the specified axis. This downsampling is particularly useful for reducing data volume while attempting to retain important statistical information.</p>
-<p>Returns: numpy.ndarray: A new array with the specified axis resized to <code>target_size</code>.</p>
-<p>Raises: ValueError: If the specified axis is not one of 0, 1, or 2.*</p>
+<p><em>Downsample a 3D numpy array along a specified axis using averaging.</em></p>
 <table class="table">
 <colgroup>
 <col style="width: 9%">
@@ -368,34 +354,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div id="cell-7" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_average_downsample_3d_array():</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a simple 3D array with shape (4, 2, 2)</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Each element in the z-dimension is the same to make averaging predictable</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> np.array([</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">3</span>, <span class="fl">0.1</span>], [<span class="dv">2</span>, <span class="dv">5</span>]],</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">1</span>, <span class="fl">0.1</span>], [<span class="dv">2</span>, <span class="dv">2</span>]],</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        [[<span class="fl">0.3</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">4</span>]],</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        [[<span class="fl">0.2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">6</span>]]</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Target new size for the axis 0 is 2</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    target_size <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Perform averaging along axis 0</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    downsampled_data <span class="op">=</span> average_downsample_3d_array(data, axis<span class="op">=</span><span class="dv">0</span>, target_size<span class="op">=</span>target_size)</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Manually calculate expected results</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    expected_data <span class="op">=</span> np.array([</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">2</span>, <span class="fl">0.1</span>], [<span class="dv">2</span>, <span class="fl">3.5</span>]],  <span class="co"># Average of the first two and the last two blocks along axis 0</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        [[<span class="fl">0.25</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>]]</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check that the downsampled data matches the expected data</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    test_eq(downsampled_data, expected_data)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Invoke the test</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>test_average_downsample_3d_array()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-7" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_average_downsample_3d_array():</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a simple 3D array with shape (4, 2, 2)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Each element in the z-dimension is the same to make averaging predictable</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> np.array([</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">3</span>, <span class="fl">0.1</span>], [<span class="dv">2</span>, <span class="dv">5</span>]],</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">1</span>, <span class="fl">0.1</span>], [<span class="dv">2</span>, <span class="dv">2</span>]],</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        [[<span class="fl">0.3</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">4</span>]],</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        [[<span class="fl">0.2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">6</span>]]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Target new size for the axis 0 is 2</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    target_size <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Perform averaging along axis 0</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    downsampled_data <span class="op">=</span> average_downsample_3d_array(data, axis<span class="op">=</span><span class="dv">0</span>, target_size<span class="op">=</span>target_size)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Manually calculate expected results</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    expected_data <span class="op">=</span> np.array([</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">2</span>, <span class="fl">0.1</span>], [<span class="dv">2</span>, <span class="fl">3.5</span>]],  <span class="co"># Average of the first two and the last two blocks along axis 0</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        [[<span class="fl">0.25</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>]]</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check that the downsampled data matches the expected data</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    test_eq(downsampled_data, expected_data)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Invoke the test</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>test_average_downsample_3d_array()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
