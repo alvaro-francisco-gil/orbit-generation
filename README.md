@@ -84,9 +84,7 @@ pip install orbit_generation_testing
 
 ``` python
 from orbit_generation.data import get_example_orbit_data
-```
 
-``` python
 orbit_data = get_example_orbit_data()
 orbit_data.shape
 ```
@@ -100,9 +98,7 @@ orbit_data.shape
 
 ``` python
 from orbit_generation.processing import resample_3d_array
-```
 
-``` python
 resampled_orbit_data = resample_3d_array(data=orbit_data, axis=2, target_size= 100)
 resampled_orbit_data.shape
 ```
@@ -116,41 +112,39 @@ resampled_orbit_data.shape
 
 ``` python
 from orbit_generation.stats import plot_histograms
-```
 
-``` python
 plot_histograms(orbit_data)
 ```
 
-![](index_files/figure-commonmark/cell-7-output-1.png)
+![](index_files/figure-commonmark/cell-4-output-1.png)
 
 ### Plot Orbits
 
 ``` python
 from orbit_generation.visualize import visualize_static_orbits,export_dynamic_orbits_html
 from orbit_generation.constants import EM_POINTS
-```
 
-``` python
 visualize_static_orbits(resampled_orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)
 ```
 
-![](index_files/figure-commonmark/cell-9-output-1.png)
+![](index_files/figure-commonmark/cell-5-output-1.png)
 
 ``` python
 visualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40])
 ```
 
+![](index_files/figure-commonmark/cell-6-output-1.png)
+
 ``` python
-visualize_static_orbits(orbit_data)
+visualize_static_orbits(orbit_data, show_legend=False)
 ```
 
-![](index_files/figure-commonmark/cell-11-output-1.png)
+![](index_files/figure-commonmark/cell-7-output-1.png)
 
 ``` python
 export_dynamic_orbits_html(data=orbit_data, filename='../data/example_orbits.html')
 ```
 
-    Visualization saved to orbits.html
+    Visualization saved to ../data/example_orbits.html
 
 [View Orbit Visualization](../data/example_orbits.html)
