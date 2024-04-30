@@ -8,4 +8,3 @@ website:
       - 03_visualization.ipynb
       - 04_statistics.ipynb
       - 05_dataset.ipynb
-      - orbits.html

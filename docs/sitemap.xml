@@ -2,38 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://alvaro-francisco-gil.github.io/orbit-generation/data.html</loc>
-    <lastmod>2024-04-29T11:54:49.181Z</lastmod>
+    <lastmod>2024-04-29T12:00:09.218Z</lastmod>
   </url>
   <url>
     <loc>https://alvaro-francisco-gil.github.io/orbit-generation/processing.html</loc>
-    <lastmod>2024-04-29T11:54:49.225Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/index.html</loc>
-    <lastmod>2024-04-29T11:01:10.172Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/data_reader.html</loc>
-    <lastmod>2024-04-29T11:01:10.448Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/visualization.html</loc>
-    <lastmod>2024-04-29T11:54:49.397Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/statistics.html</loc>
-    <lastmod>2024-04-29T11:54:49.353Z</lastmod>
+    <lastmod>2024-04-30T10:10:10.707Z</lastmod>
   </url>
   <url>
     <loc>https://alvaro-francisco-gil.github.io/orbit-generation/00_constants.html</loc>
-    <lastmod>2024-04-29T11:54:48.861Z</lastmod>
+    <lastmod>2024-04-29T12:00:08.922Z</lastmod>
   </url>
   <url>
-    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/05_build_dataset.html</loc>
-    <lastmod>2024-04-29T11:01:10.120Z</lastmod>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/visualization.html</loc>
+    <lastmod>2024-04-30T10:10:10.599Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/statistics.html</loc>
+    <lastmod>2024-04-29T12:00:09.378Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/index.html</loc>
+    <lastmod>2024-04-30T10:10:10.611Z</lastmod>
   </url>
   <url>
     <loc>https://alvaro-francisco-gil.github.io/orbit-generation/05_dataset.html</loc>
-    <lastmod>2024-04-29T11:54:48.869Z</lastmod>
+    <lastmod>2024-04-29T12:00:08.910Z</lastmod>
   </url>
 </urlset>
