@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.552">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="Necessary scripts to read orbits from different formats">
 
-<title>orbit-generation - data</title>
+<title>orbit-generation - Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -104,10 +104,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="orbit-generation - data">
+<meta property="og:title" content="orbit-generation - Data">
 <meta property="og:description" content="Necessary scripts to read orbits from different formats">
 <meta property="og:site_name" content="orbit-generation">
-<meta name="twitter:title" content="orbit-generation - data">
+<meta name="twitter:title" content="orbit-generation - Data">
 <meta name="twitter:description" content="Necessary scripts to read orbits from different formats">
 <meta name="twitter:card" content="summary">
 </head>
@@ -133,7 +133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html">data</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html">Data</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -153,38 +153,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./00_constants.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">00_constants.html</span></a>
+  <a href="./constants.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Constants</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">data</span></a>
+ <span class="menu-text">Data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./processing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">processing</span></a>
+ <span class="menu-text">Processing</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">visualization</span></a>
+ <span class="menu-text">Visualization</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">statistics</span></a>
+ <span class="menu-text">Statistics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05_dataset.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">05_dataset.html</span></a>
+  <a href="./dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dataset</span></a>
   </div>
 </li>
     </ul>
@@ -218,7 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">data</h1>
+<h1 class="title">Data</h1>
 </div>
 
 <div>
@@ -244,14 +244,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="loading-data" class="level2">
 <h2 class="anchored" data-anchor-id="loading-data">Loading Data</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L18" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="load_orbit_data" class="level3">
 <h3 class="anchored" data-anchor-id="load_orbit_data">load_orbit_data</h3>
 <blockquote class="blockquote">
 <pre><code> load_orbit_data (file_path:str, variable_name:Optional[str]=None,
                   dataset_path:Optional[str]=None)</code></pre>
 </blockquote>
-<p><em>Load orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.</em></p>
+<p>Load orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.</p>
 <table class="table">
 <colgroup>
 <col style="width: 6%">
@@ -295,7 +294,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L52" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_orbit_features" class="level3">
 <h3 class="anchored" data-anchor-id="get_orbit_features">get_orbit_features</h3>
@@ -303,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> get_orbit_features (file_path:str, variable_name:Optional[str]=None,
                      dataset_path:Optional[str]=None)</code></pre>
 </blockquote>
-<p><em>Load orbit feature data from a specified file and convert it to a DataFrame.</em></p>
+<p>Load orbit feature data from a specified file and convert it to a DataFrame.</p>
 <table class="table">
 <colgroup>
 <col style="width: 6%">
@@ -351,13 +349,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="save-data" class="level2">
 <h2 class="anchored" data-anchor-id="save-data">Save Data</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L75" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="save_data" class="level3">
 <h3 class="anchored" data-anchor-id="save_data">save_data</h3>
 <blockquote class="blockquote">
 <pre><code> save_data (data:numpy.ndarray, file_name:str, file_type:str='hdf5')</code></pre>
 </blockquote>
-<p><em>Save a numpy array to an HDF5 or a NumPy .npy file based on the specified file type.</em></p>
+<p>Save a numpy array to an HDF5 or a NumPy .npy file based on the specified file type.</p>
 <table class="table">
 <thead>
 <tr class="header">
@@ -399,15 +396,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="get-example-data" class="level2">
 <h2 class="anchored" data-anchor-id="get-example-data">Get Example Data</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L94" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="get_example_orbit_data" class="level3">
 <h3 class="anchored" data-anchor-id="get_example_orbit_data">get_example_orbit_data</h3>
 <blockquote class="blockquote">
 <pre><code> get_example_orbit_data ()</code></pre>
 </blockquote>
-<p>*Load orbit data from a hardcoded MAT file located in the <code>data</code> directory.</p>
+<p>Load orbit data from a hardcoded MAT file located in the <code>data</code> directory.</p>
 <p>The function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.</p>
-<p>:return: A numpy.ndarray containing the transposed data from the MAT file.*</p>
+<p>:return: A numpy.ndarray containing the transposed data from the MAT file.</p>
 <div id="cell-9" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> get_example_orbit_data()</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

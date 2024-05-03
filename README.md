@@ -145,5 +145,3 @@ export_dynamic_orbits_html(data=orbit_data, filename='../data/example_orbits.htm
 ```
 
     Visualization saved to ../data/example_orbits.html
-
-[View Orbit Visualization](../data/example_orbits.html)

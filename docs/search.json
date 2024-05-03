@@ -1,135 +1,5 @@
 [
   {
-    "objectID": "data.html",
-    "href": "data.html",
-    "title": "data",
-    "section": "",
-    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
-    "crumbs": [
-      "data"
-    ]
-  },
-  {
-    "objectID": "data.html#loading-data",
-    "href": "data.html#loading-data",
-    "title": "data",
-    "section": "",
-    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
-    "crumbs": [
-      "data"
-    ]
-  },
-  {
-    "objectID": "data.html#save-data",
-    "href": "data.html#save-data",
-    "title": "data",
-    "section": "Save Data",
-    "text": "Save Data\n\nsource\n\nsave_data\n\n save_data (data:numpy.ndarray, file_name:str, file_type:str='hdf5')\n\nSave a numpy array to an HDF5 or a NumPy .npy file based on the specified file type.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe numpy array data to save.\n\n\nfile_name\nstr\n\nThe name of the file to save the data in.\n\n\nfile_type\nstr\nhdf5\nThe type of file to save (‘hdf5’ or ‘npy’).\n\n\nReturns\nNone",
-    "crumbs": [
-      "data"
-    ]
-  },
-  {
-    "objectID": "data.html#get-example-data",
-    "href": "data.html#get-example-data",
-    "title": "data",
-    "section": "Get Example Data",
-    "text": "Get Example Data\n\nsource\n\nget_example_orbit_data\n\n get_example_orbit_data ()\n\n*Load orbit data from a hardcoded MAT file located in the data directory.\nThe function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.\n:return: A numpy.ndarray containing the transposed data from the MAT file.*\n\ndata = get_example_orbit_data()\ndata.shape\n\n(200, 6, 300)",
-    "crumbs": [
-      "data"
-    ]
-  },
-  {
-    "objectID": "processing.html",
-    "href": "processing.html",
-    "title": "processing",
-    "section": "",
-    "text": "source\n\n\n\n resample_3d_array (data:numpy.ndarray, axis:int, target_size:int)\n\nResample a 3D numpy array along a specified axis using linear interpolation.\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be resampled.\n\n\naxis\nint\nThe axis along which to perform the interpolation.\n\n\ntarget_size\nint\nThe new size of the axis after resampling.\n\n\nReturns\nndarray\n\n\n\n\n\ndef test_resample_3d_array():\n    # Original 3D array\n    data = np.array([\n        [[1, 2], [3, 4]],\n        [[5, 6], [7, 8]],\n        [[9, 10], [11, 12]],\n        [[13, 14], [15, 16]]\n    ])\n\n    # Downsampling from 4 to 2 along the first axis\n    target_size = 3\n\n    # Perform resampling\n    resampled_data = resample_3d_array(data, axis=0, target_size=target_size)\n\n    # Expected results by true linear interpolation\n    expected_data = np.array([\n        [[1, 2], [3, 4]],  # 1st slice\n        [[7, 8], [9, 10]],  # Interpolation between 2nd and 3rd slices (mean in this case)\n        [[13, 14], [15, 16]]  # 4st slice\n    ])\n    # Check the resampled data against expected data\n    test_eq(resampled_data, expected_data)\n\n# Invoke the test\ntest_resample_3d_array()",
-    "crumbs": [
-      "processing"
-    ]
-  },
-  {
-    "objectID": "processing.html#resample-by-interpolation",
-    "href": "processing.html#resample-by-interpolation",
-    "title": "processing",
-    "section": "",
-    "text": "source\n\n\n\n resample_3d_array (data:numpy.ndarray, axis:int, target_size:int)\n\nResample a 3D numpy array along a specified axis using linear interpolation.\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be resampled.\n\n\naxis\nint\nThe axis along which to perform the interpolation.\n\n\ntarget_size\nint\nThe new size of the axis after resampling.\n\n\nReturns\nndarray\n\n\n\n\n\ndef test_resample_3d_array():\n    # Original 3D array\n    data = np.array([\n        [[1, 2], [3, 4]],\n        [[5, 6], [7, 8]],\n        [[9, 10], [11, 12]],\n        [[13, 14], [15, 16]]\n    ])\n\n    # Downsampling from 4 to 2 along the first axis\n    target_size = 3\n\n    # Perform resampling\n    resampled_data = resample_3d_array(data, axis=0, target_size=target_size)\n\n    # Expected results by true linear interpolation\n    expected_data = np.array([\n        [[1, 2], [3, 4]],  # 1st slice\n        [[7, 8], [9, 10]],  # Interpolation between 2nd and 3rd slices (mean in this case)\n        [[13, 14], [15, 16]]  # 4st slice\n    ])\n    # Check the resampled data against expected data\n    test_eq(resampled_data, expected_data)\n\n# Invoke the test\ntest_resample_3d_array()",
-    "crumbs": [
-      "processing"
-    ]
-  },
-  {
-    "objectID": "processing.html#downsample-by-average",
-    "href": "processing.html#downsample-by-average",
-    "title": "processing",
-    "section": "Downsample by Average",
-    "text": "Downsample by Average\n\nsource\n\naverage_downsample_3d_array\n\n average_downsample_3d_array (data:numpy.ndarray, axis:int,\n                              target_size:int)\n\nDownsample a 3D numpy array along a specified axis using averaging.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be downsampled.\n\n\naxis\nint\nThe axis along which to perform the downsampling (0, 1, or 2).\n\n\ntarget_size\nint\nThe desired size of the specified axis after downsampling.\n\n\nReturns\nndarray\n\n\n\n\n\ndef test_average_downsample_3d_array():\n    # Create a simple 3D array with shape (4, 2, 2)\n    # Each element in the z-dimension is the same to make averaging predictable\n    data = np.array([\n        [[3, 0.1], [2, 5]],\n        [[1, 0.1], [2, 2]],\n        [[0.3, 3], [4, 4]],\n        [[0.2, 3], [4, 6]]\n    ])\n\n    # Target new size for the axis 0 is 2\n    target_size = 2\n\n    # Perform averaging along axis 0\n    downsampled_data = average_downsample_3d_array(data, axis=0, target_size=target_size)\n\n    # Manually calculate expected results\n    expected_data = np.array([\n        [[2, 0.1], [2, 3.5]],  # Average of the first two and the last two blocks along axis 0\n        [[0.25, 3], [4, 5]]\n    ])\n    \n    # Check that the downsampled data matches the expected data\n    test_eq(downsampled_data, expected_data)\n\n# Invoke the test\ntest_average_downsample_3d_array()",
-    "crumbs": [
-      "processing"
-    ]
-  },
-  {
-    "objectID": "visualization.html",
-    "href": "visualization.html",
-    "title": "visualization",
-    "section": "",
-    "text": "source\n\n\n\n visualize_static_orbits (data:numpy.ndarray,\n                          time_instants:Optional[List[int]]=None,\n                          orbit_indices:Optional[List[int]]=None,\n                          point_dict:Optional[Dict[str,tuple]]=None,\n                          show_legend:bool=True)\n\nVisualizes orbits in 3D space and highlights specified time instants for each selected orbit.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe orbit data with shape (num_orbits, 6, num_time_points).\n\n\ntime_instants\nOptional\nNone\nTime points to highlight; defaults to None.\n\n\norbit_indices\nOptional\nNone\nIndices of orbits to visualize; defaults to all.\n\n\npoint_dict\nOptional\nNone\nDictionary of extra points to plot.\n\n\nshow_legend\nbool\nTrue\nFlag to indicate whether to show a legend.\n\n\nReturns\nNone\n\n\n\n\n\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.constants import EM_POINTS\n\n\norbit_data= get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nvisualize_static_orbits(data= orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40])",
-    "crumbs": [
-      "visualization"
-    ]
-  },
-  {
-    "objectID": "visualization.html#static",
-    "href": "visualization.html#static",
-    "title": "visualization",
-    "section": "",
-    "text": "source\n\n\n\n visualize_static_orbits (data:numpy.ndarray,\n                          time_instants:Optional[List[int]]=None,\n                          orbit_indices:Optional[List[int]]=None,\n                          point_dict:Optional[Dict[str,tuple]]=None,\n                          show_legend:bool=True)\n\nVisualizes orbits in 3D space and highlights specified time instants for each selected orbit.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe orbit data with shape (num_orbits, 6, num_time_points).\n\n\ntime_instants\nOptional\nNone\nTime points to highlight; defaults to None.\n\n\norbit_indices\nOptional\nNone\nIndices of orbits to visualize; defaults to all.\n\n\npoint_dict\nOptional\nNone\nDictionary of extra points to plot.\n\n\nshow_legend\nbool\nTrue\nFlag to indicate whether to show a legend.\n\n\nReturns\nNone\n\n\n\n\n\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.constants import EM_POINTS\n\n\norbit_data= get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nvisualize_static_orbits(data= orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40])",
-    "crumbs": [
-      "visualization"
-    ]
-  },
-  {
-    "objectID": "visualization.html#dynamic",
-    "href": "visualization.html#dynamic",
-    "title": "visualization",
-    "section": "Dynamic",
-    "text": "Dynamic\n\nsource\n\nexport_dynamic_orbits_html\n\n export_dynamic_orbits_html (data:numpy.ndarray,\n                             time_instants:Optional[List[int]]=None,\n                             orbit_indices:Optional[List[int]]=None,\n                             point_dict:Optional[Dict[str,tuple]]=None,\n                             filename:str='orbits.html')\n\nGenerates an interactive 3D visualization of orbits and saves it as an HTML file, including the ability to highlight specific time instants and show named points.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nOrbit data as a 3D numpy array (num_orbits, 6, num_time_points).\n\n\ntime_instants\nOptional\nNone\nTime instants to highlight.\n\n\norbit_indices\nOptional\nNone\nIndices of orbits to visualize.\n\n\npoint_dict\nOptional\nNone\nNamed points as a dict with 3D coordinates.\n\n\nfilename\nstr\norbits.html\nPath and name of the file to save the HTML plot.\n\n\nReturns\nNone\n\n\n\n\n\n\nexport_dynamic_orbits_html(data=orbit_data, filename='../data/example_orbits.html')\n\nVisualization saved to ../data/example_orbits.html\n\n\nView Orbit Visualization",
-    "crumbs": [
-      "visualization"
-    ]
-  },
-  {
-    "objectID": "statistics.html",
-    "href": "statistics.html",
-    "title": "statistics",
-    "section": "",
-    "text": "source\n\n\n\n calculate_overall_statistics (orbits:numpy.ndarray)\n\n*Calculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.\nParameters: - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6, number_of_time_instants) containing orbit data.\nReturns: - Dict[str, Dict[str, float]]: A dictionary with statistics (‘min’, ‘mean’, ‘max’, ‘25%’, ‘50%’, ‘75%’) for each scalar.*\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\norbits\nndarray\nThe array containing orbit data of shape (number_of_orbits, 6, number_of_time_instants).\n\n\nReturns\nDict\n\n\n\n\n\norbits = np.array([\n    [[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8]],  # Orbit 1\n    [[4, 4, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]]   # Orbit 2\n])\n\n# Call the function to calculate statistics\nstats = calculate_overall_statistics(orbits)\n\n# Using test_eq to perform tests\ntest_eq(stats['posx']['min'], 1)\ntest_eq(stats['posx']['mean'], 3)\ntest_eq(stats['posx']['max'], 4)\ntest_eq(stats['posx']['25%'], 2.25)\ntest_eq(stats['posx']['50%'], 3.5)\ntest_eq(stats['posx']['75%'], 4)",
-    "crumbs": [
-      "statistics"
-    ]
-  },
-  {
-    "objectID": "statistics.html#calculate-statistics",
-    "href": "statistics.html#calculate-statistics",
-    "title": "statistics",
-    "section": "",
-    "text": "source\n\n\n\n calculate_overall_statistics (orbits:numpy.ndarray)\n\n*Calculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.\nParameters: - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6, number_of_time_instants) containing orbit data.\nReturns: - Dict[str, Dict[str, float]]: A dictionary with statistics (‘min’, ‘mean’, ‘max’, ‘25%’, ‘50%’, ‘75%’) for each scalar.*\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\norbits\nndarray\nThe array containing orbit data of shape (number_of_orbits, 6, number_of_time_instants).\n\n\nReturns\nDict\n\n\n\n\n\norbits = np.array([\n    [[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8]],  # Orbit 1\n    [[4, 4, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]]   # Orbit 2\n])\n\n# Call the function to calculate statistics\nstats = calculate_overall_statistics(orbits)\n\n# Using test_eq to perform tests\ntest_eq(stats['posx']['min'], 1)\ntest_eq(stats['posx']['mean'], 3)\ntest_eq(stats['posx']['max'], 4)\ntest_eq(stats['posx']['25%'], 2.25)\ntest_eq(stats['posx']['50%'], 3.5)\ntest_eq(stats['posx']['75%'], 4)",
-    "crumbs": [
-      "statistics"
-    ]
-  },
-  {
-    "objectID": "statistics.html#plot-histograms",
-    "href": "statistics.html#plot-histograms",
-    "title": "statistics",
-    "section": "Plot Histograms",
-    "text": "Plot Histograms\n\n\nplot_histograms_position\n\n plot_histograms_position (data:numpy.ndarray)\n\nPlots histograms for the 6 scalar values (position and velocity in X, Y, Z) across all orbits and time points.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe orbit data array of shape (num_orbits, 6, num_time_points).\n\n\nReturns\nNone\n\n\n\n\n\nfrom orbit_generation.data import get_example_orbit_data\n\n\norbit_data = get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nplot_histograms_position(orbit_data)\n\n\n\n\n\n\n\n\n\n\n\nplot_histograms_comparison\n\n plot_histograms_comparison (data1:numpy.ndarray, data2:numpy.ndarray)\n\n*Plots histograms for the 6 scalar values (position and velocity in X, Y, Z) from two datasets on the same chart with different colors.\nParameters: - data1 (np.ndarray): First orbit data array. - data2 (np.ndarray): Second orbit data array.*\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata1\nndarray\nFirst orbit data array of shape (num_orbits, 6, num_time_points).\n\n\ndata2\nndarray\nSecond orbit data array of shape (num_orbits, 6, num_time_points).\n\n\nReturns\nNone\n\n\n\n\n\norbit_data1 = orbit_data[:100]\norbit_data2 = orbit_data[100:]\n\nplot_histograms_comparison(orbit_data1, orbit_data2)",
-    "crumbs": [
-      "statistics"
-    ]
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "orbit-generation",
@@ -164,19 +34,169 @@
     "href": "index.html#how-to-use",
     "title": "orbit-generation",
     "section": "How to use",
-    "text": "How to use\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.processing import resample_3d_array\nfrom orbit_generation.stats import plot_histograms_position\nfrom orbit_generation.visualize import visualize_static_orbits, export_dynamic_orbits_html\nfrom orbit_generation.constants import EM_POINTS\n\n\nData\n\norbit_data = get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nNumber of orbits: 200\nTime instants: 300\n\n\n\nProcessing\n\nresampled_orbit_data = resample_3d_array(data=orbit_data, axis=2, target_size= 100)\nresampled_orbit_data.shape\n\n(200, 6, 100)\n\n\n\nInitial time instants: 300\nTime instants after Resampling: 100\n\n\n\nStatistics\n\nplot_histograms_position(orbit_data)\n\n\n\n\n\n\n\n\n\n\nVisualization\n\nvisualize_static_orbits(resampled_orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40])\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(orbit_data, show_legend=False)\n\n\n\n\n\n\n\n\n\nexport_dynamic_orbits_html(data=orbit_data, filename='../data/example_orbits.html')\n\nVisualization saved to ../data/example_orbits.html\n\n\nView Orbit Visualization",
+    "text": "How to use\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.processing import resample_3d_array\nfrom orbit_generation.stats import plot_histograms_position\nfrom orbit_generation.visualize import visualize_static_orbits, export_dynamic_orbits_html\nfrom orbit_generation.constants import EM_POINTS\n\n\nData\n\norbit_data = get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nNumber of orbits: 200\nTime instants: 300\n\n\n\nProcessing\n\nresampled_orbit_data = resample_3d_array(data=orbit_data, axis=2, target_size= 100)\nresampled_orbit_data.shape\n\n(200, 6, 100)\n\n\n\nInitial time instants: 300\nTime instants after Resampling: 100\n\n\n\nStatistics\n\nplot_histograms_position(orbit_data)\n\n\n\n\n\n\n\n\n\n\nVisualization\n\nvisualize_static_orbits(resampled_orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40])\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(orbit_data, show_legend=False)\n\n\n\n\n\n\n\n\n\nexport_dynamic_orbits_html(data=orbit_data, filename='../data/example_orbits.html')\n\nVisualization saved to ../data/example_orbits.html",
     "crumbs": [
       "orbit-generation"
     ]
   },
   {
-    "objectID": "05_dataset.html",
-    "href": "05_dataset.html",
-    "title": "orbit-generation",
+    "objectID": "statistics.html",
+    "href": "statistics.html",
+    "title": "Statistics",
     "section": "",
-    "text": "get_5p_em_dataset\n\n get_5p_em_dataset (data_directory=None)\n\n*Load orbit data from an HDF5 file and corresponding labels from a MAT file.\nIf no data_directory is specified, a default relative path is used. The function expects specific file structures (‘em_orbits.h5’ and ‘EM_IC_ARRAY.mat’) within the directory.\nReturns: tuple: - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis. - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.\nThe function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses. Labels are extracted from a MAT file and matched to the reshaped orbit data.*\n\nsource\n\n\nget_1p_em_dataset\n\n get_1p_em_dataset (data_directory=None)\n\n*Load orbit data from an HDF5 file and corresponding labels from a MAT file.\nIf no data_directory is specified, a default relative path is used. The function expects specific file structures (‘em_orbits.h5’ and ‘EM_IC_ARRAY.mat’) within the directory.\nReturns: tuple: - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis. - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.\nThe function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses. Labels are extracted from a MAT file and matched to the reshaped orbit data.*",
+    "text": "source\n\n\n\n calculate_overall_statistics (orbits:numpy.ndarray)\n\nCalculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.\nParameters: - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6, number_of_time_instants) containing orbit data.\nReturns: - Dict[str, Dict[str, float]]: A dictionary with statistics (‘min’, ‘mean’, ‘max’, ‘25%’, ‘50%’, ‘75%’) for each scalar.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\norbits\nndarray\nThe array containing orbit data of shape (number_of_orbits, 6, number_of_time_instants).\n\n\nReturns\nDict\n\n\n\n\n\norbits = np.array([\n    [[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8]],  # Orbit 1\n    [[4, 4, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]]   # Orbit 2\n])\n\n# Call the function to calculate statistics\nstats = calculate_overall_statistics(orbits)\n\n# Using test_eq to perform tests\ntest_eq(stats['posx']['min'], 1)\ntest_eq(stats['posx']['mean'], 3)\ntest_eq(stats['posx']['max'], 4)\ntest_eq(stats['posx']['25%'], 2.25)\ntest_eq(stats['posx']['50%'], 3.5)\ntest_eq(stats['posx']['75%'], 4)",
     "crumbs": [
-      "05_dataset.html"
+      "Statistics"
+    ]
+  },
+  {
+    "objectID": "statistics.html#calculate-statistics",
+    "href": "statistics.html#calculate-statistics",
+    "title": "Statistics",
+    "section": "",
+    "text": "source\n\n\n\n calculate_overall_statistics (orbits:numpy.ndarray)\n\nCalculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.\nParameters: - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6, number_of_time_instants) containing orbit data.\nReturns: - Dict[str, Dict[str, float]]: A dictionary with statistics (‘min’, ‘mean’, ‘max’, ‘25%’, ‘50%’, ‘75%’) for each scalar.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\norbits\nndarray\nThe array containing orbit data of shape (number_of_orbits, 6, number_of_time_instants).\n\n\nReturns\nDict\n\n\n\n\n\norbits = np.array([\n    [[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8]],  # Orbit 1\n    [[4, 4, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]]   # Orbit 2\n])\n\n# Call the function to calculate statistics\nstats = calculate_overall_statistics(orbits)\n\n# Using test_eq to perform tests\ntest_eq(stats['posx']['min'], 1)\ntest_eq(stats['posx']['mean'], 3)\ntest_eq(stats['posx']['max'], 4)\ntest_eq(stats['posx']['25%'], 2.25)\ntest_eq(stats['posx']['50%'], 3.5)\ntest_eq(stats['posx']['75%'], 4)",
+    "crumbs": [
+      "Statistics"
+    ]
+  },
+  {
+    "objectID": "statistics.html#plot-histograms",
+    "href": "statistics.html#plot-histograms",
+    "title": "Statistics",
+    "section": "Plot Histograms",
+    "text": "Plot Histograms\n\nsource\n\nplot_histograms_position\n\n plot_histograms_position (data:numpy.ndarray)\n\nPlots histograms for the 6 scalar values (position and velocity in X, Y, Z) across all orbits and time points.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe orbit data array of shape (num_orbits, 6, num_time_points).\n\n\nReturns\nNone\n\n\n\n\n\nfrom orbit_generation.data import get_example_orbit_data\n\n\norbit_data = get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nplot_histograms_position(orbit_data)\n\n\n\n\n\n\n\n\n\nsource\n\n\nplot_histograms_comparison\n\n plot_histograms_comparison (data1:numpy.ndarray, data2:numpy.ndarray)\n\nPlots histograms for the 6 scalar values (position and velocity in X, Y, Z) from two datasets on the same chart with different colors.\nParameters: - data1 (np.ndarray): First orbit data array. - data2 (np.ndarray): Second orbit data array.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata1\nndarray\nFirst orbit data array of shape (num_orbits, 6, num_time_points).\n\n\ndata2\nndarray\nSecond orbit data array of shape (num_orbits, 6, num_time_points).\n\n\nReturns\nNone\n\n\n\n\n\norbit_data1 = orbit_data[:100]\norbit_data2 = orbit_data[100:]\n\nplot_histograms_comparison(orbit_data1, orbit_data2)",
+    "crumbs": [
+      "Statistics"
+    ]
+  },
+  {
+    "objectID": "processing.html",
+    "href": "processing.html",
+    "title": "Processing",
+    "section": "",
+    "text": "resample_3d_array (data:numpy.ndarray, axis:int, target_size:int)\n\nResample a 3D numpy array along a specified axis using linear interpolation.\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be resampled.\n\n\naxis\nint\nThe axis along which to perform the interpolation.\n\n\ntarget_size\nint\nThe new size of the axis after resampling.\n\n\nReturns\nndarray\n\n\n\n\n\ndef test_resample_3d_array():\n    # Original 3D array\n    data = np.array([\n        [[1, 2], [3, 4]],\n        [[5, 6], [7, 8]],\n        [[9, 10], [11, 12]],\n        [[13, 14], [15, 16]]\n    ])\n\n    # Downsampling from 4 to 2 along the first axis\n    target_size = 3\n\n    # Perform resampling\n    resampled_data = resample_3d_array(data, axis=0, target_size=target_size)\n\n    # Expected results by true linear interpolation\n    expected_data = np.array([\n        [[1, 2], [3, 4]],  # 1st slice\n        [[7, 8], [9, 10]],  # Interpolation between 2nd and 3rd slices (mean in this case)\n        [[13, 14], [15, 16]]  # 4st slice\n    ])\n    # Check the resampled data against expected data\n    test_eq(resampled_data, expected_data)\n\n# Invoke the test\ntest_resample_3d_array()",
+    "crumbs": [
+      "Processing"
+    ]
+  },
+  {
+    "objectID": "processing.html#resample-by-interpolation",
+    "href": "processing.html#resample-by-interpolation",
+    "title": "Processing",
+    "section": "",
+    "text": "resample_3d_array (data:numpy.ndarray, axis:int, target_size:int)\n\nResample a 3D numpy array along a specified axis using linear interpolation.\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be resampled.\n\n\naxis\nint\nThe axis along which to perform the interpolation.\n\n\ntarget_size\nint\nThe new size of the axis after resampling.\n\n\nReturns\nndarray\n\n\n\n\n\ndef test_resample_3d_array():\n    # Original 3D array\n    data = np.array([\n        [[1, 2], [3, 4]],\n        [[5, 6], [7, 8]],\n        [[9, 10], [11, 12]],\n        [[13, 14], [15, 16]]\n    ])\n\n    # Downsampling from 4 to 2 along the first axis\n    target_size = 3\n\n    # Perform resampling\n    resampled_data = resample_3d_array(data, axis=0, target_size=target_size)\n\n    # Expected results by true linear interpolation\n    expected_data = np.array([\n        [[1, 2], [3, 4]],  # 1st slice\n        [[7, 8], [9, 10]],  # Interpolation between 2nd and 3rd slices (mean in this case)\n        [[13, 14], [15, 16]]  # 4st slice\n    ])\n    # Check the resampled data against expected data\n    test_eq(resampled_data, expected_data)\n\n# Invoke the test\ntest_resample_3d_array()",
+    "crumbs": [
+      "Processing"
+    ]
+  },
+  {
+    "objectID": "processing.html#downsample-by-average",
+    "href": "processing.html#downsample-by-average",
+    "title": "Processing",
+    "section": "Downsample by Average",
+    "text": "Downsample by Average\n\n\naverage_downsample_3d_array\n\n average_downsample_3d_array (data:numpy.ndarray, axis:int,\n                              target_size:int)\n\nDownsample a 3D numpy array along a specified axis using averaging.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be downsampled.\n\n\naxis\nint\nThe axis along which to perform the downsampling (0, 1, or 2).\n\n\ntarget_size\nint\nThe desired size of the specified axis after downsampling.\n\n\nReturns\nndarray\n\n\n\n\n\ndef test_average_downsample_3d_array():\n    # Create a simple 3D array with shape (4, 2, 2)\n    # Each element in the z-dimension is the same to make averaging predictable\n    data = np.array([\n        [[3, 0.1], [2, 5]],\n        [[1, 0.1], [2, 2]],\n        [[0.3, 3], [4, 4]],\n        [[0.2, 3], [4, 6]]\n    ])\n\n    # Target new size for the axis 0 is 2\n    target_size = 2\n\n    # Perform averaging along axis 0\n    downsampled_data = average_downsample_3d_array(data, axis=0, target_size=target_size)\n\n    # Manually calculate expected results\n    expected_data = np.array([\n        [[2, 0.1], [2, 3.5]],  # Average of the first two and the last two blocks along axis 0\n        [[0.25, 3], [4, 5]]\n    ])\n    \n    # Check that the downsampled data matches the expected data\n    test_eq(downsampled_data, expected_data)\n\n# Invoke the test\ntest_average_downsample_3d_array()",
+    "crumbs": [
+      "Processing"
+    ]
+  },
+  {
+    "objectID": "data.html",
+    "href": "data.html",
+    "title": "Data",
+    "section": "",
+    "text": "load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
+    "crumbs": [
+      "Data"
+    ]
+  },
+  {
+    "objectID": "data.html#loading-data",
+    "href": "data.html#loading-data",
+    "title": "Data",
+    "section": "",
+    "text": "load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
+    "crumbs": [
+      "Data"
+    ]
+  },
+  {
+    "objectID": "data.html#save-data",
+    "href": "data.html#save-data",
+    "title": "Data",
+    "section": "Save Data",
+    "text": "Save Data\n\n\nsave_data\n\n save_data (data:numpy.ndarray, file_name:str, file_type:str='hdf5')\n\nSave a numpy array to an HDF5 or a NumPy .npy file based on the specified file type.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe numpy array data to save.\n\n\nfile_name\nstr\n\nThe name of the file to save the data in.\n\n\nfile_type\nstr\nhdf5\nThe type of file to save (‘hdf5’ or ‘npy’).\n\n\nReturns\nNone",
+    "crumbs": [
+      "Data"
+    ]
+  },
+  {
+    "objectID": "data.html#get-example-data",
+    "href": "data.html#get-example-data",
+    "title": "Data",
+    "section": "Get Example Data",
+    "text": "Get Example Data\n\n\nget_example_orbit_data\n\n get_example_orbit_data ()\n\nLoad orbit data from a hardcoded MAT file located in the data directory.\nThe function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.\n:return: A numpy.ndarray containing the transposed data from the MAT file.\n\ndata = get_example_orbit_data()\ndata.shape\n\n(200, 6, 300)",
+    "crumbs": [
+      "Data"
+    ]
+  },
+  {
+    "objectID": "visualization.html",
+    "href": "visualization.html",
+    "title": "Visualization",
+    "section": "",
+    "text": "source\n\n\n\n visualize_static_orbits (data:numpy.ndarray,\n                          time_instants:Optional[List[int]]=None,\n                          orbit_indices:Optional[List[int]]=None,\n                          point_dict:Optional[Dict[str,tuple]]=None,\n                          show_legend:bool=True)\n\nVisualizes orbits in 3D space and highlights specified time instants for each selected orbit.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe orbit data with shape (num_orbits, 6, num_time_points).\n\n\ntime_instants\nOptional\nNone\nTime points to highlight; defaults to None.\n\n\norbit_indices\nOptional\nNone\nIndices of orbits to visualize; defaults to all.\n\n\npoint_dict\nOptional\nNone\nDictionary of extra points to plot.\n\n\nshow_legend\nbool\nTrue\nFlag to indicate whether to show a legend.\n\n\nReturns\nNone\n\n\n\n\n\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.constants import EM_POINTS\n\n\norbit_data= get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nvisualize_static_orbits(data= orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40])",
+    "crumbs": [
+      "Visualization"
+    ]
+  },
+  {
+    "objectID": "visualization.html#static",
+    "href": "visualization.html#static",
+    "title": "Visualization",
+    "section": "",
+    "text": "source\n\n\n\n visualize_static_orbits (data:numpy.ndarray,\n                          time_instants:Optional[List[int]]=None,\n                          orbit_indices:Optional[List[int]]=None,\n                          point_dict:Optional[Dict[str,tuple]]=None,\n                          show_legend:bool=True)\n\nVisualizes orbits in 3D space and highlights specified time instants for each selected orbit.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe orbit data with shape (num_orbits, 6, num_time_points).\n\n\ntime_instants\nOptional\nNone\nTime points to highlight; defaults to None.\n\n\norbit_indices\nOptional\nNone\nIndices of orbits to visualize; defaults to all.\n\n\npoint_dict\nOptional\nNone\nDictionary of extra points to plot.\n\n\nshow_legend\nbool\nTrue\nFlag to indicate whether to show a legend.\n\n\nReturns\nNone\n\n\n\n\n\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.constants import EM_POINTS\n\n\norbit_data= get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nvisualize_static_orbits(data= orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40])",
+    "crumbs": [
+      "Visualization"
+    ]
+  },
+  {
+    "objectID": "visualization.html#dynamic",
+    "href": "visualization.html#dynamic",
+    "title": "Visualization",
+    "section": "Dynamic",
+    "text": "Dynamic\n\nsource\n\nexport_dynamic_orbits_html\n\n export_dynamic_orbits_html (data:numpy.ndarray,\n                             time_instants:Optional[List[int]]=None,\n                             orbit_indices:Optional[List[int]]=None,\n                             point_dict:Optional[Dict[str,tuple]]=None,\n                             filename:str='orbits.html')\n\nGenerates an interactive 3D visualization of orbits and saves it as an HTML file, including the ability to highlight specific time instants and show named points.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nOrbit data as a 3D numpy array (num_orbits, 6, num_time_points).\n\n\ntime_instants\nOptional\nNone\nTime instants to highlight.\n\n\norbit_indices\nOptional\nNone\nIndices of orbits to visualize.\n\n\npoint_dict\nOptional\nNone\nNamed points as a dict with 3D coordinates.\n\n\nfilename\nstr\norbits.html\nPath and name of the file to save the HTML plot.\n\n\nReturns\nNone\n\n\n\n\n\n\nexport_dynamic_orbits_html(data=orbit_data, filename='../data/example_orbits.html')\n\nVisualization saved to ../data/example_orbits.html\n\n\nView Orbit Visualization",
+    "crumbs": [
+      "Visualization"
+    ]
+  },
+  {
+    "objectID": "dataset.html",
+    "href": "dataset.html",
+    "title": "Dataset",
+    "section": "",
+    "text": "get_5p_em_dataset (data_directory=None)\n\nLoad orbit data from an HDF5 file and corresponding labels from a MAT file.\nIf no data_directory is specified, a default relative path is used. The function expects specific file structures (‘em_orbits.h5’ and ‘EM_IC_ARRAY.mat’) within the directory.\nReturns: tuple: - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis. - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.\nThe function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses. Labels are extracted from a MAT file and matched to the reshaped orbit data.",
+    "crumbs": [
+      "Dataset"
+    ]
+  },
+  {
+    "objectID": "dataset.html#periods",
+    "href": "dataset.html#periods",
+    "title": "Dataset",
+    "section": "",
+    "text": "get_5p_em_dataset (data_directory=None)\n\nLoad orbit data from an HDF5 file and corresponding labels from a MAT file.\nIf no data_directory is specified, a default relative path is used. The function expects specific file structures (‘em_orbits.h5’ and ‘EM_IC_ARRAY.mat’) within the directory.\nReturns: tuple: - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis. - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.\nThe function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses. Labels are extracted from a MAT file and matched to the reshaped orbit data.",
+    "crumbs": [
+      "Dataset"
+    ]
+  },
+  {
+    "objectID": "dataset.html#st-period",
+    "href": "dataset.html#st-period",
+    "title": "Dataset",
+    "section": "1st period",
+    "text": "1st period\n\n\nget_1p_em_dataset\n\n get_1p_em_dataset (data_directory=None)\n\nLoad orbit data from an HDF5 file and corresponding labels from a MAT file.\nIf no data_directory is specified, a default relative path is used. The function expects specific file structures (‘em_orbits.h5’ and ‘EM_IC_ARRAY.mat’) within the directory.\nReturns: tuple: - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis. - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.\nThe function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses. Labels are extracted from a MAT file and matched to the reshaped orbit data.",
+    "crumbs": [
+      "Dataset"
     ]
   }
 ]
