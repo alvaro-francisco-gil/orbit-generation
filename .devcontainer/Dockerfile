@@ -17,10 +17,13 @@ RUN apt-get update && apt-get install -y \
 RUN pip3 install --upgrade pip
 
 # Install Python dependencies including TensorFlow, Keras, and wandb
-RUN pip3 install h5py scipy numpy matplotlib plotly nbdev pandas pytest tsgm wandb
+RUN pip3 install h5py scipy numpy matplotlib plotly nbdev pandas pytest tsgm wandb umap-learn
 
 # Clone the repository
 RUN git clone https://github.com/alvaro-francisco-gil/orbit-generation.git /orbit-generation
+
+# Configure nbdev
+RUN nbdev_install_quarto
 
 # Set the working directory to the cloned repository
 WORKDIR /orbit-generation
