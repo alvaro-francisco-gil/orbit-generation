@@ -1,0 +1,59 @@
+wandb_version: 1
+
+model_name:
+  desc: null
+  value: vae_conv5
+data_used:
+  desc: null
+  value: sp_em
+latent_dim:
+  desc: null
+  value: 16
+feature_dim:
+  desc: null
+  value: 7
+seq_len:
+  desc: null
+  value: 300
+batch_size:
+  desc: null
+  value: 32
+epochs:
+  desc: null
+  value: 50
+optimizer:
+  desc: null
+  value:
+    name: Adam
+    learning_rate: 0.001
+_wandb:
+  desc: null
+  value:
+    python_version: 3.11.0rc1
+    cli_version: 0.16.6
+    framework: keras
+    is_jupyter_run: true
+    is_kaggle_kernel: false
+    start_time: 1715244625.0
+    t:
+      1:
+      - 2
+      - 3
+      - 5
+      - 53
+      - 55
+      2:
+      - 2
+      - 3
+      - 5
+      - 53
+      - 55
+      3:
+      - 16
+      - 23
+      4: 3.11.0rc1
+      5: 0.16.6
+      8:
+      - 1
+      - 5
+      13: linux-x86_64
