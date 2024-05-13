@@ -100,22 +100,26 @@ def get_orbit_features(file_path: str,  # The path to the file (can be .mat, .h5
 
 # %% ../nbs/01_data.ipynb 11
 def save_data(data: np.ndarray,  # The numpy array data to save.
-              file_name: str,  # The name of the file to save the data in.
-              file_type: str = 'npy'  # The type of file to save ('hdf5' or 'npy').
+              file_name: str  # The name of the file to save the data in, including the extension.
              ) -> None:
     """
-    Save a numpy array to an HDF5 or a NumPy .npy file based on the specified file type.
+    Save a numpy array to a file based on the file extension specified in `file_name`.
+    Supports saving to HDF5 (.hdf5) or NumPy (.npy) file formats.
     """
-    if file_type == 'hdf5':
+    # Extract file extension from file name
+    _, file_extension = os.path.splitext(file_name)
+    
+    if file_extension == '.hdf5':
         # Open a new HDF5 file
         with h5py.File(file_name, 'w') as f:
             # Create a dataset in the file
-            f.create_dataset('orbit_data', data=data, compression='gzip', compression_opts=9)
-    elif file_type == 'npy':
+            f.create_dataset('data', data=data, compression='gzip', compression_opts=9)
+    elif file_extension == '.npy':
         # Save the array to a NumPy .npy file
         np.save(file_name, data)
     else:
-        raise ValueError("Unsupported file type specified. Use 'hdf5' or 'npy'.")
+        # Raise an error for unsupported file types
+        raise ValueError("Unsupported file extension. Supported extensions are '.hdf5' or '.npy'.")
 
 # %% ../nbs/01_data.ipynb 14
 def get_example_orbit_data():

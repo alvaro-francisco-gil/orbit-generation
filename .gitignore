@@ -1,6 +1,9 @@
 data/*
 !data/example_orbits_1_L2_S_200_EM_CR3BP.mat
 !data/example_orbits.html
+experiments/
+nbs_experiments/wandb/
+
 
 # Ignore environment secrets
 .devcontainer/.env

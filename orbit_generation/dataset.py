@@ -12,7 +12,7 @@ from typing import Tuple, Optional, List, Dict
 from .data import load_orbit_data, get_orbit_features, save_data
 from .stats import plot_orbit_data_lengths
 
-# %% ../nbs/05_dataset.ipynb 6
+# %% ../nbs/05_dataset.ipynb 5
 def get_5p_em_dataset(data_directory: Optional[str] = '../data', 
                       output_file_path: Optional[str] = '../data/5p_em_dataset', 
                       file_type: str = 'npy') -> Tuple[np.ndarray, List]:
@@ -38,7 +38,7 @@ def get_5p_em_dataset(data_directory: Optional[str] = '../data',
 
     return orbit_data_final, labels
 
-# %% ../nbs/05_dataset.ipynb 11
+# %% ../nbs/05_dataset.ipynb 10
 def get_1p_em_dataset(data_directory: Optional[str] = '../data',
                       output_file_path: Optional[str] = '../data/1p_em_dataset',
                       file_type: str = 'npy') -> Tuple[np.ndarray, List]:
@@ -63,7 +63,7 @@ def get_1p_em_dataset(data_directory: Optional[str] = '../data',
 
     return reshaped_orbit_data, labels
 
-# %% ../nbs/05_dataset.ipynb 16
+# %% ../nbs/05_dataset.ipynb 15
 def get_sp_em_dataset(data_directory: Optional[str] = '../data', 
                       output_file_path: Optional[str] = '../data/sp_em_dataset', 
                       file_type: str = 'npy') -> Tuple[np.ndarray, List]:
@@ -110,7 +110,7 @@ def get_sp_em_dataset(data_directory: Optional[str] = '../data',
 
     return orbit_data_final, final_labels
 
-# %% ../nbs/05_dataset.ipynb 23
+# %% ../nbs/05_dataset.ipynb 22
 def get_sp_fixed_em_dataset(data_directory: Optional[str] = '../data', 
                          output_data_path: Optional[str] = None, 
                          output_periods_path: Optional[str] = '../data/em_periods.npy') -> Tuple[Dict[int, np.ndarray], np.ndarray]:

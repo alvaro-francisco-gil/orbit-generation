@@ -2,7 +2,7 @@
 
 # %% auto 0
 __all__ = ['calculate_overall_statistics', 'plot_orbit_data_lengths', 'plot_histograms_position', 'plot_histograms_comparison',
-           'plot_latent_space']
+           'plot_latent_space', 'plot_combined_latent_space']
 
 # %% ../nbs/04_statistics.ipynb 2
 import numpy as np
@@ -12,7 +12,7 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 import umap.umap_ as umap
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Optional
 
 # %% ../nbs/04_statistics.ipynb 5
 def calculate_overall_statistics(orbits: np.ndarray  # The array containing orbit data of shape (number_of_orbits, 6, number_of_time_instants).
@@ -74,119 +74,191 @@ def plot_orbit_data_lengths(orbit_data, key_range=(1, 36072), dimension=0, bins=
         return lengths
 
 # %% ../nbs/04_statistics.ipynb 9
-def plot_histograms_position(data: np.ndarray  # The orbit data array of shape (num_orbits, 6, num_time_points).
+def plot_histograms_position(data: np.ndarray,  # The orbit data array of shape (num_orbits, num_scalars, num_time_points).
+                             save_path: str = None  # Optional path to save the plot image.
                             ) -> None:
     """
-    Plots histograms for the 6 scalar values (position and velocity in X, Y, Z) across all orbits and time points.
+    Plots histograms for the scalar values (position and velocity in X, Y, Z, and optionally time) across all orbits
+    and time points. Handles arrays with 6 or 7 scalar dimensions, with the 7th being 'time'.
+
+    Parameters:
+    - data (np.ndarray): The orbit data array.
+    - save_path (str, optional): If provided, the plot will be saved to this file path.
     """
-    scalar_names = ['posX', 'posY', 'posZ', 'velX', 'velY', 'velZ']
-    num_scalars = len(scalar_names)
-    
-    fig, axs = plt.subplots(2, 3, figsize=(15, 10))  # Adjust the subplot layout as necessary
-    fig.suptitle('Histograms of Position and Velocity Components Across All Orbits')
+    # Check the number of scalars and adjust scalar names accordingly
+    num_scalars = data.shape[1]
+    if num_scalars == 7:
+        scalar_names = ['time', 'posX', 'posY', 'posZ', 'velX', 'velY', 'velZ']
+    elif num_scalars == 6:
+        scalar_names = ['posX', 'posY', 'posZ', 'velX', 'velY', 'velZ']
+    else:
+        raise ValueError("Data arrays must have either 6 or 7 scalar dimensions.")
+
+    # Setting up the subplot grid, dynamically adjusting if we have 7 scalars
+    rows, cols = (3, 3) if num_scalars == 7 else (2, 3)
+    fig, axs = plt.subplots(rows, cols, figsize=(15, 5 * rows))  # Adjust height based on rows
+    fig.suptitle('Histograms of Position, Velocity Components, and Time (if present) Across All Orbits')
     
     for i in range(num_scalars):
         scalar_values = data[:, i, :].flatten()  # Flatten combines all orbits and time points for each scalar
         
-        row, col = divmod(i, 3)  # Determine subplot position
+        row, col = divmod(i, cols)  # Determine subplot position
         axs[row, col].hist(scalar_values, bins=50, alpha=0.75)  # You can adjust the number of bins
         axs[row, col].set_title(f'{scalar_names[i]}')
         axs[row, col].set_ylabel('Frequency')
         axs[row, col].set_xlabel('Value')
     
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Adjust layout to make room for the main title
+    
+    # Save the figure if a save path is provided
+    if save_path:
+        plt.savefig(save_path)  # Save the figure to the specified path
+
+    # Display the figure regardless of saving
     plt.show()
 
 # %% ../nbs/04_statistics.ipynb 13
-def plot_histograms_comparison(data1: np.ndarray,  # First orbit data array of shape (num_orbits, 6, num_time_points).
-                               data2: np.ndarray,  # Second orbit data array of shape (num_orbits, 6, num_time_points).
+def plot_histograms_comparison(data1: np.ndarray,  # First orbit data array of shape (num_orbits, num_scalars, num_time_points).
+                               data2: np.ndarray,  # Second orbit data array of shape (num_orbits, num_scalars, num_time_points).
+                               label1: str = "Dataset 1",  # Label for the first dataset.
+                               label2: str = "Dataset 2",  # Label for the second dataset.
+                               save_path: str = None,  # Optional path to save the plot image.
+                               normalize: bool = False  # Normalize histograms to show relative frequencies.
                                ) -> None:
     """
-    Plots histograms for the 6 scalar values (position and velocity in X, Y, Z) from two datasets on the same chart with different colors.
-
-    Parameters:
-    - data1 (np.ndarray): First orbit data array.
-    - data2 (np.ndarray): Second orbit data array.
+    Plots histograms for scalar values (position, velocity in X, Y, Z, and optionally time) from two datasets on 
+    the same chart with different colors. Supports both 6 and 7 scalar dimensions, with the 7th being 'time'.
+    Optionally saves the plot to a specified file path and can normalize histograms for relative comparison.
     """
+    # Check the number of scalars and adjust scalar names accordingly
+    num_scalars = data1.shape[1]
     scalar_names = ['posX', 'posY', 'posZ', 'velX', 'velY', 'velZ']
-    num_scalars = len(scalar_names)
-    
-    fig, axs = plt.subplots(2, 3, figsize=(15, 10))  # Create a grid of 2x3 subplots
-    fig.suptitle('Comparative Histograms of Position and Velocity Components')
+    if num_scalars == 7:
+        scalar_names.insert(0, 'time')
 
-    # Define colors for the histograms
-    colors = ['blue', 'green']  # First dataset in blue, second in green
-    
+    if num_scalars not in [6, 7]:
+        raise ValueError("Data arrays must have either 6 or 7 scalar dimensions.")
+
+    # Setting up the subplot grid
+    rows, cols = (3, 3) if num_scalars == 7 else (2, 3)
+    fig, axs = plt.subplots(rows, cols, figsize=(15, 5 * rows))
+    fig.suptitle('Comparative Histograms of Position, Velocity Components, and Time (if present)')
+
+    # Plot histograms
     for i in range(num_scalars):
-        # Flatten the data to combine all orbits and time points for each scalar
         scalar_values1 = data1[:, i, :].flatten()
         scalar_values2 = data2[:, i, :].flatten()
-        
-        # Determine subplot position
         row, col = divmod(i, 3)
         
-        # Plot histograms for each dataset on the same subplot
-        axs[row, col].hist(scalar_values1, bins=50, alpha=0.75, color=colors[0], label='Dataset 1')
-        axs[row, col].hist(scalar_values2, bins=50, alpha=0.75, color=colors[1], label='Dataset 2')
+        density = normalize  # Use the same variable for clarity in the hist function call
+        axs[row, col].hist(scalar_values1, bins=50, alpha=0.75, color='blue', label=label1, density=density)
+        axs[row, col].hist(scalar_values2, bins=50, alpha=0.75, color='green', label=label2, density=density)
         
-        axs[row, col].set_title(f'{scalar_names[i]}')
-        axs[row, col].set_ylabel('Frequency')
+        axs[row, col].set_title(scalar_names[i])
+        axs[row, col].set_ylabel('Density' if normalize else 'Frequency')
         axs[row, col].set_xlabel('Value')
-        axs[row, col].legend()  # Add a legend to differentiate between datasets
-    
-    plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Adjust layout to make room for the main title
+        axs[row, col].legend()
+
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+
+    # Saving or showing the plot
+    if save_path:
+        plt.savefig(save_path)
     plt.show()
 
-# %% ../nbs/04_statistics.ipynb 16
-def plot_latent_space(latent_representations: np.ndarray,  # Precomputed latent representations (numpy array).
-                      labels: np.ndarray,  # Labels for the data points, used for coloring in the plot.
-                      techniques: List[str] = ['PCA'],  # Techniques to use for reduction ('PCA', 't-SNE', 'UMAP', 'LDA').
-                      n_components: int = 2,  # Number of dimensions to reduce to.
-                      figsize: tuple = (12, 9),  # Size of the figure for each subplot.
-                      n_colors: int = 30,  # Number of unique colors to use in the colormap.
-                      **kwargs: Any  # Additional keyword arguments for dimensionality reduction methods.
-                      ) -> None:
+# %% ../nbs/04_statistics.ipynb 17
+def plot_latent_space(
+        latent_representations: np.ndarray,  # Precomputed latent representations (numpy array).
+        labels: np.ndarray,                  # Labels for the data points, used for coloring in the plot.
+        techniques: List[str] = ['PCA'],     # Techniques to use for reduction ('PCA', 't-SNE', 'UMAP', 'LDA').
+        n_components: int = 2,               # Number of dimensions to reduce to (1, 2, or 3).
+        figsize: tuple = (12, 9),            # Size of the figure for each subplot.
+        colors: Optional[List[str]] = None,  # Optional list of colors for the labels. If None, use random colors.
+        save_path: Optional[str] = None,     # Optional path to save the plot image.
+        **kwargs: Any                        # Additional keyword arguments for dimensionality reduction methods.
+    ) -> None:
     """
-    Plots the latent space representations using specified dimensionality reduction techniques.
-    This function supports multiple dimensionality reduction techniques including PCA, t-SNE, UMAP, and LDA.
-    It can be configured to plot one or multiple techniques simultaneously for comparative visualization, displayed vertically.
+    Plots and optionally saves the latent space representations using specified dimensionality reduction techniques.
+    Each technique's plot is handled in a separate figure, supporting 1D, 2D, or 3D visualizations.
     """
-    models: Dict[str, Any] = {
+    models = {
         'PCA': PCA(n_components=n_components),
         't-SNE': TSNE(n_components=n_components, **kwargs),
         'UMAP': umap.UMAP(n_components=n_components, **kwargs),
         'LDA': LinearDiscriminantAnalysis(n_components=n_components)
     }
 
-    if 'All' in techniques:
-        techniques = list(models.keys())
-
-    if len(techniques) > 1:
-        fig, axes = plt.subplots(len(techniques), 1, figsize=(figsize[0], figsize[1] * len(techniques)))  # Adjusted for vertical display
-        if len(techniques) == 1:
-            axes = [axes]  # Ensure axes is iterable in the case of a single plot.
-    else:
-        plt.figure(figsize=figsize)
-
-    for i, technique in enumerate(techniques):
+    for technique in techniques:
         model = models.get(technique)
         if not model:
-            continue
+            continue  # Skip if model not found in dictionary
 
         if technique == 'LDA':
             results = model.fit_transform(latent_representations, labels)
         else:
             results = model.fit_transform(latent_representations)
 
-        ax = axes[i] if len(techniques) > 1 else plt.gca()
-        cmap = colormaps['nipy_spectral'].resampled(n_colors)  # Resampled colormap for distinct coloring
-        scatter = ax.scatter(results[:, 0], results[:, 1], alpha=0.6, c=labels, cmap=cmap, s=30)
-        ax.set_xlabel(f'{technique} Dimension 1')
-        ax.set_ylabel(f'{technique} Dimension 2')
+        if n_components == 1:
+            fig, ax = plt.subplots(figsize=figsize)
+            scatter = ax.scatter(results, np.zeros_like(results), c=labels, cmap='viridis' if colors is None else colors, s=30)
+            ax.set_xlabel(f'{technique} Component 1')
+        elif n_components == 2:
+            fig, ax = plt.subplots(figsize=figsize)
+            scatter = ax.scatter(results[:, 0], results[:, 1], c=labels, cmap='viridis' if colors is None else colors, s=30)
+            ax.set_xlabel(f'{technique} Dimension 1')
+            ax.set_ylabel(f'{technique} Dimension 2')
+        elif n_components == 3:
+            fig = plt.figure(figsize=figsize)
+            ax = fig.add_subplot(111, projection='3d')
+            scatter = ax.scatter(results[:, 0], results[:, 1], results[:, 2], c=labels, cmap='viridis' if colors is None else colors, s=30)
+            ax.set_xlabel(f'{technique} Dimension 1')
+            ax.set_ylabel(f'{technique} Dimension 2')
+            ax.set_zlabel(f'{technique} Dimension 3')
+
         ax.set_title(f'Visualization with {technique}')
+        plt.colorbar(scatter, ax=ax, label='Class')
+        if save_path:
+            individual_save_path = f"{save_path}_{technique}.png"
+            plt.savefig(individual_save_path)
+            print(f"Saved plot to {individual_save_path}")
+        plt.show()
 
-    if len(techniques) > 1:
-        fig.colorbar(scatter, ax=axes[-1], ticks=range(n_colors), label='Classes').set_ticklabels(range(1, n_colors + 1))
+# %% ../nbs/04_statistics.ipynb 22
+def plot_combined_latent_space(
+        real_data: np.ndarray,                # Real data samples.
+        synthetic_data: np.ndarray,           # Synthetic data samples generated by a model.
+        encoder,                              # Encoder function or model that predicts latent space representations.
+        techniques: List[str] = ['PCA'],      # Techniques to use for reduction ('PCA', 't-SNE', 'UMAP', 'LDA').
+        n_components: int = 2,                # Number of dimensions to reduce to.
+        figsize: tuple = (12, 9),             # Size of the figure for each subplot.
+        colors: Optional[List[str]] = None,   # Optional list of colors for the labels. If None, use random colors.
+        save_path: Optional[str] = None,      # Optional path to save the plot image.
+        **kwargs: Any                         # Additional keyword arguments for dimensionality reduction methods.
+    ) -> None:
+    """
+    Plots the combined latent space of real and synthetic data using specified dimensionality reduction techniques.
+    """
+    # Concatenate real and synthetic data
+    combined_data = np.concatenate([real_data, synthetic_data], axis=0)
 
-    plt.tight_layout()
-    plt.show()
+    # Create labels for real and synthetic data
+    real_labels = np.zeros(real_data.shape[0], dtype=int)
+    synthetic_labels = np.ones(synthetic_data.shape[0], dtype=int)
+    combined_labels = np.concatenate([real_labels, synthetic_labels], axis=0)
+
+    # Generate latent representations for the combined dataset
+    latent_outputs = encoder.predict(combined_data)
+    latent_representations = latent_outputs[0]  # Assuming the mean of the latent space is the first output
+
+    # Plot the latent space using the previously defined function
+    plot_latent_space(
+        latent_representations=latent_representations,
+        labels=combined_labels,
+        techniques=techniques,
+        n_components=n_components,
+        figsize=figsize,
+        colors=colors,
+        save_path=save_path,
+        **kwargs
+    )
+
