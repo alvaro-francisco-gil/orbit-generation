@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     libhdf5-dev \
     python3-pip \
     python3-dev \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip to avoid compatibility issues
@@ -20,7 +21,7 @@ RUN pip3 install --upgrade pip
 RUN pip3 install h5py scipy numpy matplotlib plotly nbdev pandas pytest tsgm wandb umap-learn
 
 # Clone the repository
-RUN git clone https://github.com/alvaro-francisco-gil/orbit-generation.git /orbit-generation
+RUN git clone --branch add-tsgm https://github.com/alvaro-francisco-gil/orbit-generation.git /orbit-generation
 
 # Configure nbdev
 RUN nbdev_install_quarto
