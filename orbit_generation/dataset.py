@@ -14,63 +14,117 @@ from .stats import plot_orbit_data_lengths
 
 # %% ../nbs/05_dataset.ipynb 5
 def get_5p_em_dataset(data_directory: Optional[str] = '../data', 
-                      output_file_path: Optional[str] = '../data/5p_em_dataset', 
-                      file_type: str = 'npy') -> Tuple[np.ndarray, List]:
+                      output_file_path: Optional[str] = '../data/5p_dataset_em.npy') -> Tuple[np.memmap, np.ndarray]:
     """
     Load orbit data and corresponding labels. Optionally, save the loaded data.
+    If the output file exists, return the data as a memory-mapped array, otherwise process and save the data.
+    After saving, the data is also returned as a memory-mapped array.
     """
+    # Extract file extension to determine the type
+    _, file_extension = os.path.splitext(output_file_path)
+
+    # Validate supported file types
+    if file_extension not in ['.hdf5', '.npy']:
+        raise ValueError("Unsupported file extension. Supported extensions are '.hdf5' or '.npy'.")
+
+    # Define the path for labels file
+    labels_path = f"{os.path.splitext(output_file_path)[0]}_labels.npy"
+
+    # Check if the combined data file already exists
+    if os.path.exists(output_file_path):
+        # Load data as memmap
+        data_memmap = np.load(output_file_path, mmap_mode='r+') if file_extension == '.npy' else None  # Add hdf5 handling if needed
+        labels_memmap = np.load(labels_path)
+        return data_memmap, labels_memmap
+
     # Paths to data files
     orbits_file_path = os.path.join(data_directory, "em_orbits.h5")
     features_file_path = os.path.join(data_directory, "em_features.mat")
 
     # Load orbit labels
     labels_df = get_orbit_features(features_file_path, variable_name='out_EM') 
-    labels = pd.Series(labels_df['Orbit Family']).repeat(5).reset_index(drop=True).to_list()
+    labels = pd.Series(labels_df['Orbit Family']).repeat(5).reset_index(drop=True).to_numpy()
 
     # Load orbit data
     orbit_data = load_orbit_data(orbits_file_path, dataset_path='/files/PERIODIC ORBITS')
     reshaped_array = orbit_data.reshape(36071, 7, 5, 1500)
     orbit_data_final = reshaped_array.transpose(0, 2, 1, 3).reshape(36071 * 5, 7, 1500)
 
-    # Optionally save the data if an output file path is provided
-    if output_file_path:
-        save_data(orbit_data_final, output_file_path, file_type)
+    # Save the data if an output file path is provided
+    if file_extension == '.npy':
+        np.save(output_file_path, orbit_data_final)
+        np.save(labels_path, labels)
+        data_memmap = np.load(output_file_path, mmap_mode='r+')
 
-    return orbit_data_final, labels
+    return data_memmap, labels
 
-# %% ../nbs/05_dataset.ipynb 10
+# %% ../nbs/05_dataset.ipynb 7
 def get_1p_em_dataset(data_directory: Optional[str] = '../data',
-                      output_file_path: Optional[str] = '../data/1p_em_dataset',
-                      file_type: str = 'npy') -> Tuple[np.ndarray, List]:
+                      output_file_path: Optional[str] = '../data/1p_dataset_em.npy') -> Tuple[np.memmap, np.ndarray]:
     """
-    Load orbit data from an HDF5 file and corresponding labels from a MAT file.
+    Load orbit data from an HDF5 file and corresponding labels from a MAT file, and optionally save the loaded data.
+    If the output file exists, it returns the data as a memory-mapped array. After saving, the data is also returned as a memory-mapped array.
     """
+    # Extract file extension to determine the type
+    _, file_extension = os.path.splitext(output_file_path)
+
+    # Validate supported file types
+    if file_extension not in ['.hdf5', '.npy']:
+        raise ValueError("Unsupported file extension. Supported extensions are '.hdf5' or '.npy'.")
+
+    # Define the path for labels file
+    labels_path = f"{os.path.splitext(output_file_path)[0]}_labels.npy"
+
+    # Check if the combined data file already exists
+    if os.path.exists(output_file_path):
+        data_memmap = np.load(output_file_path, mmap_mode='r+') if file_extension == '.npy' else None
+        labels_memmap = np.load(labels_path)
+        return data_memmap, labels_memmap
+
     # Paths to data files
     orbits_file_path = os.path.join(data_directory, "em_orbits.h5")
     features_file_path = os.path.join(data_directory, "em_features.mat")
 
     # Load orbit labels
     labels_df = get_orbit_features(features_file_path, variable_name='out_EM') 
-    labels = labels_df['Orbit Family'].tolist()
+    labels = labels_df['Orbit Family'].to_numpy()
 
     # Load orbit data
     orbit_data = load_orbit_data(orbits_file_path, dataset_path='/files/PERIODIC ORBITS')
     reshaped_orbit_data = orbit_data[:, :, :1500]
 
-    # Optionally save the data if an output file path is provided
-    if output_file_path:
-        save_data(reshaped_orbit_data, output_file_path, file_type)
+    # Save the data if an output file path is provided
+    if file_extension == '.npy':
+        np.save(output_file_path, reshaped_orbit_data)
+        np.save(labels_path, labels)
+        data_memmap = np.load(output_file_path, mmap_mode='r+')
 
-    return reshaped_orbit_data, labels
+    return data_memmap, labels
 
-# %% ../nbs/05_dataset.ipynb 15
+# %% ../nbs/05_dataset.ipynb 9
 def get_sp_em_dataset(data_directory: Optional[str] = '../data', 
-                      output_file_path: Optional[str] = '../data/sp_em_dataset', 
-                      file_type: str = 'npy') -> Tuple[np.ndarray, List]:
+                      output_file_path: Optional[str] = '../data/sp_dataset_em.npy') -> Tuple[np.memmap, np.ndarray]:
     """
     Load orbit data and corresponding labels based on the specified number of periods per orbit.
-    Optionally, save the loaded data.
+    If the output file exists, return the data as a memory-mapped array, otherwise process and save the data.
+    After saving, the data is also returned as a memory-mapped array.
     """
+    # Extract file extension to determine the type
+    _, file_extension = os.path.splitext(output_file_path)
+
+    # Validate supported file types
+    if file_extension not in ['.hdf5', '.npy']:
+        raise ValueError("Unsupported file extension. Supported extensions are '.hdf5' or '.npy'.")
+
+    # Define the path for labels file
+    labels_path = f"{os.path.splitext(output_file_path)[0]}_labels.npy"
+
+    # Check if the combined data file already exists
+    if os.path.exists(output_file_path):
+        data_memmap = np.load(output_file_path, mmap_mode='r+') if file_extension == '.npy' else None
+        labels_memmap = np.load(labels_path)
+        return data_memmap, labels_memmap
+
     # Paths to data files
     orbits_file_path = os.path.join(data_directory, "em_orbits.h5")
     features_file_path = os.path.join(data_directory, "em_features.mat")
@@ -78,7 +132,7 @@ def get_sp_em_dataset(data_directory: Optional[str] = '../data',
 
     # Load orbit labels
     labels_df = get_orbit_features(features_file_path, variable_name='out_EM') 
-    labels = labels_df['Orbit Family'].tolist()
+    labels = labels_df['Orbit Family'].to_numpy()
 
     # Load number of periods per orbit
     periods_per_orbit = np.load(periods_file_path)
@@ -93,7 +147,6 @@ def get_sp_em_dataset(data_directory: Optional[str] = '../data',
 
     # Iterate over the orbits and periods array
     for index, num_periods in enumerate(periods_per_orbit):
-        # Process each period separately to maintain shape consistency
         for period_idx in range(num_periods):
             start_idx = 1500 * period_idx
             end_idx = start_idx + 1500
@@ -104,16 +157,19 @@ def get_sp_em_dataset(data_directory: Optional[str] = '../data',
     # Convert list to numpy array
     orbit_data_final = np.stack(orbit_data_final)  # This ensures a uniform 3D array
 
-    # Optionally save the data if an output file path is provided
-    if output_file_path:
-        save_data(orbit_data_final, output_file_path, file_type)
+    # Save the data if an output file path is provided
+    if file_extension == '.npy':
+        np.save(output_file_path, orbit_data_final)
+        np.save(labels_path, final_labels)
+        data_memmap = np.load(output_file_path, mmap_mode='r+')
+        final_labels = np.load(labels_path)
 
-    return orbit_data_final, final_labels
+    return data_memmap, final_labels
 
-# %% ../nbs/05_dataset.ipynb 22
+# %% ../nbs/05_dataset.ipynb 14
 def get_sp_fixed_em_dataset(data_directory: Optional[str] = '../data', 
-                         output_data_path: Optional[str] = None, 
-                         output_periods_path: Optional[str] = '../data/em_periods.npy') -> Tuple[Dict[int, np.ndarray], np.ndarray]:
+                            output_data_path: Optional[str] = '../data/em_periods.npy', 
+                            output_periods_path: Optional[str] = '../data/em_periods.npy') -> Tuple[Dict[int, np.ndarray], np.ndarray]:
     """
     Load orbit data from an HDF5 file.
     """
