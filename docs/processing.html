@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.552">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="Necessary scripts to read orbits from different formats">
 
-<title>orbit-generation - processing</title>
+<title>orbit-generation - Processing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -104,10 +104,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="orbit-generation - processing">
+<meta property="og:title" content="orbit-generation - Processing">
 <meta property="og:description" content="Necessary scripts to read orbits from different formats">
 <meta property="og:site_name" content="orbit-generation">
-<meta name="twitter:title" content="orbit-generation - processing">
+<meta name="twitter:title" content="orbit-generation - Processing">
 <meta name="twitter:description" content="Necessary scripts to read orbits from different formats">
 <meta name="twitter:card" content="summary">
 </head>
@@ -133,7 +133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./processing.html">processing</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./processing.html">Processing</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -153,38 +153,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./00_constants.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">00_constants.html</span></a>
+  <a href="./constants.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Constants</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">data</span></a>
+ <span class="menu-text">Data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./processing.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">processing</span></a>
+ <span class="menu-text">Processing</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">visualization</span></a>
+ <span class="menu-text">Visualization</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">statistics</span></a>
+ <span class="menu-text">Statistics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05_dataset.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">05_dataset.html</span></a>
+  <a href="./dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dataset</span></a>
   </div>
 </li>
     </ul>
@@ -213,7 +213,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">processing</h1>
+<h1 class="title">Processing</h1>
 </div>
 
 <div>
@@ -239,13 +239,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="resample-by-interpolation" class="level2">
 <h2 class="anchored" data-anchor-id="resample-by-interpolation">Resample by Interpolation</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L13" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="resample_3d_array" class="level3">
 <h3 class="anchored" data-anchor-id="resample_3d_array">resample_3d_array</h3>
 <blockquote class="blockquote">
 <pre><code> resample_3d_array (data:numpy.ndarray, axis:int, target_size:int)</code></pre>
 </blockquote>
-<p><em>Resample a 3D numpy array along a specified axis using linear interpolation.</em></p>
+<p>Resample a 3D numpy array along a specified axis using linear interpolation.</p>
 <table class="table">
 <thead>
 <tr class="header">
@@ -310,14 +309,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="downsample-by-average" class="level2">
 <h2 class="anchored" data-anchor-id="downsample-by-average">Downsample by Average</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L57" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="average_downsample_3d_array" class="level3">
 <h3 class="anchored" data-anchor-id="average_downsample_3d_array">average_downsample_3d_array</h3>
 <blockquote class="blockquote">
 <pre><code> average_downsample_3d_array (data:numpy.ndarray, axis:int,
                               target_size:int)</code></pre>
 </blockquote>
-<p><em>Downsample a 3D numpy array along a specified axis using averaging.</em></p>
+<p>Downsample a 3D numpy array along a specified axis using averaging.</p>
 <table class="table">
 <colgroup>
 <col style="width: 9%">

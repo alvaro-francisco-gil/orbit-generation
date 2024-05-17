@@ -1,0 +1,131 @@
+{
+    "os": "Linux-5.15.0-105-generic-x86_64-with-glibc2.35",
+    "python": "3.11.0rc1",
+    "heartbeatAt": "2024-05-09T08:46:06.839036",
+    "startedAt": "2024-05-09T08:46:06.251852",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": "https://github.com/alvaro-francisco-gil/orbit-generation.git",
+        "commit": "c4f16fe045be90e182e7a22280f87b1e5e72483f"
+    },
+    "email": "alvaro.francisco.gil@gmail.com",
+    "root": "/orbit-generation",
+    "host": "bc97f88e351b",
+    "username": "root",
+    "executable": "/bin/python3.11",
+    "cpu_count": 8,
+    "cpu_count_logical": 16,
+    "cpu_freq": {
+        "current": 3665.8700000000003,
+        "min": 800.0,
+        "max": 5150.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4832.205,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4133.082,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4822.239,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 3500.0,
+            "min": 800.0,
+            "max": 5100.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 1781.268455505371,
+            "used": 1600.8506240844727
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 2,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3090",
+            "memory_total": 25769803776
+        },
+        {
+            "name": "NVIDIA GeForce RTX 3090",
+            "memory_total": 25769803776
+        }
+    ],
+    "memory": {
+        "total": 125.67557144165039
+    }
+}

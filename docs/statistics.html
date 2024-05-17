@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.552">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="Scripts to generate statistics out of orbit data">
 
-<title>orbit-generation - statistics</title>
+<title>orbit-generation - Statistics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -104,10 +104,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="orbit-generation - statistics">
+<meta property="og:title" content="orbit-generation - Statistics">
 <meta property="og:description" content="Scripts to generate statistics out of orbit data">
 <meta property="og:site_name" content="orbit-generation">
-<meta name="twitter:title" content="orbit-generation - statistics">
+<meta name="twitter:title" content="orbit-generation - Statistics">
 <meta name="twitter:description" content="Scripts to generate statistics out of orbit data">
 <meta name="twitter:card" content="summary">
 </head>
@@ -133,7 +133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./statistics.html">statistics</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./statistics.html">Statistics</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -153,38 +153,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./00_constants.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">00_constants.html</span></a>
+  <a href="./constants.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Constants</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">data</span></a>
+ <span class="menu-text">Data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./processing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">processing</span></a>
+ <span class="menu-text">Processing</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">visualization</span></a>
+ <span class="menu-text">Visualization</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./statistics.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">statistics</span></a>
+ <span class="menu-text">Statistics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05_dataset.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">05_dataset.html</span></a>
+  <a href="./dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dataset</span></a>
   </div>
 </li>
     </ul>
@@ -214,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">statistics</h1>
+<h1 class="title">Statistics</h1>
 </div>
 
 <div>
@@ -240,15 +240,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="calculate-statistics" class="level2">
 <h2 class="anchored" data-anchor-id="calculate-statistics">Calculate statistics</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L41" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L12" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="calculate_overall_statistics" class="level3">
 <h3 class="anchored" data-anchor-id="calculate_overall_statistics">calculate_overall_statistics</h3>
 <blockquote class="blockquote">
 <pre><code> calculate_overall_statistics (orbits:numpy.ndarray)</code></pre>
 </blockquote>
-<p>*Calculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.</p>
+<p>Calculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.</p>
 <p>Parameters: - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6, number_of_time_instants) containing orbit data.</p>
-<p>Returns: - Dict[str, Dict[str, float]]: A dictionary with statistics (‘min’, ‘mean’, ‘max’, ‘25%’, ‘50%’, ‘75%’) for each scalar.*</p>
+<p>Returns: - Dict[str, Dict[str, float]]: A dictionary with statistics (‘min’, ‘mean’, ‘max’, ‘25%’, ‘50%’, ‘75%’) for each scalar.</p>
 <table class="table">
 <colgroup>
 <col style="width: 9%">
@@ -297,12 +297,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-histograms" class="level2">
 <h2 class="anchored" data-anchor-id="plot-histograms">Plot Histograms</h2>
 <hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L43" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="plot_histograms_position" class="level3">
 <h3 class="anchored" data-anchor-id="plot_histograms_position">plot_histograms_position</h3>
 <blockquote class="blockquote">
 <pre><code> plot_histograms_position (data:numpy.ndarray)</code></pre>
 </blockquote>
-<p><em>Plots histograms for the 6 scalar values (position and velocity in X, Y, Z) across all orbits and time points.</em></p>
+<p>Plots histograms for the 6 scalar values (position and velocity in X, Y, Z) across all orbits and time points.</p>
 <table class="table">
 <colgroup>
 <col style="width: 9%">
@@ -350,14 +351,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L67" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_histograms_comparison" class="level3">
 <h3 class="anchored" data-anchor-id="plot_histograms_comparison">plot_histograms_comparison</h3>
 <blockquote class="blockquote">
 <pre><code> plot_histograms_comparison (data1:numpy.ndarray, data2:numpy.ndarray)</code></pre>
 </blockquote>
-<p>*Plots histograms for the 6 scalar values (position and velocity in X, Y, Z) from two datasets on the same chart with different colors.</p>
-<p>Parameters: - data1 (np.ndarray): First orbit data array. - data2 (np.ndarray): Second orbit data array.*</p>
+<p>Plots histograms for the 6 scalar values (position and velocity in X, Y, Z) from two datasets on the same chart with different colors.</p>
+<p>Parameters: - data1 (np.ndarray): First orbit data array. - data2 (np.ndarray): Second orbit data array.</p>
 <table class="table">
 <colgroup>
 <col style="width: 9%">
