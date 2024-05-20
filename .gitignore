@@ -3,7 +3,7 @@ data/*
 !data/example_orbits.html
 experiments/
 nbs_experiments/wandb/
-
+tsgm_examples/
 
 # Ignore environment secrets
 .devcontainer/.env

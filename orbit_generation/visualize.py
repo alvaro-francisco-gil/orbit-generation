@@ -14,7 +14,8 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
                             time_instants: Optional[List[int]] = None,  # Time points to highlight; defaults to None.
                             orbit_indices: Optional[List[int]] = None,  # Indices of orbits to visualize; defaults to all.
                             point_dict: Optional[Dict[str, tuple]] = None,  # Dictionary of extra points to plot.
-                            show_legend: bool = True  # Flag to indicate whether to show a legend.
+                            show_legend: bool = True,  # Flag to indicate whether to show a legend.
+                            save_path: Optional[str] = None  # Path to save the figure; defaults to None.
                            ) -> None:
     """
     Visualizes orbits in 3D space and highlights specified time instants for each selected orbit.
@@ -79,6 +80,11 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
     if show_legend:
         ax.legend()
 
+    # Save the figure if a save path is provided.
+    if save_path:
+        plt.savefig(save_path)
+
+    # Show the plot.
     plt.show()
 
 # %% ../nbs/03_visualization.ipynb 12

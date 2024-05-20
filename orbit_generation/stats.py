@@ -47,7 +47,8 @@ def calculate_overall_statistics(orbits: np.ndarray  # The array containing orbi
 
 # %% ../nbs/04_statistics.ipynb 10
 def plot_time_increments(orbit_dataset: np.ndarray,  # The 3D numpy array representing the orbits
-                         orbits_to_plot: List[int] = None  # Optional list of integers referring to the orbits to plot
+                         orbits_to_plot: List[int] = None,  # Optional list of integers referring to the orbits to plot
+                         show_legend: bool = True  # Boolean to control the display of the legend
                         ) -> None:
     """
     Plots the time as a function to visualize how it increments for each orbit.
@@ -57,6 +58,7 @@ def plot_time_increments(orbit_dataset: np.ndarray,  # The 3D numpy array repres
                                 the second dimension contains 7 scalars (time, posx, posy, posz, velx, vely, velz),
                                 and the third dimension is the time steps.
     orbits_to_plot (list[int], optional): List of integers referring to the orbits to plot. If None, plots all orbits.
+    show_legend (bool, optional): Whether to display the legend. Default is True.
     """
     num_orbits = orbit_dataset.shape[0]
 
@@ -73,7 +75,10 @@ def plot_time_increments(orbit_dataset: np.ndarray,  # The 3D numpy array repres
     plt.xlabel('Time Step Index')
     plt.ylabel('Time')
     plt.title('Time Increments for Orbits')
-    plt.legend()
+    
+    if show_legend:
+        plt.legend()
+    
     plt.grid(True)
     plt.show()
 
