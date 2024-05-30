@@ -213,7 +213,7 @@ def calculate_errors(orbit_data: np.ndarray,  # 3D array of orbit data
     # Check if the time dimension is included in the data
     if orbit_data.shape[1] == 6 and time_step is not None:
         num_time_points = orbit_data.shape[2]
-        tvec = np.arange(0, num_time_points * time_step, time_step)
+        tvec = np.linspace(0, num_time_points * time_step, num_time_points)
         orbit_data_with_time = np.zeros((orbit_data.shape[0], 7, num_time_points))
         orbit_data_with_time[:, 1:, :] = orbit_data
         for i in range(num_time_points):
@@ -221,10 +221,14 @@ def calculate_errors(orbit_data: np.ndarray,  # 3D array of orbit data
         orbit_data = orbit_data_with_time
     elif orbit_data.shape[1] != 7:
         raise ValueError("Invalid orbit_data shape. Must be (n, 6, m) or (n, 7, m)")
-    
+
     num_time_points = orbit_data.shape[2]
     tvec = orbit_data[0, 0, :]  # Time vector from the data
     
+    # Ensure the time vector is strictly increasing
+    if not np.all(np.diff(tvec) > 0):
+        raise ValueError("Time vector is not strictly increasing.")
+
     errors = {}
     
     for error_type in error_types:

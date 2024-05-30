@@ -21,6 +21,15 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
     """
     Visualizes orbits in 3D space and highlights specified time instants for each selected orbit.
     """
+    
+    # Use Matplotlib's Computer Modern font
+    plt.rcParams.update({
+        'font.family': 'serif',
+        'font.serif': ['DejaVu Serif'],
+        'font.size': 10,
+        'text.usetex': False
+    })
+
     if time_instants is None:
         time_instants = []  # Initialize to empty list if None.
 
