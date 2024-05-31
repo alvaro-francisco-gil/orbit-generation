@@ -11,7 +11,10 @@ EM_POINTS={
     'Moon': (1-MU,0,0),
     'Earth': (-MU,0,0),
     'Lagrange 1': (0.8369,0,0),
-    'Lagrange 2': (1.1557,0,0)
+    'Lagrange 2': (1.1557,0,0),
+    'Lagrange 3': (-1.0051,0,0),
+    'Lagrange 4': (0.4879,0.8660,0),
+    'Lagrange 5': (0.4879,-0.8660,0)
 }
 
 # %% ../nbs/00_constants.ipynb 4
