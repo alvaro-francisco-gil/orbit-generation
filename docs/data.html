@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.552">
+<meta name="generator" content="quarto-1.4.554">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -187,6 +187,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Dataset</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./propagation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Propagation</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -200,6 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#loading-data" id="toc-loading-data" class="nav-link active" data-scroll-target="#loading-data">Loading Data</a>
   <ul class="collapse">
   <li><a href="#load_orbit_data" id="toc-load_orbit_data" class="nav-link" data-scroll-target="#load_orbit_data">load_orbit_data</a></li>
+  <li><a href="#load_memmap_array" id="toc-load_memmap_array" class="nav-link" data-scroll-target="#load_memmap_array">load_memmap_array</a></li>
   <li><a href="#get_orbit_features" id="toc-get_orbit_features" class="nav-link" data-scroll-target="#get_orbit_features">get_orbit_features</a></li>
   </ul></li>
   <li><a href="#save-data" id="toc-save-data" class="nav-link" data-scroll-target="#save-data">Save Data</a>
@@ -209,6 +222,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#get-example-data" id="toc-get-example-data" class="nav-link" data-scroll-target="#get-example-data">Get Example Data</a>
   <ul class="collapse">
   <li><a href="#get_example_orbit_data" id="toc-get_example_orbit_data" class="nav-link" data-scroll-target="#get_example_orbit_data">get_example_orbit_data</a></li>
+  </ul></li>
+  <li><a href="#random-sampler" id="toc-random-sampler" class="nav-link" data-scroll-target="#random-sampler">Random Sampler</a>
+  <ul class="collapse">
+  <li><a href="#sample_orbits" id="toc-sample_orbits" class="nav-link" data-scroll-target="#sample_orbits">sample_orbits</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
@@ -244,13 +261,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="loading-data" class="level2">
 <h2 class="anchored" data-anchor-id="loading-data">Loading Data</h2>
 <hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L19" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="load_orbit_data" class="level3">
 <h3 class="anchored" data-anchor-id="load_orbit_data">load_orbit_data</h3>
 <blockquote class="blockquote">
-<pre><code> load_orbit_data (file_path:str, variable_name:Optional[str]=None,
-                  dataset_path:Optional[str]=None)</code></pre>
+<pre><code> load_orbit_data (file_path:str, variable_name:Union[str,NoneType]=None,
+                  dataset_path:Union[str,NoneType]=None)</code></pre>
 </blockquote>
-<p>Load orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.</p>
+<p><em>Load orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.</em></p>
 <table class="table">
 <colgroup>
 <col style="width: 6%">
@@ -275,33 +293,76 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td>variable_name</td>
-<td>Optional</td>
+<td>typing.Union[str, NoneType]</td>
 <td>None</td>
 <td>Name of the variable in the .mat file, optional.</td>
 </tr>
 <tr class="odd">
 <td>dataset_path</td>
-<td>Optional</td>
+<td>typing.Union[str, NoneType]</td>
 <td>None</td>
 <td>Path to the dataset in the .h5 file, optional.</td>
 </tr>
 <tr class="even">
 <td><strong>Returns</strong></td>
-<td><strong>Any</strong></td>
+<td><strong>typing.Any</strong></td>
 <td></td>
 <td><strong>The loaded orbit data.</strong></td>
 </tr>
 </tbody>
 </table>
 <hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L53" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="load_memmap_array" class="level3">
+<h3 class="anchored" data-anchor-id="load_memmap_array">load_memmap_array</h3>
+<blockquote class="blockquote">
+<pre><code> load_memmap_array (file_path:str, mode:str='c')</code></pre>
+</blockquote>
+<p>*Load a .npy file as a memory-mapped array using numpy.memmap.</p>
+<p>Args: file_path: A string representing the path to the .npy file. mode: The mode in which the file is to be opened. Valid options are: - ‘r’ : Read-only, no data can be modified. - ‘r+’ : Read/write, modifications to the data are written to the file. - ‘w+’ : Read/write, file is created if it does not exist, overwritten if it does. - ‘c’ : Copy-on-write, data can be modified in memory but changes are not saved to the file.</p>
+<p>Returns: A numpy.memmap object that behaves like a numpy array but with data stored on disk instead of in memory.*</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>file_path</td>
+<td>str</td>
+<td></td>
+<td>The path to the .npy file as a string.</td>
+</tr>
+<tr class="even">
+<td>mode</td>
+<td>str</td>
+<td>c</td>
+<td>Mode for memory-mapping (‘r’, ‘r+’, ‘w+’, ‘c’).</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>memmap</strong></td>
+<td></td>
+<td><strong>Returns a memory-mapped array.</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L79" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_orbit_features" class="level3">
 <h3 class="anchored" data-anchor-id="get_orbit_features">get_orbit_features</h3>
 <blockquote class="blockquote">
-<pre><code> get_orbit_features (file_path:str, variable_name:Optional[str]=None,
-                     dataset_path:Optional[str]=None)</code></pre>
+<pre><code> get_orbit_features (file_path:str,
+                     variable_name:Union[str,NoneType]=None,
+                     dataset_path:Union[str,NoneType]=None)</code></pre>
 </blockquote>
-<p>Load orbit feature data from a specified file and convert it to a DataFrame.</p>
+<p><em>Load orbit feature data from a specified file and convert it to a DataFrame.</em></p>
 <table class="table">
 <colgroup>
 <col style="width: 6%">
@@ -326,13 +387,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td>variable_name</td>
-<td>Optional</td>
+<td>typing.Union[str, NoneType]</td>
 <td>None</td>
 <td>Name of the variable in the .mat file, optional.</td>
 </tr>
 <tr class="odd">
 <td>dataset_path</td>
-<td>Optional</td>
+<td>typing.Union[str, NoneType]</td>
 <td>None</td>
 <td>Path to the dataset in the .h5 file, optional.</td>
 </tr>
@@ -349,13 +410,87 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="save-data" class="level2">
 <h2 class="anchored" data-anchor-id="save-data">Save Data</h2>
 <hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L102" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="save_data" class="level3">
 <h3 class="anchored" data-anchor-id="save_data">save_data</h3>
 <blockquote class="blockquote">
-<pre><code> save_data (data:numpy.ndarray, file_name:str, file_type:str='hdf5')</code></pre>
+<pre><code> save_data (data:numpy.ndarray, file_name:str)</code></pre>
 </blockquote>
-<p>Save a numpy array to an HDF5 or a NumPy .npy file based on the specified file type.</p>
+<p><em>Save a numpy array to a file based on the file extension specified in <code>file_name</code>. Supports saving to HDF5 (.hdf5) or NumPy (.npy) file formats.</em></p>
 <table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>data</td>
+<td>ndarray</td>
+<td>The numpy array data to save.</td>
+</tr>
+<tr class="even">
+<td>file_name</td>
+<td>str</td>
+<td>The name of the file to save the data in, including the extension.</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>None</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="get-example-data" class="level2">
+<h2 class="anchored" data-anchor-id="get-example-data">Get Example Data</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L125" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="get_example_orbit_data" class="level3">
+<h3 class="anchored" data-anchor-id="get_example_orbit_data">get_example_orbit_data</h3>
+<blockquote class="blockquote">
+<pre><code> get_example_orbit_data ()</code></pre>
+</blockquote>
+<p>*Load orbit data from a hardcoded MAT file located in the <code>data</code> directory.</p>
+<p>The function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.</p>
+<p>:return: A numpy.ndarray containing the transposed data from the MAT file.*</p>
+<div id="cell-10" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> get_example_orbit_data()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(200, 6, 300)</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="random-sampler" class="level2">
+<h2 class="anchored" data-anchor-id="random-sampler">Random Sampler</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L151" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="sample_orbits" class="level3">
+<h3 class="anchored" data-anchor-id="sample_orbits">sample_orbits</h3>
+<blockquote class="blockquote">
+<pre><code> sample_orbits (orbit_data:numpy.ndarray, sample_spec:dict,
+                labels:numpy.ndarray=None)</code></pre>
+</blockquote>
+<p>*Randomly sample orbits from the provided dataset.</p>
+<p>Parameters: orbit_data (np.ndarray): Array of orbit data with shape (num_orbits, 6, num_time_points). sample_spec (dict or int): If int, it is the total number of orbits to sample. If dict, it specifies the number of samples for each class. labels (np.ndarray, optional): Array of labels for each orbit.</p>
+<p>Returns: tuple: A tuple containing the sampled orbit data and corresponding labels (if provided).*</p>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -366,51 +501,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>data</td>
+<td>orbit_data</td>
 <td>ndarray</td>
 <td></td>
-<td>The numpy array data to save.</td>
+<td>Orbit data array</td>
 </tr>
 <tr class="even">
-<td>file_name</td>
-<td>str</td>
+<td>sample_spec</td>
+<td>dict</td>
 <td></td>
-<td>The name of the file to save the data in.</td>
+<td>Number of samples per class (dict) or total number of samples (int)</td>
 </tr>
 <tr class="odd">
-<td>file_type</td>
-<td>str</td>
-<td>hdf5</td>
-<td>The type of file to save (‘hdf5’ or ‘npy’).</td>
+<td>labels</td>
+<td>ndarray</td>
+<td>None</td>
+<td>Optional: Array of labels corresponding to each orbit</td>
 </tr>
 <tr class="even">
 <td><strong>Returns</strong></td>
-<td><strong>None</strong></td>
+<td><strong>(&lt;class ‘numpy.ndarray’&gt;, &lt;class ‘numpy.ndarray’&gt;)</strong></td>
 <td></td>
 <td></td>
 </tr>
 </tbody>
 </table>
-</section>
-</section>
-<section id="get-example-data" class="level2">
-<h2 class="anchored" data-anchor-id="get-example-data">Get Example Data</h2>
-<hr>
-<section id="get_example_orbit_data" class="level3">
-<h3 class="anchored" data-anchor-id="get_example_orbit_data">get_example_orbit_data</h3>
-<blockquote class="blockquote">
-<pre><code> get_example_orbit_data ()</code></pre>
-</blockquote>
-<p>Load orbit data from a hardcoded MAT file located in the <code>data</code> directory.</p>
-<p>The function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.</p>
-<p>:return: A numpy.ndarray containing the transposed data from the MAT file.</p>
-<div id="cell-9" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> get_example_orbit_data()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<pre><code>(200, 6, 300)</code></pre>
-</div>
-</div>
 
 
 </section>
