@@ -4,7 +4,7 @@
 __all__ = ['get_optimizer']
 
 # %% ../nbs/06_model.ipynb 2
-from keras.optimizers import Adam, SGD
+from tensorflow.keras.optimizers import Adam, SGD
 
 # %% ../nbs/06_model.ipynb 3
 def get_optimizer(optimizer_config):
