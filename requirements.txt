@@ -20,5 +20,5 @@ matplotlib
 plotly
 nbdev
 pandas
-pytest
+seaborn
 wandb
