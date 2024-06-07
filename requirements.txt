@@ -18,7 +18,5 @@ tsgm
 h5py
 matplotlib
 plotly
-nbdev
 pandas
 seaborn
-wandb
