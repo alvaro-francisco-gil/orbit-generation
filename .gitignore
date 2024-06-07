@@ -1,6 +1,7 @@
 data/orbits_dt_0_01
 data/orbits_fix_1500
 experiments/
+nbs_experiments/wandb/
 tsgm_examples/
 
 # Ignore environment secrets
