@@ -1,3 +1,4 @@
+# requirements
 tensorflow_privacy==0.8.5
 tensorflow_probability==0.17.0
 tensorflow==2.9.1
@@ -18,7 +19,9 @@ tsgm
 h5py
 matplotlib
 plotly
-nbdev
 pandas
-pytest
+seaborn
+
+# dev_requirements
 wandb
+nbdev

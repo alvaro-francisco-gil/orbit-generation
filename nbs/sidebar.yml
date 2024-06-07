@@ -8,3 +8,5 @@ website:
       - 03_visualization.ipynb
       - 04_statistics.ipynb
       - 05_dataset.ipynb
+      - 06_model.ipynb
+      - 07_propagation.ipynb

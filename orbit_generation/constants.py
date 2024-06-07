@@ -20,7 +20,7 @@ EM_POINTS={
     'Lagrange 5': (0.4879,-0.8660,0)
 }
 
-# %% ../nbs/00_constants.ipynb 5
+# %% ../nbs/00_constants.ipynb 6
 EM_ORBIT_TYPES = {
     1: "S_BN",
     2: "S_BS",
@@ -55,7 +55,7 @@ EM_ORBIT_TYPES = {
     31: "S_LPOW"
 }
 
-# %% ../nbs/00_constants.ipynb 6
+# %% ../nbs/00_constants.ipynb 7
 orbit_classification = {
     "Id": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42],
     "Label": ["S_BN", "S_BS", "S_DN", "S_DPO", "S_DRO", "S_DS", "S_L1_A", "S_L1_HN", "S_L1_HS", "S_L1_L", "S_L1_V", "S_L2_A", "S_L2_HN", "S_L2_HS", "S_L2_L", "S_L2_V", "S_L3_A", "S_L3_HN", "S_L3_HS", "S_L3_L", "S_L3_V", "S_L4_A", "S_L4_LP", "S_L4_SP", "S_L4_V", "S_L5_A", "S_L5_LP", "S_L5_SP", "S_L5_V", "S_LPOE", "S_LPOW", "S_R11", "S_R12", "S_R13", "S_R14", "S_R21", "S_R23", "S_R31", "S_R32", "S_R34", "S_R41", "S_R43"],

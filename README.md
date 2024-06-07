@@ -88,6 +88,10 @@ from orbit_generation.visualize import visualize_static_orbits, export_dynamic_o
 from orbit_generation.constants import EM_POINTS
 ```
 
+    /usr/local/lib/python3.8/dist-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+      from .autonotebook import tqdm as notebook_tqdm
+    2024-06-07 10:40:48.295769: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+
 ### Data
 
 ``` python
@@ -141,7 +145,7 @@ visualize_static_orbits(orbit_data, show_legend=False)
 ![](index_files/figure-commonmark/cell-8-output-1.png)
 
 ``` python
-export_dynamic_orbits_html(data=orbit_data, filename='../data/example_orbits.html')
+export_dynamic_orbits_html(data=orbit_data, filename='../data/example_data/example_orbits.html')
 ```
 
-    Visualization saved to ../data/example_orbits.html
+    Visualization saved to ../data/example_data/example_orbits.html

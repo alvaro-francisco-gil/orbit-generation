@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.552">
+<meta name="generator" content="quarto-1.4.554">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -187,6 +153,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Dataset</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./propagation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Propagation</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -204,6 +182,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#downsample-by-average" id="toc-downsample-by-average" class="nav-link" data-scroll-target="#downsample-by-average">Downsample by Average</a>
   <ul class="collapse">
   <li><a href="#average_downsample_3d_array" id="toc-average_downsample_3d_array" class="nav-link" data-scroll-target="#average_downsample_3d_array">average_downsample_3d_array</a></li>
+  </ul></li>
+  <li><a href="#reorder-orbit-with-time" id="toc-reorder-orbit-with-time" class="nav-link" data-scroll-target="#reorder-orbit-with-time">Reorder Orbit with Time</a>
+  <ul class="collapse">
+  <li><a href="#reorder_orbits" id="toc-reorder_orbits" class="nav-link" data-scroll-target="#reorder_orbits">reorder_orbits</a></li>
+  </ul></li>
+  <li><a href="#reshaping-arrays" id="toc-reshaping-arrays" class="nav-link" data-scroll-target="#reshaping-arrays">Reshaping Arrays</a>
+  <ul class="collapse">
+  <li><a href="#pad_and_convert_to_3d" id="toc-pad_and_convert_to_3d" class="nav-link" data-scroll-target="#pad_and_convert_to_3d">pad_and_convert_to_3d</a></li>
+  <li><a href="#segment_and_convert_to_3d" id="toc-segment_and_convert_to_3d" class="nav-link" data-scroll-target="#segment_and_convert_to_3d">segment_and_convert_to_3d</a></li>
+  </ul></li>
+  <li><a href="#add-time-vector" id="toc-add-time-vector" class="nav-link" data-scroll-target="#add-time-vector">Add Time Vector</a>
+  <ul class="collapse">
+  <li><a href="#add_time_vector_to_orbits" id="toc-add_time_vector_to_orbits" class="nav-link" data-scroll-target="#add_time_vector_to_orbits">add_time_vector_to_orbits</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
@@ -239,12 +230,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="resample-by-interpolation" class="level2">
 <h2 class="anchored" data-anchor-id="resample-by-interpolation">Resample by Interpolation</h2>
 <hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L13" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="resample_3d_array" class="level3">
 <h3 class="anchored" data-anchor-id="resample_3d_array">resample_3d_array</h3>
 <blockquote class="blockquote">
 <pre><code> resample_3d_array (data:numpy.ndarray, axis:int, target_size:int)</code></pre>
 </blockquote>
-<p>Resample a 3D numpy array along a specified axis using linear interpolation.</p>
+<p><em>Resample a 3D numpy array along a specified axis using linear interpolation.</em></p>
 <table class="table">
 <thead>
 <tr class="header">
@@ -276,46 +268,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div id="cell-4" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_resample_3d_array():</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Original 3D array</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> np.array([</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]],</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">8</span>]],</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">9</span>, <span class="dv">10</span>], [<span class="dv">11</span>, <span class="dv">12</span>]],</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">13</span>, <span class="dv">14</span>], [<span class="dv">15</span>, <span class="dv">16</span>]]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Downsampling from 4 to 2 along the first axis</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    target_size <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Perform resampling</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    resampled_data <span class="op">=</span> resample_3d_array(data, axis<span class="op">=</span><span class="dv">0</span>, target_size<span class="op">=</span>target_size)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Expected results by true linear interpolation</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    expected_data <span class="op">=</span> np.array([</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]],  <span class="co"># 1st slice</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">7</span>, <span class="dv">8</span>], [<span class="dv">9</span>, <span class="dv">10</span>]],  <span class="co"># Interpolation between 2nd and 3rd slices (mean in this case)</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">13</span>, <span class="dv">14</span>], [<span class="dv">15</span>, <span class="dv">16</span>]]  <span class="co"># 4st slice</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check the resampled data against expected data</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    test_eq(resampled_data, expected_data)</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Invoke the test</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>test_resample_3d_array()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
 </section>
 <section id="downsample-by-average" class="level2">
 <h2 class="anchored" data-anchor-id="downsample-by-average">Downsample by Average</h2>
 <hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L50" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="average_downsample_3d_array" class="level3">
 <h3 class="anchored" data-anchor-id="average_downsample_3d_array">average_downsample_3d_array</h3>
 <blockquote class="blockquote">
 <pre><code> average_downsample_3d_array (data:numpy.ndarray, axis:int,
                               target_size:int)</code></pre>
 </blockquote>
-<p>Downsample a 3D numpy array along a specified axis using averaging.</p>
+<p><em>Downsample a 3D numpy array along a specified axis using averaging.</em></p>
 <table class="table">
 <colgroup>
 <col style="width: 9%">
@@ -352,35 +317,180 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div id="cell-7" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_average_downsample_3d_array():</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a simple 3D array with shape (4, 2, 2)</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Each element in the z-dimension is the same to make averaging predictable</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> np.array([</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">3</span>, <span class="fl">0.1</span>], [<span class="dv">2</span>, <span class="dv">5</span>]],</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">1</span>, <span class="fl">0.1</span>], [<span class="dv">2</span>, <span class="dv">2</span>]],</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        [[<span class="fl">0.3</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">4</span>]],</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        [[<span class="fl">0.2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">6</span>]]</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Target new size for the axis 0 is 2</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    target_size <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Perform averaging along axis 0</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    downsampled_data <span class="op">=</span> average_downsample_3d_array(data, axis<span class="op">=</span><span class="dv">0</span>, target_size<span class="op">=</span>target_size)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Manually calculate expected results</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    expected_data <span class="op">=</span> np.array([</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">2</span>, <span class="fl">0.1</span>], [<span class="dv">2</span>, <span class="fl">3.5</span>]],  <span class="co"># Average of the first two and the last two blocks along axis 0</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        [[<span class="fl">0.25</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>]]</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check that the downsampled data matches the expected data</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    test_eq(downsampled_data, expected_data)</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Invoke the test</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>test_average_downsample_3d_array()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+</section>
+</section>
+<section id="reorder-orbit-with-time" class="level2">
+<h2 class="anchored" data-anchor-id="reorder-orbit-with-time">Reorder Orbit with Time</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L90" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="reorder_orbits" class="level3">
+<h3 class="anchored" data-anchor-id="reorder_orbits">reorder_orbits</h3>
+<blockquote class="blockquote">
+<pre><code> reorder_orbits (orbit_dataset:numpy.ndarray)</code></pre>
+</blockquote>
+<p>*Reorders the time steps of each orbit in the dataset such that the time values are always incrementally increasing.</p>
+<p>Parameters: orbit_dataset (np.ndarray): A 3D numpy array where the first dimension is the number of orbits, the second dimension contains 7 scalars (time, posx, posy, posz, velx, vely, velz), and the third dimension is the time steps.</p>
+<p>Returns: np.ndarray: A reordered version of the input orbit_dataset.*</p>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>orbit_dataset</td>
+<td>ndarray</td>
+<td>The original 3D numpy array representing the orbits.</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>ndarray</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="reshaping-arrays" class="level2">
+<h2 class="anchored" data-anchor-id="reshaping-arrays">Reshaping Arrays</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L123" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="pad_and_convert_to_3d" class="level3">
+<h3 class="anchored" data-anchor-id="pad_and_convert_to_3d">pad_and_convert_to_3d</h3>
+<blockquote class="blockquote">
+<pre><code> pad_and_convert_to_3d (orbits:Dict[int,numpy.ndarray], timesteps:int)</code></pre>
+</blockquote>
+<p><em>Truncate and pad each orbit to a uniform length and convert to a 3D numpy array.</em></p>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>orbits</td>
+<td>typing.Dict[int, numpy.ndarray]</td>
+<td>Dictionary of orbits with numerical keys.</td>
+</tr>
+<tr class="even">
+<td>timesteps</td>
+<td>int</td>
+<td>Desired number of timesteps.</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>ndarray</strong></td>
+<td><strong>3D numpy array of padded orbits.</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L150" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="segment_and_convert_to_3d" class="level3">
+<h3 class="anchored" data-anchor-id="segment_and_convert_to_3d">segment_and_convert_to_3d</h3>
+<blockquote class="blockquote">
+<pre><code> segment_and_convert_to_3d (orbits:Dict[int,numpy.ndarray],
+                            segment_length:int)</code></pre>
+</blockquote>
+<p><em>Divide each orbit into segments of a given length and convert to a 3D numpy array.</em></p>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>orbits</td>
+<td>typing.Dict[int, numpy.ndarray]</td>
+<td>Dictionary of orbits with numerical keys.</td>
+</tr>
+<tr class="even">
+<td>segment_length</td>
+<td>int</td>
+<td>Desired length of each segment.</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>typing.Tuple[numpy.ndarray, typing.List[int]]</strong></td>
+<td><strong>3D numpy array of segments.</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="add-time-vector" class="level2">
+<h2 class="anchored" data-anchor-id="add-time-vector">Add Time Vector</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/processing.py#L185" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="add_time_vector_to_orbits" class="level3">
+<h3 class="anchored" data-anchor-id="add_time_vector_to_orbits">add_time_vector_to_orbits</h3>
+<blockquote class="blockquote">
+<pre><code> add_time_vector_to_orbits (orbits:Dict[int,numpy.ndarray],
+                            propagated_periods:List[float],
+                            periods:List[float])</code></pre>
+</blockquote>
+<p><em>Add a time vector to each orbit in the dictionary.</em></p>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>orbits</td>
+<td>typing.Dict[int, numpy.ndarray]</td>
+<td>Dictionary of orbits with numerical keys.</td>
+</tr>
+<tr class="even">
+<td>propagated_periods</td>
+<td>typing.List[float]</td>
+<td>List of propagated periods for each orbit.</td>
+</tr>
+<tr class="odd">
+<td>periods</td>
+<td>typing.List[float]</td>
+<td>List of periods for each orbit.</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>typing.Dict[int, numpy.ndarray]</strong></td>
+<td><strong>Dictionary of updated orbits with time vectors added.</strong></td>
+</tr>
+</tbody>
+</table>
 
 
 </section>

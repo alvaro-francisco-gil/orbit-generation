@@ -1,5 +1,255 @@
 [
   {
+    "objectID": "data.html",
+    "href": "data.html",
+    "title": "Data",
+    "section": "",
+    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Union[str,NoneType]=None,\n                  dataset_path:Union[str,NoneType]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\ntyping.Union[str, NoneType]\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\ntyping.Union[str, NoneType]\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\ntyping.Any\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n load_memmap_array (file_path:str, mode:str='c')\n\n*Load a .npy file as a memory-mapped array using numpy.memmap.\nArgs: file_path: A string representing the path to the .npy file. mode: The mode in which the file is to be opened. Valid options are: - ‘r’ : Read-only, no data can be modified. - ‘r+’ : Read/write, modifications to the data are written to the file. - ‘w+’ : Read/write, file is created if it does not exist, overwritten if it does. - ‘c’ : Copy-on-write, data can be modified in memory but changes are not saved to the file.\nReturns: A numpy.memmap object that behaves like a numpy array but with data stored on disk instead of in memory.*\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .npy file as a string.\n\n\nmode\nstr\nc\nMode for memory-mapping (‘r’, ‘r+’, ‘w+’, ‘c’).\n\n\nReturns\nmemmap\n\nReturns a memory-mapped array.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str,\n                     variable_name:Union[str,NoneType]=None,\n                     dataset_path:Union[str,NoneType]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\ntyping.Union[str, NoneType]\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\ntyping.Union[str, NoneType]\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
+    "crumbs": [
+      "Data"
+    ]
+  },
+  {
+    "objectID": "data.html#loading-data",
+    "href": "data.html#loading-data",
+    "title": "Data",
+    "section": "",
+    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Union[str,NoneType]=None,\n                  dataset_path:Union[str,NoneType]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\ntyping.Union[str, NoneType]\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\ntyping.Union[str, NoneType]\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\ntyping.Any\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n load_memmap_array (file_path:str, mode:str='c')\n\n*Load a .npy file as a memory-mapped array using numpy.memmap.\nArgs: file_path: A string representing the path to the .npy file. mode: The mode in which the file is to be opened. Valid options are: - ‘r’ : Read-only, no data can be modified. - ‘r+’ : Read/write, modifications to the data are written to the file. - ‘w+’ : Read/write, file is created if it does not exist, overwritten if it does. - ‘c’ : Copy-on-write, data can be modified in memory but changes are not saved to the file.\nReturns: A numpy.memmap object that behaves like a numpy array but with data stored on disk instead of in memory.*\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .npy file as a string.\n\n\nmode\nstr\nc\nMode for memory-mapping (‘r’, ‘r+’, ‘w+’, ‘c’).\n\n\nReturns\nmemmap\n\nReturns a memory-mapped array.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str,\n                     variable_name:Union[str,NoneType]=None,\n                     dataset_path:Union[str,NoneType]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\ntyping.Union[str, NoneType]\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\ntyping.Union[str, NoneType]\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
+    "crumbs": [
+      "Data"
+    ]
+  },
+  {
+    "objectID": "data.html#save-data",
+    "href": "data.html#save-data",
+    "title": "Data",
+    "section": "Save Data",
+    "text": "Save Data\n\nsource\n\nsave_data\n\n save_data (data:numpy.ndarray, file_name:str)\n\nSave a numpy array to a file based on the file extension specified in file_name. Supports saving to HDF5 (.hdf5) or NumPy (.npy) file formats.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe numpy array data to save.\n\n\nfile_name\nstr\nThe name of the file to save the data in, including the extension.\n\n\nReturns\nNone",
+    "crumbs": [
+      "Data"
+    ]
+  },
+  {
+    "objectID": "data.html#get-example-data",
+    "href": "data.html#get-example-data",
+    "title": "Data",
+    "section": "Get Example Data",
+    "text": "Get Example Data\n\nsource\n\nget_example_orbit_data\n\n get_example_orbit_data ()\n\n*Load orbit data from a hardcoded MAT file located in the data directory.\nThe function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.\n:return: A numpy.ndarray containing the transposed data from the MAT file.*\n\ndata = get_example_orbit_data()\ndata.shape\n\n(200, 6, 300)",
+    "crumbs": [
+      "Data"
+    ]
+  },
+  {
+    "objectID": "data.html#random-sampler",
+    "href": "data.html#random-sampler",
+    "title": "Data",
+    "section": "Random Sampler",
+    "text": "Random Sampler\n\nsource\n\nsample_orbits\n\n sample_orbits (orbit_data:numpy.ndarray, sample_spec:dict,\n                labels:numpy.ndarray=None)\n\n*Randomly sample orbits from the provided dataset.\nParameters: orbit_data (np.ndarray): Array of orbit data with shape (num_orbits, 6, num_time_points). sample_spec (dict or int): If int, it is the total number of orbits to sample. If dict, it specifies the number of samples for each class. labels (np.ndarray, optional): Array of labels for each orbit.\nReturns: tuple: A tuple containing the sampled orbit data and corresponding labels (if provided).*\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\norbit_data\nndarray\n\nOrbit data array\n\n\nsample_spec\ndict\n\nNumber of samples per class (dict) or total number of samples (int)\n\n\nlabels\nndarray\nNone\nOptional: Array of labels corresponding to each orbit\n\n\nReturns\n(&lt;class ‘numpy.ndarray’&gt;, &lt;class ‘numpy.ndarray’&gt;)",
+    "crumbs": [
+      "Data"
+    ]
+  },
+  {
+    "objectID": "dataset.html",
+    "href": "dataset.html",
+    "title": "Dataset",
+    "section": "",
+    "text": "source\n\n\n\n get_orbit_data_from_hdf5 (file_path:str)\n\nLoad orbit data from an HDF5 file.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nfile_path\nstr\nPath to the HDF5 file.\n\n\nReturns\ntyping.Tuple[typing.Dict[int, numpy.ndarray], pandas.core.frame.DataFrame, typing.Dict[str, float]]\nDictionary of orbits with numerical keys.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features_from_hdf5 (file_path:str)\n\nLoad orbit DataFrame from an HDF5 file.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nfile_path\nstr\nPath to the HDF5 file.\n\n\nReturns\nDataFrame\nDataFrame containing orbit features.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features_from_folder (folder_path:str)\n\nConcatenate orbit DataFrames from all HDF5 files in a folder, preserving original index and adding system column.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nfolder_path\nstr\nPath to the folder\n\n\nReturns\nDataFrame\nDataFrame containing concatenated orbit features.",
+    "crumbs": [
+      "Dataset"
+    ]
+  },
+  {
+    "objectID": "dataset.html#read-data",
+    "href": "dataset.html#read-data",
+    "title": "Dataset",
+    "section": "",
+    "text": "source\n\n\n\n get_orbit_data_from_hdf5 (file_path:str)\n\nLoad orbit data from an HDF5 file.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nfile_path\nstr\nPath to the HDF5 file.\n\n\nReturns\ntyping.Tuple[typing.Dict[int, numpy.ndarray], pandas.core.frame.DataFrame, typing.Dict[str, float]]\nDictionary of orbits with numerical keys.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features_from_hdf5 (file_path:str)\n\nLoad orbit DataFrame from an HDF5 file.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nfile_path\nstr\nPath to the HDF5 file.\n\n\nReturns\nDataFrame\nDataFrame containing orbit features.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features_from_folder (folder_path:str)\n\nConcatenate orbit DataFrames from all HDF5 files in a folder, preserving original index and adding system column.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nfolder_path\nstr\nPath to the folder\n\n\nReturns\nDataFrame\nDataFrame containing concatenated orbit features.",
+    "crumbs": [
+      "Dataset"
+    ]
+  },
+  {
+    "objectID": "dataset.html#datasets-fixed-period",
+    "href": "dataset.html#datasets-fixed-period",
+    "title": "Dataset",
+    "section": "Datasets fixed Period",
+    "text": "Datasets fixed Period\n\nsource\n\nget_first_period_dataset\n\n get_first_period_dataset (file_path:str)\n\nLoad and process orbit data from an HDF5 file for the first period.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nfile_path\nstr\nPath to the HDF5 file.\n\n\nReturns\ntyping.Tuple[numpy.ndarray, pandas.core.frame.DataFrame, typing.Dict[str, float]]\n3D numpy array of padded orbits.",
+    "crumbs": [
+      "Dataset"
+    ]
+  },
+  {
+    "objectID": "dataset.html#dataset-fixed-step",
+    "href": "dataset.html#dataset-fixed-step",
+    "title": "Dataset",
+    "section": "Dataset fixed Step",
+    "text": "Dataset fixed Step\n\nsource\n\nget_segmented_dataset\n\n get_segmented_dataset (file_path:str, segment_length:int)\n\nLoad and process orbit data from an HDF5 file, segmenting each orbit into specified length.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nfile_path\nstr\nPath to the HDF5 file.\n\n\nsegment_length\nint\nDesired length of each segment.\n\n\nReturns\ntyping.Tuple[numpy.ndarray, pandas.core.frame.DataFrame, typing.List[int], typing.Dict[str, float]]\n3D numpy array of segmented orbits.",
+    "crumbs": [
+      "Dataset"
+    ]
+  },
+  {
+    "objectID": "processing.html",
+    "href": "processing.html",
+    "title": "Processing",
+    "section": "",
+    "text": "source\n\n\n\n resample_3d_array (data:numpy.ndarray, axis:int, target_size:int)\n\nResample a 3D numpy array along a specified axis using linear interpolation.\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be resampled.\n\n\naxis\nint\nThe axis along which to perform the interpolation.\n\n\ntarget_size\nint\nThe new size of the axis after resampling.\n\n\nReturns\nndarray",
+    "crumbs": [
+      "Processing"
+    ]
+  },
+  {
+    "objectID": "processing.html#resample-by-interpolation",
+    "href": "processing.html#resample-by-interpolation",
+    "title": "Processing",
+    "section": "",
+    "text": "source\n\n\n\n resample_3d_array (data:numpy.ndarray, axis:int, target_size:int)\n\nResample a 3D numpy array along a specified axis using linear interpolation.\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be resampled.\n\n\naxis\nint\nThe axis along which to perform the interpolation.\n\n\ntarget_size\nint\nThe new size of the axis after resampling.\n\n\nReturns\nndarray",
+    "crumbs": [
+      "Processing"
+    ]
+  },
+  {
+    "objectID": "processing.html#downsample-by-average",
+    "href": "processing.html#downsample-by-average",
+    "title": "Processing",
+    "section": "Downsample by Average",
+    "text": "Downsample by Average\n\nsource\n\naverage_downsample_3d_array\n\n average_downsample_3d_array (data:numpy.ndarray, axis:int,\n                              target_size:int)\n\nDownsample a 3D numpy array along a specified axis using averaging.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be downsampled.\n\n\naxis\nint\nThe axis along which to perform the downsampling (0, 1, or 2).\n\n\ntarget_size\nint\nThe desired size of the specified axis after downsampling.\n\n\nReturns\nndarray",
+    "crumbs": [
+      "Processing"
+    ]
+  },
+  {
+    "objectID": "processing.html#reorder-orbit-with-time",
+    "href": "processing.html#reorder-orbit-with-time",
+    "title": "Processing",
+    "section": "Reorder Orbit with Time",
+    "text": "Reorder Orbit with Time\n\nsource\n\nreorder_orbits\n\n reorder_orbits (orbit_dataset:numpy.ndarray)\n\n*Reorders the time steps of each orbit in the dataset such that the time values are always incrementally increasing.\nParameters: orbit_dataset (np.ndarray): A 3D numpy array where the first dimension is the number of orbits, the second dimension contains 7 scalars (time, posx, posy, posz, velx, vely, velz), and the third dimension is the time steps.\nReturns: np.ndarray: A reordered version of the input orbit_dataset.*\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\norbit_dataset\nndarray\nThe original 3D numpy array representing the orbits.\n\n\nReturns\nndarray",
+    "crumbs": [
+      "Processing"
+    ]
+  },
+  {
+    "objectID": "processing.html#reshaping-arrays",
+    "href": "processing.html#reshaping-arrays",
+    "title": "Processing",
+    "section": "Reshaping Arrays",
+    "text": "Reshaping Arrays\n\nsource\n\npad_and_convert_to_3d\n\n pad_and_convert_to_3d (orbits:Dict[int,numpy.ndarray], timesteps:int)\n\nTruncate and pad each orbit to a uniform length and convert to a 3D numpy array.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\norbits\ntyping.Dict[int, numpy.ndarray]\nDictionary of orbits with numerical keys.\n\n\ntimesteps\nint\nDesired number of timesteps.\n\n\nReturns\nndarray\n3D numpy array of padded orbits.\n\n\n\n\nsource\n\n\nsegment_and_convert_to_3d\n\n segment_and_convert_to_3d (orbits:Dict[int,numpy.ndarray],\n                            segment_length:int)\n\nDivide each orbit into segments of a given length and convert to a 3D numpy array.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\norbits\ntyping.Dict[int, numpy.ndarray]\nDictionary of orbits with numerical keys.\n\n\nsegment_length\nint\nDesired length of each segment.\n\n\nReturns\ntyping.Tuple[numpy.ndarray, typing.List[int]]\n3D numpy array of segments.",
+    "crumbs": [
+      "Processing"
+    ]
+  },
+  {
+    "objectID": "processing.html#add-time-vector",
+    "href": "processing.html#add-time-vector",
+    "title": "Processing",
+    "section": "Add Time Vector",
+    "text": "Add Time Vector\n\nsource\n\nadd_time_vector_to_orbits\n\n add_time_vector_to_orbits (orbits:Dict[int,numpy.ndarray],\n                            propagated_periods:List[float],\n                            periods:List[float])\n\nAdd a time vector to each orbit in the dictionary.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\norbits\ntyping.Dict[int, numpy.ndarray]\nDictionary of orbits with numerical keys.\n\n\npropagated_periods\ntyping.List[float]\nList of propagated periods for each orbit.\n\n\nperiods\ntyping.List[float]\nList of periods for each orbit.\n\n\nReturns\ntyping.Dict[int, numpy.ndarray]\nDictionary of updated orbits with time vectors added.",
+    "crumbs": [
+      "Processing"
+    ]
+  },
+  {
+    "objectID": "constants.html",
+    "href": "constants.html",
+    "title": "Constants",
+    "section": "",
+    "text": "EM_POINTS\n\n{'Moon': (0.9878, 0, 0),\n 'Earth': (-0.0122, 0, 0),\n 'Lagrange 1': (0.8369, 0, 0),\n 'Lagrange 2': (1.1557, 0, 0),\n 'Lagrange 3': (-1.0051, 0, 0),\n 'Lagrange 4': (0.4879, 0.866, 0),\n 'Lagrange 5': (0.4879, -0.866, 0)}\n\n\n\nORBIT_CLASS_DF\n\n\n\n\n\n\n\n\n\nId\nLabel\nType\nSubtype\nDirection\n\n\n\n\n0\n1\nS_BN\nSystem-wide\nButterfly\nNorth\n\n\n1\n2\nS_BS\nSystem-wide\nButterfly\nSouth\n\n\n2\n3\nS_DN\nSystem-wide\nDragonfly\nNorth\n\n\n3\n4\nS_DPO\nSystem-wide\nDistant Prograde\nPlanar\n\n\n4\n5\nS_DRO\nSystem-wide\nDistant Retrograde\nPlanar\n\n\n5\n6\nS_DS\nSystem-wide\nDragonfly\nSouth\n\n\n6\n7\nS_L1_A\nL1\nAxial\nNo specification\n\n\n7\n8\nS_L1_HN\nL1\nHalo\nNorth\n\n\n8\n9\nS_L1_HS\nL1\nHalo\nSouth\n\n\n9\n10\nS_L1_L\nL1\nLyapunov\nPlanar\n\n\n10\n11\nS_L1_V\nL1\nVertical\nNo specification\n\n\n11\n12\nS_L2_A\nL2\nAxial\nNo specification\n\n\n12\n13\nS_L2_HN\nL2\nHalo\nNorth\n\n\n13\n14\nS_L2_HS\nL2\nHalo\nSouth\n\n\n14\n15\nS_L2_L\nL2\nLyapunov\nPlanar\n\n\n15\n16\nS_L2_V\nL2\nVertical\nNo specification\n\n\n16\n17\nS_L3_A\nL3\nAxial\nNo specification\n\n\n17\n18\nS_L3_HN\nL3\nHalo\nNorth\n\n\n18\n19\nS_L3_HS\nL3\nHalo\nSouth\n\n\n19\n20\nS_L3_L\nL3\nLyapunov\nPlanar\n\n\n20\n21\nS_L3_V\nL3\nVertical\nNo specification\n\n\n21\n22\nS_L4_A\nL4\nAxial\nNo specification\n\n\n22\n23\nS_L4_LP\nL4\nLong Period\nEast\n\n\n23\n24\nS_L4_SP\nL4\nLong Period\nWest\n\n\n24\n25\nS_L4_V\nL4\nVertical\nNo specification\n\n\n25\n26\nS_L5_A\nL5\nAxial\nNo specification\n\n\n26\n27\nS_L5_LP\nL5\nLong Period\nNorth\n\n\n27\n28\nS_L5_SP\nL5\nLong Period\nSouth\n\n\n28\n29\nS_L5_V\nL5\nVertical\nNo specification\n\n\n29\n30\nS_LPOE\nSystem-wide\nLong Period\nNorth\n\n\n30\n31\nS_LPOW\nSystem-wide\nLong Period\nSouth\n\n\n31\n32\nS_R11\nResonant\nResonant 1,1\nPlanar\n\n\n32\n33\nS_R12\nResonant\nResonant 1,2\nPlanar\n\n\n33\n34\nS_R13\nResonant\nResonant 1,3\nPlanar\n\n\n34\n35\nS_R14\nResonant\nResonant 1,4\nPlanar\n\n\n35\n36\nS_R21\nResonant\nResonant 2,1\nPlanar\n\n\n36\n37\nS_R23\nResonant\nResonant 2,3\nPlanar\n\n\n37\n38\nS_R31\nResonant\nResonant 3,1\nPlanar\n\n\n38\n39\nS_R32\nResonant\nResonant 3,2\nPlanar\n\n\n39\n40\nS_R34\nResonant\nResonant 3,4\nPlanar\n\n\n40\n41\nS_R41\nResonant\nResonant 4,1\nPlanar\n\n\n41\n42\nS_R43\nResonant\nResonant 4,3\nPlanar",
+    "crumbs": [
+      "Constants"
+    ]
+  },
+  {
+    "objectID": "visualization.html",
+    "href": "visualization.html",
+    "title": "Visualization",
+    "section": "",
+    "text": "source\n\n\n\n\n visualize_static_orbits (data:numpy.ndarray,\n                          time_instants:Union[List[int],NoneType]=None,\n                          orbit_indices:Union[List[int],NoneType]=None,\n                          point_dict:Union[Dict[str,tuple],NoneType]=None,\n                          show_legend:bool=True,\n                          save_path:Union[str,NoneType]=None,\n                          plot_reference_box:bool=True)\n\nVisualizes orbits in 3D space and highlights specified time instants for each selected orbit.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe orbit data with shape (num_orbits, 6, num_time_points).\n\n\ntime_instants\ntyping.Union[typing.List[int], NoneType]\nNone\nTime points to highlight; defaults to None.\n\n\norbit_indices\ntyping.Union[typing.List[int], NoneType]\nNone\nIndices of orbits to visualize; defaults to all.\n\n\npoint_dict\ntyping.Union[typing.Dict[str, tuple], NoneType]\nNone\nDictionary of extra points to plot.\n\n\nshow_legend\nbool\nTrue\nFlag to indicate whether to show a legend.\n\n\nsave_path\ntyping.Union[str, NoneType]\nNone\nPath to save the figure; defaults to None.\n\n\nplot_reference_box\nbool\nTrue\nFlag to indicate whether to plot the reference box.\n\n\nReturns\nNone\n\n\n\n\n\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.constants import EM_POINTS\n\n\norbit_data= get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nvisualize_static_orbits(data= orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40], plot_reference_box=False)\n\n\n\n\n\n\n\n\n\n\n\n\nsource\n\n\n\n\n export_dynamic_orbits_html (data:numpy.ndarray,\n                             time_instants:Union[List[int],NoneType]=None,\n                             orbit_indices:Union[List[int],NoneType]=None,\n                             point_dict:Union[Dict[str,tuple],NoneType]=No\n                             ne, filename:str='orbits.html')\n\nGenerates an interactive 3D visualization of orbits and saves it as an HTML file, including the ability to highlight specific time instants and show named points.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nOrbit data as a 3D numpy array (num_orbits, 6, num_time_points).\n\n\ntime_instants\ntyping.Union[typing.List[int], NoneType]\nNone\nTime instants to highlight.\n\n\norbit_indices\ntyping.Union[typing.List[int], NoneType]\nNone\nIndices of orbits to visualize.\n\n\npoint_dict\ntyping.Union[typing.Dict[str, tuple], NoneType]\nNone\nNamed points as a dict with 3D coordinates.\n\n\nfilename\nstr\norbits.html\nPath and name of the file to save the HTML plot.\n\n\nReturns\nNone\n\n\n\n\n\n\nexport_dynamic_orbits_html(data=orbit_data, filename='../data/example_data/example_orbits.html')\n\nVisualization saved to ../data/example_data/example_orbits.html\n\n\nView Orbit Visualization",
+    "crumbs": [
+      "Visualization"
+    ]
+  },
+  {
+    "objectID": "visualization.html#orbits",
+    "href": "visualization.html#orbits",
+    "title": "Visualization",
+    "section": "",
+    "text": "source\n\n\n\n\n visualize_static_orbits (data:numpy.ndarray,\n                          time_instants:Union[List[int],NoneType]=None,\n                          orbit_indices:Union[List[int],NoneType]=None,\n                          point_dict:Union[Dict[str,tuple],NoneType]=None,\n                          show_legend:bool=True,\n                          save_path:Union[str,NoneType]=None,\n                          plot_reference_box:bool=True)\n\nVisualizes orbits in 3D space and highlights specified time instants for each selected orbit.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe orbit data with shape (num_orbits, 6, num_time_points).\n\n\ntime_instants\ntyping.Union[typing.List[int], NoneType]\nNone\nTime points to highlight; defaults to None.\n\n\norbit_indices\ntyping.Union[typing.List[int], NoneType]\nNone\nIndices of orbits to visualize; defaults to all.\n\n\npoint_dict\ntyping.Union[typing.Dict[str, tuple], NoneType]\nNone\nDictionary of extra points to plot.\n\n\nshow_legend\nbool\nTrue\nFlag to indicate whether to show a legend.\n\n\nsave_path\ntyping.Union[str, NoneType]\nNone\nPath to save the figure; defaults to None.\n\n\nplot_reference_box\nbool\nTrue\nFlag to indicate whether to plot the reference box.\n\n\nReturns\nNone\n\n\n\n\n\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.constants import EM_POINTS\n\n\norbit_data= get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nvisualize_static_orbits(data= orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40], plot_reference_box=False)\n\n\n\n\n\n\n\n\n\n\n\n\nsource\n\n\n\n\n export_dynamic_orbits_html (data:numpy.ndarray,\n                             time_instants:Union[List[int],NoneType]=None,\n                             orbit_indices:Union[List[int],NoneType]=None,\n                             point_dict:Union[Dict[str,tuple],NoneType]=No\n                             ne, filename:str='orbits.html')\n\nGenerates an interactive 3D visualization of orbits and saves it as an HTML file, including the ability to highlight specific time instants and show named points.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nOrbit data as a 3D numpy array (num_orbits, 6, num_time_points).\n\n\ntime_instants\ntyping.Union[typing.List[int], NoneType]\nNone\nTime instants to highlight.\n\n\norbit_indices\ntyping.Union[typing.List[int], NoneType]\nNone\nIndices of orbits to visualize.\n\n\npoint_dict\ntyping.Union[typing.Dict[str, tuple], NoneType]\nNone\nNamed points as a dict with 3D coordinates.\n\n\nfilename\nstr\norbits.html\nPath and name of the file to save the HTML plot.\n\n\nReturns\nNone\n\n\n\n\n\n\nexport_dynamic_orbits_html(data=orbit_data, filename='../data/example_data/example_orbits.html')\n\nVisualization saved to ../data/example_data/example_orbits.html\n\n\nView Orbit Visualization",
+    "crumbs": [
+      "Visualization"
+    ]
+  },
+  {
+    "objectID": "visualization.html#orbit-features",
+    "href": "visualization.html#orbit-features",
+    "title": "Visualization",
+    "section": "Orbit Features",
+    "text": "Orbit Features\n\nsource\n\nplot_grouped_features\n\n plot_grouped_features (df:pandas.core.frame.DataFrame, columns:List[str],\n                        group_col:str, plot_type:str)\n\nGroup the DataFrame by a specified column and plot the specified type of plot for each column for each group.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndf\nDataFrame\nDataFrame containing the data.\n\n\ncolumns\ntyping.List[str]\nList of column names to plot.\n\n\ngroup_col\nstr\nColumn name to group by.\n\n\nplot_type\nstr\nType of plot: ‘violin’, ‘box’, ‘facetgrid’, or ‘histogram’\n\n\nReturns\nNone\n\n\n\n\n\nsource\n\n\nplot_value_proportions\n\n plot_value_proportions (df:pandas.core.frame.DataFrame,\n                         values_list:List[int], id_col:str)\n\nFilter the DataFrame based on values_list and plot pie charts for each column except the ID column. The total number of unique values in each column is displayed in the middle of each pie chart.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndf\nDataFrame\nDataFrame containing the data.\n\n\nvalues_list\ntyping.List[int]\nList of ID values to filter the DataFrame.\n\n\nid_col\nstr\nColumn name to be used as ID.\n\n\nReturns\nNone",
+    "crumbs": [
+      "Visualization"
+    ]
+  },
+  {
+    "objectID": "statistics.html",
+    "href": "statistics.html",
+    "title": "Statistics",
+    "section": "",
+    "text": "from orbit_generation.data import get_example_orbit_data\norbit_data = get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)",
+    "crumbs": [
+      "Statistics"
+    ]
+  },
+  {
+    "objectID": "statistics.html#simple-statistics",
+    "href": "statistics.html#simple-statistics",
+    "title": "Statistics",
+    "section": "Simple statistics",
+    "text": "Simple statistics\n\nsource\n\ncalculate_overall_statistics\n\n calculate_overall_statistics (orbits:numpy.ndarray)\n\n*Calculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.\nParameters: - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6, number_of_time_instants) containing orbit data.\nReturns: - Dict[str, Dict[str, float]]: A dictionary with statistics (‘min’, ‘mean’, ‘max’, ‘25%’, ‘50%’, ‘75%’) for each scalar.*\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\norbits\nndarray\nThe array containing orbit data of shape (number_of_orbits, 6, number_of_time_instants).\n\n\nReturns\ntyping.Dict[str, typing.Dict[str, float]]\n\n\n\n\n\norbits = np.array([\n    [[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8]],  # Orbit 1\n    [[4, 4, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]]   # Orbit 2\n])\n\n# Call the function to calculate statistics\nstats = calculate_overall_statistics(orbits)\n\n# Using test_eq to perform tests\ntest_eq(stats['posx']['min'], 1)\ntest_eq(stats['posx']['mean'], 3)\ntest_eq(stats['posx']['max'], 4)\ntest_eq(stats['posx']['25%'], 2.25)\ntest_eq(stats['posx']['50%'], 3.5)\ntest_eq(stats['posx']['75%'], 4)",
+    "crumbs": [
+      "Statistics"
+    ]
+  },
+  {
+    "objectID": "statistics.html#plot-time",
+    "href": "statistics.html#plot-time",
+    "title": "Statistics",
+    "section": "Plot Time",
+    "text": "Plot Time\n\nsource\n\nplot_time_increments\n\n plot_time_increments (orbit_dataset:numpy.ndarray,\n                       orbits_to_plot:List[int]=None,\n                       show_legend:bool=True)\n\n*Plots the time as a function to visualize how it increments for each orbit.\nParameters: orbit_dataset (np.ndarray): A 3D numpy array where the first dimension is the number of orbits, the second dimension contains 7 scalars (time, posx, posy, posz, velx, vely, velz), and the third dimension is the time steps. orbits_to_plot (list[int], optional): List of integers referring to the orbits to plot. If None, plots all orbits. show_legend (bool, optional): Whether to display the legend. Default is True.*\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\norbit_dataset\nndarray\n\nThe 3D numpy array representing the orbits\n\n\norbits_to_plot\ntyping.List[int]\nNone\nOptional list of integers referring to the orbits to plot\n\n\nshow_legend\nbool\nTrue\nBoolean to control the display of the legend\n\n\nReturns\nNone",
+    "crumbs": [
+      "Statistics"
+    ]
+  },
+  {
+    "objectID": "statistics.html#plot-histograms",
+    "href": "statistics.html#plot-histograms",
+    "title": "Statistics",
+    "section": "Plot Histograms",
+    "text": "Plot Histograms\n\nsource\n\nplot_orbit_data_lengths\n\n plot_orbit_data_lengths (orbit_data, key_range=(1, 36072), dimension=0,\n                          bins=30, color='blue', plot=True,\n                          title='Histogram of Orbits Time Steps')\n\n\nsource\n\n\nplot_histograms_position\n\n plot_histograms_position (data:numpy.ndarray, save_path:str=None)\n\n*Plots histograms for the scalar values (position and velocity in X, Y, Z, and optionally time) across all orbits and time points. Handles arrays with 6 or 7 scalar dimensions, with the 7th being ‘time’.\nParameters: - data (np.ndarray): The orbit data array. - save_path (str, optional): If provided, the plot will be saved to this file path.*\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe orbit data array of shape (num_orbits, num_scalars, num_time_points).\n\n\nsave_path\nstr\nNone\nOptional path to save the plot image.\n\n\nReturns\nNone\n\n\n\n\n\n\nplot_histograms_position(orbit_data)\n\n\n\n\n\n\n\n\n\nsource\n\n\nplot_histograms_comparison\n\n plot_histograms_comparison (data1:numpy.ndarray, data2:numpy.ndarray,\n                             label1:str='Dataset 1', label2:str='Dataset\n                             2', save_path:str=None, normalize:bool=False)\n\nPlots histograms for scalar values (position, velocity in X, Y, Z, and optionally time) from two datasets on the same chart with different colors. Supports both 6 and 7 scalar dimensions, with the 7th being ‘time’. Optionally saves the plot to a specified file path and can normalize histograms for relative comparison.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata1\nndarray\n\nFirst orbit data array of shape (num_orbits, num_scalars, num_time_points).\n\n\ndata2\nndarray\n\nSecond orbit data array of shape (num_orbits, num_scalars, num_time_points).\n\n\nlabel1\nstr\nDataset 1\nLabel for the first dataset.\n\n\nlabel2\nstr\nDataset 2\nLabel for the second dataset.\n\n\nsave_path\nstr\nNone\nOptional path to save the plot image.\n\n\nnormalize\nbool\nFalse\nNormalize histograms to show relative frequencies.\n\n\nReturns\nNone\n\n\n\n\n\n\norbit_data1 = orbit_data[:100]\norbit_data2 = orbit_data[100:]\n\nplot_histograms_comparison(orbit_data1, orbit_data2)\n\n\n\n\n\n\n\n\n\norbit_data3 = orbit_data2[:5]\n\nplot_histograms_comparison(orbit_data1, orbit_data3, normalize=True)",
+    "crumbs": [
+      "Statistics"
+    ]
+  },
+  {
+    "objectID": "statistics.html#latent-space",
+    "href": "statistics.html#latent-space",
+    "title": "Statistics",
+    "section": "Latent Space",
+    "text": "Latent Space\n\nsource\n\nplot_latent_space\n\n plot_latent_space (latent_representations:numpy.ndarray,\n                    labels:numpy.ndarray, techniques:List[str]=['PCA'],\n                    n_components:int=2, figsize:tuple=(12, 9),\n                    colors:Union[List[str],NoneType]=None,\n                    save_path:Union[str,NoneType]=None, **kwargs:Any)\n\nPlots and optionally saves the latent space representations using specified dimensionality reduction techniques. Each technique’s plot is handled in a separate figure, supporting 1D, 2D, or 3D visualizations.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nlatent_representations\nndarray\n\nPrecomputed latent representations (numpy array).\n\n\nlabels\nndarray\n\nLabels for the data points, used for coloring in the plot.\n\n\ntechniques\ntyping.List[str]\n[‘PCA’]\nTechniques to use for reduction (‘PCA’, ‘t-SNE’, ‘UMAP’, ‘LDA’).\n\n\nn_components\nint\n2\nNumber of dimensions to reduce to (1, 2, or 3).\n\n\nfigsize\ntuple\n(12, 9)\nSize of the figure for each subplot.\n\n\ncolors\ntyping.Union[typing.List[str], NoneType]\nNone\nOptional list of colors for the labels. If None, use random colors.\n\n\nsave_path\ntyping.Union[str, NoneType]\nNone\nOptional path to save the plot image.\n\n\nkwargs\ntyping.Any\n\n\n\n\nReturns\nNone\n\nAdditional keyword arguments for dimensionality reduction methods.\n\n\n\n\n# Reshape data to 2D (num_orbits, 6 * num_time_points)\norbit_data_reshaped = orbit_data.reshape(200, -1)\n\n# Use PCA to reduce to a lower-dimensional space (e.g., 10 dimensions)\npca = PCA(n_components=10)\nlatent_representations = pca.fit_transform(orbit_data_reshaped)\n\nlabels = np.random.randint(0, 5, size=200)  # 5 different classes\n\nplot_latent_space(latent_representations, labels, techniques=['UMAP','LDA'])\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nplot_latent_space(latent_representations, labels, techniques=['PCA'], n_components=1)\n\n\n\n\n\n\n\n\n\nplot_latent_space(latent_representations, labels, techniques=['t-SNE'], n_components=3)",
+    "crumbs": [
+      "Statistics"
+    ]
+  },
+  {
+    "objectID": "statistics.html#latent-space-synthetic-vs-real",
+    "href": "statistics.html#latent-space-synthetic-vs-real",
+    "title": "Statistics",
+    "section": "Latent Space Synthetic vs Real",
+    "text": "Latent Space Synthetic vs Real\n\nsource\n\nplot_combined_latent_space\n\n plot_combined_latent_space (real_data:numpy.ndarray,\n                             synthetic_data:numpy.ndarray, encoder,\n                             techniques:List[str]=['PCA'],\n                             n_components:int=2, figsize:tuple=(12, 9),\n                             colors:Union[List[str],NoneType]=None,\n                             save_path:Union[str,NoneType]=None,\n                             **kwargs:Any)\n\nPlots the combined latent space of real and synthetic data using specified dimensionality reduction techniques.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nreal_data\nndarray\n\nReal data samples.\n\n\nsynthetic_data\nndarray\n\nSynthetic data samples generated by a model.\n\n\nencoder\n\n\nEncoder function or model that predicts latent space representations.\n\n\ntechniques\ntyping.List[str]\n[‘PCA’]\nTechniques to use for reduction (‘PCA’, ‘t-SNE’, ‘UMAP’, ‘LDA’).\n\n\nn_components\nint\n2\nNumber of dimensions to reduce to.\n\n\nfigsize\ntuple\n(12, 9)\nSize of the figure for each subplot.\n\n\ncolors\ntyping.Union[typing.List[str], NoneType]\nNone\nOptional list of colors for the labels. If None, use random colors.\n\n\nsave_path\ntyping.Union[str, NoneType]\nNone\nOptional path to save the plot image.\n\n\nkwargs\ntyping.Any\n\n\n\n\nReturns\nNone\n\nAdditional keyword arguments for dimensionality reduction methods.\n\n\n\n\n\n\nplot_combined_latent_space_with_labels\n\n plot_combined_latent_space_with_labels (real_data:numpy.ndarray,\n                                         synthetic_data:numpy.ndarray,\n                                         real_labels:numpy.ndarray,\n                                         encoder,\n                                         techniques:List[str]=['PCA'],\n                                         n_components:int=2,\n                                         figsize:tuple=(12, 9), real_color\n                                         s:Union[List[str],NoneType]=None,\n                                         synthetic_color:str='red', save_p\n                                         ath:Union[str,NoneType]=None,\n                                         **kwargs:Any)\n\nPlots the combined latent space of real and synthetic data using specified dimensionality reduction techniques. The real data points are colored according to their labels, and the synthetic data points are overlaid in a new color.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nreal_data\nndarray\n\nReal data samples.\n\n\nsynthetic_data\nndarray\n\nSynthetic data samples generated by a model.\n\n\nreal_labels\nndarray\n\nLabels for the real data samples.\n\n\nencoder\n\n\nEncoder function or model that predicts latent space representations.\n\n\ntechniques\ntyping.List[str]\n[‘PCA’]\nTechniques to use for reduction (‘PCA’, ‘t-SNE’, ‘UMAP’, ‘LDA’).\n\n\nn_components\nint\n2\nNumber of dimensions to reduce to.\n\n\nfigsize\ntuple\n(12, 9)\nSize of the figure for each subplot.\n\n\nreal_colors\ntyping.Union[typing.List[str], NoneType]\nNone\nOptional list of colors for the real data labels. If None, use random colors.\n\n\nsynthetic_color\nstr\nred\nColor for the synthetic data points.\n\n\nsave_path\ntyping.Union[str, NoneType]\nNone\nOptional path to save the plot image.\n\n\nkwargs\ntyping.Any\n\n\n\n\nReturns\nNone\n\nAdditional keyword arguments for dimensionality reduction methods.",
+    "crumbs": [
+      "Statistics"
+    ]
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "orbit-generation",
@@ -34,169 +284,79 @@
     "href": "index.html#how-to-use",
     "title": "orbit-generation",
     "section": "How to use",
-    "text": "How to use\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.processing import resample_3d_array\nfrom orbit_generation.stats import plot_histograms_position\nfrom orbit_generation.visualize import visualize_static_orbits, export_dynamic_orbits_html\nfrom orbit_generation.constants import EM_POINTS\n\n\nData\n\norbit_data = get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nNumber of orbits: 200\nTime instants: 300\n\n\n\nProcessing\n\nresampled_orbit_data = resample_3d_array(data=orbit_data, axis=2, target_size= 100)\nresampled_orbit_data.shape\n\n(200, 6, 100)\n\n\n\nInitial time instants: 300\nTime instants after Resampling: 100\n\n\n\nStatistics\n\nplot_histograms_position(orbit_data)\n\n\n\n\n\n\n\n\n\n\nVisualization\n\nvisualize_static_orbits(resampled_orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40])\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(orbit_data, show_legend=False)\n\n\n\n\n\n\n\n\n\nexport_dynamic_orbits_html(data=orbit_data, filename='../data/example_orbits.html')\n\nVisualization saved to ../data/example_orbits.html",
+    "text": "How to use\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.processing import resample_3d_array\nfrom orbit_generation.stats import plot_histograms_position\nfrom orbit_generation.visualize import visualize_static_orbits, export_dynamic_orbits_html\nfrom orbit_generation.constants import EM_POINTS\n\n/usr/local/lib/python3.8/dist-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html\n  from .autonotebook import tqdm as notebook_tqdm\n2024-06-07 10:40:48.295769: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.\n\n\n\nData\n\norbit_data = get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nNumber of orbits: 200\nTime instants: 300\n\n\n\nProcessing\n\nresampled_orbit_data = resample_3d_array(data=orbit_data, axis=2, target_size= 100)\nresampled_orbit_data.shape\n\n(200, 6, 100)\n\n\n\nInitial time instants: 300\nTime instants after Resampling: 100\n\n\n\nStatistics\n\nplot_histograms_position(orbit_data)\n\n\n\n\n\n\n\n\n\n\nVisualization\n\nvisualize_static_orbits(resampled_orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40])\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(orbit_data, show_legend=False)\n\n\n\n\n\n\n\n\n\nexport_dynamic_orbits_html(data=orbit_data, filename='../data/example_data/example_orbits.html')\n\nVisualization saved to ../data/example_data/example_orbits.html",
     "crumbs": [
       "orbit-generation"
     ]
   },
   {
-    "objectID": "statistics.html",
-    "href": "statistics.html",
-    "title": "Statistics",
+    "objectID": "model.html",
+    "href": "model.html",
+    "title": "Model",
     "section": "",
-    "text": "source\n\n\n\n calculate_overall_statistics (orbits:numpy.ndarray)\n\nCalculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.\nParameters: - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6, number_of_time_instants) containing orbit data.\nReturns: - Dict[str, Dict[str, float]]: A dictionary with statistics (‘min’, ‘mean’, ‘max’, ‘25%’, ‘50%’, ‘75%’) for each scalar.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\norbits\nndarray\nThe array containing orbit data of shape (number_of_orbits, 6, number_of_time_instants).\n\n\nReturns\nDict\n\n\n\n\n\norbits = np.array([\n    [[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8]],  # Orbit 1\n    [[4, 4, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]]   # Orbit 2\n])\n\n# Call the function to calculate statistics\nstats = calculate_overall_statistics(orbits)\n\n# Using test_eq to perform tests\ntest_eq(stats['posx']['min'], 1)\ntest_eq(stats['posx']['mean'], 3)\ntest_eq(stats['posx']['max'], 4)\ntest_eq(stats['posx']['25%'], 2.25)\ntest_eq(stats['posx']['50%'], 3.5)\ntest_eq(stats['posx']['75%'], 4)",
+    "text": "source\n\nget_optimizer\n\n get_optimizer (optimizer_config)",
     "crumbs": [
-      "Statistics"
+      "Model"
     ]
   },
   {
-    "objectID": "statistics.html#calculate-statistics",
-    "href": "statistics.html#calculate-statistics",
-    "title": "Statistics",
+    "objectID": "propagation.html",
+    "href": "propagation.html",
+    "title": "Propagation",
     "section": "",
-    "text": "source\n\n\n\n calculate_overall_statistics (orbits:numpy.ndarray)\n\nCalculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.\nParameters: - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6, number_of_time_instants) containing orbit data.\nReturns: - Dict[str, Dict[str, float]]: A dictionary with statistics (‘min’, ‘mean’, ‘max’, ‘25%’, ‘50%’, ‘75%’) for each scalar.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\norbits\nndarray\nThe array containing orbit data of shape (number_of_orbits, 6, number_of_time_instants).\n\n\nReturns\nDict\n\n\n\n\n\norbits = np.array([\n    [[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8]],  # Orbit 1\n    [[4, 4, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]]   # Orbit 2\n])\n\n# Call the function to calculate statistics\nstats = calculate_overall_statistics(orbits)\n\n# Using test_eq to perform tests\ntest_eq(stats['posx']['min'], 1)\ntest_eq(stats['posx']['mean'], 3)\ntest_eq(stats['posx']['max'], 4)\ntest_eq(stats['posx']['25%'], 2.25)\ntest_eq(stats['posx']['50%'], 3.5)\ntest_eq(stats['posx']['75%'], 4)",
+    "text": "Propagation implemented by Walther Litteri",
     "crumbs": [
-      "Statistics"
+      "Propagation"
     ]
   },
   {
-    "objectID": "statistics.html#plot-histograms",
-    "href": "statistics.html#plot-histograms",
-    "title": "Statistics",
-    "section": "Plot Histograms",
-    "text": "Plot Histograms\n\nsource\n\nplot_histograms_position\n\n plot_histograms_position (data:numpy.ndarray)\n\nPlots histograms for the 6 scalar values (position and velocity in X, Y, Z) across all orbits and time points.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe orbit data array of shape (num_orbits, 6, num_time_points).\n\n\nReturns\nNone\n\n\n\n\n\nfrom orbit_generation.data import get_example_orbit_data\n\n\norbit_data = get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nplot_histograms_position(orbit_data)\n\n\n\n\n\n\n\n\n\nsource\n\n\nplot_histograms_comparison\n\n plot_histograms_comparison (data1:numpy.ndarray, data2:numpy.ndarray)\n\nPlots histograms for the 6 scalar values (position and velocity in X, Y, Z) from two datasets on the same chart with different colors.\nParameters: - data1 (np.ndarray): First orbit data array. - data2 (np.ndarray): Second orbit data array.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata1\nndarray\nFirst orbit data array of shape (num_orbits, 6, num_time_points).\n\n\ndata2\nndarray\nSecond orbit data array of shape (num_orbits, 6, num_time_points).\n\n\nReturns\nNone\n\n\n\n\n\norbit_data1 = orbit_data[:100]\norbit_data2 = orbit_data[100:]\n\nplot_histograms_comparison(orbit_data1, orbit_data2)",
+    "objectID": "propagation.html#tolerance-constants",
+    "href": "propagation.html#tolerance-constants",
+    "title": "Propagation",
+    "section": "Tolerance Constants",
+    "text": "Tolerance Constants",
     "crumbs": [
-      "Statistics"
+      "Propagation"
     ]
   },
   {
-    "objectID": "processing.html",
-    "href": "processing.html",
-    "title": "Processing",
-    "section": "",
-    "text": "resample_3d_array (data:numpy.ndarray, axis:int, target_size:int)\n\nResample a 3D numpy array along a specified axis using linear interpolation.\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be resampled.\n\n\naxis\nint\nThe axis along which to perform the interpolation.\n\n\ntarget_size\nint\nThe new size of the axis after resampling.\n\n\nReturns\nndarray\n\n\n\n\n\ndef test_resample_3d_array():\n    # Original 3D array\n    data = np.array([\n        [[1, 2], [3, 4]],\n        [[5, 6], [7, 8]],\n        [[9, 10], [11, 12]],\n        [[13, 14], [15, 16]]\n    ])\n\n    # Downsampling from 4 to 2 along the first axis\n    target_size = 3\n\n    # Perform resampling\n    resampled_data = resample_3d_array(data, axis=0, target_size=target_size)\n\n    # Expected results by true linear interpolation\n    expected_data = np.array([\n        [[1, 2], [3, 4]],  # 1st slice\n        [[7, 8], [9, 10]],  # Interpolation between 2nd and 3rd slices (mean in this case)\n        [[13, 14], [15, 16]]  # 4st slice\n    ])\n    # Check the resampled data against expected data\n    test_eq(resampled_data, expected_data)\n\n# Invoke the test\ntest_resample_3d_array()",
+    "objectID": "propagation.html#jacobi-constant",
+    "href": "propagation.html#jacobi-constant",
+    "title": "Propagation",
+    "section": "Jacobi Constant",
+    "text": "Jacobi Constant\n\nsource\n\njacobi_constant\n\n jacobi_constant (X:numpy.ndarray, mu:float)\n\n*State-dependent Jacobi constant for a given state vector X and gravitational parameter mu.\nParameters: X (np.ndarray): Cartesian state vector with 6 components (x, y, z, xp, yp, zp). mu (float): Gravitational parameter.\nReturns: Tuple[float, float]: Jacobi constant (J) and total energy (E).*\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nX\nndarray\nCartesian state vector with 6 components (x, y, z, xp, yp, zp)\n\n\nmu\nfloat\nGravitational parameter\n\n\nReturns\ntyping.Tuple[float, float]\n\n\n\n\n\norbit_data = get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\n# Calculate Jacobi constants and energies for all orbits at all time points\njacobi_constants = np.zeros((200, 300))\ntotal_energies = np.zeros((200, 300))\n\nfor orbit_index in range(200):\n    for time_index in range(300):\n        X = orbit_data[orbit_index, :, time_index]\n        J, E = jacobi_constant(X, MU)\n        jacobi_constants[orbit_index, time_index] = J\n        total_energies[orbit_index, time_index] = E\n\n# Flatten the Jacobi constants array to plot the histogram of all values\njacobi_constants_all = jacobi_constants.flatten()\n\n# Plot histogram of Jacobi constants for all orbits\nplt.figure(figsize=(10, 5))\nplt.hist(jacobi_constants_all, bins=50, color='blue', alpha=0.7)\nplt.title('Histogram of Jacobi Constants for All Orbits')\nplt.xlabel('Jacobi Constant')\nplt.ylabel('Frequency')\nplt.grid(True)\nplt.show()\n\n# Plot histogram of Jacobi constants for the first orbit\njacobi_constants_first_orbit = jacobi_constants[0, :]\n\nplt.figure(figsize=(10, 5))\nplt.hist(jacobi_constants_first_orbit, bins=50, color='green', alpha=0.7)\nplt.title('Histogram of Jacobi Constants for the First Orbit')\nplt.xlabel('Jacobi Constant')\nplt.ylabel('Frequency')\nplt.grid(True)\nplt.show()",
     "crumbs": [
-      "Processing"
+      "Propagation"
     ]
   },
   {
-    "objectID": "processing.html#resample-by-interpolation",
-    "href": "processing.html#resample-by-interpolation",
-    "title": "Processing",
-    "section": "",
-    "text": "resample_3d_array (data:numpy.ndarray, axis:int, target_size:int)\n\nResample a 3D numpy array along a specified axis using linear interpolation.\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be resampled.\n\n\naxis\nint\nThe axis along which to perform the interpolation.\n\n\ntarget_size\nint\nThe new size of the axis after resampling.\n\n\nReturns\nndarray\n\n\n\n\n\ndef test_resample_3d_array():\n    # Original 3D array\n    data = np.array([\n        [[1, 2], [3, 4]],\n        [[5, 6], [7, 8]],\n        [[9, 10], [11, 12]],\n        [[13, 14], [15, 16]]\n    ])\n\n    # Downsampling from 4 to 2 along the first axis\n    target_size = 3\n\n    # Perform resampling\n    resampled_data = resample_3d_array(data, axis=0, target_size=target_size)\n\n    # Expected results by true linear interpolation\n    expected_data = np.array([\n        [[1, 2], [3, 4]],  # 1st slice\n        [[7, 8], [9, 10]],  # Interpolation between 2nd and 3rd slices (mean in this case)\n        [[13, 14], [15, 16]]  # 4st slice\n    ])\n    # Check the resampled data against expected data\n    test_eq(resampled_data, expected_data)\n\n# Invoke the test\ntest_resample_3d_array()",
+    "objectID": "propagation.html#equations-of-motion-cr3bp",
+    "href": "propagation.html#equations-of-motion-cr3bp",
+    "title": "Propagation",
+    "section": "Equations of motion CR3BP",
+    "text": "Equations of motion CR3BP\n\nsource\n\neom_cr3bp\n\n eom_cr3bp (t:float, X:numpy.ndarray, mu:float)\n\n*Equations of motion for the Circular Restricted 3 Body Problem (CR3BP). The form is X_dot = f(t, X, (parameters,)). This formulation is time-independent as it does not depend explicitly on t.\nParameters: t (float): Time variable (not used in this formulation). X (np.ndarray): State vector with 6 components (x, y, z, v_x, v_y, v_z). mu (float): Gravitational parameter.\nReturns: List[float]: Derivatives of the state vector.*\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nt\nfloat\nTime variable (not used in this formulation)\n\n\nX\nndarray\nState vector with 6 components (x, y, z, v_x, v_y, v_z)\n\n\nmu\nfloat\nGravitational parameter\n\n\nReturns\ntyping.List[float]\n\n\n\n\n\n# Select a random orbit from the dataset\nnum_orbits, num_components, num_time_points = orbit_data.shape\nrandom_orbit_index = np.random.randint(0, num_orbits)\nX0 = orbit_data[random_orbit_index, :, 0]\nmu = 0.01215058560962404\nT0 = 2.7430007981241529E+0  # Total time for the propagation, can be adjusted as needed\n\n# Propagate the orbit using solve_ivp\nsol = solve_ivp(eom_cr3bp, [0, T0], X0, args=(mu,), dense_output=True, rtol=1e-9, atol=1e-9, method='Radau')\ntvec = np.linspace(0, T0, num_time_points)\nz = sol.sol(tvec)\n\n# Compute derivatives using eom_cr3bp for a specific state in the propagated orbit\ntime_index = np.random.randint(0, num_time_points - 1)  # Choose a random time index\nt = tvec[time_index]\nX = z[:, time_index]\ncomputed_derivatives = eom_cr3bp(t, X, mu)\n\n# Compare with actual changes in state vector\ndelta_t = tvec[1] - tvec[0]\nactual_derivatives = (z[:, time_index + 1] - z[:, time_index]) / delta_t\n\n# Visualize the actual trajectory and computed derivatives\nfig, axs = plt.subplots(2, 1, figsize=(10, 12))\n\n# Plot the actual trajectory\naxs[0].plot(z[0], z[1], label='Trajectory')\naxs[0].scatter(z[0, time_index], z[1, time_index], color='red', label='Point of Interest')\naxs[0].set_xlabel('x')\naxs[0].set_ylabel('y')\naxs[0].set_title('Trajectory in the XY plane')\naxs[0].legend()\naxs[0].grid(True)\n\n# Plot computed vs. actual derivatives\nlabels = ['x_dot', 'y_dot', 'z_dot', 'x_ddot', 'y_ddot', 'z_ddot']\nwidth = 0.3  # width of the bars\nx = np.arange(len(labels))  # the label locations\n\naxs[1].bar(x - width/2, computed_derivatives, width, label='Computed')\naxs[1].bar(x + width/2, actual_derivatives, width, label='Actual')\naxs[1].set_xticks(x)\naxs[1].set_xticklabels(labels)\naxs[1].set_xlabel('Derivative')\naxs[1].set_ylabel('Value')\naxs[1].set_title('Computed vs Actual Derivatives')\naxs[1].legend()\naxs[1].grid(True)\n\nplt.tight_layout()\nplt.show()",
     "crumbs": [
-      "Processing"
+      "Propagation"
     ]
   },
   {
-    "objectID": "processing.html#downsample-by-average",
-    "href": "processing.html#downsample-by-average",
-    "title": "Processing",
-    "section": "Downsample by Average",
-    "text": "Downsample by Average\n\n\naverage_downsample_3d_array\n\n average_downsample_3d_array (data:numpy.ndarray, axis:int,\n                              target_size:int)\n\nDownsample a 3D numpy array along a specified axis using averaging.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe original 3D array to be downsampled.\n\n\naxis\nint\nThe axis along which to perform the downsampling (0, 1, or 2).\n\n\ntarget_size\nint\nThe desired size of the specified axis after downsampling.\n\n\nReturns\nndarray\n\n\n\n\n\ndef test_average_downsample_3d_array():\n    # Create a simple 3D array with shape (4, 2, 2)\n    # Each element in the z-dimension is the same to make averaging predictable\n    data = np.array([\n        [[3, 0.1], [2, 5]],\n        [[1, 0.1], [2, 2]],\n        [[0.3, 3], [4, 4]],\n        [[0.2, 3], [4, 6]]\n    ])\n\n    # Target new size for the axis 0 is 2\n    target_size = 2\n\n    # Perform averaging along axis 0\n    downsampled_data = average_downsample_3d_array(data, axis=0, target_size=target_size)\n\n    # Manually calculate expected results\n    expected_data = np.array([\n        [[2, 0.1], [2, 3.5]],  # Average of the first two and the last two blocks along axis 0\n        [[0.25, 3], [4, 5]]\n    ])\n    \n    # Check that the downsampled data matches the expected data\n    test_eq(downsampled_data, expected_data)\n\n# Invoke the test\ntest_average_downsample_3d_array()",
+    "objectID": "propagation.html#propagation",
+    "href": "propagation.html#propagation",
+    "title": "Propagation",
+    "section": "Propagation",
+    "text": "Propagation\n\nsource\n\nprop_node\n\n prop_node (X:numpy.ndarray, dt:float, mu:float)\n\n*Return the state X after a given time step dt = T_end - T_start.\nParameters: X (np.ndarray): Initial state vector with 6 components (x, y, z, v_x, v_y, v_z). dt (float): Time step for propagation. mu (float): Gravitational parameter.\nReturns: np.ndarray: Final state vector after time step dt.*\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nX\nndarray\nInitial state vector with 6 components (x, y, z, v_x, v_y, v_z)\n\n\ndt\nfloat\nTime step for propagation\n\n\nmu\nfloat\nGravitational parameter\n\n\nReturns\nndarray\n\n\n\n\n\n# Select a random orbit from the dataset\nnum_orbits, num_components, num_time_points = orbit_data.shape\nrandom_orbit_index = np.random.randint(0, num_orbits)\nX0 = orbit_data[random_orbit_index, :, 0]\nmu = 0.01215058560962404\ndt = 0.1  # Small time step for propagation\n\n# Propagate the state vector using prop_node\nX_final = prop_node(X0, dt, mu)\n\n# Print the initial and final state vectors\nprint(\"Initial state vector:\", X0)\nprint(\"Final state vector after time step dt:\", X_final)\n\n# To visualize the propagation, we can propagate over multiple time steps and plot the trajectory\nT_total = 2.0  # Total time for propagation\ntime_steps = int(T_total / dt)\ntrajectory = np.zeros((time_steps + 1, 6))\ntrajectory[0] = X0\n\n# Propagate step by step\nX_current = X0\nfor i in range(1, time_steps + 1):\n    X_current = prop_node(X_current, dt, mu)\n    trajectory[i] = X_current\n\n# Plot the trajectory\nfig = plt.figure(figsize=(10, 6))\nax = fig.add_subplot(111, projection='3d')\nax.plot(trajectory[:, 0], trajectory[:, 1], trajectory[:, 2], label='Propagated trajectory')\nax.set_xlabel('X')\nax.set_ylabel('Y')\nax.set_zlabel('Z')\nax.set_title('3D Trajectory Propagation using prop_node')\nax.legend()\nplt.show()\n\nInitial state vector: [ 1.18045482  0.         -0.0211      0.         -0.15838369  0.        ]\nFinal state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.01508738 -0.15587703  0.00473808]",
     "crumbs": [
-      "Processing"
+      "Propagation"
     ]
   },
   {
-    "objectID": "data.html",
-    "href": "data.html",
-    "title": "Data",
-    "section": "",
-    "text": "load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
+    "objectID": "propagation.html#compute-error",
+    "href": "propagation.html#compute-error",
+    "title": "Propagation",
+    "section": "Compute Error",
+    "text": "Compute Error\n\nsource\n\njacobi_test\n\n jacobi_test (X:numpy.ndarray, mu:float)\n\n*Compute the energy error. X can have either 6 columns (state vector) or 7 columns (time + state vector). The returned quantity is the cumulative error with respect to the initial value. If propagation is perfect, err = 0 (or very small).\nParameters: X (np.ndarray): State vector with shape (n, 6) or (n, 7), where n is the number of samples. mu (float): Gravitational parameter.\nReturns: float: Cumulative energy error with respect to the initial value.*\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nX\nndarray\nState vector with shape (n, 6) or (n, 7), where n is the number of samples\n\n\nmu\nfloat\nGravitational parameter\n\n\nReturns\nfloat\n\n\n\n\n\nsource\n\n\ndynamics_defect\n\n dynamics_defect (X:numpy.ndarray, mu:float)\n\n*Compute the dynamical defect for the generated time-state sequence. The returned quantity is the cumulative error on the position and velocity components. The overall metrics can be a combination of these two last errors.\nParameters: X (np.ndarray): Time-state vector with shape (n, 7), where the first column is the time vector. mu (float): Gravitational parameter.\nReturns: Tuple[float, float]: Cumulative errors in position and velocity.*\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nX\nndarray\nTime-state vector with shape (n, 7), where the first column is the time vector\n\n\nmu\nfloat\nGravitational parameter\n\n\nReturns\ntyping.Tuple[float, float]\n\n\n\n\n\n# Select a random orbit from the dataset\nnum_orbits, num_components, num_time_points = orbit_data.shape\nrandom_orbit_index = np.random.randint(0, num_orbits)\nselected_orbit = orbit_data[random_orbit_index, :, :]\n\n# Add a time column to the state vector for dynamics_defect function\n# Assuming the time steps are evenly spaced and given by the array tvec\ntvec = np.linspace(0, 2.7430007981241529E+0, num_time_points)\ntime_state_vector = np.hstack((tvec.reshape(-1, 1), selected_orbit.T))\n\n# Test jacobi_test function\nenergy_error = jacobi_test(selected_orbit.T, mu)\nprint(\"Cumulative energy error for the selected orbit:\", energy_error)\n\n# Test dynamics_defect function\npos_error, vel_error = dynamics_defect(time_state_vector, mu)\nprint(\"Cumulative position error for the selected orbit:\", pos_error)\nprint(\"Cumulative velocity error for the selected orbit:\", vel_error)\n\n# Visualize the numerically propagated orbit\nvisualize_static_orbits(orbit_data, time_instants=[0, 100, 200, 295], orbit_indices=[random_orbit_index])\n\n# Visualize the cumulative errors calculated\nfig, ax = plt.subplots(figsize=(10, 6))\n\nlabels = ['Cumulative Position Error', 'Cumulative Velocity Error']\nerrors = [pos_error, vel_error]\n\nax.bar(labels, errors, color=['blue', 'green'])\nax.set_ylabel('Error')\nax.set_title('Cumulative Position and Velocity Errors')\nax.grid(True)\n\nplt.tight_layout()\nplt.show()\n\nCumulative energy error for the selected orbit: 0.0004792331893739288\nCumulative position error for the selected orbit: 0.11278328096143962\nCumulative velocity error for the selected orbit: 0.23681175915281508\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nsource\n\n\ncalculate_errors\n\n calculate_errors (orbit_data:numpy.ndarray, mu:float,\n                   orbit_indices:List[int]=None,\n                   error_types:List[str]=['position', 'velocity',\n                   'energy'], time_step:Union[float,NoneType]=None,\n                   display_results:bool=True)\n\n*Calculate and return the cumulative error and the average error per time step for the selected orbits together. Optionally, display the evolution of each error as a chart.\nParameters: orbit_data (np.ndarray): 3D array of orbit data. mu (float): Gravitational parameter. orbit_indices (List[int], optional): List of integers referring to the orbits to analyze. If None, analyze all orbits. Default is None. error_types (List[str]): List of types of errors to calculate: ‘position’, ‘velocity’, and/or ‘energy’. time_step (float, optional): Optional time step if time dimension is not included. Default is None. display_results (bool, optional): Whether to display the results as charts. Default is True.\nReturns: Dict[str, Tuple[float, float]]: A dictionary with keys being the error types and values being tuples of cumulative error and average error per time step.*\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\norbit_data\nndarray\n\n3D array of orbit data\n\n\nmu\nfloat\n\nGravitational parameter\n\n\norbit_indices\ntyping.List[int]\nNone\nList of integers referring to the orbits to analyze\n\n\nerror_types\ntyping.List[str]\n[‘position’, ‘velocity’, ‘energy’]\nTypes of errors to calculate\n\n\ntime_step\ntyping.Union[float, NoneType]\nNone\nOptional time step if time dimension is not included\n\n\ndisplay_results\nbool\nTrue\nBoolean to control whether to display the results\n\n\nReturns\ntyping.Dict[str, typing.Tuple[float, float]]\n\n\n\n\n\n\nerrors = calculate_errors(orbit_data, MU, orbit_indices = [0, 1, 2], time_step=0.00917391571278981)\n\nCumulative position error for selected orbits: 0.2316203445866497\nAverage position error per time step: 0.0007746499818951495\nCumulative velocity error for selected orbits: 0.4332810231543765\nAverage velocity error per time step: 0.001449100411887547\nCumulative energy error for selected orbits: 0.05821175030129622\nAverage energy error per time step: 0.00019468812809798064",
     "crumbs": [
-      "Data"
-    ]
-  },
-  {
-    "objectID": "data.html#loading-data",
-    "href": "data.html#loading-data",
-    "title": "Data",
-    "section": "",
-    "text": "load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
-    "crumbs": [
-      "Data"
-    ]
-  },
-  {
-    "objectID": "data.html#save-data",
-    "href": "data.html#save-data",
-    "title": "Data",
-    "section": "Save Data",
-    "text": "Save Data\n\n\nsave_data\n\n save_data (data:numpy.ndarray, file_name:str, file_type:str='hdf5')\n\nSave a numpy array to an HDF5 or a NumPy .npy file based on the specified file type.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe numpy array data to save.\n\n\nfile_name\nstr\n\nThe name of the file to save the data in.\n\n\nfile_type\nstr\nhdf5\nThe type of file to save (‘hdf5’ or ‘npy’).\n\n\nReturns\nNone",
-    "crumbs": [
-      "Data"
-    ]
-  },
-  {
-    "objectID": "data.html#get-example-data",
-    "href": "data.html#get-example-data",
-    "title": "Data",
-    "section": "Get Example Data",
-    "text": "Get Example Data\n\n\nget_example_orbit_data\n\n get_example_orbit_data ()\n\nLoad orbit data from a hardcoded MAT file located in the data directory.\nThe function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.\n:return: A numpy.ndarray containing the transposed data from the MAT file.\n\ndata = get_example_orbit_data()\ndata.shape\n\n(200, 6, 300)",
-    "crumbs": [
-      "Data"
-    ]
-  },
-  {
-    "objectID": "visualization.html",
-    "href": "visualization.html",
-    "title": "Visualization",
-    "section": "",
-    "text": "source\n\n\n\n visualize_static_orbits (data:numpy.ndarray,\n                          time_instants:Optional[List[int]]=None,\n                          orbit_indices:Optional[List[int]]=None,\n                          point_dict:Optional[Dict[str,tuple]]=None,\n                          show_legend:bool=True)\n\nVisualizes orbits in 3D space and highlights specified time instants for each selected orbit.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe orbit data with shape (num_orbits, 6, num_time_points).\n\n\ntime_instants\nOptional\nNone\nTime points to highlight; defaults to None.\n\n\norbit_indices\nOptional\nNone\nIndices of orbits to visualize; defaults to all.\n\n\npoint_dict\nOptional\nNone\nDictionary of extra points to plot.\n\n\nshow_legend\nbool\nTrue\nFlag to indicate whether to show a legend.\n\n\nReturns\nNone\n\n\n\n\n\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.constants import EM_POINTS\n\n\norbit_data= get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nvisualize_static_orbits(data= orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40])",
-    "crumbs": [
-      "Visualization"
-    ]
-  },
-  {
-    "objectID": "visualization.html#static",
-    "href": "visualization.html#static",
-    "title": "Visualization",
-    "section": "",
-    "text": "source\n\n\n\n visualize_static_orbits (data:numpy.ndarray,\n                          time_instants:Optional[List[int]]=None,\n                          orbit_indices:Optional[List[int]]=None,\n                          point_dict:Optional[Dict[str,tuple]]=None,\n                          show_legend:bool=True)\n\nVisualizes orbits in 3D space and highlights specified time instants for each selected orbit.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nThe orbit data with shape (num_orbits, 6, num_time_points).\n\n\ntime_instants\nOptional\nNone\nTime points to highlight; defaults to None.\n\n\norbit_indices\nOptional\nNone\nIndices of orbits to visualize; defaults to all.\n\n\npoint_dict\nOptional\nNone\nDictionary of extra points to plot.\n\n\nshow_legend\nbool\nTrue\nFlag to indicate whether to show a legend.\n\n\nReturns\nNone\n\n\n\n\n\n\nfrom orbit_generation.data import get_example_orbit_data\nfrom orbit_generation.constants import EM_POINTS\n\n\norbit_data= get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nvisualize_static_orbits(data= orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(data= orbit_data,time_instants=[0,50], orbit_indices=[0,20,40])",
-    "crumbs": [
-      "Visualization"
-    ]
-  },
-  {
-    "objectID": "visualization.html#dynamic",
-    "href": "visualization.html#dynamic",
-    "title": "Visualization",
-    "section": "Dynamic",
-    "text": "Dynamic\n\nsource\n\nexport_dynamic_orbits_html\n\n export_dynamic_orbits_html (data:numpy.ndarray,\n                             time_instants:Optional[List[int]]=None,\n                             orbit_indices:Optional[List[int]]=None,\n                             point_dict:Optional[Dict[str,tuple]]=None,\n                             filename:str='orbits.html')\n\nGenerates an interactive 3D visualization of orbits and saves it as an HTML file, including the ability to highlight specific time instants and show named points.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndata\nndarray\n\nOrbit data as a 3D numpy array (num_orbits, 6, num_time_points).\n\n\ntime_instants\nOptional\nNone\nTime instants to highlight.\n\n\norbit_indices\nOptional\nNone\nIndices of orbits to visualize.\n\n\npoint_dict\nOptional\nNone\nNamed points as a dict with 3D coordinates.\n\n\nfilename\nstr\norbits.html\nPath and name of the file to save the HTML plot.\n\n\nReturns\nNone\n\n\n\n\n\n\nexport_dynamic_orbits_html(data=orbit_data, filename='../data/example_orbits.html')\n\nVisualization saved to ../data/example_orbits.html\n\n\nView Orbit Visualization",
-    "crumbs": [
-      "Visualization"
-    ]
-  },
-  {
-    "objectID": "dataset.html",
-    "href": "dataset.html",
-    "title": "Dataset",
-    "section": "",
-    "text": "get_5p_em_dataset (data_directory=None)\n\nLoad orbit data from an HDF5 file and corresponding labels from a MAT file.\nIf no data_directory is specified, a default relative path is used. The function expects specific file structures (‘em_orbits.h5’ and ‘EM_IC_ARRAY.mat’) within the directory.\nReturns: tuple: - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis. - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.\nThe function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses. Labels are extracted from a MAT file and matched to the reshaped orbit data.",
-    "crumbs": [
-      "Dataset"
-    ]
-  },
-  {
-    "objectID": "dataset.html#periods",
-    "href": "dataset.html#periods",
-    "title": "Dataset",
-    "section": "",
-    "text": "get_5p_em_dataset (data_directory=None)\n\nLoad orbit data from an HDF5 file and corresponding labels from a MAT file.\nIf no data_directory is specified, a default relative path is used. The function expects specific file structures (‘em_orbits.h5’ and ‘EM_IC_ARRAY.mat’) within the directory.\nReturns: tuple: - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis. - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.\nThe function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses. Labels are extracted from a MAT file and matched to the reshaped orbit data.",
-    "crumbs": [
-      "Dataset"
-    ]
-  },
-  {
-    "objectID": "dataset.html#st-period",
-    "href": "dataset.html#st-period",
-    "title": "Dataset",
-    "section": "1st period",
-    "text": "1st period\n\n\nget_1p_em_dataset\n\n get_1p_em_dataset (data_directory=None)\n\nLoad orbit data from an HDF5 file and corresponding labels from a MAT file.\nIf no data_directory is specified, a default relative path is used. The function expects specific file structures (‘em_orbits.h5’ and ‘EM_IC_ARRAY.mat’) within the directory.\nReturns: tuple: - orbit_data (numpy.ndarray): Reshaped and transposed orbit data suitable for analysis. - labels (pandas.Series): Corresponding orbit classification labels, replicated as necessary.\nThe function reshapes the orbit data and adjusts dimensions to prepare for machine learning or other analyses. Labels are extracted from a MAT file and matched to the reshaped orbit data.",
-    "crumbs": [
-      "Dataset"
+      "Propagation"
     ]
   }
 ]
