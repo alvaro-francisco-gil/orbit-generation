@@ -51,7 +51,7 @@ def get_orbit_data_from_hdf5(file_path: str                   # Path to the HDF5
                 
     return orbits, orbit_df, system_dict
 
-# %% ../nbs/05_dataset.ipynb 6
+# %% ../nbs/05_dataset.ipynb 7
 def get_orbit_features_from_hdf5(file_path: str          # Path to the HDF5 file.
                                 ) -> pd.DataFrame:       # DataFrame containing orbit features.
     """
@@ -73,9 +73,9 @@ def get_orbit_features_from_hdf5(file_path: str          # Path to the HDF5 file
                 
     return orbit_df
 
-# %% ../nbs/05_dataset.ipynb 7
+# %% ../nbs/05_dataset.ipynb 8
 def get_orbit_features_from_folder(folder_path: str    # Path to the folder
-                          ) -> pd.DataFrame:  # DataFrame containing concatenated orbit features.
+                                  ) -> pd.DataFrame:   # DataFrame containing concatenated orbit features.
     """
     Concatenate orbit DataFrames from all HDF5 files in a folder, preserving original index and adding system column.
     """
@@ -104,7 +104,7 @@ def get_orbit_features_from_folder(folder_path: str    # Path to the folder
     
     return concatenated_df
 
-# %% ../nbs/05_dataset.ipynb 9
+# %% ../nbs/05_dataset.ipynb 13
 def substitute_values_from_df(values: List[Any],         # List of values to be substituted.
                               df: pd.DataFrame,          # DataFrame containing the mapping.
                               goal_column: str,          # Column in the DataFrame to get the substitution values from.
@@ -130,7 +130,7 @@ def substitute_values_from_df(values: List[Any],         # List of values to be 
 
     return substituted_values
 
-# %% ../nbs/05_dataset.ipynb 10
+# %% ../nbs/05_dataset.ipynb 14
 def get_orbit_classes(values: List[Any]) -> Tuple[List[Any], List[Any], List[Any], List[Any]]:
     """
     Get orbit classes based on the given values and DataFrame. Returns four lists corresponding
@@ -149,7 +149,7 @@ def get_orbit_classes(values: List[Any]) -> Tuple[List[Any], List[Any], List[Any
 
     return labels, types, subtypes, directions
 
-# %% ../nbs/05_dataset.ipynb 13
+# %% ../nbs/05_dataset.ipynb 17
 def get_first_period_dataset(file_path: str                  # Path to the HDF5 file.
                             ) -> Tuple[np.ndarray,          # 3D numpy array of padded orbits.
                                        pd.DataFrame,        # DataFrame containing orbit features.
@@ -178,7 +178,7 @@ def get_first_period_dataset(file_path: str                  # Path to the HDF5 
     return orbits, orbit_df, system_dict
 
 
-# %% ../nbs/05_dataset.ipynb 15
+# %% ../nbs/05_dataset.ipynb 19
 def get_segmented_dataset(file_path: str,                     # Path to the HDF5 file.
                           segment_length: int                 # Desired length of each segment.
                          ) -> Tuple[np.ndarray,               # 3D numpy array of segmented orbits.

@@ -6,7 +6,10 @@ __all__ = ['setup_new_experiment']
 # %% ../nbs/08_experiment.ipynb 2
 import os
 import csv
-from typing import Dict, Any, List, Optional
+import pandas as pd
+from typing import Dict, Any, List, Optional, Tuple
+
+from .constants import ORBIT_CLASS_DF
 
 # %% ../nbs/08_experiment.ipynb 3
 def setup_new_experiment(params: Dict[str, Any],              # Dictionary of parameters for the new experiment.
