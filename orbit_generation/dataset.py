@@ -2,7 +2,9 @@
 
 # %% auto 0
 __all__ = ['get_orbit_data_from_hdf5', 'get_orbit_features_from_hdf5', 'get_orbit_features_from_folder',
-           'substitute_values_from_df', 'get_orbit_classes', 'get_first_period_dataset', 'get_segmented_dataset']
+           'substitute_values_from_df', 'get_orbit_classes', 'get_periods_of_orbit_dict',
+           'get_first_period_of_fixed_period_dataset', 'get_full_fixed_step_dataset',
+           'get_first_period_fixed_step_dataset']
 
 # %% ../nbs/05_dataset.ipynb 2
 import os
@@ -150,10 +152,47 @@ def get_orbit_classes(values: List[Any]) -> Tuple[List[Any], List[Any], List[Any
     return labels, types, subtypes, directions
 
 # %% ../nbs/05_dataset.ipynb 17
-def get_first_period_dataset(file_path: str                  # Path to the HDF5 file.
-                            ) -> Tuple[np.ndarray,          # 3D numpy array of padded orbits.
-                                       pd.DataFrame,        # DataFrame containing orbit features.
-                                       Dict[str, float]]:   # Dictionary containing system features.
+def get_periods_of_orbit_dict(orbits: Dict[int, np.ndarray],         # Dictionary of orbits with numerical keys.
+                              propagated_periods: Dict[int, int],    # Dictionary of propagated periods for each orbit.
+                              desired_periods: int                   # Desired number of periods.
+                             ) -> Dict[int, np.ndarray]:             # Processed dictionary of orbits.
+    """
+    Process the orbits to extract the desired periods and print the percentage of the dataset returned.
+    """
+    processed_orbits = {}
+    total_length_before = 0
+    total_length_after = 0
+    
+    for key, orbit in orbits.items():
+        total_length_before += orbit.shape[1]
+        if key in propagated_periods:
+            num_propagated = propagated_periods[key]
+            if num_propagated >= desired_periods:
+                # Calculate the length to take
+                length_per_period = orbit.shape[1] // num_propagated
+                length_to_take = length_per_period * desired_periods
+                # Take the desired periods from the beginning
+                processed_orbits[key] = orbit[:, :int(length_to_take) + 1]
+                total_length_after += length_to_take + 1
+            else:
+                # Raise an error if the number of propagated periods is less than desired
+                raise ValueError(f"The number of propagated periods ({num_propagated}) for orbit {key} is less than the desired periods ({desired_periods}).")
+        else:
+            # Raise an error if the key is not in propagated_periods
+            raise KeyError(f"Key {key} is not found in propagated_periods.")
+    
+    # Calculate and print the percentage of the dataset returned
+    percentage_returned = (total_length_after / total_length_before) * 100
+    print(f"Percentage of the dataset returned: {percentage_returned:.2f}%")
+    
+    return processed_orbits
+
+
+# %% ../nbs/05_dataset.ipynb 19
+def get_first_period_of_fixed_period_dataset(file_path: str              # Path to the HDF5 file.
+                                            ) -> Tuple[np.ndarray,       # 3D numpy array of padded orbits.
+                                                    pd.DataFrame,        # DataFrame containing orbit features.
+                                                    Dict[str, float]]:   # Dictionary containing system features.
     """
     Load and process orbit data from an HDF5 file for the first period.
     """
@@ -178,13 +217,13 @@ def get_first_period_dataset(file_path: str                  # Path to the HDF5 
     return orbits, orbit_df, system_dict
 
 
-# %% ../nbs/05_dataset.ipynb 19
-def get_segmented_dataset(file_path: str,                     # Path to the HDF5 file.
-                          segment_length: int                 # Desired length of each segment.
-                         ) -> Tuple[np.ndarray,               # 3D numpy array of segmented orbits.
-                                    pd.DataFrame,             # DataFrame containing orbit features.
-                                    List[int],                # List of IDs representing each new segment.
-                                    Dict[str, float]]:        # Dictionary containing system features.
+# %% ../nbs/05_dataset.ipynb 21
+def get_full_fixed_step_dataset(file_path: str,                   # Path to the HDF5 file.
+                                segment_length: int               # Desired length of each segment.
+                                ) -> Tuple[np.ndarray,            # 3D numpy array of segmented orbits.
+                                        pd.DataFrame,             # DataFrame containing orbit features.
+                                        List[int],                # List of IDs representing each new segment.
+                                        Dict[str, float]]:        # Dictionary containing system features.
     """
     Load and process orbit data from an HDF5 file, segmenting each orbit into specified length.
     """
@@ -198,3 +237,28 @@ def get_segmented_dataset(file_path: str,                     # Path to the HDF5
 
     return orbits, orbit_df, orbits_ids, system_dict
 
+# %% ../nbs/05_dataset.ipynb 22
+def get_first_period_fixed_step_dataset(file_path: str,                  # Path to the HDF5 file.
+                                        segment_length: int              # Desired length of each segment.
+                                       ) -> Tuple[np.ndarray,            # 3D numpy array of segmented orbits.
+                                               pd.DataFrame,             # DataFrame containing orbit features.
+                                               List[int],                # List of IDs representing each new segment.
+                                               Dict[str, float]]:        # Dictionary containing system features.
+    """
+    Load and process orbit data from an HDF5 file, segmenting each orbit into specified length.
+    """
+    # Load the orbit data, features dataframe, and system dictionary from the HDF5 file
+    orbits, orbit_df, system_dict = get_orbit_data_from_hdf5(file_path)
+
+    # Get the propagated periods from the orbit_df
+    propagated_periods = orbit_df['propagated_periods'].to_dict()
+
+    # Process orbits to extract the first desired period
+    orbits = get_periods_of_orbit_dict(orbits, propagated_periods, desired_periods=1)
+    
+    # Check if the second part of the file name is 'dt'
+    if os.path.basename(file_path).split('_')[1] == 'dt':
+        # Segment the orbits and get the corresponding segment IDs
+        orbits, orbits_ids = segment_and_convert_to_3d(orbits, segment_length)
+
+    return orbits, orbit_df, orbits_ids, system_dict
