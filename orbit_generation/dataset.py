@@ -216,13 +216,12 @@ def get_first_period_of_fixed_period_dataset(file_path: str              # Path 
 
     return orbits, orbit_df, system_dict
 
-
 # %% ../nbs/05_dataset.ipynb 21
 def get_full_fixed_step_dataset(file_path: str,                   # Path to the HDF5 file.
                                 segment_length: int               # Desired length of each segment.
                                 ) -> Tuple[np.ndarray,            # 3D numpy array of segmented orbits.
                                         pd.DataFrame,             # DataFrame containing orbit features.
-                                        List[int],                # List of IDs representing each new segment.
+                                        np.ndarray,               # NumPy array of IDs representing each new segment.
                                         Dict[str, float]]:        # Dictionary containing system features.
     """
     Load and process orbit data from an HDF5 file, segmenting each orbit into specified length.
@@ -234,6 +233,7 @@ def get_full_fixed_step_dataset(file_path: str,                   # Path to the 
     if os.path.basename(file_path).split('_')[1] == 'dt':
         # Segment the orbits and get the corresponding segment IDs
         orbits, orbits_ids = segment_and_convert_to_3d(orbits, segment_length)
+        orbits_ids = np.array(orbits_ids)  # Convert IDs to a NumPy array
 
     return orbits, orbit_df, orbits_ids, system_dict
 
@@ -242,7 +242,7 @@ def get_first_period_fixed_step_dataset(file_path: str,                  # Path 
                                         segment_length: int              # Desired length of each segment.
                                        ) -> Tuple[np.ndarray,            # 3D numpy array of segmented orbits.
                                                pd.DataFrame,             # DataFrame containing orbit features.
-                                               List[int],                # List of IDs representing each new segment.
+                                               np.ndarray,               # NumPy array of IDs representing each new segment.
                                                Dict[str, float]]:        # Dictionary containing system features.
     """
     Load and process orbit data from an HDF5 file, segmenting each orbit into specified length.
@@ -260,5 +260,6 @@ def get_first_period_fixed_step_dataset(file_path: str,                  # Path 
     if os.path.basename(file_path).split('_')[1] == 'dt':
         # Segment the orbits and get the corresponding segment IDs
         orbits, orbits_ids = segment_and_convert_to_3d(orbits, segment_length)
+        orbits_ids = np.array(orbits_ids)  # Convert IDs to a NumPy array
 
     return orbits, orbit_df, orbits_ids, system_dict

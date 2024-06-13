@@ -154,7 +154,6 @@ def segment_and_convert_to_3d(orbits: Dict[int, np.ndarray],  # Dictionary of or
     """
     Divide each orbit into segments of a given length and convert to a 3D numpy array.
     """
-    import numpy as np
     
     # Initialize a list to store the segments and their corresponding IDs
     segments = []
@@ -181,7 +180,7 @@ def segment_and_convert_to_3d(orbits: Dict[int, np.ndarray],  # Dictionary of or
 
     return segments_3d, segment_ids
 
-# %% ../nbs/02_processing.ipynb 18
+# %% ../nbs/02_processing.ipynb 19
 def add_time_vector_to_orbits(orbits: Dict[int, np.ndarray],  # Dictionary of orbits with numerical keys.
                               propagated_periods: List[float], # List of propagated periods for each orbit.
                               periods: List[float]            # List of periods for each orbit.
