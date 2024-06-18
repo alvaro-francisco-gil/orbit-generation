@@ -4,16 +4,16 @@
 __all__ = ['get_orbit_data_from_hdf5', 'get_orbit_features_from_hdf5', 'get_orbit_features_from_folder',
            'substitute_values_from_df', 'get_orbit_classes', 'get_periods_of_orbit_dict',
            'get_first_period_of_fixed_period_dataset', 'get_full_fixed_step_dataset',
-           'get_first_period_fixed_step_dataset']
+           'get_first_period_fixed_step_dataset', 'get_first_period_dataset']
 
 # %% ../nbs/05_dataset.ipynb 2
 import os
 import h5py
 import numpy as np
 import pandas as pd
-from typing import Tuple, List, Dict, Any
+from typing import Tuple, List, Dict, Any, Optional
 
-from .processing import pad_and_convert_to_3d, segment_and_convert_to_3d, add_time_vector_to_orbits
+from .processing import pad_and_convert_to_3d, segment_and_convert_to_3d, add_time_vector_to_orbits, resample_3d_array
 from .constants import ORBIT_CLASS_DF
 
 # %% ../nbs/05_dataset.ipynb 4
@@ -188,7 +188,7 @@ def get_periods_of_orbit_dict(orbits: Dict[int, np.ndarray],         # Dictionar
     return processed_orbits
 
 
-# %% ../nbs/05_dataset.ipynb 19
+# %% ../nbs/05_dataset.ipynb 20
 def get_first_period_of_fixed_period_dataset(file_path: str              # Path to the HDF5 file.
                                             ) -> Tuple[np.ndarray,       # 3D numpy array of padded orbits.
                                                     pd.DataFrame,        # DataFrame containing orbit features.
@@ -216,7 +216,7 @@ def get_first_period_of_fixed_period_dataset(file_path: str              # Path 
 
     return orbits, orbit_df, system_dict
 
-# %% ../nbs/05_dataset.ipynb 21
+# %% ../nbs/05_dataset.ipynb 22
 def get_full_fixed_step_dataset(file_path: str,                   # Path to the HDF5 file.
                                 segment_length: int               # Desired length of each segment.
                                 ) -> Tuple[np.ndarray,            # 3D numpy array of segmented orbits.
@@ -237,7 +237,7 @@ def get_full_fixed_step_dataset(file_path: str,                   # Path to the 
 
     return orbits, orbit_df, orbits_ids, system_dict
 
-# %% ../nbs/05_dataset.ipynb 22
+# %% ../nbs/05_dataset.ipynb 23
 def get_first_period_fixed_step_dataset(file_path: str,                  # Path to the HDF5 file.
                                         segment_length: int              # Desired length of each segment.
                                        ) -> Tuple[np.ndarray,            # 3D numpy array of segmented orbits.
@@ -263,3 +263,38 @@ def get_first_period_fixed_step_dataset(file_path: str,                  # Path 
         orbits_ids = np.array(orbits_ids)  # Convert IDs to a NumPy array
 
     return orbits, orbit_df, orbits_ids, system_dict
+
+# %% ../nbs/05_dataset.ipynb 25
+def get_first_period_dataset(file_path: str,                             # Path to the HDF5 file.
+                             segment_length: Optional[int] = None        # Desired length of each segment, optional.
+                            ) -> Tuple[np.ndarray,                      # 3D numpy array of orbits.
+                                    pd.DataFrame,                       # DataFrame containing orbit features.
+                                    np.ndarray,                         # NumPy array of IDs representing each new segment.
+                                    Dict[str, float]]:                  # Dictionary containing system features.
+    """
+    Load orbit data based on the file path. Calls the appropriate function
+    depending on the name of the file.
+    """
+    # Extract the base name and split by underscores to analyze the parts
+    file_name = os.path.basename(file_path)
+    file_parts = file_name.split('_')
+
+    # Check if the second part of the file name is 'dt'
+    if file_parts[1] == 'dt':
+        # If 'dt' is present and segment_length is provided
+        if segment_length is not None:
+            orbits, orbit_df, orbits_ids, system_dict = get_first_period_fixed_step_dataset(file_path, segment_length)
+            return orbits, orbit_df, orbits_ids, system_dict
+        else:
+            raise ValueError("Segment length must be provided for 'dt' files.")
+    elif file_parts[1] == 'N':
+        # If 'N' is present
+        orbits, orbit_df, system_dict = get_first_period_of_fixed_period_dataset(file_path)
+        orbits_ids = np.arange(1, orbits.shape[0] + 1)  # Create an array of orbit IDs from 1 to the number of orbits
+        # Resample the orbits
+        if segment_length is not None:
+            orbits = resample_3d_array(data=orbits, axis=2, target_size=segment_length)
+        return orbits, orbit_df, orbits_ids, system_dict
+    else:
+        raise ValueError("Unsupported file type. File name must contain either 'dt' or 'N'.")
+

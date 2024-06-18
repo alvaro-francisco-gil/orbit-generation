@@ -8,8 +8,9 @@ __all__ = ['resample_3d_array', 'average_downsample_3d_array', 'reorder_orbits',
 from scipy.interpolate import interp1d
 import numpy as np
 from typing import Tuple, Any, List, Dict
+from scipy.stats import kendalltau
 
-# %% ../nbs/02_processing.ipynb 5
+# %% ../nbs/02_processing.ipynb 9
 def resample_3d_array(data: np.ndarray,  # The original 3D array to be resampled.
                       axis: int,         # The axis along which to perform the interpolation.
                       target_size: int   # The new size of the axis after resampling.
@@ -46,7 +47,7 @@ def resample_3d_array(data: np.ndarray,  # The original 3D array to be resampled
 
     return new_data
 
-# %% ../nbs/02_processing.ipynb 9
+# %% ../nbs/02_processing.ipynb 13
 def average_downsample_3d_array(data: np.ndarray,  # The original 3D array to be downsampled.
                                 axis: int,         # The axis along which to perform the downsampling (0, 1, or 2).
                                 target_size: int   # The desired size of the specified axis after downsampling.
@@ -86,40 +87,61 @@ def average_downsample_3d_array(data: np.ndarray,  # The original 3D array to be
 
     return new_data
 
-# %% ../nbs/02_processing.ipynb 12
+# %% ../nbs/02_processing.ipynb 16
 def reorder_orbits(orbit_dataset: np.ndarray  # The original 3D numpy array representing the orbits.
-                  ) -> np.ndarray:
+                  ) -> Tuple[np.ndarray,      # 3D numpy array of reordered orbits.
+                             float,           # Average disorder metric before reordering.
+                             float,           # Percentage of correctly ordered time steps before reordering.
+                             float,           # Average number of inversions before reordering.
+                             float]:          # Average Kendall's tau distance before reordering.
     """
     Reorders the time steps of each orbit in the dataset such that the time values are always incrementally increasing.
-    
-    Parameters:
-    orbit_dataset (np.ndarray): A 3D numpy array where the first dimension is the number of orbits,
-                                the second dimension contains 7 scalars (time, posx, posy, posz, velx, vely, velz),
-                                and the third dimension is the time steps.
-                                
-    Returns:
-    np.ndarray: A reordered version of the input orbit_dataset.
+    Returns the reordered dataset and metrics indicating the quality of the original ordering.
     """
     num_orbits, num_scalars, num_timesteps = orbit_dataset.shape
     reordered_dataset = np.zeros_like(orbit_dataset)
+    total_disorder_metric = 0
+    total_correct_order = 0
+    total_inversions = 0
+    total_kendall_tau = 0
+    total_timesteps = num_orbits * (num_timesteps - 1)
 
     for i in range(num_orbits):
         # Extract the time steps and corresponding data for the current orbit
         orbit_data = orbit_dataset[i]
         time_steps = orbit_data[0]
         
-        # Get the indices that would sort the time steps
+        # Calculate the disorder metric for the current orbit
         sorted_indices = np.argsort(time_steps)
+        disorder_metric = np.sum(np.abs(sorted_indices - np.arange(len(time_steps))))
+        correct_order = np.sum(np.diff(time_steps) >= 0)
+        
+        # Calculate the number of inversions
+        inversions = sum(1 for j in range(num_timesteps) for k in range(j + 1, num_timesteps) if time_steps[j] > time_steps[k])
+        
+        # Calculate Kendall's tau distance
+        tau, _ = kendalltau(time_steps, np.sort(time_steps))
+        
+        # Accumulate the metrics
+        total_disorder_metric += disorder_metric
+        total_correct_order += correct_order
+        total_inversions += inversions
+        total_kendall_tau += 1 - tau  # 1 - tau gives the distance (0 means perfect agreement, 1 means perfect disagreement)
         
         # Reorder the orbit data based on the sorted indices
         reordered_orbit_data = orbit_data[:, sorted_indices]
         
         # Store the reordered orbit data in the new dataset
         reordered_dataset[i] = reordered_orbit_data
-    
-    return reordered_dataset
 
-# %% ../nbs/02_processing.ipynb 15
+    average_disorder_metric = total_disorder_metric / num_orbits
+    percentage_correct_order = (total_correct_order / total_timesteps) * 100
+    average_inversions = total_inversions / num_orbits
+    average_kendall_tau = total_kendall_tau / num_orbits
+    
+    return reordered_dataset, average_disorder_metric, percentage_correct_order, average_inversions, average_kendall_tau
+
+# %% ../nbs/02_processing.ipynb 19
 def pad_and_convert_to_3d(orbits: Dict[int, np.ndarray],     # Dictionary of orbits with numerical keys.
                           timesteps: int                     # Desired number of timesteps.
                          ) -> np.ndarray:                    # 3D numpy array of padded orbits.
@@ -146,7 +168,7 @@ def pad_and_convert_to_3d(orbits: Dict[int, np.ndarray],     # Dictionary of orb
     # Convert the list of padded arrays to a 3D numpy array and return it
     return np.stack(padded_arrays)
 
-# %% ../nbs/02_processing.ipynb 16
+# %% ../nbs/02_processing.ipynb 20
 def segment_and_convert_to_3d(orbits: Dict[int, np.ndarray],  # Dictionary of orbits with numerical keys.
                               segment_length: int             # Desired length of each segment.
                              ) -> Tuple[np.ndarray,           # 3D numpy array of segments.
@@ -180,7 +202,7 @@ def segment_and_convert_to_3d(orbits: Dict[int, np.ndarray],  # Dictionary of or
 
     return segments_3d, segment_ids
 
-# %% ../nbs/02_processing.ipynb 19
+# %% ../nbs/02_processing.ipynb 23
 def add_time_vector_to_orbits(orbits: Dict[int, np.ndarray],  # Dictionary of orbits with numerical keys.
                               propagated_periods: List[float], # List of propagated periods for each orbit.
                               periods: List[float]            # List of periods for each orbit.

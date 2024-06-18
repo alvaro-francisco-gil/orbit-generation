@@ -21,9 +21,6 @@ def setup_new_experiment(params: Dict[str, Any],              # Dictionary of pa
     """
     Sets up a new experiment by creating a new folder and updating the CSV file with experiment parameters.
     """
-    import csv
-    import os
-
     # Ensure the experiments folder exists
     if not os.path.exists(experiments_folder):
         os.makedirs(experiments_folder)
@@ -32,24 +29,36 @@ def setup_new_experiment(params: Dict[str, Any],              # Dictionary of pa
     if csv_file is None:
         csv_file = os.path.join(experiments_folder, 'experiments.csv')
 
+    existing_experiment_folder = None
+    existing_experiment_ids = set()
+
     # Check if the parameters already exist in the CSV file
     if os.path.isfile(csv_file):
         with open(csv_file, mode='r') as file:
             reader = csv.DictReader(file)
             for row in reader:
+                existing_experiment_ids.add(int(row['id']))
                 if all(row[key] == str(value) for key, value in params.items()):
-                    existing_experiment_folder = os.path.join(experiments_folder, f"experiment_{row['id']}")
-                    print(f'Parameters already exist for experiment: {existing_experiment_folder}')
-                    return existing_experiment_folder
+                    candidate_folder = os.path.join(experiments_folder, f"experiment_{row['id']}")
+                    if os.path.exists(candidate_folder):
+                        print(f'Parameters already exist for experiment: {candidate_folder}')
+                        return candidate_folder
+                    else:
+                        existing_experiment_folder = candidate_folder
 
-    # Determine the next experiment number
-    experiment_folders = [d for d in os.listdir(experiments_folder) if os.path.isdir(os.path.join(experiments_folder, d))]
-    experiment_numbers = [int(folder.split('_')[-1]) for folder in experiment_folders if folder.startswith('experiment')]
-    next_experiment_number = max(experiment_numbers, default=0) + 1
+    # Determine the next experiment number, avoiding existing IDs in the CSV
+    existing_experiment_folders = [d for d in os.listdir(experiments_folder) if os.path.isdir(os.path.join(experiments_folder, d))]
+    existing_experiment_numbers = {int(folder.split('_')[-1]) for folder in existing_experiment_folders if folder.startswith('experiment')}
+    next_experiment_number = 1
+    while next_experiment_number in existing_experiment_ids or next_experiment_number in existing_experiment_numbers:
+        next_experiment_number += 1
 
     # Create a new folder for the next experiment
-    new_experiment_folder = os.path.join(experiments_folder, f'experiment_{next_experiment_number}')
-    os.makedirs(new_experiment_folder)
+    if existing_experiment_folder and not os.path.exists(existing_experiment_folder):
+        new_experiment_folder = existing_experiment_folder
+    else:
+        new_experiment_folder = os.path.join(experiments_folder, f'experiment_{next_experiment_number}')
+    os.makedirs(new_experiment_folder, exist_ok=True)
 
     # Update the CSV file with the new experiment's parameters
     csv_exists = os.path.isfile(csv_file)
