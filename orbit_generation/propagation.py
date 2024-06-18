@@ -188,24 +188,12 @@ def calculate_errors(orbit_data: np.ndarray,  # 3D array of orbit data
                      orbit_indices: List[int] = None,  # List of integers referring to the orbits to analyze
                      error_types: List[str] = ['position', 'velocity', 'energy'],  # Types of errors to calculate
                      time_step: Optional[float] = None,  # Optional time step if time dimension is not included
-                     display_results: bool = True  # Boolean to control whether to display the results
+                     display_results: bool = True,  # Boolean to control whether to display the results
+                     cumulative: bool = False  # Boolean to control cumulative or average error
                     ) -> Dict[str, Tuple[float, float]]:
     """
     Calculate and return the cumulative error and the average error per time step
     for the selected orbits together. Optionally, display the evolution of each error as a chart.
-    
-    Parameters:
-    orbit_data (np.ndarray): 3D array of orbit data.
-    mu (float): Gravitational parameter.
-    orbit_indices (List[int], optional): List of integers referring to the orbits to analyze. 
-                                         If None, analyze all orbits. Default is None.
-    error_types (List[str]): List of types of errors to calculate: 'position', 'velocity', and/or 'energy'.
-    time_step (float, optional): Optional time step if time dimension is not included. Default is None.
-    display_results (bool, optional): Whether to display the results as charts. Default is True.
-    
-    Returns:
-    Dict[str, Tuple[float, float]]: A dictionary with keys being the error types and values being
-                                     tuples of cumulative error and average error per time step.
     """
     if orbit_indices is None:
         orbit_indices = list(range(orbit_data.shape[0]))
@@ -283,6 +271,9 @@ def calculate_errors(orbit_data: np.ndarray,  # 3D array of orbit data
             plt.grid(True)
             plt.show()
         
-        errors[error_type] = (cumulative_error, avg_error_per_timestep)
+        if cumulative:
+            errors[f'{error_type}_error'] = (cumulative_error, avg_error_per_timestep)
+        else:
+            errors[f'{error_type}_error'] = (avg_error_per_timestep,)
     
     return errors

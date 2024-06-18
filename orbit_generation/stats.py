@@ -113,8 +113,9 @@ def plot_orbit_data_lengths(orbit_data, key_range=(1, 36072), dimension=0, bins=
         return lengths
 
 # %% ../nbs/04_statistics.ipynb 13
-def plot_histograms_position(data: np.ndarray,  # The orbit data array of shape (num_orbits, num_scalars, num_time_points).
-                             save_path: str = None  # Optional path to save the plot image.
+def plot_histograms_position(data: np.ndarray,                  # The orbit data array of shape (num_orbits, num_scalars, num_time_points).
+                             save_path: str = None,             # Optional path to save the plot image.
+                             last_time_elements: bool = True    # Whether to plot only the last elements of the time vectors.
                             ) -> None:
     """
     Plots histograms for the scalar values (position and velocity in X, Y, Z, and optionally time) across all orbits
@@ -123,6 +124,7 @@ def plot_histograms_position(data: np.ndarray,  # The orbit data array of shape 
     Parameters:
     - data (np.ndarray): The orbit data array.
     - save_path (str, optional): If provided, the plot will be saved to this file path.
+    - last_time_elements (bool): If True, plot only the last elements of the time vectors for the time histogram.
     """
     # Check the number of scalars and adjust scalar names accordingly
     num_scalars = data.shape[1]
@@ -139,7 +141,12 @@ def plot_histograms_position(data: np.ndarray,  # The orbit data array of shape 
     fig.suptitle('Histograms of Position, Velocity Components, and Time (if present) Across All Orbits')
     
     for i in range(num_scalars):
-        scalar_values = data[:, i, :].flatten()  # Flatten combines all orbits and time points for each scalar
+        if i == 0 and num_scalars == 7 and last_time_elements:
+            # Plot only the last elements of the time vectors
+            scalar_values = data[:, i, -1]  # Last elements of the time vectors
+        else:
+            # Flatten combines all orbits and time points for each scalar
+            scalar_values = data[:, i, :].flatten()
         
         row, col = divmod(i, cols)  # Determine subplot position
         axs[row, col].hist(scalar_values, bins=50, alpha=0.75)  # You can adjust the number of bins

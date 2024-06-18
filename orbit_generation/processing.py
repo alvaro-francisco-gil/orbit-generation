@@ -90,10 +90,7 @@ def average_downsample_3d_array(data: np.ndarray,  # The original 3D array to be
 # %% ../nbs/02_processing.ipynb 16
 def reorder_orbits(orbit_dataset: np.ndarray  # The original 3D numpy array representing the orbits.
                   ) -> Tuple[np.ndarray,      # 3D numpy array of reordered orbits.
-                             float,           # Average disorder metric before reordering.
-                             float,           # Percentage of correctly ordered time steps before reordering.
-                             float,           # Average number of inversions before reordering.
-                             float]:          # Average Kendall's tau distance before reordering.
+                             Dict[str, float]]: # Dictionary of metrics indicating the quality of the original ordering.
     """
     Reorders the time steps of each orbit in the dataset such that the time values are always incrementally increasing.
     Returns the reordered dataset and metrics indicating the quality of the original ordering.
@@ -138,8 +135,15 @@ def reorder_orbits(orbit_dataset: np.ndarray  # The original 3D numpy array repr
     percentage_correct_order = (total_correct_order / total_timesteps) * 100
     average_inversions = total_inversions / num_orbits
     average_kendall_tau = total_kendall_tau / num_orbits
+
+    metrics = {
+        'average_disorder_metric': average_disorder_metric,
+        'percentage_correct_order': percentage_correct_order,
+        'average_inversions': average_inversions,
+        'average_kendall_tau': average_kendall_tau
+    }
     
-    return reordered_dataset, average_disorder_metric, percentage_correct_order, average_inversions, average_kendall_tau
+    return reordered_dataset, metrics
 
 # %% ../nbs/02_processing.ipynb 19
 def pad_and_convert_to_3d(orbits: Dict[int, np.ndarray],     # Dictionary of orbits with numerical keys.
