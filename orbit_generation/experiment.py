@@ -9,11 +9,12 @@ import csv
 import pandas as pd
 import subprocess
 import shutil
+import json
 from typing import Dict, Any, List, Optional, Tuple
 
 from .constants import ORBIT_CLASS_DF
 
-# %% ../nbs/08_experiment.ipynb 3
+# %% ../nbs/08_experiment.ipynb 5
 def setup_new_experiment(params: Dict[str, Any],              # Dictionary of parameters for the new experiment.
                          experiments_folder: str,             # Path to the folder containing all experiments.
                          csv_file: Optional[str] = None       # Optional path to the CSV file tracking experiment parameters.
@@ -77,14 +78,15 @@ def setup_new_experiment(params: Dict[str, Any],              # Dictionary of pa
 
     return new_experiment_folder
 
-# %% ../nbs/08_experiment.ipynb 4
-def add_experiment_metrics(params: Dict[str, Any],             # Dictionary of parameters identifying the experiment.
-                           metrics: Dict[str, Any],            # Dictionary of metrics to be added to the experiment.
-                           experiments_folder: str,            # Path to the folder containing all experiments.
-                           csv_file: Optional[str] = None      # Optional path to the CSV file tracking experiment parameters and metrics.
+# %% ../nbs/08_experiment.ipynb 7
+def add_experiment_metrics(experiments_folder: str,                    # Path to the folder containing all experiments.
+                           params: Optional[Dict[str, Any]] = None,    # Optional dictionary of parameters identifying the experiment.
+                           experiment_id: Optional[int] = None,        # Optional ID to identify the experiment.
+                           metrics: Optional[Dict[str, Any]] = None,   # Optional dictionary of metrics to be added to the experiment.
+                           csv_file: Optional[str] = None              # Optional path to the CSV file tracking experiment parameters and metrics.
                           ) -> None:
     """
-    Adds metrics to an existing experiment in the CSV file based on the given parameters.
+    Adds metrics to an existing experiment in the CSV file based on the given parameters or ID.
     """
     # Ensure the experiments folder exists
     if not os.path.exists(experiments_folder):
@@ -97,21 +99,32 @@ def add_experiment_metrics(params: Dict[str, Any],             # Dictionary of p
     if not os.path.isfile(csv_file):
         raise FileNotFoundError(f"The CSV file '{csv_file}' does not exist.")
 
+    if params is None and experiment_id is None:
+        raise ValueError("Either 'params' or 'experiment_id' must be provided to identify the experiment.")
+
+    if metrics is None:
+        metrics = {}
+
     updated_rows = []
-    experiment_id = None
+    found_experiment = False
 
     # Read the CSV file and find the matching experiment
     with open(csv_file, mode='r', newline='') as file:
         reader = csv.DictReader(file)
         for row in reader:
-            if all(row.get(key) == str(value) for key, value in params.items()):
-                experiment_id = int(row['id'])
-                # Update the row with new metrics
+            if experiment_id is not None and int(row['id']) == experiment_id:
+                found_experiment = True
+                row.update(metrics)
+            elif params is not None and all(row.get(key) == str(value) for key, value in params.items() if key in row):
+                found_experiment = True
                 row.update(metrics)
             updated_rows.append(row)
 
-    if experiment_id is None:
-        raise ValueError("Experiment with the specified parameters does not exist.")
+    if not found_experiment:
+        if experiment_id is not None:
+            raise ValueError(f"Experiment with the specified ID {experiment_id} does not exist.")
+        else:
+            raise ValueError("Experiment with the specified parameters does not exist.")
 
     # Determine the updated header
     header = set(updated_rows[0].keys())
@@ -124,10 +137,13 @@ def add_experiment_metrics(params: Dict[str, Any],             # Dictionary of p
         writer.writeheader()
         writer.writerows(updated_rows)
 
-    print(f'Metrics added to experiment {experiment_id} in {csv_file}.')
+    if experiment_id is not None:
+        print(f'Metrics added to experiment with ID {experiment_id} in {csv_file}.')
+    else:
+        experiment_id = [row['id'] for row in updated_rows if all(row.get(key) == str(value) for key, value in params.items())][0]
+        print(f'Metrics added to experiment with ID {experiment_id} in {csv_file}.')
 
-
-# %% ../nbs/08_experiment.ipynb 5
+# %% ../nbs/08_experiment.ipynb 9
 def convert_notebook(notebook_path: str,                # The path to the notebook to convert.
                      output_folder: str,                # The folder to save the converted file.
                      output_filename: str,              # The name of the output file.
@@ -157,3 +173,112 @@ def convert_notebook(notebook_path: str,                # The path to the notebo
         print(f"An error occurred while converting the notebook to {format.upper()}:")
         print(e.stderr)
         raise
+
+# %% ../nbs/08_experiment.ipynb 11
+def setup_new_experiment(params: Dict[str, Any],              # Dictionary of parameters for the new experiment.
+                         experiments_folder: str,             # Path to the folder containing all experiments.
+                         json_file: Optional[str] = None      # Optional path to the JSON file tracking experiment parameters.
+                        ) -> str:                             # The path to the newly created experiment folder.
+    """
+    Sets up a new experiment by creating a new folder and updating the JSON file with experiment parameters.
+    """
+    # Ensure the experiments folder exists
+    if not os.path.exists(experiments_folder):
+        os.makedirs(experiments_folder)
+
+    # Default JSON file to 'experiments.json' in the experiments_folder if not provided
+    if json_file is None:
+        json_file = os.path.join(experiments_folder, 'experiments.json')
+
+    # Load existing experiments from the JSON file if it exists
+    if os.path.isfile(json_file):
+        with open(json_file, mode='r') as file:
+            experiments = json.load(file)
+    else:
+        experiments = []
+
+    # Check if the parameters already exist in the JSON file
+    for experiment in experiments:
+        if all(experiment['parameters'].get(key) == value for key, value in params.items()):
+            candidate_folder = os.path.join(experiments_folder, f"experiment_{experiment['id']}")
+            if os.path.exists(candidate_folder):
+                print(f'Parameters already exist for experiment: {candidate_folder}')
+                return candidate_folder
+
+    # Determine the next experiment number
+    next_experiment_number = max((experiment['id'] for experiment in experiments), default=0) + 1
+
+    # Create a new folder for the next experiment
+    new_experiment_folder = os.path.join(experiments_folder, f'experiment_{next_experiment_number}')
+    os.makedirs(new_experiment_folder, exist_ok=True)
+
+    # Add the new experiment to the list and save to JSON file
+    new_experiment = {
+        'id': next_experiment_number,
+        'parameters': params
+    }
+    experiments.append(new_experiment)
+    with open(json_file, mode='w') as file:
+        json.dump(experiments, file, indent=4)
+
+    print(f'New experiment setup complete: {new_experiment_folder}')
+    print(f'Parameters saved to {json_file}.')
+
+    return new_experiment_folder
+
+# %% ../nbs/08_experiment.ipynb 12
+def add_experiment_metrics(experiments_folder: str,                    # Path to the folder containing all experiments.
+                           params: Optional[Dict[str, Any]] = None,    # Optional dictionary of parameters identifying the experiment.
+                           experiment_id: Optional[int] = None,        # Optional ID to identify the experiment.
+                           metrics: Optional[Dict[str, Any]] = None,   # Optional dictionary of metrics to be added to the experiment.
+                           json_file: Optional[str] = None             # Optional path to the JSON file tracking experiment parameters and metrics.
+                          ) -> None:
+    """
+    Adds metrics to an existing experiment in the JSON file based on the given parameters or ID.
+    """
+    # Ensure the experiments folder exists
+    if not os.path.exists(experiments_folder):
+        raise FileNotFoundError(f"The experiments folder '{experiments_folder}' does not exist.")
+
+    # Default JSON file to 'experiments.json' in the experiments_folder if not provided
+    if json_file is None:
+        json_file = os.path.join(experiments_folder, 'experiments.json')
+
+    if not os.path.isfile(json_file):
+        raise FileNotFoundError(f"The JSON file '{json_file}' does not exist.")
+
+    if params is None and experiment_id is None:
+        raise ValueError("Either 'params' or 'experiment_id' must be provided to identify the experiment.")
+
+    if metrics is None:
+        metrics = {}
+
+    # Load existing experiments from the JSON file
+    with open(json_file, mode='r') as file:
+        experiments = json.load(file)
+
+    found_experiment = False
+
+    # Find the matching experiment and update metrics
+    for experiment in experiments:
+        if (experiment_id is not None and experiment['id'] == experiment_id) or \
+           (params is not None and all(experiment['parameters'].get(key) == value for key, value in params.items())):
+            experiment.update(metrics)
+            found_experiment = True
+            break
+
+    if not found_experiment:
+        if experiment_id is not None:
+            raise ValueError(f"Experiment with the specified ID {experiment_id} does not exist.")
+        else:
+            raise ValueError("Experiment with the specified parameters does not exist.")
+
+    # Save the updated experiments back to the JSON file
+    with open(json_file, mode='w') as file:
+        json.dump(experiments, file, indent=4)
+
+    if experiment_id is not None:
+        print(f'Metrics added to experiment with ID {experiment_id} in {json_file}.')
+    else:
+        experiment_id = experiment['id']
+        print(f'Metrics added to experiment with ID {experiment_id} in {json_file}.')

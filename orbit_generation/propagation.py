@@ -274,6 +274,6 @@ def calculate_errors(orbit_data: np.ndarray,  # 3D array of orbit data
         if cumulative:
             errors[f'{error_type}_error'] = (cumulative_error, avg_error_per_timestep)
         else:
-            errors[f'{error_type}_error'] = (avg_error_per_timestep,)
+            errors[f'{error_type}_error'] = avg_error_per_timestep
     
     return errors
