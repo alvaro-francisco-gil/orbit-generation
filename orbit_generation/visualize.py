@@ -9,6 +9,7 @@ import numpy as np
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import pandas as pd
+import matplotlib.cm as cm
 import seaborn as sns
 from sklearn.preprocessing import LabelEncoder
 from typing import Optional, List, Dict, Any
@@ -300,24 +301,27 @@ def plot_latent_space_2d(latent_representations: np.ndarray,  # Precomputed late
     encoded_labels = label_encoder.fit_transform(labels)
     class_names = label_encoder.classes_
 
+    # Use a colormap for better color differentiation
+    cmap = cm.get_cmap('tab20', len(class_names))  # You can change 'tab20' to any other colormap
     markers = ['o', 's', '^', 'v', 'D', '<', '>', 'p', '*', 'h', 'H', '8']  # Marker styles
-
     fig, ax = plt.subplots(figsize=figsize)
 
     if many_classes:
         for class_idx, class_name in enumerate(class_names):
             class_mask = (encoded_labels == class_idx)
+            color = cmap(class_idx)
             marker = markers[class_idx % len(markers)]
             ax.scatter(latent_representations[class_mask, 0], latent_representations[class_mask, 1],
-                       label=class_name, marker=marker, s=30, **kwargs)
-        ax.legend(title="Classes")
+                       label=class_name, marker=marker, color=color, s=30, **kwargs)
+        # ax.legend(title="Classes")
     else:
         unique_labels = np.unique(encoded_labels)
         for class_idx, class_name in zip(unique_labels, class_names):
             class_mask = (encoded_labels == class_idx)
+            color = cmap(class_idx)
             ax.scatter(latent_representations[class_mask, 0], latent_representations[class_mask, 1],
-                       label=class_name, s=30, **kwargs)
-        ax.legend(title="Classes")
+                       label=class_name, color=color, s=30, **kwargs)
+        # ax.legend(title="Classes")
 
     ax.set_title('2D Latent Space Visualization')
     ax.set_xlabel('Dimension 1')
@@ -328,4 +332,3 @@ def plot_latent_space_2d(latent_representations: np.ndarray,  # Precomputed late
         plt.savefig(save_path, bbox_inches='tight')
         print(f"Saved plot to {save_path}")
     plt.show()
-

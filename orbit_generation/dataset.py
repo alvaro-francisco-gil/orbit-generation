@@ -290,7 +290,7 @@ def get_first_period_dataset(file_path: str,                             # Path 
     elif file_parts[1] == 'N':
         # If 'N' is present
         orbits, orbit_df, system_dict = get_first_period_of_fixed_period_dataset(file_path)
-        orbits_ids = np.arange(1, orbits.shape[0] + 1)  # Create an array of orbit IDs from 1 to the number of orbits
+        orbits_ids = np.arange(0, orbits.shape[0])  # Create an array of orbit IDs from 1 to the number of orbits
         # Resample the orbits
         if segment_length is not None:
             orbits = resample_3d_array(data=orbits, axis=2, target_size=segment_length)
