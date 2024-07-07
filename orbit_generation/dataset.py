@@ -25,8 +25,13 @@ def get_orbit_data_from_hdf5(file_path: str                   # Path to the HDF5
     Load orbit data from an HDF5 file.
     """
     with h5py.File(file_path, 'r') as file:
-        # Extract not_propagated_orbits and store in a list of integers
-        not_propagated_orbits = [index - 1 for index in file['not_propagated_orbits'][0].tolist()]
+        # Check if not_propagated_orbits is a scalar
+        if file['not_propagated_orbits'].shape == ():
+            # Handle scalar case
+            not_propagated_orbits = []
+        else:
+            # Extract not_propagated_orbits and store in a list of integers
+            not_propagated_orbits = [index - 1 for index in file['not_propagated_orbits'][0].tolist()]
         
         # Extract system features and labels
         system_features = file['system_features'][:]
@@ -43,7 +48,8 @@ def get_orbit_data_from_hdf5(file_path: str                   # Path to the HDF5
         orbit_df = pd.DataFrame(orbit_features.T, columns=orbit_labels.flatten().tolist())
         
         # Remove rows in orbit_df based on not_propagated_orbits
-        orbit_df = orbit_df.drop(not_propagated_orbits).reset_index(drop=True)
+        if not_propagated_orbits:
+            orbit_df = orbit_df.drop(not_propagated_orbits).reset_index(drop=True)
         
         # Extract numpy arrays with numerical keys
         orbits = {int(key): file[key][:] for key in file.keys() if key.isdigit()}
@@ -60,8 +66,13 @@ def get_orbit_features_from_hdf5(file_path: str          # Path to the HDF5 file
     Load orbit DataFrame from an HDF5 file.
     """
     with h5py.File(file_path, 'r') as file:
-        # Extract not_propagated_orbits and store in a list of integers
-        not_propagated_orbits = [index - 1 for index in file['not_propagated_orbits'][0].tolist()]
+        # Check if not_propagated_orbits is a scalar
+        if file['not_propagated_orbits'].shape == ():
+            # Handle scalar case
+            not_propagated_orbits = []
+        else:
+            # Extract not_propagated_orbits and store in a list of integers
+            not_propagated_orbits = [index - 1 for index in file['not_propagated_orbits'][0].tolist()]
         
         # Extract orbit features and labels
         orbit_features = file['orbit_features'][:]
@@ -71,7 +82,8 @@ def get_orbit_features_from_hdf5(file_path: str          # Path to the HDF5 file
         orbit_df = pd.DataFrame(orbit_features.T, columns=orbit_labels.flatten().tolist())
         
         # Remove rows in orbit_df based on not_propagated_orbits
-        orbit_df = orbit_df.drop(not_propagated_orbits).reset_index(drop=True)
+        if not_propagated_orbits:
+            orbit_df = orbit_df.drop(not_propagated_orbits).reset_index(drop=True)
                 
     return orbit_df
 
