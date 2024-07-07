@@ -11,7 +11,7 @@ import tensorflow as tf
 import tsgm.models
 import matplotlib.pyplot as plt
 
-# %% ../nbs/06_model.ipynb 4
+# %% ../nbs/06_model.ipynb 5
 def get_model(params):
     model_name = params['model_name']
 
@@ -38,17 +38,17 @@ def get_model(params):
             hidden_dim=24,
             n_features=params['feature_dim'],
             n_layers=3,
-            batch_size=256,
+            batch_size=params['batch_size'],
             gamma=1.0,
         )
         # .compile() sets all optimizers to Adam by default
-        model.compile()
+        model.compile(optimizer=params['optimizer']['name'], learning_rate=params['optimizer']['learning_rate'])
         return model
 
     else:
         raise ValueError(f"Unsupported model_name: {model_name}")
 
-# %% ../nbs/06_model.ipynb 5
+# %% ../nbs/06_model.ipynb 6
 def get_optimizer(optimizer_config):
     name = optimizer_config['name'].lower()
     if name == 'adam':
@@ -58,7 +58,7 @@ def get_optimizer(optimizer_config):
     # Add additional optimizers as needed
     raise ValueError("Unsupported optimizer: {}".format(optimizer_config['name']))
 
-# %% ../nbs/06_model.ipynb 6
+# %% ../nbs/06_model.ipynb 7
 def extract_plot_and_return_metrics(history, validation=True):
     """
     Extracts the metrics from the training history, plots the training and validation loss over epochs if validation is True, and returns the metrics.
