@@ -7,7 +7,7 @@ __all__ = ['evaluate_clustering_multiple_labels']
 import numpy as np
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.mixture import GaussianMixture
-from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score, homogeneity_score, completeness_score, v_measure_score, fowlkes_mallows_score, silhouette_score
+from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score, homogeneity_score, completeness_score, v_measure_score, fowlkes_mallows_score, silhouette_score, jaccard_score, accuracy_score
 from sklearn.metrics.cluster import contingency_matrix
 
 # %% ../nbs/09_evaluation.ipynb 3
@@ -24,7 +24,6 @@ def evaluate_clustering_multiple_labels(latent_representations: np.ndarray,  # T
     if isinstance(list_of_labels, np.ndarray):
         list_of_labels = [list_of_labels]
     
-    # Use default names if label_names are not provided
     if label_names is None:
         label_names = [f'Set_{i+1}' for i in range(len(list_of_labels))]
     
@@ -37,15 +36,15 @@ def evaluate_clustering_multiple_labels(latent_representations: np.ndarray,  # T
         'V-Measure': 0,
         'FMI': 0,
         'Purity': 0,
-        'Silhouette Score': 0
+        'Silhouette Score': 0,
+        'Jaccard': 0,
+        'Accuracy': 0
     }
     num_label_sets = len(list_of_labels)
     
     for i, true_labels in enumerate(list_of_labels):
-        # Determine the number of clusters
         n_clusters = len(np.unique(true_labels))
         
-        # Apply the selected clustering algorithm
         if clustering_method == 'kmeans':
             clusterer = KMeans(n_clusters=n_clusters, random_state=42, n_init=10, **kwargs)
             pred_labels = clusterer.fit_predict(latent_representations)
@@ -58,7 +57,6 @@ def evaluate_clustering_multiple_labels(latent_representations: np.ndarray,  # T
         else:
             raise ValueError("Unsupported clustering method. Choose from 'kmeans', 'gmm', 'dbscan'.")
         
-        # Calculate clustering metrics
         ari = adjusted_rand_score(true_labels, pred_labels)
         nmi = normalized_mutual_info_score(true_labels, pred_labels)
         homogeneity = homogeneity_score(true_labels, pred_labels)
@@ -66,14 +64,14 @@ def evaluate_clustering_multiple_labels(latent_representations: np.ndarray,  # T
         v_measure = v_measure_score(true_labels, pred_labels)
         fmi = fowlkes_mallows_score(true_labels, pred_labels)
         
-        # Purity
         cont_matrix = contingency_matrix(true_labels, pred_labels)
         purity = np.sum(np.amax(cont_matrix, axis=0)) / np.sum(cont_matrix)
         
-        # Silhouette Score
         silhouette = silhouette_score(latent_representations, pred_labels)
         
-        # Store the results for this set of labels
+        jaccard = jaccard_score(true_labels, pred_labels, average='macro')
+        accuracy = accuracy_score(true_labels, pred_labels)
+        
         combined_metrics.update({
             f'{label_names[i]}_ari': ari,
             f'{label_names[i]}_nmi': nmi,
@@ -82,10 +80,11 @@ def evaluate_clustering_multiple_labels(latent_representations: np.ndarray,  # T
             f'{label_names[i]}_v-measure': v_measure,
             f'{label_names[i]}_fmi': fmi,
             f'{label_names[i]}_purity': purity,
-            f'{label_names[i]}_silhouette_score': silhouette
+            f'{label_names[i]}_silhouette_score': silhouette,
+            f'{label_names[i]}_jaccard': jaccard,
+            f'{label_names[i]}_accuracy': accuracy
         })
         
-        # Accumulate the results for averaging
         average_metrics['ARI'] += ari
         average_metrics['NMI'] += nmi
         average_metrics['Homogeneity'] += homogeneity
@@ -94,8 +93,9 @@ def evaluate_clustering_multiple_labels(latent_representations: np.ndarray,  # T
         average_metrics['FMI'] += fmi
         average_metrics['Purity'] += purity
         average_metrics['Silhouette Score'] += silhouette
+        average_metrics['Jaccard'] += jaccard
+        average_metrics['Accuracy'] += accuracy
     
-    # Compute the average metrics if there are multiple sets of labels
     if num_label_sets > 1:
         for key in average_metrics:
             combined_metrics[f'average_{key}'] = average_metrics[key] / num_label_sets
