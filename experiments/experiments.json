@@ -152,6 +152,37 @@
         "average_Purity": 0.600108380703811,
         "average_Silhouette Score": 0.29751821607351303,
         "average_Jaccard": 0.040702745134867865,
-        "average_Accuracy": 0.47735617438234057
+        "average_Accuracy": 0.47735617438234057,
+        "loss": 13.935563087463379,
+        "reconstruction_loss": 4.926813125610352,
+        "kl_loss": 9.00866985321045
+    },
+    {
+        "id": 3,
+        "parameters": {
+            "model_name": "vae_conv5",
+            "data_used": "EM_N_fix_1500",
+            "latent_dim": 8,
+            "feature_dim": 7,
+            "seq_len": 300,
+            "val_split": 0,
+            "batch_size": 32,
+            "epochs": 25,
+            "optimizer": {
+                "name": "Adam",
+                "learning_rate": 0.001
+            },
+            "num_samples": 100
+        },
+        "loss": 12.387785911560059,
+        "reconstruction_loss": 4.1536641120910645,
+        "kl_loss": 8.234063148498535,
+        "position_error": 14.127982930485597,
+        "velocity_error": 23.214372843866947,
+        "energy_error": 135.60477898935252,
+        "average_disorder_metric": 1462.9,
+        "percentage_correct_order": 69.19063545150502,
+        "average_inversions": 995.86,
+        "average_kendall_tau": 0.04440805543128946
     }
 ]
