@@ -220,42 +220,41 @@ def calculate_errors(orbit_data: np.ndarray,  # 3D array of orbit data
             selected_orbit = orbit_data[idx, :, :].T  # Transpose to shape (num_time_points, 7)
             tvec = selected_orbit[:, 0]  # Time vector for the current orbit
 
-            # Ensure the time vector is strictly increasing
-            if not np.all(np.diff(tvec) > 0):
-                raise ValueError("Time vector is not strictly increasing.")
+            unique_time_indices = np.where(np.diff(tvec) > 0)[0] + 1
+            unique_time_indices = np.insert(unique_time_indices, 0, 0)  # Include the first time point
 
             if error_type == 'position':
-                pos_error, _ = dynamics_defect(selected_orbit, mu)
+                pos_error, _ = dynamics_defect(selected_orbit[unique_time_indices, :], mu)
                 cumulative_error += pos_error
-                for i in range(len(tvec) - 1):
-                    dt = tvec[i + 1] - tvec[i]
-                    X_start = selected_orbit[i, 1:]
-                    X_end = selected_orbit[i + 1, 1:]
+                for i in range(len(unique_time_indices) - 1):
+                    dt = tvec[unique_time_indices[i + 1]] - tvec[unique_time_indices[i]]
+                    X_start = selected_orbit[unique_time_indices[i], 1:]
+                    X_end = selected_orbit[unique_time_indices[i + 1], 1:]
                     X_test = prop_node(X_start, dt, mu)
                     error_evolution[i] += np.linalg.norm(X_test[:3] - X_end[:3])
                     
             elif error_type == 'velocity':
-                _, vel_error = dynamics_defect(selected_orbit, mu)
+                _, vel_error = dynamics_defect(selected_orbit[unique_time_indices, :], mu)
                 cumulative_error += vel_error
-                for i in range(len(tvec) - 1):
-                    dt = tvec[i + 1] - tvec[i]
-                    X_start = selected_orbit[i, 1:]
-                    X_end = selected_orbit[i + 1, 1:]
+                for i in range(len(unique_time_indices) - 1):
+                    dt = tvec[unique_time_indices[i + 1]] - tvec[unique_time_indices[i]]
+                    X_start = selected_orbit[unique_time_indices[i], 1:]
+                    X_end = selected_orbit[unique_time_indices[i + 1], 1:]
                     X_test = prop_node(X_start, dt, mu)
                     error_evolution[i] += np.linalg.norm(X_test[3:] - X_end[3:])
                     
             elif error_type == 'energy':
-                energy_error = jacobi_test(selected_orbit[:, 1:], mu)
+                energy_error = jacobi_test(selected_orbit[unique_time_indices, 1:], mu)
                 cumulative_error += energy_error
-                for i in range(len(tvec) - 1):
-                    Ji_start = jacobi_constant(selected_orbit[i, 1:], mu)[0]
-                    Ji_end = jacobi_constant(selected_orbit[i + 1, 1:], mu)[0]
+                for i in range(len(unique_time_indices) - 1):
+                    Ji_start = jacobi_constant(selected_orbit[unique_time_indices[i], 1:], mu)[0]
+                    Ji_end = jacobi_constant(selected_orbit[unique_time_indices[i + 1], 1:], mu)[0]
                     error_evolution[i] += np.abs(Ji_start - Ji_end)
                     
             else:
                 raise ValueError("Invalid error type. Choose from 'position', 'velocity', or 'energy'.")
         
-        avg_error_per_timestep = cumulative_error / (orbit_data.shape[2] - 1)
+        avg_error_per_timestep = cumulative_error / (len(unique_time_indices) - 1)
         
         if display_results:
             print(f"Cumulative {error_type} error for selected orbits: {cumulative_error}")

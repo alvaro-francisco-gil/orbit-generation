@@ -471,6 +471,7 @@ def plot_latent_space_with_feature_distributions(latent_representations: np.ndar
                                                  save_path: Optional[str] = None,       # Optional path to save the plot image.
                                                  many_classes: bool = False,            # Flag to use enhanced plotting for many classes.
                                                  show_legend: bool = True,              # Flag to show/hide legends.
+                                                 legend_fontsize: int = 8,             # Font size for the legend.
                                                  **kwargs: Any                          # Additional keyword arguments for the plotting.
                                                 ) -> None:
     """
@@ -482,7 +483,7 @@ def plot_latent_space_with_feature_distributions(latent_representations: np.ndar
     class_names = label_encoder.classes_
 
     # Use a colormap for better color differentiation
-    cmap = colormaps.get_cmap('tab20')  # You can change 'tab20' to any other colormap
+    cmap = plt.get_cmap('tab20')  # You can change 'tab20' to any other colormap
     markers = ['o', 's', '^', 'v', 'D', '<', '>', 'p', '*', 'h', 'H', '8']  # Marker styles
 
     # Create subplots
@@ -513,7 +514,7 @@ def plot_latent_space_with_feature_distributions(latent_representations: np.ndar
     ax1.set_xlabel('Dimension 1')
     ax1.set_ylabel('Dimension 2')
     if show_legend:
-        ax1.legend(title="Classes")
+        ax1.legend(title="Classes", fontsize=legend_fontsize)
 
     if features is not None and feature_names is not None:
         # Horizontal distribution
@@ -538,7 +539,7 @@ def plot_latent_space_with_feature_distributions(latent_representations: np.ndar
         ax2.set_xlabel('Dimension 1')
         ax2.set_ylabel('Normalized Feature Value')
         if show_legend:
-            ax2.legend()
+            ax2.legend(fontsize=legend_fontsize)
 
         # Vertical distribution
         y_min, y_max = np.min(latent_representations[:, 1]), np.max(latent_representations[:, 1])
@@ -562,7 +563,7 @@ def plot_latent_space_with_feature_distributions(latent_representations: np.ndar
         ax3.set_xlabel('Normalized Feature Value')
         ax3.set_ylabel('Dimension 2')
         if show_legend:
-            ax3.legend()
+            ax3.legend(fontsize=legend_fontsize)
 
     plt.tight_layout()
     if save_path:

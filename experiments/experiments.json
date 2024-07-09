@@ -184,5 +184,89 @@
         "percentage_correct_order": 69.19063545150502,
         "average_inversions": 995.86,
         "average_kendall_tau": 0.04440805543128946
+    },
+    {
+        "id": 4,
+        "parameters": {
+            "model_name": "vae_conv5",
+            "data_used": "EM_N_fix_1500",
+            "latent_dim": 2,
+            "feature_dim": 7,
+            "seq_len": 100,
+            "val_split": 0,
+            "batch_size": 32,
+            "epochs": 25,
+            "optimizer": {
+                "name": "Adam",
+                "learning_rate": 0.001
+            },
+            "num_samples": 100
+        },
+        "loss": 8.627936363220215,
+        "reconstruction_loss": 2.839877128601074,
+        "kl_loss": 5.788018703460693,
+        "position_error": 10.757703640220901,
+        "velocity_error": 21.62953665789397,
+        "energy_error": 43.49992205736916,
+        "average_disorder_metric": 139.34,
+        "percentage_correct_order": 84.5050505050505,
+        "average_inversions": 89.33,
+        "average_kendall_tau": 0.036092929292929156
+    },
+    {
+        "id": 5,
+        "parameters": {
+            "model_name": "vae_conv5",
+            "data_used": "EM_N_fix_1500",
+            "latent_dim": 8,
+            "feature_dim": 7,
+            "seq_len": 100,
+            "val_split": 0,
+            "batch_size": 32,
+            "epochs": 25,
+            "optimizer": {
+                "name": "Adam",
+                "learning_rate": 0.001
+            },
+            "num_samples": 100
+        },
+        "loss": 9.239603996276855,
+        "reconstruction_loss": 2.578261375427246,
+        "kl_loss": 6.66129732131958,
+        "position_error": 9.667577928967178,
+        "velocity_error": 22.154357660147273,
+        "energy_error": 75.61811843189453,
+        "average_disorder_metric": 71.66,
+        "percentage_correct_order": 88.03030303030303,
+        "average_inversions": 45.46,
+        "average_kendall_tau": 0.01836767676767662
+    },
+    {
+        "id": 6,
+        "parameters": {
+            "model_name": "vae_conv5",
+            "data_used": "EM_N_fix_1500",
+            "latent_dim": 32,
+            "feature_dim": 7,
+            "seq_len": 100,
+            "val_split": 0,
+            "batch_size": 32,
+            "epochs": 25,
+            "optimizer": {
+                "name": "Adam",
+                "learning_rate": 0.001
+            },
+            "num_samples": 100
+        },
+        "loss": 9.826089859008789,
+        "reconstruction_loss": 2.8515169620513916,
+        "kl_loss": 6.974539756774902,
+        "position_error": 9.991762548446271,
+        "velocity_error": 24.078678521893895,
+        "energy_error": 121.3368236030358,
+        "average_disorder_metric": 106.96,
+        "percentage_correct_order": 84.97979797979798,
+        "average_inversions": 68.2,
+        "average_kendall_tau": 0.027555555555555417
     }
 ]
