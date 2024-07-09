@@ -221,6 +221,8 @@ def reduce_dimensions_plot_latent_space(latent_representations: np.ndarray,  # P
                       save_path: Optional[str] = None,     # Optional path to save the plot image.
                       many_classes: bool = False,          # Flag to use enhanced plotting for many classes.
                       grid_view: bool = True,              # Flag to plot all techniques in a single grid view.
+                      class_names: Optional[List[str]] = None,  # Optional class names for the legend
+                      show_legend: bool = True,            # Flag to show or hide the legend
                       **kwargs: Any                        # Additional keyword arguments for dimensionality reduction methods.
                      ) -> None:
     """
@@ -230,7 +232,12 @@ def reduce_dimensions_plot_latent_space(latent_representations: np.ndarray,  # P
     # Encode string labels to integers
     label_encoder = LabelEncoder()
     encoded_labels = label_encoder.fit_transform(labels)
-    class_names = label_encoder.classes_
+    
+    # Use provided class names if available
+    if class_names:
+        class_names = class_names
+    else:
+        class_names = label_encoder.classes_
 
     models = {
         'PCA': PCA(n_components=n_components),
@@ -278,7 +285,8 @@ def reduce_dimensions_plot_latent_space(latent_representations: np.ndarray,  # P
                     ax.scatter(results[class_mask, 0], results[class_mask, 1], label=class_name, marker=marker, s=30)
                 elif n_components == 3:
                     ax.scatter(results[class_mask, 0], results[class_mask, 1], results[class_mask, 2], label=class_name, marker=marker, s=30)
-            ax.legend(title="Classes")
+            if show_legend:
+                ax.legend(title="Classes")
         else:
             unique_labels = np.unique(encoded_labels)
             for class_idx, class_name in zip(unique_labels, class_names):
@@ -289,7 +297,8 @@ def reduce_dimensions_plot_latent_space(latent_representations: np.ndarray,  # P
                     ax.scatter(results[class_mask, 0], results[class_mask, 1], label=class_name, s=30)
                 elif n_components == 3:
                     ax.scatter(results[class_mask, 0], results[class_mask, 1], results[class_mask, 2], label=class_name, s=30)
-            ax.legend(title="Classes")
+            if show_legend:
+                ax.legend(title="Classes")
 
         ax.set_title(f'Visualization with {technique}')
         if n_components == 1:
@@ -365,6 +374,7 @@ def reduce_dimensions_plot_combined_latent_space(
         save_path=save_path,
         many_classes=many_classes,
         grid_view=grid_view,
+        class_names=["Real", "Synthetic"],
         **kwargs
     )
 
