@@ -4,6 +4,7 @@ data/generated_converged_data
 experiments/*
 !experiments/
 !experiments/experiments.json
+!experiments/results
 nbs_experiments/wandb/
 tsgm_examples/
 
