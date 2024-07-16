@@ -2,7 +2,7 @@
 
 # %% auto 0
 __all__ = ['setup_new_experiment', 'convert_numpy_types', 'add_experiment_metrics', 'get_experiment_parameters',
-           'convert_notebook']
+           'convert_notebook', 'read_json_to_dataframe', 'create_experiment_image_grid', 'plot_corr_matrix']
 
 # %% ../nbs/08_experiment.ipynb 2
 import os
@@ -11,8 +11,11 @@ import pandas as pd
 import subprocess
 import numpy as np
 import shutil
+import seaborn as sns
 import json
 from typing import Dict, Any, List, Optional, Tuple
+from PIL import Image, ImageDraw, ImageFont
+import matplotlib.pyplot as plt
 
 from .constants import ORBIT_CLASS_DF
 
@@ -209,3 +212,120 @@ def convert_notebook(notebook_path: str,                # The path to the notebo
         print(f"An error occurred while converting the notebook to {format.upper()}:")
         print(e.stderr)
         raise
+
+# %% ../nbs/08_experiment.ipynb 13
+def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
+    """
+    Reads a JSON file containing experiment results and returns a DataFrame.
+
+    Args:
+    - json_path (str): The path to the JSON file.
+
+    Returns:
+    - pd.DataFrame: A DataFrame containing the experiment results.
+    """
+    with open(json_path, 'r') as file:
+        data = json.load(file)
+    
+    # Extract relevant information
+    records = []
+    for item in data:
+        # Assuming each item is a dictionary with an 'id' field and other details
+        record = {'id_experiment': item['id']}
+        record.update(item)
+        records.append(record)
+    
+    # Create DataFrame
+    df = pd.DataFrame(records)
+    return df
+
+# %% ../nbs/08_experiment.ipynb 14
+def create_experiment_image_grid(experiments_folder, image_suffix, crop_length, font_size=12, save_path=None, grid_size=(3, 2), experiment_indices=None, hspace=-0.37):
+    if experiment_indices is None:
+        experiment_indices = [1, 2, 3, 4, 5, 6]  # Default set of indices
+
+    # Set the directory for experiments
+    experiments = [d for d in os.listdir(experiments_folder) if os.path.isdir(os.path.join(experiments_folder, d)) and 'experiment_' in d]
+    experiments.sort()  # Sorting to maintain numerical order
+    
+    # Set up the plot with dynamic grid sizing
+    fig, axes = plt.subplots(*grid_size, figsize=(5 * grid_size[1], 5 * grid_size[0]))  # Adjusted figsize dynamically
+    axes = axes.flatten()
+    
+    for ax in axes:
+        ax.axis('off')  # Hide axes
+
+    # Process each experiment folder
+    max_images = grid_size[0] * grid_size[1]
+    processed_images = 0
+    for idx in experiment_indices:
+        if processed_images >= max_images:
+            break
+        experiment_name = f'experiment_{idx}'
+        image_path = os.path.join(experiments_folder, experiment_name, 'images', f'exp{idx}_{image_suffix}')
+        if os.path.exists(image_path):
+            # Load and crop the image
+            img = Image.open(image_path)
+            img = img.crop((crop_length, crop_length, img.width - crop_length, img.height - crop_length))
+            
+            # Draw label
+            draw = ImageDraw.Draw(img)
+            try:
+                font = ImageFont.truetype("arial.ttf", font_size)
+            except IOError:
+                font = ImageFont.load_default()
+            text = f"Experiment {idx}"
+            draw.text((10, 10), text, font=font, fill=(255, 255, 255))
+
+            # Show image in grid
+            axes[processed_images].imshow(img)
+            axes[processed_images].set_title(text)
+            processed_images += 1
+        else:
+            axes[processed_images].text(0.5, 0.5, 'Image not found', horizontalalignment='center', verticalalignment='center')
+            processed_images += 1
+
+    # Adjust layout
+    plt.tight_layout()
+    plt.subplots_adjust(hspace=hspace)  # Reduce vertical spacing
+
+    # Save the grid if save_path is provided
+    if save_path:
+        plt.savefig(save_path, bbox_inches='tight')
+
+    # Display the grid
+    plt.show()
+
+# %% ../nbs/08_experiment.ipynb 15
+def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm', save_path: Optional[str] = None):
+    """
+    Plots a correlation matrix heatmap with annotations.
+    
+    Parameters:
+    dataframe (pd.DataFrame): The DataFrame containing the data to be analyzed.
+    figsize (tuple): The size of the figure (width, height).
+    cmap (str): The color map to be used for the heatmap.
+    save_path (Optional[str]): The path to save the plot image. If None, the plot is not saved.
+    
+    Returns:
+    None: Displays the correlation matrix heatmap.
+    """
+    # Calculate the correlation matrix
+    corr_matrix = dataframe.corr()
+
+    # Set up the matplotlib figure
+    plt.figure(figsize=figsize)
+
+    # Draw the heatmap with the correlation numbers
+    sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap=cmap, cbar=True, linewidths=.5, square=True)
+
+    # Set the title
+    plt.title('Correlation Matrix of Metrics')
+
+    # Save the plot if a save path is provided
+    if save_path:
+        plt.savefig(save_path, bbox_inches='tight')
+        print(f"Plot saved to {save_path}")
+
+    # Show the plot
+    plt.show()

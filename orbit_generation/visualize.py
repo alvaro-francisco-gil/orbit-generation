@@ -463,17 +463,16 @@ def plot_combined_latent_space_2d(
         plt.show()
 
 # %% ../nbs/03_visualization.ipynb 23
-def plot_latent_space_with_feature_distributions(latent_representations: np.ndarray,    # Precomputed latent representations (numpy array).
-                                                 labels: np.ndarray,                    # Labels for the data points, used for coloring in the plot.
-                                                 features: Optional[np.ndarray] = None, # Additional features for distribution plotting.
-                                                 feature_names: Optional[list] = None,  # Names of the features for labeling.
-                                                 figsize: tuple = (12, 9),              # Size of the figure for the plot.
-                                                 save_path: Optional[str] = None,       # Optional path to save the plot image.
-                                                 many_classes: bool = False,            # Flag to use enhanced plotting for many classes.
-                                                 show_legend: bool = True,              # Flag to show/hide legends.
-                                                 legend_fontsize: int = 8,             # Font size for the legend.
-                                                 **kwargs: Any                          # Additional keyword arguments for the plotting.
-                                                ) -> None:
+def plot_latent_space_with_feature_distributions(latent_representations: np.ndarray,
+                                                 labels: np.ndarray,
+                                                 features: Optional[np.ndarray] = None,
+                                                 feature_names: Optional[list] = None,
+                                                 figsize: tuple = (12, 12),  # Adjusted to be a square
+                                                 save_path: Optional[str] = None,
+                                                 many_classes: bool = False,
+                                                 show_legend: bool = True,
+                                                 legend_fontsize: int = 8,
+                                                 **kwargs: Any) -> None:
     """
     Plots the latent space with class colors and normalized vertical and horizontal feature distributions in separate subplots.
     """
@@ -487,8 +486,9 @@ def plot_latent_space_with_feature_distributions(latent_representations: np.ndar
     markers = ['o', 's', '^', 'v', 'D', '<', '>', 'p', '*', 'h', 'H', '8']  # Marker styles
 
     # Create subplots
-    fig = plt.figure(figsize=(figsize[0], figsize[1] * 1.5))
-    gs = fig.add_gridspec(2, 2, height_ratios=[2, 1], width_ratios=[10, 2])
+    fig = plt.figure(figsize=figsize)
+    # Adjust height_ratios and width_ratios to ensure square latent space plot
+    gs = fig.add_gridspec(2, 2, height_ratios=[5, 1], width_ratios=[5, 1])
 
     ax1 = fig.add_subplot(gs[0, 0])  # Latent space plot
     ax2 = fig.add_subplot(gs[1, 0])  # Horizontal distribution plot
@@ -513,6 +513,7 @@ def plot_latent_space_with_feature_distributions(latent_representations: np.ndar
     ax1.set_title('2D Latent Space Visualization')
     ax1.set_xlabel('Dimension 1')
     ax1.set_ylabel('Dimension 2')
+    ax1.set_aspect('equal', 'box')  # Ensure the latent space plot is square
     if show_legend:
         ax1.legend(title="Classes", fontsize=legend_fontsize)
 
