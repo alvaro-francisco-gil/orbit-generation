@@ -2,8 +2,8 @@
 
 # %% auto 0
 __all__ = ['calculate_overall_statistics', 'plot_time_increments', 'plot_orbit_data_lengths', 'plot_histograms_position',
-           'plot_histograms_comparison', 'plot_latent_space', 'plot_combined_latent_space',
-           'plot_combined_latent_space_with_labels']
+           'plot_histograms_comparison', 'reduce_dimensions_plot_latent_space',
+           'reduce_dimensions_plot_combined_latent_space', 'plot_combined_latent_space_with_labels']
 
 # %% ../nbs/04_statistics.ipynb 2
 import numpy as np
@@ -12,6 +12,7 @@ from matplotlib import colormaps
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.preprocessing import LabelEncoder
 import umap.umap_ as umap
 from typing import List, Any, Dict, Optional
 
@@ -112,8 +113,9 @@ def plot_orbit_data_lengths(orbit_data, key_range=(1, 36072), dimension=0, bins=
         return lengths
 
 # %% ../nbs/04_statistics.ipynb 13
-def plot_histograms_position(data: np.ndarray,  # The orbit data array of shape (num_orbits, num_scalars, num_time_points).
-                             save_path: str = None  # Optional path to save the plot image.
+def plot_histograms_position(data: np.ndarray,                  # The orbit data array of shape (num_orbits, num_scalars, num_time_points).
+                             save_path: str = None,             # Optional path to save the plot image.
+                             last_time_elements: bool = True    # Whether to plot only the last elements of the time vectors.
                             ) -> None:
     """
     Plots histograms for the scalar values (position and velocity in X, Y, Z, and optionally time) across all orbits
@@ -122,6 +124,7 @@ def plot_histograms_position(data: np.ndarray,  # The orbit data array of shape 
     Parameters:
     - data (np.ndarray): The orbit data array.
     - save_path (str, optional): If provided, the plot will be saved to this file path.
+    - last_time_elements (bool): If True, plot only the last elements of the time vectors for the time histogram.
     """
     # Check the number of scalars and adjust scalar names accordingly
     num_scalars = data.shape[1]
@@ -138,7 +141,12 @@ def plot_histograms_position(data: np.ndarray,  # The orbit data array of shape 
     fig.suptitle('Histograms of Position, Velocity Components, and Time (if present) Across All Orbits')
     
     for i in range(num_scalars):
-        scalar_values = data[:, i, :].flatten()  # Flatten combines all orbits and time points for each scalar
+        if i == 0 and num_scalars == 7 and last_time_elements:
+            # Plot only the last elements of the time vectors
+            scalar_values = data[:, i, -1]  # Last elements of the time vectors
+        else:
+            # Flatten combines all orbits and time points for each scalar
+            scalar_values = data[:, i, :].flatten()
         
         row, col = divmod(i, cols)  # Determine subplot position
         axs[row, col].hist(scalar_values, bins=50, alpha=0.75)  # You can adjust the number of bins
@@ -205,20 +213,32 @@ def plot_histograms_comparison(data1: np.ndarray,  # First orbit data array of s
     plt.show()
 
 # %% ../nbs/04_statistics.ipynb 19
-def plot_latent_space(
-        latent_representations: np.ndarray,  # Precomputed latent representations (numpy array).
-        labels: np.ndarray,                  # Labels for the data points, used for coloring in the plot.
-        techniques: List[str] = ['PCA'],     # Techniques to use for reduction ('PCA', 't-SNE', 'UMAP', 'LDA').
-        n_components: int = 2,               # Number of dimensions to reduce to (1, 2, or 3).
-        figsize: tuple = (12, 9),            # Size of the figure for each subplot.
-        colors: Optional[List[str]] = None,  # Optional list of colors for the labels. If None, use random colors.
-        save_path: Optional[str] = None,     # Optional path to save the plot image.
-        **kwargs: Any                        # Additional keyword arguments for dimensionality reduction methods.
-    ) -> None:
+def reduce_dimensions_plot_latent_space(latent_representations: np.ndarray,  # Precomputed latent representations (numpy array).
+                      labels: np.ndarray,                  # Labels for the data points, used for coloring in the plot.
+                      techniques: List[str] = ['PCA'],     # Techniques to use for reduction ('PCA', 't-SNE', 'UMAP', 'LDA').
+                      n_components: int = 2,               # Number of dimensions to reduce to (1, 2, or 3).
+                      figsize: tuple = (12, 9),            # Size of the figure for each subplot.
+                      save_path: Optional[str] = None,     # Optional path to save the plot image.
+                      many_classes: bool = False,          # Flag to use enhanced plotting for many classes.
+                      grid_view: bool = True,              # Flag to plot all techniques in a single grid view.
+                      class_names: Optional[List[str]] = None,  # Optional class names for the legend
+                      show_legend: bool = True,            # Flag to show or hide the legend
+                      **kwargs: Any                        # Additional keyword arguments for dimensionality reduction methods.
+                     ) -> None:
     """
     Plots and optionally saves the latent space representations using specified dimensionality reduction techniques.
     Each technique's plot is handled in a separate figure, supporting 1D, 2D, or 3D visualizations.
     """
+    # Encode string labels to integers
+    label_encoder = LabelEncoder()
+    encoded_labels = label_encoder.fit_transform(labels)
+    
+    # Use provided class names if available
+    if class_names:
+        class_names = class_names
+    else:
+        class_names = label_encoder.classes_
+
     models = {
         'PCA': PCA(n_components=n_components),
         't-SNE': TSNE(n_components=n_components, **kwargs),
@@ -226,51 +246,98 @@ def plot_latent_space(
         'LDA': LinearDiscriminantAnalysis(n_components=n_components)
     }
 
-    for technique in techniques:
+    markers = ['o', 's', '^', 'v', 'D', '<', '>', 'p', '*', 'h', 'H', '8']  # Marker styles
+
+    n_techniques = len(techniques)
+    if grid_view:
+        fig, axs = plt.subplots(1, n_techniques, figsize=(figsize[0] * n_techniques, figsize[1]))
+        if n_techniques == 1:
+            axs = [axs]
+    else:
+        axs = [None] * n_techniques
+
+    for idx, technique in enumerate(techniques):
         model = models.get(technique)
         if not model:
             continue  # Skip if model not found in dictionary
 
         if technique == 'LDA':
-            results = model.fit_transform(latent_representations, labels)
+            results = model.fit_transform(latent_representations, encoded_labels)
         else:
             results = model.fit_transform(latent_representations)
 
+        if n_components == 3:
+            if grid_view:
+                ax = fig.add_subplot(1, n_techniques, idx+1, projection='3d')
+            else:
+                fig = plt.figure(figsize=figsize)
+                ax = fig.add_subplot(111, projection='3d')
+        else:
+            ax = axs[idx] if grid_view else plt.subplots(figsize=figsize)[1]
+
+        if many_classes:
+            for class_idx, class_name in enumerate(class_names):
+                class_mask = (encoded_labels == class_idx)
+                marker = markers[class_idx % len(markers)]
+                if n_components == 1:
+                    ax.scatter(results[class_mask], np.zeros_like(results[class_mask]), label=class_name, marker=marker, s=30)
+                elif n_components == 2:
+                    ax.scatter(results[class_mask, 0], results[class_mask, 1], label=class_name, marker=marker, s=30)
+                elif n_components == 3:
+                    ax.scatter(results[class_mask, 0], results[class_mask, 1], results[class_mask, 2], label=class_name, marker=marker, s=30)
+            if show_legend:
+                ax.legend(title="Classes")
+        else:
+            unique_labels = np.unique(encoded_labels)
+            for class_idx, class_name in zip(unique_labels, class_names):
+                class_mask = (encoded_labels == class_idx)
+                if n_components == 1:
+                    ax.scatter(results[class_mask], np.zeros_like(results[class_mask]), label=class_name, s=30)
+                elif n_components == 2:
+                    ax.scatter(results[class_mask, 0], results[class_mask, 1], label=class_name, s=30)
+                elif n_components == 3:
+                    ax.scatter(results[class_mask, 0], results[class_mask, 1], results[class_mask, 2], label=class_name, s=30)
+            if show_legend:
+                ax.legend(title="Classes")
+
+        ax.set_title(f'Visualization with {technique}')
         if n_components == 1:
-            fig, ax = plt.subplots(figsize=figsize)
-            scatter = ax.scatter(results, np.zeros_like(results), c=labels, cmap='viridis' if colors is None else colors, s=30)
             ax.set_xlabel(f'{technique} Component 1')
         elif n_components == 2:
-            fig, ax = plt.subplots(figsize=figsize)
-            scatter = ax.scatter(results[:, 0], results[:, 1], c=labels, cmap='viridis' if colors is None else colors, s=30)
             ax.set_xlabel(f'{technique} Dimension 1')
             ax.set_ylabel(f'{technique} Dimension 2')
         elif n_components == 3:
-            fig = plt.figure(figsize=figsize)
-            ax = fig.add_subplot(111, projection='3d')
-            scatter = ax.scatter(results[:, 0], results[:, 1], results[:, 2], c=labels, cmap='viridis' if colors is None else colors, s=30)
             ax.set_xlabel(f'{technique} Dimension 1')
             ax.set_ylabel(f'{technique} Dimension 2')
             ax.set_zlabel(f'{technique} Dimension 3')
 
-        ax.set_title(f'Visualization with {technique}')
-        plt.colorbar(scatter, ax=ax, label='Class')
+        if not grid_view:
+            if save_path:
+                individual_save_path = f"{save_path}_{technique}.png"
+                plt.savefig(individual_save_path, bbox_inches='tight')
+                print(f"Saved plot to {individual_save_path}")
+            plt.show()
+
+    if grid_view:
+        plt.tight_layout()
         if save_path:
-            individual_save_path = f"{save_path}_{technique}.png"
-            plt.savefig(individual_save_path)
-            print(f"Saved plot to {individual_save_path}")
+            grid_save_path = f"{save_path}_grid.png"
+            plt.savefig(grid_save_path, bbox_inches='tight')
+            print(f"Saved grid plot to {grid_save_path}")
         plt.show()
 
+
 # %% ../nbs/04_statistics.ipynb 24
-def plot_combined_latent_space(
+def reduce_dimensions_plot_combined_latent_space(
         real_data: np.ndarray,                # Real data samples.
         synthetic_data: np.ndarray,           # Synthetic data samples generated by a model.
         encoder,                              # Encoder function or model that predicts latent space representations.
         techniques: List[str] = ['PCA'],      # Techniques to use for reduction ('PCA', 't-SNE', 'UMAP', 'LDA').
         n_components: int = 2,                # Number of dimensions to reduce to.
         figsize: tuple = (12, 9),             # Size of the figure for each subplot.
-        colors: Optional[List[str]] = None,   # Optional list of colors for the labels. If None, use random colors.
         save_path: Optional[str] = None,      # Optional path to save the plot image.
+        many_classes: bool = False,           # Flag to use enhanced plotting for many classes.
+        grid_view: bool = False,              # Flag to plot all techniques in a single grid view.
         **kwargs: Any                         # Additional keyword arguments for dimensionality reduction methods.
     ) -> None:
     """
@@ -285,21 +352,31 @@ def plot_combined_latent_space(
     combined_labels = np.concatenate([real_labels, synthetic_labels], axis=0)
 
     # Generate latent representations for the combined dataset
-    latent_outputs = encoder.predict(combined_data)
-    latent_representations = latent_outputs[0]  # Assuming the mean of the latent space is the first output
+    latent_representations = encoder.predict(combined_data)
+
+    # Handle case where encoder returns a tuple or list
+    if isinstance(latent_representations, (list, tuple)):
+        latent_representations = latent_representations[0]  # Assuming the first element is the required representation
+
+    # Convert latent_representations to a NumPy array if it is a list
+    latent_representations = np.array(latent_representations)
+
+    # Reshape the latent representations to 2D: (samples, features)
+    latent_representations = latent_representations.reshape(latent_representations.shape[0], -1)
 
     # Plot the latent space using the previously defined function
-    plot_latent_space(
+    reduce_dimensions_plot_latent_space(
         latent_representations=latent_representations,
         labels=combined_labels,
         techniques=techniques,
         n_components=n_components,
         figsize=figsize,
-        colors=colors,
         save_path=save_path,
+        many_classes=many_classes,
+        grid_view=grid_view,
+        class_names=["Real", "Synthetic"],
         **kwargs
     )
-
 
 # %% ../nbs/04_statistics.ipynb 25
 def plot_combined_latent_space_with_labels(
