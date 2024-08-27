@@ -10,3 +10,5 @@ website:
       - 05_dataset.ipynb
       - 06_model.ipynb
       - 07_propagation.ipynb
+      - 08_experiment.ipynb
+      - 09_evaluation.ipynb

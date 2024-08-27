@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -199,6 +199,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Propagation</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Evaluation</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -225,11 +237,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#latent-space" id="toc-latent-space" class="nav-link" data-scroll-target="#latent-space">Latent Space</a>
   <ul class="collapse">
-  <li><a href="#plot_latent_space" id="toc-plot_latent_space" class="nav-link" data-scroll-target="#plot_latent_space">plot_latent_space</a></li>
+  <li><a href="#reduce_dimensions_plot_latent_space" id="toc-reduce_dimensions_plot_latent_space" class="nav-link" data-scroll-target="#reduce_dimensions_plot_latent_space">reduce_dimensions_plot_latent_space</a></li>
   </ul></li>
   <li><a href="#latent-space-synthetic-vs-real" id="toc-latent-space-synthetic-vs-real" class="nav-link" data-scroll-target="#latent-space-synthetic-vs-real">Latent Space Synthetic vs Real</a>
   <ul class="collapse">
-  <li><a href="#plot_combined_latent_space" id="toc-plot_combined_latent_space" class="nav-link" data-scroll-target="#plot_combined_latent_space">plot_combined_latent_space</a></li>
+  <li><a href="#reduce_dimensions_plot_combined_latent_space" id="toc-reduce_dimensions_plot_combined_latent_space" class="nav-link" data-scroll-target="#reduce_dimensions_plot_combined_latent_space">reduce_dimensions_plot_combined_latent_space</a></li>
   <li><a href="#plot_combined_latent_space_with_labels" id="toc-plot_combined_latent_space_with_labels" class="nav-link" data-scroll-target="#plot_combined_latent_space_with_labels">plot_combined_latent_space_with_labels</a></li>
   </ul></li>
   </ul>
@@ -276,7 +288,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="simple-statistics" class="level2">
 <h2 class="anchored" data-anchor-id="simple-statistics">Simple statistics</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L18" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L20" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="calculate_overall_statistics" class="level3">
 <h3 class="anchored" data-anchor-id="calculate_overall_statistics">calculate_overall_statistics</h3>
 <blockquote class="blockquote">
@@ -285,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*Calculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.</p>
 <p>Parameters: - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6, number_of_time_instants) containing orbit data.</p>
 <p>Returns: - Dict[str, Dict[str, float]]: A dictionary with statistics (‘min’, ‘mean’, ‘max’, ‘25%’, ‘50%’, ‘75%’) for each scalar.*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -333,7 +345,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-time" class="level2">
 <h2 class="anchored" data-anchor-id="plot-time">Plot Time</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L49" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L51" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="plot_time_increments" class="level3">
 <h3 class="anchored" data-anchor-id="plot_time_increments">plot_time_increments</h3>
 <blockquote class="blockquote">
@@ -343,7 +355,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>*Plots the time as a function to visualize how it increments for each orbit.</p>
 <p>Parameters: orbit_dataset (np.ndarray): A 3D numpy array where the first dimension is the number of orbits, the second dimension contains 7 scalars (time, posx, posy, posz, velx, vely, velz), and the third dimension is the time steps. orbits_to_plot (list[int], optional): List of integers referring to the orbits to plot. If None, plots all orbits. show_legend (bool, optional): Whether to display the legend. Default is True.*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -390,7 +402,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-histograms" class="level2">
 <h2 class="anchored" data-anchor-id="plot-histograms">Plot Histograms</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L86" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L88" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="plot_orbit_data_lengths" class="level3">
 <h3 class="anchored" data-anchor-id="plot_orbit_data_lengths">plot_orbit_data_lengths</h3>
 <blockquote class="blockquote">
@@ -399,16 +411,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                           title='Histogram of Orbits Time Steps')</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L114" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L116" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_histograms_position" class="level3">
 <h3 class="anchored" data-anchor-id="plot_histograms_position">plot_histograms_position</h3>
 <blockquote class="blockquote">
-<pre><code> plot_histograms_position (data:numpy.ndarray, save_path:str=None)</code></pre>
+<pre><code> plot_histograms_position (data:numpy.ndarray, save_path:str=None,
+                           last_time_elements:bool=True)</code></pre>
 </blockquote>
 <p>*Plots histograms for the scalar values (position and velocity in X, Y, Z, and optionally time) across all orbits and time points. Handles arrays with 6 or 7 scalar dimensions, with the 7th being ‘time’.</p>
-<p>Parameters: - data (np.ndarray): The orbit data array. - save_path (str, optional): If provided, the plot will be saved to this file path.*</p>
-<table class="table">
+<p>Parameters: - data (np.ndarray): The orbit data array. - save_path (str, optional): If provided, the plot will be saved to this file path. - last_time_elements (bool): If True, plot only the last elements of the time vectors for the time histogram.*</p>
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -437,6 +450,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Optional path to save the plot image.</td>
 </tr>
 <tr class="odd">
+<td>last_time_elements</td>
+<td>bool</td>
+<td>True</td>
+<td>Whether to plot only the last elements of the time vectors.</td>
+</tr>
+<tr class="even">
 <td><strong>Returns</strong></td>
 <td><strong>None</strong></td>
 <td></td>
@@ -455,7 +474,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L158" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L167" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_histograms_comparison" class="level3">
 <h3 class="anchored" data-anchor-id="plot_histograms_comparison">plot_histograms_comparison</h3>
@@ -465,7 +484,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                              2', save_path:str=None, normalize:bool=False)</code></pre>
 </blockquote>
 <p><em>Plots histograms for scalar values (position, velocity in X, Y, Z, and optionally time) from two datasets on the same chart with different colors. Supports both 6 and 7 scalar dimensions, with the 7th being ‘time’. Optionally saves the plot to a specified file path and can normalize histograms for relative comparison.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -555,18 +574,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="latent-space" class="level2">
 <h2 class="anchored" data-anchor-id="latent-space">Latent Space</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L207" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="plot_latent_space" class="level3">
-<h3 class="anchored" data-anchor-id="plot_latent_space">plot_latent_space</h3>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L216" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="reduce_dimensions_plot_latent_space" class="level3">
+<h3 class="anchored" data-anchor-id="reduce_dimensions_plot_latent_space">reduce_dimensions_plot_latent_space</h3>
 <blockquote class="blockquote">
-<pre><code> plot_latent_space (latent_representations:numpy.ndarray,
-                    labels:numpy.ndarray, techniques:List[str]=['PCA'],
-                    n_components:int=2, figsize:tuple=(12, 9),
-                    colors:Union[List[str],NoneType]=None,
-                    save_path:Union[str,NoneType]=None, **kwargs:Any)</code></pre>
+<pre><code> reduce_dimensions_plot_latent_space
+                                      (latent_representations:numpy.ndarra
+                                      y, labels:numpy.ndarray,
+                                      techniques:List[str]=['PCA'],
+                                      n_components:int=2,
+                                      figsize:tuple=(12, 9),
+                                      save_path:Union[str,NoneType]=None,
+                                      many_classes:bool=False,
+                                      grid_view:bool=True, class_names:Uni
+                                      on[List[str],NoneType]=None,
+                                      show_legend:bool=True, **kwargs:Any)</code></pre>
 </blockquote>
 <p><em>Plots and optionally saves the latent space representations using specified dimensionality reduction techniques. Each technique’s plot is handled in a separate figure, supporting 1D, 2D, or 3D visualizations.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -613,24 +638,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Size of the figure for each subplot.</td>
 </tr>
 <tr class="even">
-<td>colors</td>
-<td>typing.Union[typing.List[str], NoneType]</td>
-<td>None</td>
-<td>Optional list of colors for the labels. If None, use random colors.</td>
-</tr>
-<tr class="odd">
 <td>save_path</td>
 <td>typing.Union[str, NoneType]</td>
 <td>None</td>
 <td>Optional path to save the plot image.</td>
 </tr>
+<tr class="odd">
+<td>many_classes</td>
+<td>bool</td>
+<td>False</td>
+<td>Flag to use enhanced plotting for many classes.</td>
+</tr>
 <tr class="even">
+<td>grid_view</td>
+<td>bool</td>
+<td>True</td>
+<td>Flag to plot all techniques in a single grid view.</td>
+</tr>
+<tr class="odd">
+<td>class_names</td>
+<td>typing.Union[typing.List[str], NoneType]</td>
+<td>None</td>
+<td>Optional class names for the legend</td>
+</tr>
+<tr class="even">
+<td>show_legend</td>
+<td>bool</td>
+<td>True</td>
+<td>Flag to show or hide the legend</td>
+</tr>
+<tr class="odd">
 <td>kwargs</td>
 <td>typing.Any</td>
 <td></td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><strong>Returns</strong></td>
 <td><strong>None</strong></td>
 <td></td>
@@ -648,7 +691,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> np.random.randint(<span class="dv">0</span>, <span class="dv">5</span>, size<span class="op">=</span><span class="dv">200</span>)  <span class="co"># 5 different classes</span></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>plot_latent_space(latent_representations, labels, techniques<span class="op">=</span>[<span class="st">'UMAP'</span>,<span class="st">'LDA'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>reduce_dimensions_plot_latent_space(latent_representations, labels, techniques<span class="op">=</span>[<span class="st">'UMAP'</span>,<span class="st">'LDA'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -656,16 +699,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="04_statistics_files/figure-html/cell-14-output-2.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 <div id="cell-19" class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plot_latent_space(latent_representations, labels, techniques<span class="op">=</span>[<span class="st">'PCA'</span>], n_components<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>reduce_dimensions_plot_latent_space(latent_representations, labels, techniques<span class="op">=</span>[<span class="st">'PCA'</span>], n_components<span class="op">=</span><span class="dv">1</span>, many_classes<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -675,7 +711,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="cell-20" class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plot_latent_space(latent_representations, labels, techniques<span class="op">=</span>[<span class="st">'t-SNE'</span>], n_components<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>reduce_dimensions_plot_latent_space(latent_representations, labels, techniques<span class="op">=</span>[<span class="st">'t-SNE'</span>], n_components<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -689,20 +725,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="latent-space-synthetic-vs-real" class="level2">
 <h2 class="anchored" data-anchor-id="latent-space-synthetic-vs-real">Latent Space Synthetic vs Real</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L264" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="plot_combined_latent_space" class="level3">
-<h3 class="anchored" data-anchor-id="plot_combined_latent_space">plot_combined_latent_space</h3>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L331" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="reduce_dimensions_plot_combined_latent_space" class="level3">
+<h3 class="anchored" data-anchor-id="reduce_dimensions_plot_combined_latent_space">reduce_dimensions_plot_combined_latent_space</h3>
 <blockquote class="blockquote">
-<pre><code> plot_combined_latent_space (real_data:numpy.ndarray,
-                             synthetic_data:numpy.ndarray, encoder,
-                             techniques:List[str]=['PCA'],
-                             n_components:int=2, figsize:tuple=(12, 9),
-                             colors:Union[List[str],NoneType]=None,
-                             save_path:Union[str,NoneType]=None,
-                             **kwargs:Any)</code></pre>
+<pre><code> reduce_dimensions_plot_combined_latent_space (real_data:numpy.ndarray,
+                                               synthetic_data:numpy.ndarra
+                                               y, encoder, techniques:List
+                                               [str]=['PCA'],
+                                               n_components:int=2,
+                                               figsize:tuple=(12, 9), save
+                                               _path:Union[str,NoneType]=N
+                                               one,
+                                               many_classes:bool=False,
+                                               grid_view:bool=False,
+                                               **kwargs:Any)</code></pre>
 </blockquote>
 <p><em>Plots the combined latent space of real and synthetic data using specified dimensionality reduction techniques.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -755,24 +795,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Size of the figure for each subplot.</td>
 </tr>
 <tr class="odd">
-<td>colors</td>
-<td>typing.Union[typing.List[str], NoneType]</td>
-<td>None</td>
-<td>Optional list of colors for the labels. If None, use random colors.</td>
-</tr>
-<tr class="even">
 <td>save_path</td>
 <td>typing.Union[str, NoneType]</td>
 <td>None</td>
 <td>Optional path to save the plot image.</td>
 </tr>
+<tr class="even">
+<td>many_classes</td>
+<td>bool</td>
+<td>False</td>
+<td>Flag to use enhanced plotting for many classes.</td>
+</tr>
 <tr class="odd">
+<td>grid_view</td>
+<td>bool</td>
+<td>False</td>
+<td>Flag to plot all techniques in a single grid view.</td>
+</tr>
+<tr class="even">
 <td>kwargs</td>
 <td>typing.Any</td>
 <td></td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><strong>Returns</strong></td>
 <td><strong>None</strong></td>
 <td></td>
@@ -781,6 +827,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L382" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_combined_latent_space_with_labels" class="level3">
 <h3 class="anchored" data-anchor-id="plot_combined_latent_space_with_labels">plot_combined_latent_space_with_labels</h3>
@@ -798,7 +845,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                                          **kwargs:Any)</code></pre>
 </blockquote>
 <p><em>Plots the combined latent space of real and synthetic data using specified dimensionality reduction techniques. The real data points are colored according to their labels, and the synthetic data points are overlaid in a new color.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">

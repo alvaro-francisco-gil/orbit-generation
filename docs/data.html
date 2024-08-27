@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -199,6 +199,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Propagation</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Evaluation</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -269,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                   dataset_path:Union[str,NoneType]=None)</code></pre>
 </blockquote>
 <p><em>Load orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -322,7 +334,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*Load a .npy file as a memory-mapped array using numpy.memmap.</p>
 <p>Args: file_path: A string representing the path to the .npy file. mode: The mode in which the file is to be opened. Valid options are: - ‘r’ : Read-only, no data can be modified. - ‘r+’ : Read/write, modifications to the data are written to the file. - ‘w+’ : Read/write, file is created if it does not exist, overwritten if it does. - ‘c’ : Copy-on-write, data can be modified in memory but changes are not saved to the file.</p>
 <p>Returns: A numpy.memmap object that behaves like a numpy array but with data stored on disk instead of in memory.*</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th></th>
@@ -363,7 +375,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                      dataset_path:Union[str,NoneType]=None)</code></pre>
 </blockquote>
 <p><em>Load orbit feature data from a specified file and convert it to a DataFrame.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -417,7 +429,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> save_data (data:numpy.ndarray, file_name:str)</code></pre>
 </blockquote>
 <p><em>Save a numpy array to a file based on the file extension specified in <code>file_name</code>. Supports saving to HDF5 (.hdf5) or NumPy (.npy) file formats.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -484,7 +496,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*Randomly sample orbits from the provided dataset.</p>
 <p>Parameters: orbit_data (np.ndarray): Array of orbit data with shape (num_orbits, 6, num_time_points). sample_spec (dict or int): If int, it is the total number of orbits to sample. If dict, it specifies the number of samples for each class. labels (np.ndarray, optional): Array of labels for each orbit.</p>
 <p>Returns: tuple: A tuple containing the sampled orbit data and corresponding labels (if provided).*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">

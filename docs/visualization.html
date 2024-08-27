@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -199,6 +199,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Propagation</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Evaluation</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -220,6 +232,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#plot_grouped_features" id="toc-plot_grouped_features" class="nav-link" data-scroll-target="#plot_grouped_features">plot_grouped_features</a></li>
   <li><a href="#plot_value_proportions" id="toc-plot_value_proportions" class="nav-link" data-scroll-target="#plot_value_proportions">plot_value_proportions</a></li>
+  </ul></li>
+  <li><a href="#latent-space" id="toc-latent-space" class="nav-link" data-scroll-target="#latent-space">Latent Space</a>
+  <ul class="collapse">
+  <li><a href="#plot_latent_space_2d" id="toc-plot_latent_space_2d" class="nav-link" data-scroll-target="#plot_latent_space_2d">plot_latent_space_2d</a></li>
+  <li><a href="#plot_combined_latent_space_2d" id="toc-plot_combined_latent_space_2d" class="nav-link" data-scroll-target="#plot_combined_latent_space_2d">plot_combined_latent_space_2d</a></li>
+  <li><a href="#plot_latent_space_with_feature_distributions" id="toc-plot_latent_space_with_feature_distributions" class="nav-link" data-scroll-target="#plot_latent_space_with_feature_distributions">plot_latent_space_with_feature_distributions</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
@@ -257,7 +275,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="static" class="level3">
 <h3 class="anchored" data-anchor-id="static">Static</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L15" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L20" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="visualize_static_orbits" class="level3">
 <h3 class="anchored" data-anchor-id="visualize_static_orbits">visualize_static_orbits</h3>
@@ -271,7 +289,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                           plot_reference_box:bool=True)</code></pre>
 </blockquote>
 <p><em>Visualizes orbits in 3D space and highlights specified time instants for each selected orbit.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -372,7 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="dynamic" class="level3">
 <h3 class="anchored" data-anchor-id="dynamic">Dynamic</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L118" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L123" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="export_dynamic_orbits_html" class="level3">
 <h3 class="anchored" data-anchor-id="export_dynamic_orbits_html">export_dynamic_orbits_html</h3>
@@ -384,7 +402,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                              ne, filename:str='orbits.html')</code></pre>
 </blockquote>
 <p><em>Generates an interactive 3D visualization of orbits and saves it as an HTML file, including the ability to highlight specific time instants and show named points.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -450,7 +468,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="orbit-features" class="level2">
 <h2 class="anchored" data-anchor-id="orbit-features">Orbit Features</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L184" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L189" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="plot_grouped_features" class="level3">
 <h3 class="anchored" data-anchor-id="plot_grouped_features">plot_grouped_features</h3>
 <blockquote class="blockquote">
@@ -458,7 +476,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                         group_col:str, plot_type:str)</code></pre>
 </blockquote>
 <p><em>Group the DataFrame by a specified column and plot the specified type of plot for each column for each group.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -500,47 +518,372 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L252" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L257" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_value_proportions" class="level3">
 <h3 class="anchored" data-anchor-id="plot_value_proportions">plot_value_proportions</h3>
 <blockquote class="blockquote">
-<pre><code> plot_value_proportions (df:pandas.core.frame.DataFrame,
-                         values_list:List[int], id_col:str)</code></pre>
+<pre><code> plot_value_proportions (data:Union[List[int],numpy.ndarray,NoneType],
+                         classification_df:pandas.core.frame.DataFrame,
+                         id_col_classification:Union[str,NoneType]=None,
+                         grid:Union[str,NoneType]='horizontal',
+                         show_percentages:Union[bool,List[bool]]=True,
+                         show_labels:Union[bool,List[bool]]=True,
+                         percentage_font_size:int=10,
+                         label_distance:float=1.1,
+                         pct_distance:float=0.85,
+                         explode_factor:float=0.1)</code></pre>
 </blockquote>
-<p><em>Filter the DataFrame based on values_list and plot pie charts for each column except the ID column. The total number of unique values in each column is displayed in the middle of each pie chart.</em></p>
-<table class="table">
+<p><em>Count occurrences of each unique value in data, map those counts to the DataFrame, and plot the proportions in pie charts for each column except the ID column.</em></p>
+<table class="caption-top table">
 <colgroup>
-<col style="width: 9%">
-<col style="width: 38%">
-<col style="width: 52%">
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
 </colgroup>
 <thead>
 <tr class="header">
 <th></th>
 <th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
 <th><strong>Details</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>df</td>
-<td>DataFrame</td>
-<td>DataFrame containing the data.</td>
+<td>data</td>
+<td>typing.Union[typing.List[int], numpy.ndarray, NoneType]</td>
+<td></td>
+<td>List or array of ID values to filter the DataFrame.</td>
 </tr>
 <tr class="even">
-<td>values_list</td>
-<td>typing.List[int]</td>
-<td>List of ID values to filter the DataFrame.</td>
+<td>classification_df</td>
+<td>DataFrame</td>
+<td></td>
+<td>DataFrame containing the data.</td>
 </tr>
 <tr class="odd">
-<td>id_col</td>
-<td>str</td>
+<td>id_col_classification</td>
+<td>typing.Union[str, NoneType]</td>
+<td>None</td>
 <td>Column name to be used as ID.</td>
+</tr>
+<tr class="even">
+<td>grid</td>
+<td>typing.Union[str, NoneType]</td>
+<td>horizontal</td>
+<td>Option to plot in grid (horizontal, vertical, or square) or separate images.</td>
+</tr>
+<tr class="odd">
+<td>show_percentages</td>
+<td>typing.Union[bool, typing.List[bool]]</td>
+<td>True</td>
+<td>Option to print or not print percentages.</td>
+</tr>
+<tr class="even">
+<td>show_labels</td>
+<td>typing.Union[bool, typing.List[bool]]</td>
+<td>True</td>
+<td>Option to print or not print labels.</td>
+</tr>
+<tr class="odd">
+<td>percentage_font_size</td>
+<td>int</td>
+<td>10</td>
+<td>Font size for percentages.</td>
+</tr>
+<tr class="even">
+<td>label_distance</td>
+<td>float</td>
+<td>1.1</td>
+<td>Distance of labels from center.</td>
+</tr>
+<tr class="odd">
+<td>pct_distance</td>
+<td>float</td>
+<td>0.85</td>
+<td>Distance of percentages from center.</td>
+</tr>
+<tr class="even">
+<td>explode_factor</td>
+<td>float</td>
+<td>0.1</td>
+<td>Factor to separate slices.</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>None</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="latent-space" class="level2">
+<h2 class="anchored" data-anchor-id="latent-space">Latent Space</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L353" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="plot_latent_space_2d" class="level3">
+<h3 class="anchored" data-anchor-id="plot_latent_space_2d">plot_latent_space_2d</h3>
+<blockquote class="blockquote">
+<pre><code> plot_latent_space_2d (latent_representations:numpy.ndarray,
+                       labels:numpy.ndarray, figsize:tuple=(12, 9),
+                       save_path:Union[str,NoneType]=None,
+                       many_classes:bool=False, **kwargs:Any)</code></pre>
+</blockquote>
+<p><em>Plots and optionally saves the latent space representations assuming they are already in 2D.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>latent_representations</td>
+<td>ndarray</td>
+<td></td>
+<td>Precomputed latent representations (numpy array).</td>
+</tr>
+<tr class="even">
+<td>labels</td>
+<td>ndarray</td>
+<td></td>
+<td>Labels for the data points, used for coloring in the plot.</td>
+</tr>
+<tr class="odd">
+<td>figsize</td>
+<td>tuple</td>
+<td>(12, 9)</td>
+<td>Size of the figure for the plot.</td>
+</tr>
+<tr class="even">
+<td>save_path</td>
+<td>typing.Union[str, NoneType]</td>
+<td>None</td>
+<td>Optional path to save the plot image.</td>
+</tr>
+<tr class="odd">
+<td>many_classes</td>
+<td>bool</td>
+<td>False</td>
+<td>Flag to use enhanced plotting for many classes.</td>
+</tr>
+<tr class="even">
+<td>kwargs</td>
+<td>typing.Any</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>None</strong></td>
+<td></td>
+<td><strong>Additional keyword arguments for the plotting.</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L401" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="plot_combined_latent_space_2d" class="level3">
+<h3 class="anchored" data-anchor-id="plot_combined_latent_space_2d">plot_combined_latent_space_2d</h3>
+<blockquote class="blockquote">
+<pre><code> plot_combined_latent_space_2d (real_data:numpy.ndarray,
+                                synthetic_data:numpy.ndarray, encoder, syn
+                                thetic_labels:Union[int,List[int],NoneType
+                                ]=1, figsize:tuple=(12, 9),
+                                save_path:Union[str,NoneType]=None,
+                                many_classes:bool=False,
+                                show_legend:bool=True,
+                                annotation_mode:str='legend')</code></pre>
+</blockquote>
+<p><em>Plots the combined latent space of real and synthetic data. Assumes the latent space is already 2D.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>real_data</td>
+<td>ndarray</td>
+<td></td>
+<td>Real data samples.</td>
+</tr>
+<tr class="even">
+<td>synthetic_data</td>
+<td>ndarray</td>
+<td></td>
+<td>Synthetic data samples generated by a model.</td>
+</tr>
+<tr class="odd">
+<td>encoder</td>
+<td></td>
+<td></td>
+<td>Encoder function or model that predicts latent space representations.</td>
+</tr>
+<tr class="even">
+<td>synthetic_labels</td>
+<td>typing.Union[int, typing.List[int], NoneType]</td>
+<td>1</td>
+<td>Labels for synthetic data. Can be a single label or a list of labels.</td>
+</tr>
+<tr class="odd">
+<td>figsize</td>
+<td>tuple</td>
+<td>(12, 9)</td>
+<td>Size of the figure.</td>
+</tr>
+<tr class="even">
+<td>save_path</td>
+<td>typing.Union[str, NoneType]</td>
+<td>None</td>
+<td>Optional path to save the plot image.</td>
+</tr>
+<tr class="odd">
+<td>many_classes</td>
+<td>bool</td>
+<td>False</td>
+<td>Flag to use enhanced plotting for many classes.</td>
+</tr>
+<tr class="even">
+<td>show_legend</td>
+<td>bool</td>
+<td>True</td>
+<td>Flag to show or hide the legend.</td>
+</tr>
+<tr class="odd">
+<td>annotation_mode</td>
+<td>str</td>
+<td>legend</td>
+<td>Mode for annotation: ‘legend’ for colored dots, ‘numbers’ for numeric annotations.</td>
 </tr>
 <tr class="even">
 <td><strong>Returns</strong></td>
 <td><strong>None</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L466" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="plot_latent_space_with_feature_distributions" class="level3">
+<h3 class="anchored" data-anchor-id="plot_latent_space_with_feature_distributions">plot_latent_space_with_feature_distributions</h3>
+<blockquote class="blockquote">
+<pre><code> plot_latent_space_with_feature_distributions
+                                               (latent_representations:num
+                                               py.ndarray,
+                                               labels:numpy.ndarray, featu
+                                               res:Union[numpy.ndarray,Non
+                                               eType]=None, feature_names:
+                                               Union[list,NoneType]=None,
+                                               figsize:tuple=(12, 12), sav
+                                               e_path:Union[str,NoneType]=
+                                               None,
+                                               many_classes:bool=False,
+                                               show_legend:bool=True,
+                                               legend_fontsize:int=8,
+                                               **kwargs:Any)</code></pre>
+</blockquote>
+<p><em>Plots the latent space with class colors and normalized vertical and horizontal feature distributions in separate subplots.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>latent_representations</td>
+<td>ndarray</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>labels</td>
+<td>ndarray</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>features</td>
+<td>typing.Union[numpy.ndarray, NoneType]</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>feature_names</td>
+<td>typing.Union[list, NoneType]</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>figsize</td>
+<td>tuple</td>
+<td>(12, 12)</td>
+<td>Adjusted to be a square</td>
+</tr>
+<tr class="even">
+<td>save_path</td>
+<td>typing.Union[str, NoneType]</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>many_classes</td>
+<td>bool</td>
+<td>False</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>show_legend</td>
+<td>bool</td>
+<td>True</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>legend_fontsize</td>
+<td>int</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>kwargs</td>
+<td>typing.Any</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>None</strong></td>
+<td></td>
 <td></td>
 </tr>
 </tbody>

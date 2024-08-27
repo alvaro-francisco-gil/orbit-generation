@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -199,6 +199,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Propagation</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Evaluation</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -275,7 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*State-dependent Jacobi constant for a given state vector X and gravitational parameter mu.</p>
 <p>Parameters: X (np.ndarray): Cartesian state vector with 6 components (x, y, z, xp, yp, zp). mu (float): Gravitational parameter.</p>
 <p>Returns: Tuple[float, float]: Jacobi constant (J) and total energy (E).*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -321,7 +333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> orbit_index <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">200</span>):</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> time_index <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">300</span>):</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        X <span class="op">=</span> orbit_data[orbit_index, :, time_index]</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        J, E <span class="op">=</span> jacobi_constant(X, MU)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        J, E <span class="op">=</span> jacobi_constant(X, EM_MU)</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        jacobi_constants[orbit_index, time_index] <span class="op">=</span> J</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        total_energies[orbit_index, time_index] <span class="op">=</span> E</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
@@ -376,7 +388,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*Equations of motion for the Circular Restricted 3 Body Problem (CR3BP). The form is X_dot = f(t, X, (parameters,)). This formulation is time-independent as it does not depend explicitly on t.</p>
 <p>Parameters: t (float): Time variable (not used in this formulation). X (np.ndarray): State vector with 6 components (x, y, z, v_x, v_y, v_z). mu (float): Gravitational parameter.</p>
 <p>Returns: List[float]: Derivatives of the state vector.*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -486,7 +498,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*Return the state X after a given time step dt = T_end - T_start.</p>
 <p>Parameters: X (np.ndarray): Initial state vector with 6 components (x, y, z, v_x, v_y, v_z). dt (float): Time step for propagation. mu (float): Gravitational parameter.</p>
 <p>Returns: np.ndarray: Final state vector after time step dt.*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -560,8 +572,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
 <span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Initial state vector: [ 1.18045482  0.         -0.0211      0.         -0.15838369  0.        ]
-Final state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.01508738 -0.15587703  0.00473808]</code></pre>
+<pre><code>Initial state vector: [ 1.10598208  0.         -0.19644872  0.         -0.21942519  0.        ]
+Final state vector after time step dt: [ 1.10494964 -0.0218485  -0.1947948  -0.02060272 -0.21660401  0.03307732]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -585,7 +597,7 @@ Final state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.0
 <p>*Compute the energy error. X can have either 6 columns (state vector) or 7 columns (time + state vector). The returned quantity is the cumulative error with respect to the initial value. If propagation is perfect, err = 0 (or very small).</p>
 <p>Parameters: X (np.ndarray): State vector with shape (n, 6) or (n, 7), where n is the number of samples. mu (float): Gravitational parameter.</p>
 <p>Returns: float: Cumulative energy error with respect to the initial value.*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -627,7 +639,7 @@ Final state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.0
 <p>*Compute the dynamical defect for the generated time-state sequence. The returned quantity is the cumulative error on the position and velocity components. The overall metrics can be a combination of these two last errors.</p>
 <p>Parameters: X (np.ndarray): Time-state vector with shape (n, 7), where the first column is the time vector. mu (float): Gravitational parameter.</p>
 <p>Returns: Tuple[float, float]: Cumulative errors in position and velocity.*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -695,9 +707,9 @@ Final state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.0
 <span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Cumulative energy error for the selected orbit: 0.0004792331893739288
-Cumulative position error for the selected orbit: 0.11278328096143962
-Cumulative velocity error for the selected orbit: 0.23681175915281508</code></pre>
+<pre><code>Cumulative energy error for the selected orbit: 0.00023779340992158282
+Cumulative position error for the selected orbit: 0.08343900552158802
+Cumulative velocity error for the selected orbit: 0.15874181090411918</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -724,12 +736,10 @@ Cumulative velocity error for the selected orbit: 0.23681175915281508</code></pr
                    orbit_indices:List[int]=None,
                    error_types:List[str]=['position', 'velocity',
                    'energy'], time_step:Union[float,NoneType]=None,
-                   display_results:bool=True)</code></pre>
+                   display_results:bool=True, cumulative:bool=False)</code></pre>
 </blockquote>
-<p>*Calculate and return the cumulative error and the average error per time step for the selected orbits together. Optionally, display the evolution of each error as a chart.</p>
-<p>Parameters: orbit_data (np.ndarray): 3D array of orbit data. mu (float): Gravitational parameter. orbit_indices (List[int], optional): List of integers referring to the orbits to analyze. If None, analyze all orbits. Default is None. error_types (List[str]): List of types of errors to calculate: ‘position’, ‘velocity’, and/or ‘energy’. time_step (float, optional): Optional time step if time dimension is not included. Default is None. display_results (bool, optional): Whether to display the results as charts. Default is True.</p>
-<p>Returns: Dict[str, Tuple[float, float]]: A dictionary with keys being the error types and values being tuples of cumulative error and average error per time step.*</p>
-<table class="table">
+<p><em>Calculate and return the cumulative error and the average error per time step for the selected orbits together. Optionally, display the evolution of each error as a chart.</em></p>
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -782,6 +792,12 @@ Cumulative velocity error for the selected orbit: 0.23681175915281508</code></pr
 <td>Boolean to control whether to display the results</td>
 </tr>
 <tr class="odd">
+<td>cumulative</td>
+<td>bool</td>
+<td>False</td>
+<td>Boolean to control cumulative or average error</td>
+</tr>
+<tr class="even">
 <td><strong>Returns</strong></td>
 <td><strong>typing.Dict[str, typing.Tuple[float, float]]</strong></td>
 <td></td>
@@ -790,14 +806,14 @@ Cumulative velocity error for the selected orbit: 0.23681175915281508</code></pr
 </tbody>
 </table>
 <div id="cell-19" class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors(orbit_data, MU, orbit_indices <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>], time_step<span class="op">=</span><span class="fl">0.00917391571278981</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors(orbit_data, EM_MU, orbit_indices <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>], time_step<span class="op">=</span><span class="fl">0.00917391571278981</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Cumulative position error for selected orbits: 0.2316203445866497
-Average position error per time step: 0.0007746499818951495
-Cumulative velocity error for selected orbits: 0.4332810231543765
-Average velocity error per time step: 0.001449100411887547
-Cumulative energy error for selected orbits: 0.05821175030129622
-Average energy error per time step: 0.00019468812809798064</code></pre>
+<pre><code>Cumulative position error for selected orbits: 0.2348241595505243
+Average position error per time step: 0.0007853650821087769
+Cumulative velocity error for selected orbits: 0.44235011161515425
+Average velocity error per time step: 0.0014794318114219206
+Cumulative energy error for selected orbits: 0.0006821222552635398
+Average energy error per time step: 2.2813453353295643e-06</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
