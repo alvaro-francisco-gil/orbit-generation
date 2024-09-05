@@ -1,5 +1,5 @@
-# Start from the NVIDIA CUDA base image with PyTorch support
-FROM nvidia/cuda:12.1-cudnn8-devel-ubuntu20.04
+# Use a base image with CUDA and cuDNN installed, suitable for development
+FROM nvidia/cuda:12.1.0-cudnn8-devel-ubi8
 
 # Set the working directory in the container
 WORKDIR /orbit-generation
@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && pip3 install --upgrade pip
 
 # Install PyTorch, torchvision, and torchaudio for CUDA 12.1
-RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121
+RUN pip3 install torch --extra-index-url https://download.pytorch.org/whl/cu121
 
 # Clone your repository
 RUN git clone --branch move_to_pytorch https://github.com/alvaro-francisco-gil/orbit-generation.git /orbit-generation \
