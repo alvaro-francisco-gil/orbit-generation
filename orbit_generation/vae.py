@@ -10,21 +10,23 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import pytorch_lightning as pl
-from torchmetrics import MeanMetric
+from torchmetrics import MetricCollection, MeanMetric
 
 # %% ../nbs/10_vae.ipynb 3
 class BetaVAE(pl.LightningModule):
-    """
-    beta-VAE implementation for unlabeled time series using PyTorch Lightning.
-    """
-    def __init__(self, encoder, decoder, beta=1.0, **kwargs):
+    def __init__(self, encoder, decoder, beta=1.0, loss_fn=None, optimizer_cls=torch.optim.Adam, lr=0.001, **kwargs):
         super().__init__(**kwargs)
         self.beta = beta
         self.encoder = encoder
         self.decoder = decoder
-        self.total_loss_tracker = MeanMetric()
-        self.reconstruction_loss_tracker = MeanMetric()
-        self.kl_loss_tracker = MeanMetric()
+        self.loss_fn = loss_fn if loss_fn else self.default_loss_fn
+        self.optimizer_cls = optimizer_cls
+        self.lr = lr
+        self.metrics = MetricCollection({
+            'total_loss': MeanMetric(),
+            'reconstruction_loss': MeanMetric(),
+            'kl_loss': MeanMetric()
+        })
 
     def forward(self, x):
         z_mean, z_log_var = self.encoder(x)
@@ -36,24 +38,26 @@ class BetaVAE(pl.LightningModule):
         eps = torch.randn_like(std)
         return mean + eps * std
 
-    def training_step(self, batch):
+    def default_loss_fn(self, x, x_hat, z_mean, z_log_var):
+        # Calculate reconstruction loss between the original input x and the reconstructed input x_hat.
+        reconst_loss = F.mse_loss(x_hat, x, reduction='mean')
+        # Calculate the KL divergence to measure how much information is lost when using q(z|x) to represent p(z).
+        kl_loss = -0.5 * torch.sum(1 + z_log_var - z_mean.pow(2) - z_log_var.exp(), dim=1).mean()
+        return reconst_loss, self.beta * kl_loss
+
+    def training_step(self, batch, batch_idx):
         x = batch
         z_mean, z_log_var = self.encoder(x)
         z = self._reparameterize(z_mean, z_log_var)
         x_hat = self.decoder(z)
-        reconst_loss = F.mse_loss(x_hat, x, reduction='mean')
-        kl_loss = -0.5 * torch.sum(1 + z_log_var - z_mean.pow(2) - z_log_var.exp(), dim=1).mean()
-        total_loss = reconst_loss + self.beta * kl_loss
-        self.total_loss_tracker.update(total_loss)
-        self.reconstruction_loss_tracker.update(reconst_loss)
-        self.kl_loss_tracker.update(kl_loss)
-        self.log_dict({"train_loss": total_loss, "recon_loss": reconst_loss, "kl_loss": kl_loss})
+        reconst_loss, kl_loss = self.loss_fn(x, x_hat, z_mean, z_log_var)
+        total_loss = reconst_loss + kl_loss
+        self.log('train_loss', total_loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
         return total_loss
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters(), lr=0.001)
+        return self.optimizer_cls(self.parameters(), lr=self.lr)
 
     def generate(self, n=1):
         z = torch.randn(n, self.latent_dim, device=self.device)
         return self.decoder(z)
-
