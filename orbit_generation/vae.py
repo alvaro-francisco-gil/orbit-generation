@@ -53,7 +53,22 @@ class BetaVAE(pl.LightningModule):
         reconst_loss, kl_loss = self.loss_fn(x, x_hat, z_mean, z_log_var)
         total_loss = reconst_loss + kl_loss
         self.log('train_loss', total_loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
+        self.log('train_reconstruction_loss', reconst_loss, on_step=True, on_epoch=True, prog_bar=False, logger=True)
+        self.log('train_kl_loss', kl_loss, on_step=True, on_epoch=True, prog_bar=False, logger=True)
         return total_loss
+
+    def validation_step(self, batch, batch_idx):
+        x = batch
+        z_mean, z_log_var = self.encoder(x)
+        z = self._reparameterize(z_mean, z_log_var)
+        x_hat = self.decoder(z)
+        reconst_loss, kl_loss = self.loss_fn(x, x_hat, z_mean, z_log_var)
+        total_loss = reconst_loss + kl_loss
+        self.log('val_loss', total_loss, on_epoch=True, prog_bar=True, logger=True)
+        self.log('val_reconstruction_loss', reconst_loss, on_epoch=True, prog_bar=False, logger=True)
+        self.log('val_kl_loss', kl_loss, on_epoch=True, prog_bar=False, logger=True)
+        return total_loss
+
 
     def configure_optimizers(self):
         return self.optimizer_cls(self.parameters(), lr=self.lr)
