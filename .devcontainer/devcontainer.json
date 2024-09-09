@@ -7,7 +7,8 @@
     "customizations": {
         "vscode": {
             "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash"
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "remote.serverInstallPath": "/orbit-generation/vscode-server"
             },
             "extensions": [
                 "ms-python.python",
