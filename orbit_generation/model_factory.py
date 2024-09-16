@@ -6,8 +6,10 @@
 __all__ = ['get_model']
 
 # %% ../nbs/11_model_factory.ipynb 2
-from .architectures import VAE_CONV5Architecture
+from .architectures import get_conv5_vae_components
 from .vae import BetaVAE
+
+import torch
 
 # %% ../nbs/11_model_factory.ipynb 3
 def get_model(params):
@@ -15,69 +17,23 @@ def get_model(params):
 
     if model_name == 'vae_conv5':
         # Accessing model configuration from the zoo using parameters from the dictionary
-        architecture = VAE_CONV5Architecture(
+        encoder, decoder = get_conv5_vae_components(
             seq_len=params['seq_len'], 
             feat_dim=params['feature_dim'], 
-            latent_dim=params['latent_dim']
+            latent_dim=params['latent_dim'],
+            dropout_rate=params.get('dropout_rate', 0.1)
         )
-
-        # Extracting encoder and decoder from the architecture
-        encoder, decoder = architecture.encoder, architecture.decoder
 
         # Build the VAE
         vae = BetaVAE(
             encoder=encoder,
             decoder=decoder,
-            beta=params.get('beta', None),
+            beta=params.get('beta', 1.0),
             loss_fn=params.get('loss_fn', None),
-            optimizer_cls=params.get('optimizer_cls', None),
+            optimizer_cls=params.get('optimizer_cls', torch.optim.Adam),
             lr=params.get('lr', None)
         )
-
-        return vae
-
-    elif model_name == 'timeGAN':
-        model = tsgm.models.timeGAN.TimeGAN(
-            seq_len=params['seq_len'],
-            module="gru",
-            hidden_dim=24,
-            n_features=params['feature_dim'],
-            n_layers=3,
-            batch_size=params['batch_size'],
-            gamma=1.0,
-        )
-        # .compile() sets all optimizers to Adam by default
-        model.compile(optimizer=params['optimizer']['name'], learning_rate=params['optimizer']['learning_rate'])
-        return model
-
-    else:
-        raise ValueError(f"Unsupported model_name: {model_name}")
-
-# %% ../nbs/11_model_factory.ipynb 4
-def get_model(params):
-    model_name = params['model_name']
-
-    if model_name == 'vae_conv5':
-        # Accessing model configuration from the zoo using parameters from the dictionary
-        architecture = VAE_CONV5Architecture(
-            seq_len=params['seq_len'], 
-            feat_dim=params['feature_dim'], 
-            latent_dim=params['latent_dim']
-        )
-
-        # Extracting encoder and decoder from the architecture
-        encoder, decoder = architecture.encoder, architecture.decoder
-
-        # Build the VAE
-        vae = BetaVAE(
-            encoder=encoder,
-            decoder=decoder,
-            beta=params.get('beta', None),
-            loss_fn=params.get('loss_fn', None),
-            optimizer_cls=params.get('optimizer_cls', None),
-            lr=params.get('lr', None)
-        )
-
+        
         return vae
 
     elif model_name == 'timeGAN':

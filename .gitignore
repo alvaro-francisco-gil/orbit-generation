@@ -5,6 +5,7 @@ experiments/*
 !experiments/
 !experiments/experiments.json
 !experiments/results
+nbs_experiments/lightning_logs/
 nbs_experiments/wandb/
 tsgm_examples/
 

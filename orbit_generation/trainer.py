@@ -12,7 +12,7 @@ from pytorch_lightning import Trainer
 from sklearn.model_selection import train_test_split
 
 # %% ../nbs/12_trainer.ipynb 3
-def train_model(model, data, labels, config):
+def train_model(model, data, labels, params):
     """
     Trains the given model using the provided data and configuration.
 
@@ -31,35 +31,53 @@ def train_model(model, data, labels, config):
         Configuration dictionary containing training parameters like batch_size, epochs, val_split, etc.
     """
     
+    # Validate params keys with defaults
+    epochs = params.get('epochs', 10)  # Default to 10 if not specified
+    batch_size = params.get('batch_size', 32)  # Default batch size
+    val_split = params.get('val_split', 0.1)  # Default validation split
+
+    print(f"Configured epochs: {epochs}, batch_size: {batch_size}, val_split: {val_split}")
+
+    if not isinstance(data, torch.Tensor):
+        print('no')
+    # Convert data to tensors if not already
+    data = torch.tensor(data, dtype=torch.float32) if not isinstance(data, torch.Tensor) else data
+    labels = torch.tensor(labels, dtype=torch.long) if not isinstance(labels, torch.Tensor) else labels
+
     # Split the data and create dataloaders
-    if config['val_split'] > 0:
+    if val_split > 0:
         X_train, X_val, y_train, y_val = train_test_split(
             data, labels,
-            test_size=config['val_split'],
+            test_size=val_split,
             random_state=42
         )
-        train_dataset = TensorDataset(torch.tensor(X_train), torch.tensor(y_train))
-        val_dataset = TensorDataset(torch.tensor(X_val), torch.tensor(y_val))
-        val_dataloader = DataLoader(val_dataset, batch_size=config['batch_size'])
+        train_dataset = TensorDataset(X_train)
+        val_dataset = TensorDataset(X_val)
+        val_dataloader = DataLoader(val_dataset, batch_size=batch_size, num_workers=15)
     else:
-        train_dataset = TensorDataset(torch.tensor(data), torch.tensor(labels))
+        X_train, y_train = data, labels
         val_dataloader = None
 
-    train_dataloader = DataLoader(train_dataset, batch_size=config['batch_size'], shuffle=True)
+    train_dataset = TensorDataset(X_train)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=15)
 
-    # Initialize PyTorch Lightning Trainer
+    # Initialize PyTorch Lightning Trainer with GPU settings
     trainer = Trainer(
-        max_epochs=config['epochs'],
+        max_epochs=epochs,
         log_every_n_steps=10,
-        gpus=1 if torch.cuda.is_available() else 0
+        devices="auto",  # Automatically use available GPUs
+        accelerator="auto"  # Automatically select the best accelerator (GPU or CPU)
     )
 
+    print("Starting training...")
     # Train the model
     if val_dataloader:
         trainer.fit(model, train_dataloader, val_dataloader)
     else:
         trainer.fit(model, train_dataloader)
 
+    # Return metrics after training is complete
+    print("Training complete. Here are the metrics: ")
     return model.metrics
 
 # %% ../nbs/12_trainer.ipynb 4
