@@ -4,7 +4,7 @@
 
 # %% auto 0
 __all__ = ['EPS', 'load_orbit_data', 'load_memmap_array', 'get_orbit_features', 'save_data', 'get_example_orbit_data',
-           'sample_orbits', 'TSFeatureWiseScaler', 'TSGlobalScaler']
+           'sample_orbits', 'create_dataloaders', 'TSFeatureWiseScaler', 'TSGlobalScaler']
 
 # %% ../nbs/01_data.ipynb 2
 import h5py
@@ -14,7 +14,8 @@ import os
 import pandas as pd
 from typing import Optional, Any
 import torch
-import torch.nn.functional as F
+from torch.utils.data import DataLoader, TensorDataset
+from sklearn.model_selection import train_test_split
 
 # %% ../nbs/01_data.ipynb 3
 from unittest.mock import patch, MagicMock
@@ -190,9 +191,29 @@ def sample_orbits(orbit_data: np.ndarray,  # Orbit data array
     return sampled_data, sampled_labels
 
 # %% ../nbs/01_data.ipynb 20
+def create_dataloaders(scaled_data, val_split=0.2, batch_size=32):
+    if val_split > 0:
+        X_train, X_val = train_test_split(
+            scaled_data,
+            test_size=val_split,
+            shuffle=True,
+            random_state=42
+        )
+        train_dataset = TensorDataset(X_train)
+        val_dataset = TensorDataset(X_val)
+        train_dataloader = DataLoader(train_dataset, batch_size=batch_size, num_workers=4, pin_memory=True)
+        val_dataloader = DataLoader(val_dataset, batch_size=batch_size, num_workers=4, pin_memory=True)
+    else:
+        train_dataset = TensorDataset(scaled_data)
+        train_dataloader = DataLoader(train_dataset, batch_size=batch_size, num_workers=4, pin_memory=True)
+        val_dataloader = None
+    
+    return train_dataloader, val_dataloader
+
+# %% ../nbs/01_data.ipynb 22
 EPS = 1e-18  # A small epsilon to prevent division by zero
 
-# %% ../nbs/01_data.ipynb 21
+# %% ../nbs/01_data.ipynb 23
 class TSFeatureWiseScaler():
     """
     Scales time series data feature-wise using PyTorch tensors.
@@ -213,24 +234,24 @@ class TSFeatureWiseScaler():
         assert len(feature_range) == 2
         self._min_v, self._max_v = feature_range
 
-    # X: N x T x D
     def fit(self, X: torch.Tensor) -> "TSFeatureWiseScaler":
         """
         Fits the scaler to the data.
         
-        :param X: Input data. Shape: (N, T, D)
+        :param X: Input data. Shape: (N, F, T) where N is number of data points,
+                  F is number of features, and T is number of time steps.
         :type X: torch.Tensor
         
         :returns: The fitted scaler object.
         :rtype: TSFeatureWiseScaler
         """
-        D = X.shape[2]
-        self.mins = torch.zeros(D, device=X.device)
-        self.maxs = torch.zeros(D, device=X.device)
+        F = X.shape[1]
+        self.mins = torch.zeros(F, device=X.device)
+        self.maxs = torch.zeros(F, device=X.device)
 
-        for i in range(D):
-            self.mins[i] = torch.min(X[:, :, i])
-            self.maxs[i] = torch.max(X[:, :, i])
+        for i in range(F):
+            self.mins[i] = torch.min(X[:, i, :])
+            self.maxs[i] = torch.max(X[:, i, :])
 
         return self
 
@@ -238,35 +259,38 @@ class TSFeatureWiseScaler():
         """
         Transforms the data.
         
-        :param X: Input data. Shape: (N, T, D)
+        :param X: Input data. Shape: (N, F, T)
         :type X: torch.Tensor
         
         :returns: Scaled data.
         :rtype: torch.Tensor
         """
-        return ((X - self.mins) / (self.maxs - self.mins + EPS)) * (self._max_v - self._min_v) + self._min_v
+        X_scaled = X.clone()
+        for i in range(X.shape[1]):
+            X_scaled[:, i, :] = ((X[:, i, :] - self.mins[i]) / (self.maxs[i] - self.mins[i] + 1e-8)) * (self._max_v - self._min_v) + self._min_v
+        return X_scaled
 
     def inverse_transform(self, X: torch.Tensor) -> torch.Tensor:
         """
         Inverse-transforms the data.
         
-        :param X: Scaled data. Shape: (N, T, D)
+        :param X: Scaled data. Shape: (N, F, T)
         :type X: torch.Tensor
         
         :returns: Original data.
         :rtype: torch.Tensor
         """
-        X = X - self._min_v
-        X = X / (self._max_v - self._min_v)
-        X = X * (self.maxs - self.mins + EPS)
-        X = X + self.mins
-        return X
+        X_inv = X.clone()
+        for i in range(X.shape[1]):
+            X_inv[:, i, :] = (X[:, i, :] - self._min_v) / (self._max_v - self._min_v)
+            X_inv[:, i, :] = X_inv[:, i, :] * (self.maxs[i] - self.mins[i] + 1e-8) + self.mins[i]
+        return X_inv
 
     def fit_transform(self, X: torch.Tensor) -> torch.Tensor:
         """
         Fits the scaler to the data and transforms it.
         
-        :param X: Input data. Shape: (N, T, D)
+        :param X: Input data. Shape: (N, F, T)
         :type X: torch.Tensor
         
         :returns: Scaled data.
@@ -275,7 +299,7 @@ class TSFeatureWiseScaler():
         self.fit(X)
         return self.transform(X)
 
-# %% ../nbs/01_data.ipynb 22
+# %% ../nbs/01_data.ipynb 24
 class TSGlobalScaler():
     """
     Scales time series data globally using PyTorch tensors.
