@@ -6,7 +6,7 @@
 __all__ = ['get_model']
 
 # %% ../nbs/11_model_factory.ipynb 2
-from .architectures import get_conv5_vae_components
+from .architectures import get_conv5_vae_components, get_conv5_legit_tsgm_vae_components
 from .vae import BetaVAE
 
 import torch
@@ -15,15 +15,30 @@ import torch
 def get_model(params):
     model_name = params['model_name']
 
-    if model_name == 'vae_conv5':
-        # Accessing model configuration from the zoo using parameters from the dictionary
-        encoder, decoder = get_conv5_vae_components(
-            seq_len=params['seq_len'], 
-            feat_dim=params['feature_dim'], 
-            latent_dim=params['latent_dim'],
-            dropout_rate=params.get('dropout_rate', 0.1)
-        )
+    # Check if the model name starts with 'vae'
+    if model_name.startswith('vae'):
+        # Handle specific VAE models
+        if model_name == 'vae_conv5_legit':
+            # Accessing model configuration from the zoo using parameters from the dictionary
+            encoder, decoder = get_conv5_legit_tsgm_vae_components(
+                seq_len=params['seq_len'], 
+                feat_dim=params['feature_dim'], 
+                latent_dim=params['latent_dim'],
+                dropout_rate=params.get('dropout_rate', 0.1)
+            )
 
+        elif model_name == 'vae_conv5_1':
+            # Accessing model configuration from the zoo using parameters from the dictionary
+            encoder, decoder = get_conv5_vae_components(
+                seq_len=params['seq_len'], 
+                feat_dim=params['feature_dim'], 
+                latent_dim=params['latent_dim'],
+                dropout_rate=params.get('dropout_rate', 0.1)
+            )
+
+        else:
+            raise ValueError(f"Unknown VAE model: {model_name}")
+        
         # Build the VAE
         vae = BetaVAE(
             encoder=encoder,
@@ -35,20 +50,6 @@ def get_model(params):
         )
         
         return vae
-
-    elif model_name == 'timeGAN':
-        model = tsgm.models.timeGAN.TimeGAN(
-            seq_len=params['seq_len'],
-            module="gru",
-            hidden_dim=24,
-            n_features=params['feature_dim'],
-            n_layers=3,
-            batch_size=params['batch_size'],
-            gamma=1.0,
-        )
-        # .compile() sets all optimizers to Adam by default
-        model.compile(optimizer=params['optimizer']['name'], learning_rate=params['optimizer']['learning_rate'])
-        return model
-
+    
     else:
-        raise ValueError(f"Unsupported model_name: {model_name}")
+        raise ValueError(f"Model name '{model_name}' is not recognized or not supported yet.")

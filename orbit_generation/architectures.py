@@ -203,11 +203,12 @@ def get_conv5_vae_components(seq_len, feat_dim, latent_dim, dropout_rate=0.2):
 
 # %% ../nbs/06_architectures.ipynb 13
 class Conv5EncoderLegitTsgm(nn.Module):
-    def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, dropout_rate: float = 0.2):
+    def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, dropout_rate: float):
         super().__init__()
         self.seq_len = seq_len
         self.feat_dim = feat_dim
         self.latent_dim = latent_dim
+        self.dropout_rate = dropout_rate
         
         self.convo_layers = nn.Sequential(
             nn.Conv1d(in_channels=self.feat_dim, out_channels=64, kernel_size=10, stride=1, padding='same'),
@@ -244,11 +245,12 @@ class Conv5EncoderLegitTsgm(nn.Module):
 
 # %% ../nbs/06_architectures.ipynb 14
 class Conv5DecoderLegitTsgm(nn.Module):
-    def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, dropout_rate: float = 0.2):
+    def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, dropout_rate: float):
         super().__init__()
         self.seq_len = seq_len
         self.feat_dim = feat_dim
         self.latent_dim = latent_dim
+        self.dropout_rate = dropout_rate
 
         # Dense layers to upscale the latent dimensions
         self.dense_layers = nn.Sequential(
@@ -263,23 +265,18 @@ class Conv5DecoderLegitTsgm(nn.Module):
 
         # Transpose Convolutional layers with calculated padding for "same" effect
         self.conv_transpose_layers = nn.Sequential(
-            nn.ConvTranspose1d(in_channels=64, out_channels=64, kernel_size=2, stride=1, padding=1),
+            nn.ConvTranspose1d(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
             nn.Dropout(p=dropout_rate),
-            nn.ConvTranspose1d(in_channels=64, out_channels=64, kernel_size=2, stride=1, padding=1),
+            nn.ConvTranspose1d(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
             nn.Dropout(p=dropout_rate),
-            nn.ConvTranspose1d(in_channels=64, out_channels=64, kernel_size=2, stride=1, padding=1),
+            nn.ConvTranspose1d(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
             nn.Dropout(p=dropout_rate),
-            nn.ConvTranspose1d(in_channels=64, out_channels=self.feat_dim,
-                               kernel_size=(10 if seq_len > 10 else seq_len), stride=1,
-                               padding=(5 if seq_len > 10 else seq_len // 2)),
-                               # Adjust padding based on actual sequence length
-                               # This ensures the output shape matches the input shape
-                               # If seq_len <= 10 use same padding as input size
-                               # Adjust these parameters based on actual needs and testing
-                               activation="sigmoid")
+            nn.ConvTranspose1d(in_channels=64, out_channels=self.feat_dim, kernel_size=11, stride=1, padding=5),
+            nn.Sigmoid()
+        )
 
     def forward(self, z: Tensor) -> Tensor:
         z = self.dense_layers(z)
