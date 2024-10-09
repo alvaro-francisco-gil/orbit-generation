@@ -9,10 +9,10 @@ __all__ = ['Sampling', 'VAELossHistory', 'Conv5Encoder', 'Conv5Decoder', 'get_co
 # %% ../nbs/06_architectures.ipynb 2
 import torch
 import torch.nn as nn
-from abc import ABC, abstractmethod
 from torch import Tensor
 from pytorch_lightning.callbacks import Callback
 import matplotlib.pyplot as plt
+import os
 
 # %% ../nbs/06_architectures.ipynb 4
 class Sampling(nn.Module):
@@ -56,7 +56,7 @@ class VAELossHistory(Callback):
         if val_kl_loss is not None:
             self.val_kl_losses.append(val_kl_loss.item())
 
-    def plot_total_losses(self):
+    def plot_total_losses(self, save_path=None):
         plt.figure(figsize=(10, 5))
         plt.plot(self.train_total_losses, label='Training Total Loss')
         plt.plot(self.val_total_losses, label='Validation Total Loss')
@@ -65,12 +65,13 @@ class VAELossHistory(Callback):
         plt.title('Total Training and Validation Losses')
         plt.legend()
         plt.grid(True)
+        if save_path:
+            plt.savefig(save_path)
         plt.show()
 
-    def plot_all_losses(self):
+    def plot_all_losses(self, save_path=None):
         plt.figure(figsize=(15, 10))
         
-        # Plot total losses
         plt.subplot(3, 1, 1)
         plt.plot(self.train_total_losses, label='Training Total Loss')
         plt.plot(self.val_total_losses, label='Validation Total Loss')
@@ -78,17 +79,17 @@ class VAELossHistory(Callback):
         plt.ylabel('Total Loss')
         plt.title('Total Training and Validation Losses')
         
-        # Plot reconstruction losses
         plt.subplot(3, 1, 2)
         plt.plot(self.train_recon_losses, label='Training Reconstruction Loss')
         plt.plot(self.val_recon_losses, label='Validation Reconstruction Loss')
         plt.xlabel('Epoch')
         plt.ylabel('Reconstruction Loss')
         
-        # Plot KL divergence losses
         plt.subplot(3, 1, 3)
         plt.plot(self.train_kl_losses, label='Training KL Divergence Loss')
         plt.plot(self.val_kl_losses, label='Validation KL Divergence Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('KL Divergence Loss')
         
         for i in range(1, 4):
             plt.subplot(3, 1, i)
@@ -96,6 +97,8 @@ class VAELossHistory(Callback):
             plt.grid(True)
 
         plt.tight_layout()
+        if save_path:
+            plt.savefig(save_path)
         plt.show()
 
 # %% ../nbs/06_architectures.ipynb 9
