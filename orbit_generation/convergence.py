@@ -164,10 +164,588 @@ def differential_correction(X_old, t_vec_old, μ, variable_time=True, time_fligh
     δ = [] if δ is None else δ
 
     # Convert NumPy arrays to Julia arrays
-    X_old_julia = Main.eval(f'Array{{Float64, 2}}(reshape({X_old.tolist()}, size({X_old.tolist()})))')
-    t_vec_old_julia = Main.eval(f'Array{{Float64, 2}}({t_vec_old.tolist()},size({X_old.tolist()}))')
+    X_old_list = X_old.tolist()
+    t_vec_old_list = t_vec_old.tolist()
+
+    # Get the shape of X_old
+    X_old_shape = X_old.shape
+
+    # Convert Python lists to Julia arrays
+    X_old_julia = Main.eval(f'reshape(Array{{Float64}}({X_old_list}), {X_old_shape})')
+    t_vec_old_julia = Main.eval(f'Array{{Float64}}({t_vec_old_list})')
 
     return Main.differential_correction(X_old_julia, t_vec_old_julia, μ, variable_time=variable_time, 
                                         time_flight=time_flight, jacobi_constant=jacobi_constant, 
                                         X_end=X_end, tol=tol, max_iter=max_iter, printout=printout, 
                                         DX_0=DX_0, X_big_0=X_big_0, δ=δ)
+
+# %% ../nbs/12_convergence.ipynb 6
+Main.eval("""
+using DifferentialEquations
+using Polynomials
+using LinearAlgebra
+using ThreeBodyProblem
+
+dim = 6  # state dimension
+
+function constraints(X, t_vec, μ; X_end = [], time_flight = [], jacobi_constant = [], variable_time = true)
+    n = length(t_vec)
+    T_vec = t_vec[2:end] - t_vec[1:end-1]
+
+    if isempty(time_flight) && isempty(jacobi_constant)
+        dim_F = n*6
+    elseif !isempty(time_flight)
+        dim_F = n*6 + 1
+    elseif !isempty(jacobi_constant)
+        dim_F = n*6 + 1
+    end
+
+    if variable_time
+        X_big = vcat(X..., T_vec)
+    else
+        X_big = vcat(X...)
+    end
+
+    F = zeros(dim_F)
+    DF = zeros(dim_F, length(X_big))
+
+    for i in 1:(n-1)
+        ind_x = (i-1)*6 .+ (1:6)
+        ind_y = (i-1)*6 .+ (1:12)
+        Xf_i, Phi = get_state(X[i], T_vec[i], μ)
+        F[ind_x] = Xf_i - X[i+1]
+        DF[ind_x, ind_y] = hcat(Phi, -Diagonal(ones(6)))
+        if variable_time
+            DF[ind_x, 6*n + i] = dynamics_crtbp(Xf_i, μ)
+        end
+    end
+
+    if isempty(X_end)
+        F[n*6 .+ (-5:0)] = X[end] - X[1]
+        DF[n*6 .+ (-5:0), n*6 .+ (-5:0)] = Diagonal(ones(6))
+        DF[n*6 .+ (-5:0), 1:6] = -Diagonal(ones(6))
+    else
+        F[n*6 .+ (-5:0)] = X[end] - X_end
+        DF[n*6 .+ (-5:0), n*6 .+ (-5:0)] = Diagonal(ones(6))
+    end
+
+    if !isempty(time_flight)
+        F[end] = sum(T_vec) - time_flight
+        DF[end, end .+ (-(n-2):0)] = transpose(ones(n-1))
+    elseif !isempty(jacobi_constant)
+        J = 0
+        kk = n
+        for i in 1:kk
+            _, J_i, DJ_i = jacobi(X[i], μ)
+            J += J_i
+            DF[end, (i-1)*6 .+ (1:6)] = DJ_i
+        end
+        F[end] = J - kk*jacobi_constant
+    end
+
+    return X_big, F, DF
+end
+
+function differential_correction(X_old, t_vec_old, μ; variable_time = true, time_flight = [], jacobi_constant = [], X_end = [], tol = 1e-9, max_iter = 20, printout = false, DX_0 = [], X_big_0 = [], δ = [])
+    k = 0
+    n = length(t_vec_old)
+
+    if !variable_time && !isempty(time_flight)
+        error("Set the time nodes as variables to specify the time of flight.")
+    end
+
+    while k < max_iter
+        k += 1
+        global X_big, F, DF = constraints(X_old, t_vec_old, μ; X_end = X_end, time_flight = time_flight, jacobi_constant = jacobi_constant, variable_time = variable_time)
+
+        if isempty(DX_0)
+            if norm(F) <= tol && t_vec_old[end] > 1e-6
+                printout && print("converged in ", k, " iterations \\n")
+                success = 1
+                return X_old, t_vec_old, norm(F), k, success
+            elseif norm(F) >= 10 && k > 1
+                printout && print("solution diverged after ", k, " iterations \\n")
+                success = -1
+                return X_old, t_vec_old, norm(F), k, success
+            end
+
+            X_big_new = X_big - pinv(DF) * F
+        else
+            arc_constr = dot(X_big - X_big_0, DX_0) - δ
+            global G = vcat(F, arc_constr)
+            DG = vcat(DF, reduce(hcat, DX_0))
+
+            if norm(G) <= tol && t_vec_old[end] > 1e-6
+                printout && print("converged in ", k, " iterations \\n")
+                success = 1
+                return X_old, t_vec_old, norm(G), k, success
+            elseif norm(G) >= 10 && k > 1
+                printout && print("solution diverged after ", k, " iterations \\n")
+                success = -1
+                return X_old, t_vec_old, norm(G), k, success
+            end
+
+            X_big_new = X_big - pinv(DG) * G
+        end
+
+        X_new = []
+        for i = 1:n
+            push!(X_new, X_big_new[(i-1)*6 .+ (1:6)])
+        end
+
+        if variable_time
+            t_vec_new = zeros(1)
+            for i = 1:n-1
+                push!(t_vec_new, t_vec_new[end] + X_big_new[6*n + i])
+            end
+            t_vec_old = copy(t_vec_new)
+        end
+
+        X_old = copy(X_new)
+
+        if isempty(DX_0)
+            printout && print(k, " | ", norm(F), "\\n")
+        else
+            printout && print(k, " | ", norm(G), "\\n")
+        end
+    end
+
+    success = -1
+    if isempty(DX_0)
+        return X_old, t_vec_old, norm(F), k, success
+    else
+        return X_old, t_vec_old, norm(G), k, success
+    end
+end
+
+function get_state(X0, dt, μ; reltol = 1e-10, abstol = 1e-10, solver = Vern7())
+    size(X0,2) > 1 && error("Initial condition shall be a column vector")
+    Phi0 = Diagonal(ones(6));
+    tspan = [0,dt];
+
+    X0_aug = vcat(X0, reshape(Phi0,(36,1)));
+    prob = ODEProblem(eom_stm_crtbp!, X0_aug,tspan,μ);
+    sol = solve(prob, solver ,reltol = reltol, abstol = abstol, saveat=dt);
+
+    Xfin = sol[end];
+    X_end = Xfin[1:6];
+    Phi = reshape(Xfin[7:end],(6,6));
+
+    if norm(Phi - Phi0) == 0
+        print("reducing tolerance \n")
+        sol = solve(prob, solver ,reltol = reltol*1e5, abstol = abstol*1e5, saveat=dt);
+        Xfin = sol[end];
+        X_end = Xfin[1:6];
+        Phi = reshape(Xfin[7:end],(6,6));
+
+    end
+    
+    return X_end, Phi
+
+end
+
+function jacobi(X,μ)
+
+    length(X) > 6 && error("state vector shall be of size 6.")
+     (x,y,z, xp, yp, zp) = X
+
+
+    μ1 = 1-μ;
+    μ2 = μ;
+
+    r1 = sqrt((x+μ2)^2 + y^2 + z^2);
+    r2 = sqrt((x-μ1)^2 + y^2 + z^2);
+
+    K = 0.5*(xp^2 + yp^2 + zp^2); #kinetic energy 
+    Ubar = -0.5*(x^2 + y^2) -μ1/r1 - μ2/r2 -0.5*μ1*μ2;
+
+    E = K + Ubar;
+    J = -2*E;
+
+    # Jacobian of the Jacobian constant relative to the state
+    dJx = 2*x - 2*μ1*(x+μ2)/r1^3 - 2*μ2*(x-μ1)/r2^3;
+    dJy = 2*y - 2*μ1*y/r1^3 - 2*μ2*y/r2^3;
+    dJz = -2*(μ1/r1^3 + μ2/r2^3)*z;
+
+    
+    DJ = [dJx dJy dJz -2*xp -2*yp -2*zp]; 
+
+    return E, J, DJ;
+end
+
+function dynamics_crtbp(X, μ)
+
+    r1 = sqrt((X[1]+μ)^2 + X[2]^2 + X[3]^2);
+    r2 = sqrt((X[1]-(1-μ))^2 + X[2]^2 + X[3]^2)
+    
+    dX = zeros(6);
+    dX[1] = X[4];
+    dX[2] = X[5];
+    dX[3] = X[6];
+    dX[4] = X[1] + 2*X[5] - (1-μ)*(X[1]+μ)/r1^3 - μ*(X[1]-(1-μ))/r2^3;
+    dX[5] =  X[2] - 2*X[4] - X[2]*((1-μ)/r1^3 + μ/r2^3);
+    dX[6] = - X[3]*((1-μ)/r1^3 + μ/r2^3);
+
+    return dX
+
+end
+function eom_stm_crtbp!(dX, X, p, t)
+
+    μ = p[1];
+
+    r1 = sqrt((X[1]+μ)^2 + X[2]^2 + X[3]^2);
+    r2 = sqrt((X[1]-(1-μ))^2 + X[2]^2 + X[3]^2);
+
+    Phiv = X[7:end];
+    Phi = reshape(Phiv,(6,6));
+    Xv = X[1:6];
+    A = jacobian_crtbp(Xv,μ)
+    dPhi = A*Phi;
+    
+    dX[1] = X[4];
+    dX[2] = X[5];
+    dX[3] = X[6];
+    dX[4] = X[1] + 2*X[5] - (1-μ)*(X[1]+μ)/r1^3 - μ*(X[1]-(1-μ))/r2^3;
+    dX[5] =  X[2] - 2*X[4] - X[2]*((1-μ)/r1^3 + μ/r2^3);
+    dX[6] = - X[3]*((1-μ)/r1^3 + μ/r2^3);
+
+    dX[7:end] = reshape(dPhi,(36,1));
+end 
+""")
+
+# Python wrapper for differential_correction function
+def differential_correction(X_old, t_vec_old, μ, variable_time=True, time_flight=None, 
+                            jacobi_constant=None, X_end=None, tol=1e-9, max_iter=20, 
+                            printout=False, DX_0=None, X_big_0=None, δ=None):
+    # Convert Python None to Julia nothing
+    time_flight = [] if time_flight is None else time_flight
+    jacobi_constant = [] if jacobi_constant is None else jacobi_constant
+    X_end = [] if X_end is None else X_end
+    DX_0 = [] if DX_0 is None else DX_0
+    X_big_0 = [] if X_big_0 is None else X_big_0
+    δ = [] if δ is None else δ
+
+    # Ensure X_old is in the correct shape (n_timesteps, n_dimensions)
+    if X_old.shape[0] != 6:
+        X_old = X_old.T
+    
+    # Convert NumPy arrays to Julia arrays
+    X_old_list = X_old.tolist()
+    t_vec_old_list = t_vec_old.tolist()
+
+    # Print debug information
+    print("X_old shape:", X_old.shape)
+    print("t_vec_old shape:", t_vec_old.shape)
+
+    try:
+        # Convert Python lists to Julia arrays
+        X_old_julia = Main.eval(f'[{X_old_list}...]')
+        t_vec_old_julia = Main.eval(f'Array{{Float64}}({t_vec_old_list})')
+
+        print("Calling Julia differential_correction function...")
+        result = Main.differential_correction(X_old_julia, t_vec_old_julia, μ, variable_time=variable_time,
+                                              time_flight=time_flight, jacobi_constant=jacobi_constant,
+                                              X_end=X_end, tol=tol, max_iter=max_iter, printout=printout,
+                                              DX_0=DX_0, X_big_0=X_big_0, δ=δ)
+        print("Julia differential_correction function completed successfully")
+        return result
+    except Exception as e:
+        print("Error in differential_correction:")
+        print(f"Error type: {type(e)}")
+        print(f"Error message: {str(e)}")
+        print(f"X_old_julia: {X_old_julia}")
+        print(f"t_vec_old_julia: {t_vec_old_julia}")
+        print(f"μ: {μ}")
+        raise
+
+# %% ../nbs/12_convergence.ipynb 7
+Main.eval("""
+using DifferentialEquations
+using Polynomials
+using LinearAlgebra
+using ThreeBodyProblem
+
+const DIM = 6  # State dimension
+
+function get_state(X0, dt, μ; reltol=1e-10, abstol=1e-10, solver=Vern7())
+    if size(X0, 2) > 1
+        error("Initial condition should be a column vector")
+    end
+
+    Phi0 = I(DIM)  # Identity matrix for STM
+    tspan = (0.0, dt)
+    X0_aug = vcat(X0, vec(Phi0))  # Augmented state with STM
+
+    prob = ODEProblem(eom_stm_crtbp!, X0_aug, tspan, μ)
+    sol = solve(prob, solver, reltol=reltol, abstol=abstol, saveat=dt)
+
+    X_fin = sol[end]
+    X_end = X_fin[1:DIM]
+    Phi = reshape(X_fin[DIM+1:end], (DIM, DIM))
+
+    # Reduce tolerance if STM hasn't evolved
+    if norm(Phi - Phi0) == 0
+        println("Reducing tolerance")
+        sol = solve(prob, solver, reltol=reltol*1e5, abstol=abstol*1e5, saveat=dt)
+        X_fin = sol[end]
+        X_end = X_fin[1:DIM]
+        Phi = reshape(X_fin[DIM+1:end], (DIM, DIM))
+    end
+
+    return X_end, Phi
+end
+
+function jacobian_crtbp(X,μ)
+    x, y, z, xp, yp, zp = X
+    
+    Z = zeros(3, 3);
+    I = Diagonal(ones(3));
+    OM = [0 1 0; -1 0 0; 0 0 0];
+
+    r1 = sqrt( (x + μ)^2 + y^2 + z^2 );
+    r2 = sqrt( (x - (1 - μ))^2 + y^2 + z^2 );
+
+    Upq = zeros(3,3);
+    Upq[1,1] = (μ - 1)/r1^3 - μ/r2^3 + (3*μ*(μ + x - 1)^2)/r2^5 - (3*(μ + x)^2*(μ - 1))/r1^5 + 1;
+    Upq[1,2] = (3*μ*y*(2*μ + 2*x - 2))/(2*r2^5) - (3*y*(2*μ + 2*x)*(μ - 1))/(2*r1^5);
+    Upq[1,3] = (3*μ*z*(2*μ + 2*x - 2))/(2*r2^5) - (3*z*(2*μ + 2*x)*(μ - 1))/(2*r1^5);
+    
+    Upq[2,1] =  Upq[1,2];
+    Upq[2,2] = (μ - 1)/r1^3 - μ/r2^3 + (3*μ*y^2)/r2^5 - (3*y^2*(μ - 1))/r1^5 + 1;
+    Upq[2,3] = (3*μ*y*z)/r2^5 - (3*y*z*(μ - 1))/r1^5;
+    
+    Upq[3,1] =  Upq[1,3];
+    Upq[3,2] =  Upq[2,3];
+    Upq[3,3] = (μ - 1)/r1^3 - μ/r2^3 - (3*z^2*(μ - 1))/r1^5 + (3*μ*z^2)/r2^5;
+    
+    # A matrix expression
+    return [Z I; Upq 2*OM];
+
+end          
+
+function jacobi(X, μ)
+    if length(X) != DIM
+        error("State vector must be of size 6.")
+    end
+
+    x, y, z, xp, yp, zp = X
+    μ1 = 1 - μ
+    μ2 = μ
+
+    r1 = norm([x + μ2, y, z])
+    r2 = norm([x - μ1, y, z])
+
+    kinetic = 0.5 * (xp^2 + yp^2 + zp^2)
+    potential = -0.5*(x^2 + y^2) - μ1/r1 - μ2/r2 - 0.5*μ1*μ2
+    E = kinetic + potential
+    J = -2 * E  # Jacobi constant
+
+    # Partial derivatives of Jacobi constant
+    dJx = 2x - 2μ1*(x + μ2)/r1^3 - 2μ2*(x - μ1)/r2^3
+    dJy = 2y - 2μ1*y/r1^3 - 2μ2*y/r2^3
+    dJz = -2*z*(μ1/r1^3 + μ2/r2^3)
+
+    DJ = [dJx dJy dJz -2*xp -2*yp -2*zp]
+
+    return E, J, DJ
+end
+
+function dynamics_crtbp(X, μ)
+    x, y, z, xp, yp, zp = X
+    r1 = norm([x + μ, y, z])
+    r2 = norm([x - (1 - μ), y, z])
+
+    ddx = x + 2 * yp - μ*(x + μ)/r1^3 - (1 - μ)*(x - (1 - μ))/r2^3
+    ddy = y - 2 * xp - y * ((1 - μ)/r1^3 + μ/r2^3)
+    ddz = -z * ((1 - μ)/r1^3 + μ/r2^3)
+
+    return [xp, yp, zp, ddx, ddy, ddz]
+end
+
+function eom_stm_crtbp!(dX, X, p, t)
+    μ = p[1]
+
+    # Extract state and STM
+    state = X[1:DIM]
+    Phi = reshape(X[DIM+1:end], (DIM, DIM))
+
+    # Compute dynamics
+    A = jacobian_crtbp(state, μ)
+    dPhi = A * Phi
+
+    # Compute state derivatives
+    dState = dynamics_crtbp(state, μ)
+
+    # Populate derivative vector
+    dX[1:DIM] = dState
+    dX[DIM+1:end] = vec(dPhi)
+end
+
+function constraints(X, t_vec, μ; X_end=[], time_flight=[], jacobi_constant=[], variable_time=true)
+    n = length(t_vec)
+    T_vec = diff(t_vec)
+
+    # Determine the dimension of the constraint vector
+    dim_F = n * DIM
+    dim_F += !isempty(time_flight) || !isempty(jacobi_constant) ? 1 : 0
+
+    # Assemble big state vector
+    X_big = variable_time ? vcat(X..., T_vec) : vcat(X...)
+
+    F = zeros(dim_F)
+    DF = zeros(dim_F, length(X_big))
+
+    # Continuity constraints
+    for i in 1:(n-1)
+        idx_x = (i-1)*DIM + 1 : i*DIM
+        Xf_i, Phi = get_state(X[i], T_vec[i], μ)
+        F[idx_x] = Xf_i - X[i+1]
+        DF[idx_x, (i-1)*DIM + 1:i*DIM] = Phi
+        DF[idx_x, i*DIM + 1:(i+1)*DIM] = -I(DIM)
+
+        if variable_time
+            DF[idx_x, end - (n-2) + i] = dynamics_crtbp(Xf_i, μ)
+        end
+    end
+
+    # Endpoint constraints
+    if isempty(X_end)
+        F[end-DIM+1:end] = X[end-DIM+1:end] - X[1:DIM]
+        DF[end-DIM+1:end, end-DIM+1:end] = I(DIM)
+        DF[end-DIM+1:end, 1:DIM] = -I(DIM)
+    else
+        F[end-DIM+1:end] = X[end-DIM+1:end] - X_end
+        DF[end-DIM+1:end, end-DIM+1:end] = I(DIM)
+    end
+
+    # Additional constraints
+    if !isempty(time_flight)
+        F[end] = sum(T_vec) - time_flight
+        DF[end, end-(n-2):end-1] .= 1.0
+    elseif !isempty(jacobi_constant)
+        J = 0.0
+        for i in 1:n
+            _, J_i, DJ_i = jacobi(X[i], μ)
+            J += J_i
+            DF[end, (i-1)*DIM + 1:i*DIM] .= DJ_i
+        end
+        F[end] = J - n * jacobi_constant
+    end
+
+    return X_big, F, DF
+end
+
+function differential_correction(X_old, t_vec_old, μ; 
+                                variable_time=true, 
+                                time_flight=[], 
+                                jacobi_constant=[], 
+                                X_end=[], 
+                                tol=1e-9, 
+                                max_iter=20, 
+                                printout=false, 
+                                DX_0=[], 
+                                X_big_0=[], 
+                                δ=[])
+    try
+        println("Starting differential correction")
+        k = 0
+        n = length(t_vec_old)
+
+        if !variable_time && !isempty(time_flight)
+            error("Set the time nodes as variables to specify the time of flight.")
+        end
+
+        while k < max_iter
+            k += 1
+            println("Iteration $k")
+            X_big, F, DF = constraints(X_old, t_vec_old, μ; 
+                                       X_end=X_end, 
+                                       time_flight=time_flight, 
+                                       jacobi_constant=jacobi_constant, 
+                                       variable_time=variable_time)
+
+            # Check convergence
+            residual = isempty(DX_0) ? norm(F) : norm(vcat(F, dot(X_big - X_big_0, DX_0) - δ))
+            if residual <= tol && t_vec_old[end] > 1e-6
+                println("Converged in $k iterations")
+                return X_old, t_vec_old, residual, k, 1
+            elseif residual >= 10 && k > 1
+                println("Solution diverged after $k iterations")
+                return X_old, t_vec_old, residual, k, -1
+            end
+
+            # Update solution
+            if isempty(DX_0)
+                X_big -= pinv(DF) * F
+            else
+                G = vcat(F, dot(X_big - X_big_0, DX_0) - δ)
+                DG = vcat(DF, DX_0...)
+                X_big -= pinv(DG) * G
+            end
+
+            # Extract updated states
+            X_new = [X_big[(i-1)*DIM + 1:i*DIM] for i in 1:n]
+            X_old = copy(X_new)
+
+            # Update time vectors if variable
+            if variable_time
+                t_vec_old = [sum(X_big[6n + 1 : 6n + i]) for i in 1:(n-1)]
+                append!(t_vec_old, t_vec_old[end] + X_big[end - (n-2):end-1]...)
+            end
+
+            println(k, " | Residual: ", residual)
+        end
+
+        println("Differential correction did not converge within the maximum iterations")
+        return X_old, t_vec_old, residual, k, -1
+    catch e
+        println("Error during differential correction: ", e)
+        rethrow(e)
+    end
+end
+""")
+
+# Python wrapper for differential_correction function
+def differential_correction(X_old, t_vec_old, μ, variable_time=True, time_flight=None, 
+                            jacobi_constant=None, X_end=None, tol=1e-9, max_iter=20, 
+                            printout=False, DX_0=None, X_big_0=None, δ=None):
+    # Convert Python None to Julia nothing
+    time_flight = [] if time_flight is None else time_flight
+    jacobi_constant = [] if jacobi_constant is None else jacobi_constant
+    X_end = [] if X_end is None else X_end
+    DX_0 = [] if DX_0 is None else DX_0
+    X_big_0 = [] if X_big_0 is None else X_big_0
+    δ = [] if δ is None else δ
+
+    # Ensure X_old is in the correct shape (n_timesteps, n_dimensions)
+    if X_old.shape[0] != 6:
+        X_old = X_old.T
+    
+    # Convert NumPy arrays to Julia arrays
+    X_old_list = X_old.tolist()
+    t_vec_old_list = t_vec_old.tolist()
+
+    # Print debug information
+    print("X_old shape:", X_old.shape)
+    print("t_vec_old shape:", t_vec_old.shape)
+
+    try:
+        # Convert Python lists to Julia arrays
+        X_old_julia = Main.eval(f'[{X_old_list}...]')
+        t_vec_old_julia = Main.eval(f'Array{{Float64}}({t_vec_old_list})')
+
+        print("Calling Julia differential_correction function...")
+        result = Main.differential_correction(X_old_julia, t_vec_old_julia, μ, variable_time=variable_time,
+                                              time_flight=time_flight, jacobi_constant=jacobi_constant,
+                                              X_end=X_end, tol=tol, max_iter=max_iter, printout=printout,
+                                              DX_0=DX_0, X_big_0=X_big_0, δ=δ)
+        print("Julia differential_correction function completed successfully")
+        return result
+    except Exception as e:
+        print("Error in differential_correction:")
+        print(f"Error type: {type(e)}")
+        print(f"Error message: {str(e)}")
+        print(f"X_old_julia: {X_old_julia}")
+        print(f"t_vec_old_julia: {t_vec_old_julia}")
+        print(f"μ: {μ}")
+        raise
