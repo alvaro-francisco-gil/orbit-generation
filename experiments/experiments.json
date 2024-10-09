@@ -484,5 +484,34 @@
         "percentage_convergence": 0.37,
         "percentage_novelty": 100.0,
         "average_iterations_convergence": 10.72972972972973
+    },
+    {
+        "id": 7,
+        "parameters": {
+            "model_name": "vae_conv5_legit",
+            "data_used": "EM_N_fix_1500",
+            "latent_dim": 2,
+            "feature_dim": 7,
+            "seq_len": 100,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "epochs": 25,
+            "beta": 2,
+            "lr": 0.001,
+            "dropout_rate": 0.2
+        },
+        "val_total_loss": 14.014758110046387,
+        "val_reconstruction_loss": 9.938416481018066,
+        "val_kl_loss": 4.0763444900512695,
+        "train_total_loss": 14.201065063476562,
+        "train_reconstruction_loss": 10.017423629760742,
+        "train_kl_loss": 4.183642387390137,
+        "position_error": 36.671401088842245,
+        "velocity_error": 52.73538490983675,
+        "energy_error": 100.73271942138672,
+        "average_disorder_metric": 279.84,
+        "percentage_correct_order": 70.79797979797979,
+        "average_inversions": 186.38,
+        "average_kendall_tau": 0.07530505050505037
     }
 ]
