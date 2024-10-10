@@ -136,7 +136,7 @@ def plot_combined_2d_latent_space(
     else:
         plt.show()
 
-# %% ../nbs/13_latent_space.ipynb 8
+# %% ../nbs/13_latent_space.ipynb 9
 def plot_2d_latent_space_with_feature_distributions(latent_representations: np.ndarray,
                                                  labels: np.ndarray,
                                                  features: Optional[np.ndarray] = None,
@@ -246,7 +246,7 @@ def plot_2d_latent_space_with_feature_distributions(latent_representations: np.n
         print(f"Saved plot to {save_path}")
     plt.show()
 
-# %% ../nbs/13_latent_space.ipynb 10
+# %% ../nbs/13_latent_space.ipynb 11
 def reduce_dimensions_latent_space(latent_representations: np.ndarray,  # Precomputed latent representations (numpy array).
                       labels: np.ndarray,                  # Labels for the data points, used for coloring in the plot.
                       techniques: List[str] = ['PCA'],     # Techniques to use for reduction ('PCA', 't-SNE', 'UMAP', 'LDA').
@@ -370,7 +370,7 @@ def reduce_dimensions_latent_space(latent_representations: np.ndarray,  # Precom
 
     return reduced_latent_spaces
 
-# %% ../nbs/13_latent_space.ipynb 16
+# %% ../nbs/13_latent_space.ipynb 17
 def linear_interpolation(z1, z2, steps):
     """Perform linear interpolation between two points."""
     return np.linspace(z1, z2, steps)
@@ -422,7 +422,7 @@ def interpolate_sample(centroids, granularity=10, variance=0.0):
     else:
         return np.empty((0, latent_dim))
 
-# %% ../nbs/13_latent_space.ipynb 18
+# %% ../nbs/13_latent_space.ipynb 19
 def compute_centroids(latents, labels, method='mean', return_labels=False, **kwargs):
     """
     Compute the centroid of each class in the latent space using various methods.
