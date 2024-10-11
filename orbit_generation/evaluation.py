@@ -4,7 +4,9 @@
 
 # %% auto 0
 __all__ = ['plot_metric_heatmaps', 'plot_comparison', 'calculate_closest_feature_distances', 'find_non_matching_elements',
-           'evaluate_clustering_multiple_labels', 'evaluate_distance_metrics_and_clustering']
+           'evaluate_clustering_multiple_labels', 'euclidean_distance', 'manhattan_distance', 'cosine_distance',
+           'dtw_distance', 'find_nearest_orbits', 'find_nearest_orbits_batch', 'calculate_pairwise_distances',
+           'evaluate_distance_metrics_and_clustering']
 
 # %% ../nbs/09_evaluation.ipynb 2
 import numpy as np
@@ -86,7 +88,7 @@ def plot_comparison(orbit_df, synthetic_orbit_df):
     plt.grid(True)
     plt.show()
 
-def calculate_closest_feature_distances(orbit_df, synthetic_orbit_df, features, plot_comparison=True):
+def calculate_closest_feature_distances(orbit_df, synthetic_orbit_df, features, display_comparison=True):
     """
     Calculate the distance from each point in synthetic_orbit_df to the closest point in orbit_df
     based on specified features.
@@ -109,7 +111,7 @@ def calculate_closest_feature_distances(orbit_df, synthetic_orbit_df, features, 
     # Query the KDTree with the synthetic points to find the distance to the nearest orbit point
     distances, _ = tree.query(synthetic_points, k=1)
 
-    if plot_comparison:
+    if display_comparison:
         plot_comparison(orbit_df, synthetic_orbit_df)
 
     return distances
@@ -249,7 +251,180 @@ def evaluate_clustering_multiple_labels(latent_representations: np.ndarray,  # T
     
     return combined_metrics
 
-# %% ../nbs/09_evaluation.ipynb 10
+# %% ../nbs/09_evaluation.ipynb 11
+def euclidean_distance(x):
+    n = x.shape[0]
+    dist_matrix = np.zeros((n, n))
+    for i in range(n):
+        for j in range(i+1, n):
+            dist = np.sqrt(np.sum((x[i] - x[j])**2))
+            dist_matrix[i, j] = dist_matrix[j, i] = dist
+    return dist_matrix
+
+# %% ../nbs/09_evaluation.ipynb 13
+def manhattan_distance(x):
+    n = x.shape[0]
+    dist_matrix = np.zeros((n, n))
+    for i in range(n):
+        for j in range(i+1, n):
+            dist = np.sum(np.abs(x[i] - x[j]))
+            dist_matrix[i, j] = dist_matrix[j, i] = dist
+    return dist_matrix
+
+# %% ../nbs/09_evaluation.ipynb 15
+def cosine_distance(x):
+    n = x.shape[0]
+    dist_matrix = np.zeros((n, n))
+    for i in range(n):
+        for j in range(i+1, n):
+            dot_product = np.sum(x[i] * x[j])
+            norm_i = np.sqrt(np.sum(x[i]**2))
+            norm_j = np.sqrt(np.sum(x[j]**2))
+            similarity = dot_product / (norm_i * norm_j)
+            dist = 1 - similarity  # This ensures the distance is between 0 and 2
+            dist_matrix[i, j] = dist_matrix[j, i] = dist
+    return dist_matrix
+
+# %% ../nbs/09_evaluation.ipynb 17
+def dtw_distance(x):
+    n = x.shape[0]
+    dist_matrix = np.zeros((n, n))
+    for i in range(n):
+        for j in range(i+1, n):
+            distance, _ = fastdtw(x[i].T, x[j].T)
+            dist_matrix[i, j] = dist_matrix[j, i] = distance
+    return dist_matrix
+
+# %% ../nbs/09_evaluation.ipynb 19
+def find_nearest_orbits(single_orbit: np.ndarray,
+                        orbit_data: np.ndarray,
+                        n: int,
+                        distance_metric: str = 'euclidean') -> np.ndarray:
+    """
+    Finds the n closest orbits in orbit_data to the single_orbit based on the specified distance metric.
+    
+    :param single_orbit: The reference orbit (shape: [n_features, n_time_steps]).
+    :param orbit_data: The dataset of orbits (shape: [n_samples, n_features, n_time_steps]).
+    :param n: The number of closest orbits to return.
+    :param distance_metric: The distance metric to use ('euclidean', 'manhattan', 'cosine', 'dtw').
+                            Defaults to 'euclidean'.
+    :return: Indices of the n closest orbits in orbit_data.
+    """
+    
+    # Stack the single_orbit with the orbit_data to form a new dataset
+    # This allows us to compute the distance matrix including the single_orbit
+    combined_data = np.vstack([orbit_data, single_orbit[np.newaxis, ...]])
+    
+    # Select the appropriate distance function
+    if distance_metric == 'euclidean':
+        distance_matrix = euclidean_distance(combined_data)
+    elif distance_metric == 'manhattan':
+        distance_matrix = manhattan_distance(combined_data)
+    elif distance_metric == 'cosine':
+        distance_matrix = cosine_distance(combined_data)
+    elif distance_metric == 'dtw':
+        distance_matrix = dtw_distance(combined_data)
+    else:
+        raise ValueError(f"Unsupported distance metric: {distance_metric}")
+    
+    # The single_orbit is the last entry in combined_data
+    # Extract distances from the last row (or column) excluding the distance to itself
+    distances = distance_matrix[-1, :-1]
+    
+    # Get the indices of the n smallest distances
+    nearest_indices = np.argsort(distances)[:n]
+    
+    return nearest_indices
+
+# %% ../nbs/09_evaluation.ipynb 20
+def find_nearest_orbits_batch(
+    single_orbits: np.ndarray,       # Shape: [num_single_orbits, n_features, n_time_steps]
+    orbit_data: np.ndarray,          # Shape: [n_samples, n_features, n_time_steps]
+    n: int,                           # Number of nearest orbits to find
+    distance_metric: str = 'euclidean'  # Distance metric
+) -> np.ndarray:
+    """
+    Iteratively finds the n closest orbits in orbit_data for each orbit in single_orbits.
+
+    :param single_orbits: The reference orbits (shape: [num_single_orbits, n_features, n_time_steps]).
+    :param orbit_data: The dataset of orbits to search within (shape: [n_samples, n_features, n_time_steps]).
+    :param n: The number of closest orbits to return for each single_orbit.
+    :param distance_metric: The distance metric to use ('euclidean', 'manhattan', 'cosine', 'dtw').
+                            Defaults to 'euclidean'.
+    :return: A 2D array of shape [num_single_orbits, n] containing the indices of the n closest orbits.
+    """
+    # Validate input dimensions
+    if single_orbits.ndim != 3:
+        raise ValueError(f"single_orbits must be a 3D array, got {single_orbits.ndim}D array instead.")
+    if orbit_data.ndim != 3:
+        raise ValueError(f"orbit_data must be a 3D array, got {orbit_data.ndim}D array instead.")
+    if single_orbits.shape[1:] != orbit_data.shape[1:]:
+        raise ValueError("Each single_orbit must have the same shape as the orbits in orbit_data.")
+    if n <= 0:
+        raise ValueError("Parameter n must be a positive integer.")
+    if distance_metric not in ['euclidean', 'manhattan', 'cosine', 'dtw']:
+        raise ValueError(f"Unsupported distance metric: {distance_metric}. Choose from 'euclidean', 'manhattan', 'cosine', 'dtw'.")
+
+    num_single_orbits = single_orbits.shape[0]
+    nearest_indices_all = np.empty((num_single_orbits, n), dtype=int)
+
+    for i in range(num_single_orbits):
+        single_orbit = single_orbits[i]
+        nearest_indices = find_nearest_orbits(
+            single_orbit=single_orbit,
+            orbit_data=orbit_data,
+            n=n,
+            distance_metric=distance_metric
+        )
+        nearest_indices_all[i] = nearest_indices
+
+    return nearest_indices_all
+
+# %% ../nbs/09_evaluation.ipynb 22
+def calculate_pairwise_distances(
+    orbit_data1: np.ndarray,       # Shape: [n_samples, n_features, n_time_steps]
+    orbit_data2: np.ndarray,       # Shape: [n_samples, n_features, n_time_steps]
+    distance_metric: str = 'euclidean'  # Distance metric
+) -> np.ndarray:
+    """
+    Calculates the distance between corresponding orbits in two orbit datasets.
+    
+    :param orbit_data1: The first set of orbits (shape: [n_samples, n_features, n_time_steps]).
+    :param orbit_data2: The second set of orbits (shape: [n_samples, n_features, n_time_steps]).
+    :param distance_metric: The distance metric to use ('euclidean', 'manhattan', 'cosine', 'dtw').
+                            Defaults to 'euclidean'.
+    :return: An array of distances with shape [n_samples].
+    """
+    # Validate input dimensions
+    if orbit_data1.shape != orbit_data2.shape:
+        raise ValueError("Both orbit datasets must have the same shape.")
+    if orbit_data1.ndim != 3:
+        raise ValueError(f"orbit_data1 must be a 3D array, got {orbit_data1.ndim}D array instead.")
+    if distance_metric not in ['euclidean', 'manhattan', 'cosine', 'dtw']:
+        raise ValueError("Unsupported distance metric. Choose from 'euclidean', 'manhattan', 'cosine', 'dtw'.")
+    
+    num_samples = orbit_data1.shape[0]
+    distances = np.empty(num_samples, dtype=float)
+    
+    # Select the appropriate distance function
+    if distance_metric == 'euclidean':
+        distance_func = euclidean_distance_orbit
+    elif distance_metric == 'manhattan':
+        distance_func = manhattan_distance_orbit
+    elif distance_metric == 'cosine':
+        distance_func = cosine_distance_orbit
+    elif distance_metric == 'dtw':
+        distance_func = dtw_distance_orbit
+    
+    # Compute distances
+    for i in range(num_samples):
+        orbit1 = orbit_data1[i]
+        orbit2 = orbit_data2[i]
+        distances[i] = distance_func(orbit1, orbit2)
+    
+    return distances
+
+# %% ../nbs/09_evaluation.ipynb 24
 def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
                                     true_labels: np.ndarray,
                                     distance_metrics: list = None,
@@ -274,46 +449,6 @@ def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
         cm = confusion_matrix(true_labels, pred_labels)
         row_ind, col_ind = linear_sum_assignment(-cm)
         return cm[row_ind, col_ind].sum() / np.sum(cm)
-    
-    def euclidean_distance(x):
-        n = x.shape[0]
-        dist_matrix = np.zeros((n, n))
-        for i in range(n):
-            for j in range(i+1, n):
-                dist = np.sqrt(np.sum((x[i] - x[j])**2))
-                dist_matrix[i, j] = dist_matrix[j, i] = dist
-        return dist_matrix
-
-    def manhattan_distance(x):
-        n = x.shape[0]
-        dist_matrix = np.zeros((n, n))
-        for i in range(n):
-            for j in range(i+1, n):
-                dist = np.sum(np.abs(x[i] - x[j]))
-                dist_matrix[i, j] = dist_matrix[j, i] = dist
-        return dist_matrix
-
-    def cosine_distance(x):
-        n = x.shape[0]
-        dist_matrix = np.zeros((n, n))
-        for i in range(n):
-            for j in range(i+1, n):
-                dot_product = np.sum(x[i] * x[j])
-                norm_i = np.sqrt(np.sum(x[i]**2))
-                norm_j = np.sqrt(np.sum(x[j]**2))
-                similarity = dot_product / (norm_i * norm_j)
-                dist = 1 - similarity  # This ensures the distance is between 0 and 2
-                dist_matrix[i, j] = dist_matrix[j, i] = dist
-        return dist_matrix
-
-    def dtw_distance(x):
-        n = x.shape[0]
-        dist_matrix = np.zeros((n, n))
-        for i in range(n):
-            for j in range(i+1, n):
-                distance, _ = fastdtw(x[i].T, x[j].T)
-                dist_matrix[i, j] = dist_matrix[j, i] = distance
-        return dist_matrix
 
     # Define available distance metrics
     available_distance_metrics = {
