@@ -646,7 +646,11 @@ success [1,1] Convergence of the algorithm. +1 is converged, -1 if not converged
 # AUTHOR AND VERSION
 	Ver. 1 - W. Litteri - 06-2024
 """
-function differential_correction(X_old,t_vec_old,μ; variable_time = true, time_flight=[],jacobi_constant = [],  X_end=[], tol = 1e-9, max_iter = 20, printout = false, DX_0 = [], X_big_0 = [], δ = [])
+function differential_correction(orbit, μ; variable_time = true, time_flight=[], jacobi_constant = [],  X_end=[], tol = 1e-9, max_iter = 20, printout = false, DX_0 = [], X_big_0 = [], δ = [])
+
+    # Convert orbit to X_old and t_vec_old
+    t_vec_old = orbit[:, 1]
+    X_old = matrix2Vec(orbit[:, 2:7])
 
     k = 0; 
     n = length(t_vec_old); 
