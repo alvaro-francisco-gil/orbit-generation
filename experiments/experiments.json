@@ -653,5 +653,40 @@
         "family_silhouette_score": 0.46479904651641846,
         "family_jaccard": 0.03567867875088991,
         "family_accuracy": 0.5096768485545553
+    },
+    {
+        "id": 12,
+        "parameters": {
+            "model_name": "vae_conv5_legit",
+            "data_used": "EM_N_fix_1500",
+            "latent_dim": 2,
+            "feature_dim": 7,
+            "seq_len": 100,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "epochs": 25,
+            "beta": 0.1,
+            "lr": 0.001,
+            "dropout_rate": 0.2,
+            "distance_metric": "euclidean",
+            "max_iter_convergence": 20
+        },
+        "position_error": 0.21534796981282284,
+        "velocity_error": 0.3794342972746596,
+        "energy_error": 1.4635453585535287,
+        "average_disorder_metric": 213.04,
+        "percentage_correct_order": 75.16161616161617,
+        "average_inversions": 140.8,
+        "average_kendall_tau": 0.056888888888888746,
+        "family_ari": 0.00012238908506021634,
+        "family_nmi": 0.004395743383190894,
+        "family_homogeneity": 0.003765460302527177,
+        "family_completeness": 0.00527944547889506,
+        "family_v-measure": 0.004395743383190894,
+        "family_fmi": 0.049147893883746074,
+        "family_purity": 0.03808807591072969,
+        "family_silhouette_score": 0.25093594193458557,
+        "family_jaccard": 0.006961471296197265,
+        "family_accuracy": 0.03600893587843666
     }
 ]
