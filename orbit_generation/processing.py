@@ -133,21 +133,19 @@ def average_downsample_3d_array(data: np.ndarray,  # The original 3D array to be
     return new_data
 
 # %% ../nbs/02_processing.ipynb 16
-def reorder_orbits(orbit_dataset: np.ndarray  # The original 3D numpy array representing the orbits.
+def reorder_orbits(orbit_dataset: np.ndarray
                   ) -> Tuple[np.ndarray,      # 3D numpy array of reordered orbits.
-                             Dict[str, float]]: # Dictionary of metrics indicating the quality of the original ordering.
+                             np.ndarray,        # 2D numpy array of metric values.
+                             List[str]]:        # List of metric labels.
     """
     Reorders the time steps of each orbit in the dataset such that the time values are always incrementally increasing.
-    Returns the reordered dataset and metrics indicating the quality of the original ordering.
+    Returns the reordered dataset, a 2D array of metric values for each orbit, and a list of metric labels.
     """
     num_orbits, num_scalars, num_timesteps = orbit_dataset.shape
     reordered_dataset = np.zeros_like(orbit_dataset)
-    total_disorder_metric = 0
-    total_correct_order = 0
-    total_inversions = 0
-    total_kendall_tau = 0
-    total_timesteps = num_orbits * (num_timesteps - 1)
-
+    metrics_array = np.zeros((num_orbits, 4))  # Assuming four metrics
+    metric_labels = ['disorder_metric', 'correct_order', 'inversions', 'kendall_tau_distance']
+    
     for i in range(num_orbits):
         # Extract the time steps and corresponding data for the current orbit
         orbit_data = orbit_dataset[i]
@@ -163,32 +161,18 @@ def reorder_orbits(orbit_dataset: np.ndarray  # The original 3D numpy array repr
         
         # Calculate Kendall's tau distance
         tau, _ = kendalltau(time_steps, np.sort(time_steps))
+        kendall_tau_distance = 1 - tau if not np.isnan(tau) else 1.0  # Handle NaN
         
-        # Accumulate the metrics
-        total_disorder_metric += disorder_metric
-        total_correct_order += correct_order
-        total_inversions += inversions
-        total_kendall_tau += 1 - tau  # 1 - tau gives the distance (0 means perfect agreement, 1 means perfect disagreement)
+        # Store the metrics in the array
+        metrics_array[i] = [disorder_metric, correct_order, inversions, kendall_tau_distance]
         
         # Reorder the orbit data based on the sorted indices
         reordered_orbit_data = orbit_data[:, sorted_indices]
         
         # Store the reordered orbit data in the new dataset
         reordered_dataset[i] = reordered_orbit_data
-
-    average_disorder_metric = total_disorder_metric / num_orbits
-    percentage_correct_order = (total_correct_order / total_timesteps) * 100
-    average_inversions = total_inversions / num_orbits
-    average_kendall_tau = total_kendall_tau / num_orbits
-
-    metrics = {
-        'average_disorder_metric': average_disorder_metric,
-        'percentage_correct_order': percentage_correct_order,
-        'average_inversions': average_inversions,
-        'average_kendall_tau': average_kendall_tau
-    }
     
-    return reordered_dataset, metrics
+    return reordered_dataset, metrics_array, metric_labels
 
 # %% ../nbs/02_processing.ipynb 19
 def pad_and_convert_to_3d(orbits: Dict[int, np.ndarray],     # Dictionary of orbits with numerical keys.

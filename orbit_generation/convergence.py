@@ -216,7 +216,7 @@ def process_diferential_correction_orbits(
         logger.info(f"Orbit {i}: Success={success_flag}, Norm={norm_val}, Iterations={iterations}")
                 
         # Check the success flag
-        if success_flag == 1:  # Assuming success_flag == 1 indicates convergence
+        if success_flag == 1:
             # If successful, store the corrected orbit and additional info
             corrected_orbit = np.hstack((t_corrected[:, np.newaxis], X_corrected))
             converged_orbits_list.append(corrected_orbit)
