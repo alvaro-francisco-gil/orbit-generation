@@ -19,8 +19,10 @@ from sklearn.preprocessing import LabelEncoder
 from scipy.spatial.distance import squareform
 from fastdtw import fastdtw
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 from scipy.spatial import cKDTree
+from typing import Tuple
 
 # %% ../nbs/09_evaluation.ipynb 4
 def plot_metric_heatmaps(results, distance_metrics, clustering_algorithms, evaluation_metrics):
@@ -88,18 +90,25 @@ def plot_comparison(orbit_df, synthetic_orbit_df):
     plt.grid(True)
     plt.show()
 
-def calculate_closest_feature_distances(orbit_df, synthetic_orbit_df, features, display_comparison=True):
+def calculate_closest_feature_distances(
+    orbit_df: pd.DataFrame,
+    synthetic_orbit_df: pd.DataFrame,
+    features: list,
+    display_comparison: bool = True
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Calculate the distance from each point in synthetic_orbit_df to the closest point in orbit_df
-    based on specified features.
+    based on specified features, and return both the distances and the indices of the closest orbits.
     
     Parameters:
-    - orbit_df: DataFrame containing the training data.
-    - synthetic_orbit_df: DataFrame containing the synthetic data.
-    - features: List of features (columns) to use for calculating the distances.
+    - orbit_df (pd.DataFrame): DataFrame containing the training data.
+    - synthetic_orbit_df (pd.DataFrame): DataFrame containing the synthetic data.
+    - features (list): List of feature column names to use for calculating the distances.
+    - display_comparison (bool): Whether to display a comparison plot. Defaults to True.
     
     Returns:
-    - distances: A NumPy array of the minimum distances from each synthetic point to the nearest orbit point.
+    - distances (np.ndarray): Array of the minimum distances from each synthetic point to the nearest orbit point.
+    - closest_indices (np.ndarray): Array of indices corresponding to the nearest orbit points in orbit_df.
     """
     # Extract the relevant features from both DataFrames
     orbit_points = orbit_df[features].values
@@ -108,13 +117,13 @@ def calculate_closest_feature_distances(orbit_df, synthetic_orbit_df, features, 
     # Create a KDTree for efficient nearest-neighbor search in orbit_df
     tree = cKDTree(orbit_points)
 
-    # Query the KDTree with the synthetic points to find the distance to the nearest orbit point
-    distances, _ = tree.query(synthetic_points, k=1)
+    # Query the KDTree with the synthetic points to find the distance and index of the nearest orbit point
+    distances, closest_indices = tree.query(synthetic_points, k=1)
 
     if display_comparison:
         plot_comparison(orbit_df, synthetic_orbit_df)
 
-    return distances
+    return distances, closest_indices
 
 # %% ../nbs/09_evaluation.ipynb 6
 def find_non_matching_elements(main_array, check_array):
