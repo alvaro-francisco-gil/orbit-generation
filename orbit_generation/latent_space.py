@@ -23,7 +23,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 import umap.umap_ as umap
 from sklearn.preprocessing import LabelEncoder
 
-# %% ../nbs/13_latent_space.ipynb 6
+# %% ../nbs/13_latent_space.ipynb 7
 def plot_2d_latent_space(
     latent_representations: np.ndarray,
     labels: np.ndarray,
@@ -138,7 +138,7 @@ def plot_2d_latent_space(
 
     plt.show()
 
-# %% ../nbs/13_latent_space.ipynb 7
+# %% ../nbs/13_latent_space.ipynb 8
 def plot_combined_2d_latent_space(
     real_latent: np.ndarray,                      # Latent representations of real data.
     synthetic_latent: np.ndarray,                 # Latent representations of synthetic data.
@@ -192,7 +192,7 @@ def plot_combined_2d_latent_space(
     else:
         plt.show()
 
-# %% ../nbs/13_latent_space.ipynb 9
+# %% ../nbs/13_latent_space.ipynb 10
 def reduce_dimensions_latent_space(latent_representations: np.ndarray,  # Precomputed latent representations (numpy array).
                       labels: np.ndarray,                  # Labels for the data points, used for coloring in the plot.
                       techniques: List[str] = ['PCA'],     # Techniques to use for reduction ('PCA', 't-SNE', 'UMAP', 'LDA').
@@ -316,7 +316,7 @@ def reduce_dimensions_latent_space(latent_representations: np.ndarray,  # Precom
 
     return reduced_latent_spaces
 
-# %% ../nbs/13_latent_space.ipynb 10
+# %% ../nbs/13_latent_space.ipynb 11
 def reduce_dimensions_combined_latent_space(
     train_latent: np.ndarray,                  # Latent representations of training data.
     val_latent: np.ndarray,                    # Latent representations of validation data.
@@ -363,7 +363,7 @@ def reduce_dimensions_combined_latent_space(
 
     return reduced_latent_spaces
 
-# %% ../nbs/13_latent_space.ipynb 16
+# %% ../nbs/13_latent_space.ipynb 17
 def linear_interpolation(z1, z2, steps):
     """Perform linear interpolation between two points."""
     return np.linspace(z1, z2, steps)
@@ -415,7 +415,7 @@ def interpolate_sample(centroids, granularity=10, variance=0.0):
     else:
         return np.empty((0, latent_dim))
 
-# %% ../nbs/13_latent_space.ipynb 18
+# %% ../nbs/13_latent_space.ipynb 19
 def compute_centroids(latents, labels, method='mean', return_labels=False, **kwargs):
     """
     Compute the centroid of each class in the latent space using various methods.
