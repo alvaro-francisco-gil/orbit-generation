@@ -6,8 +6,8 @@
 __all__ = ['DISTANCE_FUNCTIONS', 'plot_metric_heatmaps', 'plot_comparison', 'calculate_closest_feature_distances',
            'find_non_matching_elements', 'evaluate_clustering_multiple_labels', 'euclidean_distance',
            'manhattan_distance', 'cosine_distance', 'dtw_distance', 'calculate_distance', 'calculate_distances_batch',
-           'find_nearest_points', 'orbits_distances', 'find_nearest_orbits', 'find_nearest_orbits_batch',
-           'calculate_pairwise_distances', 'evaluate_distance_metrics_and_clustering']
+           'find_nearest_points', 'find_nearest_points_batch', 'orbits_distances', 'find_nearest_orbits',
+           'find_nearest_orbits_batch', 'calculate_pairwise_distances', 'evaluate_distance_metrics_and_clustering']
 
 # %% ../nbs/09_evaluation.ipynb 2
 import numpy as np
@@ -56,7 +56,7 @@ def plot_metric_heatmaps(results, distance_metrics, clustering_algorithms, evalu
     plt.tight_layout()
     plt.show()
 
-# %% ../nbs/09_evaluation.ipynb 5
+# %% ../nbs/09_evaluation.ipynb 6
 def plot_comparison(orbit_df, synthetic_orbit_df):
     """
     Function to create a scatter plot comparing 'period' and 'calculated_jacobi'
@@ -126,7 +126,7 @@ def calculate_closest_feature_distances(
 
     return distances, closest_indices
 
-# %% ../nbs/09_evaluation.ipynb 6
+# %% ../nbs/09_evaluation.ipynb 7
 def find_non_matching_elements(main_array, check_array):
     """
     Finds elements in check_array that are not present in main_array.
@@ -150,7 +150,7 @@ def find_non_matching_elements(main_array, check_array):
 
     return non_matching_elements_array
 
-# %% ../nbs/09_evaluation.ipynb 8
+# %% ../nbs/09_evaluation.ipynb 9
 def evaluate_clustering_multiple_labels(latent_representations: np.ndarray,  # The latent space data.
                                         list_of_labels: list,                # List of true labels or a single true labels array.
                                         clustering_method: str = 'kmeans',   # The clustering algorithm to use ('kmeans', 'gmm', 'dbscan').
@@ -261,15 +261,15 @@ def evaluate_clustering_multiple_labels(latent_representations: np.ndarray,  # T
     
     return combined_metrics
 
-# %% ../nbs/09_evaluation.ipynb 11
+# %% ../nbs/09_evaluation.ipynb 12
 def euclidean_distance(point1: np.ndarray, point2: np.ndarray) -> float:
     return np.sqrt(np.sum((point1 - point2) ** 2))
 
-# %% ../nbs/09_evaluation.ipynb 13
+# %% ../nbs/09_evaluation.ipynb 14
 def manhattan_distance(point1: np.ndarray, point2: np.ndarray) -> float:
     return np.sum(np.abs(point1 - point2))
 
-# %% ../nbs/09_evaluation.ipynb 15
+# %% ../nbs/09_evaluation.ipynb 16
 def cosine_distance(point1: np.ndarray, point2: np.ndarray) -> float:
     dot_product = np.sum(point1 * point2)
     norm1 = np.linalg.norm(point1)
@@ -279,12 +279,12 @@ def cosine_distance(point1: np.ndarray, point2: np.ndarray) -> float:
     cosine_similarity = dot_product / (norm1 * norm2)
     return 1.0 - cosine_similarity
 
-# %% ../nbs/09_evaluation.ipynb 17
+# %% ../nbs/09_evaluation.ipynb 18
 def dtw_distance(point1: np.ndarray, point2: np.ndarray) -> float:
     distance, _ = fastdtw(point1.T, point2.T)
     return distance
 
-# %% ../nbs/09_evaluation.ipynb 19
+# %% ../nbs/09_evaluation.ipynb 20
 DISTANCE_FUNCTIONS = {
     'euclidean': euclidean_distance,
     'manhattan': manhattan_distance,
@@ -292,7 +292,7 @@ DISTANCE_FUNCTIONS = {
     'dtw': dtw_distance
 }
 
-# %% ../nbs/09_evaluation.ipynb 20
+# %% ../nbs/09_evaluation.ipynb 21
 def calculate_distance(point1: np.ndarray, point2: np.ndarray, distance_metric: str = 'euclidean') -> float:
     """
     Calculates the distance between two points based on the specified distance metric.
@@ -313,43 +313,66 @@ def calculate_distance(point1: np.ndarray, point2: np.ndarray, distance_metric: 
     else:
         raise ValueError('Unknown distance metric: ' + distance_metric)
 
-# %% ../nbs/09_evaluation.ipynb 22
-def calculate_distances_batch(single_point: np.ndarray, points_array: np.ndarray, distance_metric: str = 'euclidean') -> np.ndarray:
+# %% ../nbs/09_evaluation.ipynb 23
+def calculate_distances_batch(single_points: np.ndarray, points_array: np.ndarray, distance_metric: str = 'euclidean') -> np.ndarray:
     """
-    Calculates the distances between a single data point and an array of data points based on the specified distance metric.
+    Calculates the distances between single data points and an array of data points based on the specified distance metric.
     
-    :param single_point: Single data point array.
-    :param points_array: Array of data points.
+    :param single_points: Single data point array or a batch of data points.
+    :param points_array: Array of data points to compare against.
     :param distance_metric: The distance metric to use ('euclidean', 'manhattan', 'cosine', 'dtw').
     :return: Array of distances.
     """
+    if single_points.ndim == 1:
+        single_points = single_points.reshape(1, -1)
+    
     distances = []
-    for point in points_array:
-        distance = calculate_distance(single_point, point, distance_metric)
-        distances.append(distance)
+    for single_point in single_points:
+        for point in points_array:
+            distance = calculate_distance(single_point, point, distance_metric)
+            distances.append(distance)
     
     return np.array(distances)
 
-# %% ../nbs/09_evaluation.ipynb 24
+# %% ../nbs/09_evaluation.ipynb 25
 def find_nearest_points(single_point: np.ndarray, points_array: np.ndarray, n: int, distance_metric: str = 'euclidean') -> tuple:
-    """
-    Finds the nearest indices and distances from a single data point to an array of data points based on the specified distance metric.
     
-    :param single_point: Single data point array.
-    :param points_array: Array of data points.
-    :param n: Number of nearest points to retrieve.
-    :param distance_metric: The distance metric to use ('euclidean', 'manhattan', 'cosine', 'dtw').
-    :return: Tuple of nearest indices and nearest distances.
-    """
     distances = calculate_distances_batch(single_point, points_array, distance_metric=distance_metric)
-    
+
     # Get the indices of the n nearest points
     nearest_indices = np.argsort(distances)[:n]
+
+    # Gather the nearest distances using the indices
     nearest_distances = distances[nearest_indices]
-    
+
+    # If only one nearest point is requested, return a single int and float
+    if n == 1:
+        return nearest_indices[0], nearest_distances[0]
+
     return nearest_indices, nearest_distances
 
 # %% ../nbs/09_evaluation.ipynb 26
+def find_nearest_points_batch(single_points: np.ndarray, points_array: np.ndarray, n: int, distance_metric: str = 'euclidean') -> tuple:
+    """
+    Finds the nearest indices and distances for a batch of single data points to an array of data points based on the specified distance metric.
+    
+    :param single_points: Array of single data points (2D array).
+    :param points_array: Array of data points to compare against (2D array).
+    :param n: Number of nearest points to retrieve for each single point.
+    :param distance_metric: The distance metric to use ('euclidean', 'manhattan', 'cosine', 'dtw').
+    :return: Tuple of nearest indices and nearest distances for each single point.
+    """    
+    all_nearest_indices = []
+    all_nearest_distances = []
+    
+    for single_point in single_points:
+        nearest_indices, nearest_distances = find_nearest_points(single_point, points_array, n, distance_metric)
+        all_nearest_indices.append(nearest_indices)
+        all_nearest_distances.append(nearest_distances)
+    
+    return np.array(all_nearest_indices), np.array(all_nearest_distances)
+
+# %% ../nbs/09_evaluation.ipynb 28
 def orbits_distances(
     orbit_data1: np.ndarray,                # Shape: [n_samples1, n_features, n_time_steps] or [n_features, n_time_steps]
     orbit_data2: np.ndarray,                # Shape: [n_samples2, n_features, n_time_steps] or [n_features, n_time_steps]
@@ -428,7 +451,7 @@ def orbits_distances(
 
     return distances
 
-# %% ../nbs/09_evaluation.ipynb 28
+# %% ../nbs/09_evaluation.ipynb 30
 def find_nearest_orbits(
     single_orbit: np.ndarray,
     orbit_data: np.ndarray,
@@ -464,7 +487,7 @@ def find_nearest_orbits(
     
     return nearest_indices, nearest_distances
 
-# %% ../nbs/09_evaluation.ipynb 29
+# %% ../nbs/09_evaluation.ipynb 31
 def find_nearest_orbits_batch(
     single_orbits: np.ndarray,       # Shape: [num_single_orbits, n_features, n_time_steps]
     orbit_data: np.ndarray,          # Shape: [n_samples, n_features, n_time_steps]
@@ -513,7 +536,7 @@ def find_nearest_orbits_batch(
 
     return nearest_indices_all, nearest_distances_all
 
-# %% ../nbs/09_evaluation.ipynb 31
+# %% ../nbs/09_evaluation.ipynb 33
 def calculate_pairwise_distances(
     orbit_data1: np.ndarray,       # Shape: [n_samples, n_features, n_time_steps]
     orbit_data2: np.ndarray,       # Shape: [n_samples, n_features, n_time_steps]
@@ -551,7 +574,7 @@ def calculate_pairwise_distances(
     
     return distances
 
-# %% ../nbs/09_evaluation.ipynb 33
+# %% ../nbs/09_evaluation.ipynb 35
 def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
                                     true_labels: np.ndarray,
                                     distance_metrics: list = None,
