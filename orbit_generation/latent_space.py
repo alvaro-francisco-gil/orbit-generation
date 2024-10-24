@@ -23,122 +23,351 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 import umap.umap_ as umap
 from sklearn.preprocessing import LabelEncoder
 
-# %% ../nbs/13_latent_space.ipynb 7
+# %% ../nbs/13_latent_space.ipynb 6
 def plot_2d_latent_space(
     latent_representations: np.ndarray,
     labels: np.ndarray,
-    features: Optional[np.ndarray] = None,
+    latent_stdevs: Optional[np.ndarray] = None,
+    features: Optional[Any] = None,
     feature_names: Optional[List[str]] = None,
     figsize: tuple = (12, 12),
     save_path: Optional[str] = None,
     many_classes: bool = False,
     show_legend: bool = True,
     legend_fontsize: int = 8,
+    plot_std: bool = True,
     **kwargs: Any
 ) -> None:
-    # Normalize data if necessary
+    """
+    Plots a 2D latent space visualization with class labels and feature distributions.
+
+    Parameters:
+    - latent_representations: np.ndarray, shape (n_samples, 2)
+        The 2D coordinates of the latent representations.
+    - labels: np.ndarray, shape (n_samples,)
+        The class labels for each sample.
+    - features: Optional[Any], shape (n_samples, n_features)
+        The feature data to plot distributions. Can be a list or a NumPy array.
+    - feature_names: Optional[List[str]]
+        The names of the features.
+    - figsize: tuple, default (12, 12)
+        The size of the entire figure.
+    - save_path: Optional[str]
+        Path to save the figure. If None, the plot is not saved.
+    - many_classes: bool, default False
+        If True, uses different markers for classes.
+    - show_legend: bool, default True
+        If True, displays legends.
+    - legend_fontsize: int, default 8
+        Font size for the legends.
+    - plot_std: bool, default True
+        If True, plots the standard deviation shading for feature distributions.
+    - kwargs: Any
+        Additional keyword arguments passed to scatter plots.
+    """
+    # Normalize latent representations
     latent_representations = (latent_representations - np.mean(latent_representations, axis=0)) / np.std(latent_representations, axis=0)
 
-    # Encode string labels to integers
+    # Encode labels
     label_encoder = LabelEncoder()
     encoded_labels = label_encoder.fit_transform(labels)
     class_names = label_encoder.classes_
 
-    # Use a colormap for better color differentiation
-    cmap = plt.get_cmap('tab20', len(class_names))
+    # Colormap and markers for classes
+    cmap_classes = plt.get_cmap('tab20', len(class_names))
     markers = ['o', 's', '^', 'v', 'D', '<', '>', 'p', '*', 'h', 'H', '8']
 
-    # Create figure and gridspec layout
+    # Define fixed colors for features
+    predefined_feature_colors = ['orange', 'purple', 'green']
+    if feature_names and len(feature_names) > len(predefined_feature_colors):
+        # Cycle through the predefined colors if more features are present
+        feature_colors = predefined_feature_colors * (len(feature_names) // len(predefined_feature_colors) + 1)
+    else:
+        feature_colors = predefined_feature_colors[:len(feature_names)] if feature_names else []
+
+    # Create figure and GridSpec
     fig = plt.figure(figsize=figsize)
     gs = GridSpec(2, 2, width_ratios=[5, 1], height_ratios=[5, 1], wspace=0.3, hspace=0.3)
 
     ax_main = fig.add_subplot(gs[0, 0])
-    
-    # Plot the latent representations with class colors
+
+    # Plot latent representations with optional error bars for standard deviation
     if many_classes:
         for class_idx, class_name in enumerate(class_names):
             class_mask = (encoded_labels == class_idx)
-            color = cmap(class_idx % cmap.N)
-            marker = markers[class_idx % len(markers)]
-            ax_main.scatter(latent_representations[class_mask, 0],
-                            latent_representations[class_mask, 1],
-                            label=class_name, marker=marker, color=color, s=30, **kwargs)
-        if show_legend:
-            ax_main.legend(title="Classes", fontsize=legend_fontsize, loc='best')
+            color = cmap_classes(class_idx % cmap_classes.N)
+            ax_main.scatter(
+                latent_representations[class_mask, 0],
+                latent_representations[class_mask, 1],
+                label=class_name,
+                color=color,
+                s=30,
+                **kwargs
+            )
+            if latent_stdevs is not None:
+                ax_main.errorbar(
+                    latent_representations[class_mask, 0],
+                    latent_representations[class_mask, 1],
+                    xerr=latent_stdevs[class_mask, 0],
+                    yerr=latent_stdevs[class_mask, 1],
+                    fmt='none',
+                    ecolor=color,
+                    alpha=0.5
+                )
+                
     else:
         unique_labels = np.unique(encoded_labels)
         for class_idx in unique_labels:
             class_name = class_names[class_idx]
             class_mask = (encoded_labels == class_idx)
-            color = cmap(class_idx % cmap.N)
-            ax_main.scatter(latent_representations[class_mask, 0],
-                            latent_representations[class_mask, 1],
-                            label=class_name, color=color, s=30, **kwargs)
-        if show_legend:
-            ax_main.legend(title="Classes", fontsize=legend_fontsize)
+            color = cmap_classes(class_idx % cmap_classes.N)
+            ax_main.scatter(
+                latent_representations[class_mask, 0],
+                latent_representations[class_mask, 1],
+                label=class_name,
+                color=color,
+                s=30,
+                **kwargs
+            )
+            if latent_stdevs is not None:
+                ax_main.errorbar(
+                    latent_representations[class_mask, 0],
+                    latent_representations[class_mask, 1],
+                    xerr=latent_stdevs[class_mask, 0],
+                    yerr=latent_stdevs[class_mask, 1],
+                    fmt='none',
+                    ecolor=color,
+                    alpha=0.5
+                )
+
+    if show_legend:
+        ax_main.legend(title="Classes", fontsize=legend_fontsize)
 
     ax_main.set_title('2D Latent Space Visualization')
     ax_main.set_xlabel('Dimension 1')
     ax_main.set_ylabel('Dimension 2')
-    
-    # Set equal aspect ratio and adjust limits to make the plot square
+
+    # Set equal aspect ratio and adjust limits
     ax_main.set_aspect('equal')
-    
+
     x_min, x_max = latent_representations[:, 0].min(), latent_representations[:, 0].max()
     y_min, y_max = latent_representations[:, 1].min(), latent_representations[:, 1].max()
-    
+
     max_range = max(x_max - x_min, y_max - y_min)
-    
+
     ax_main.set_xlim(x_min - (max_range - (x_max - x_min)) / 2,
                      x_max + (max_range - (x_max - x_min)) / 2)
-    
+
     ax_main.set_ylim(y_min - (max_range - (y_max - y_min)) / 2,
                      y_max + (max_range - (y_max - y_min)) / 2)
 
-    # Plot feature distributions if feature data is provided
+    # Plot feature distributions with standard deviation if features are provided and plot_std is True
     if features is not None and feature_names is not None:
+        # Convert features to NumPy array if it's a list
+        if isinstance(features, list):
+            features = np.array(features)
+
         ax_hist_x = fig.add_subplot(gs[1, 0], sharex=ax_main)
         ax_hist_y = fig.add_subplot(gs[0, 1], sharey=ax_main)
 
         x_bins = np.linspace(x_min, x_max, 100)
+        y_bins = np.linspace(y_min, y_max, 100)
+
+        # Initialize lists to store legend handles for features
+        feature_legend_elements = []
 
         for feature_index, feature_name in enumerate(feature_names):
+            # Assign a specific color to each feature
+            if feature_index < len(feature_colors):
+                color = feature_colors[feature_index]
+            else:
+                color = 'gray'  # Default color if predefined colors are exhausted
+
+            ### Plotting for x-axis
+            # Compute mean and std for x-axis
             avg_feature_norm_x = [
                 features[(latent_representations[:, 0] >= x_bins[i]) & (latent_representations[:, 0] < x_bins[i+1]), feature_index].mean()
                 if np.any((latent_representations[:, 0] >= x_bins[i]) & (latent_representations[:, 0] < x_bins[i+1]))
-                else 0 for i in range(len(x_bins)-1)
+                else np.nan
+                for i in range(len(x_bins)-1)
             ]
-            avg_feature_norm_x_normed = (avg_feature_norm_x - np.min(avg_feature_norm_x)) / (np.ptp(avg_feature_norm_x) + 1e-8)
-            ax_hist_x.plot((x_bins[:-1] + x_bins[1:]) / 2, avg_feature_norm_x_normed, label=f'{feature_name}')
+            std_feature_norm_x = [
+                features[(latent_representations[:, 0] >= x_bins[i]) & (latent_representations[:, 0] < x_bins[i+1]), feature_index].std()
+                if np.any((latent_representations[:, 0] >= x_bins[i]) & (latent_representations[:, 0] < x_bins[i+1]))
+                else np.nan
+                for i in range(len(x_bins)-1)
+            ]
 
-        y_bins = np.linspace(y_min, y_max, 100)
+            # Convert to NumPy arrays for easier handling
+            avg_feature_norm_x = np.array(avg_feature_norm_x)
+            std_feature_norm_x = np.array(std_feature_norm_x)
 
-        for feature_index, feature_name in enumerate(feature_names):
+            # Handle NaNs
+            if plot_std:
+                valid_x = ~np.isnan(avg_feature_norm_x) & ~np.isnan(std_feature_norm_x)
+            else:
+                valid_x = ~np.isnan(avg_feature_norm_x)
+
+            if np.any(valid_x):
+                avg_x = avg_feature_norm_x[valid_x]
+                bin_centers_x = (x_bins[:-1] + x_bins[1:]) / 2
+                bin_centers_x = bin_centers_x[valid_x]
+
+                # Normalize mean
+                avg_min_x, avg_max_x = avg_x.min(), avg_x.max()
+                ptp_x = avg_max_x - avg_min_x
+                avg_norm_x = (avg_x - avg_min_x) / (ptp_x + 1e-8)
+
+                if plot_std:
+                    # Normalize std
+                    std_x = std_feature_norm_x[valid_x]
+                    std_min_x, std_max_x = std_x.min(), std_x.max()
+                    ptp_std_x = std_max_x - std_min_x
+                    if ptp_std_x > 0:
+                        std_norm_x = (std_x - std_min_x) / (ptp_std_x + 1e-8)
+                    else:
+                        std_norm_x = np.zeros_like(std_x)
+
+                # Plot mean line
+                line_mean_x, = ax_hist_x.plot(
+                    bin_centers_x,
+                    avg_norm_x,
+                    color=color,
+                    label=f'{feature_name} Mean'
+                )
+
+                if plot_std:
+                    # Plot std deviation shaded area
+                    ax_hist_x.fill_between(
+                        bin_centers_x,
+                        avg_norm_x - std_norm_x,
+                        avg_norm_x + std_norm_x,
+                        color=mcolors.to_rgba(color, alpha=0.3),
+                        label=f'{feature_name} Std'
+                    )
+
+                # Collect legend handles
+                feature_legend_elements.append(Line2D([0], [0], color=color, lw=2, label=f'{feature_name} Mean'))
+                if plot_std:
+                    feature_legend_elements.append(Patch(facecolor=mcolors.to_rgba(color, alpha=0.3), edgecolor='none', label=f'{feature_name} Std'))
+
+            ### Plotting for y-axis
+            # Compute mean and std for y-axis
             avg_feature_norm_y = [
                 features[(latent_representations[:, 1] >= y_bins[i]) & (latent_representations[:, 1] < y_bins[i+1]), feature_index].mean()
                 if np.any((latent_representations[:, 1] >= y_bins[i]) & (latent_representations[:, 1] < y_bins[i+1]))
-                else 0 for i in range(len(y_bins)-1)
+                else np.nan
+                for i in range(len(y_bins)-1)
             ]
-            avg_feature_norm_y_normed = (avg_feature_norm_y - np.min(avg_feature_norm_y)) / (np.ptp(avg_feature_norm_y) + 1e-8)
-            ax_hist_y.plot(avg_feature_norm_y_normed, (y_bins[:-1] + y_bins[1:]) / 2, label=f'{feature_name}')
+            std_feature_norm_y = [
+                features[(latent_representations[:, 1] >= y_bins[i]) & (latent_representations[:, 1] < y_bins[i+1]), feature_index].std()
+                if np.any((latent_representations[:, 1] >= y_bins[i]) & (latent_representations[:, 1] < y_bins[i+1]))
+                else np.nan
+                for i in range(len(y_bins)-1)
+            ]
 
-        ax_hist_x.set_title('Normalized Horizontal Feature Distributions')
-        ax_hist_x.set_xlabel('Dimension 1')
-        ax_hist_y.set_title('Normalized Vertical Feature Distributions')
-        ax_hist_y.set_ylabel('Dimension 2')
+            # Convert to NumPy arrays for easier handling
+            avg_feature_norm_y = np.array(avg_feature_norm_y)
+            std_feature_norm_y = np.array(std_feature_norm_y)
 
-        # Hide tick labels on shared axes to avoid clutter
-        plt.setp(ax_hist_x.get_xticklabels(), visible=False)
-        plt.setp(ax_hist_y.get_yticklabels(), visible=False)
+            # Handle NaNs
+            if plot_std:
+                valid_y = ~np.isnan(avg_feature_norm_y) & ~np.isnan(std_feature_norm_y)
+            else:
+                valid_y = ~np.isnan(avg_feature_norm_y)
 
-    # Save the plot if a path is provided
-    if save_path:
-        plt.savefig(save_path, bbox_inches='tight')
-        print(f"Saved plot to {save_path}")
+            if np.any(valid_y):
+                avg_y = avg_feature_norm_y[valid_y]
+                bin_centers_y = (y_bins[:-1] + y_bins[1:]) / 2
+                bin_centers_y = bin_centers_y[valid_y]
 
-    plt.show()
+                # Normalize mean
+                avg_min_y, avg_max_y = avg_y.min(), avg_y.max()
+                ptp_y = avg_max_y - avg_min_y
+                avg_norm_y = (avg_y - avg_min_y) / (ptp_y + 1e-8)
 
-# %% ../nbs/13_latent_space.ipynb 8
+                if plot_std:
+                    # Normalize std
+                    std_y = std_feature_norm_y[valid_y]
+                    std_min_y, std_max_y = std_y.min(), std_y.max()
+                    ptp_std_y = std_max_y - std_min_y
+                    if ptp_std_y > 0:
+                        std_norm_y = (std_y - std_min_y) / (ptp_std_y + 1e-8)
+                    else:
+                        std_norm_y = np.zeros_like(std_y)
+
+                # Plot mean line
+                line_mean_y, = ax_hist_y.plot(
+                    avg_norm_y,
+                    bin_centers_y,
+                    color=color,
+                    label=f'{feature_name} Mean'
+                )
+
+                if plot_std:
+                    # Plot std deviation shaded area
+                    ax_hist_y.fill_betweenx(
+                        bin_centers_y,
+                        avg_norm_y - std_norm_y,
+                        avg_norm_y + std_norm_y,
+                        color=mcolors.to_rgba(color, alpha=0.3),
+                        label=f'{feature_name} Std'
+                    )
+
+                # Collect legend handles
+                # Note: Avoid duplicating legend entries; already added during x-axis plotting
+
+        # Create separate legends
+        handles_main = []
+        if show_legend:
+            handles_main, labels_main = ax_main.get_legend_handles_labels()
+        
+        handles_feature = []
+        labels_feature = []
+        if features is not None and feature_names is not None and show_legend:
+            handles_feature = feature_legend_elements
+            labels_feature = [elem.get_label() for elem in feature_legend_elements]
+        
+        # Add feature legend separately
+        if handles_feature and labels_feature:
+            # Position the feature legend outside the main plot
+            ax_main.legend(
+                handles=handles_main,
+                labels=labels_main,
+                title="Classes",
+                fontsize=legend_fontsize,
+                loc='upper left'
+            )
+            ax_hist_x.legend(
+                handles=handles_feature,
+                labels=labels_feature,
+                title="Features",
+                fontsize=legend_fontsize,
+                loc='upper right'
+            )
+        elif handles_main and labels_main:
+            # Only main legend
+            ax_main.legend(title="Classes", fontsize=legend_fontsize, loc='best')
+
+        # Set titles and labels for histograms
+        if features is not None and feature_names is not None:
+            ax_hist_x.set_title('Normalized Horizontal Feature Distributions')
+            ax_hist_x.set_xlabel('Dimension 1')
+            ax_hist_y.set_title('Normalized Vertical Feature Distributions')
+            ax_hist_y.set_ylabel('Dimension 2')
+
+            # Hide tick labels on shared axes to avoid clutter
+            plt.setp(ax_hist_x.get_xticklabels(), visible=False)
+            plt.setp(ax_hist_y.get_yticklabels(), visible=False)
+
+        # Save the plot if save_path is provided
+        if save_path:
+            plt.savefig(save_path, bbox_inches='tight')
+            print(f"Saved plot to {save_path}")
+
+        plt.show()
+
+# %% ../nbs/13_latent_space.ipynb 7
 def plot_combined_2d_latent_space(
     real_latent: np.ndarray,                      # Latent representations of real data.
     synthetic_latent: np.ndarray,                 # Latent representations of synthetic data.
@@ -192,7 +421,7 @@ def plot_combined_2d_latent_space(
     else:
         plt.show()
 
-# %% ../nbs/13_latent_space.ipynb 10
+# %% ../nbs/13_latent_space.ipynb 9
 def reduce_dimensions_latent_space(latent_representations: np.ndarray,  # Precomputed latent representations (numpy array).
                       labels: np.ndarray,                  # Labels for the data points, used for coloring in the plot.
                       techniques: List[str] = ['PCA'],     # Techniques to use for reduction ('PCA', 't-SNE', 'UMAP', 'LDA').
@@ -316,7 +545,7 @@ def reduce_dimensions_latent_space(latent_representations: np.ndarray,  # Precom
 
     return reduced_latent_spaces
 
-# %% ../nbs/13_latent_space.ipynb 11
+# %% ../nbs/13_latent_space.ipynb 10
 def reduce_dimensions_combined_latent_space(
     train_latent: np.ndarray,                  # Latent representations of training data.
     val_latent: np.ndarray,                    # Latent representations of validation data.
@@ -363,7 +592,7 @@ def reduce_dimensions_combined_latent_space(
 
     return reduced_latent_spaces
 
-# %% ../nbs/13_latent_space.ipynb 17
+# %% ../nbs/13_latent_space.ipynb 16
 def linear_interpolation(z1, z2, steps):
     """Perform linear interpolation between two points."""
     return np.linspace(z1, z2, steps)
@@ -415,7 +644,7 @@ def interpolate_sample(centroids, granularity=10, variance=0.0):
     else:
         return np.empty((0, latent_dim))
 
-# %% ../nbs/13_latent_space.ipynb 19
+# %% ../nbs/13_latent_space.ipynb 18
 def compute_centroids(latents, labels, method='mean', return_labels=False, **kwargs):
     """
     Compute the centroid of each class in the latent space using various methods.
