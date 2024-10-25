@@ -22,8 +22,10 @@ from sklearn.manifold import TSNE
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 import umap.umap_ as umap
 from sklearn.preprocessing import LabelEncoder
+from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
 
-# %% ../nbs/13_latent_space.ipynb 6
+# %% ../nbs/13_latent_space.ipynb 5
 def plot_2d_latent_space(
     latent_representations: np.ndarray,
     labels: np.ndarray,
@@ -367,11 +369,11 @@ def plot_2d_latent_space(
 
         plt.show()
 
-# %% ../nbs/13_latent_space.ipynb 7
+# %% ../nbs/13_latent_space.ipynb 6
 def plot_combined_2d_latent_space(
     real_latent: np.ndarray,                      # Latent representations of real data.
-    synthetic_latent: np.ndarray,                 # Latent representations of synthetic data.
-    synthetic_labels: Optional[Union[int, List[int]]] = 1,  # Labels for synthetic data. Can be a single label or a list of labels.
+    synthetic_latent: np.ndarray,                 # Latent representations of synthetic data or arrows.
+    synthetic_labels: Optional[Union[int, List[int]]] = None,  # Labels for synthetic data. Can be None, a single label, or a list of labels.
     figsize: tuple = (12, 9),                     # Size of the figure.
     save_path: Optional[str] = None,              # Optional path to save the plot image.
     show_legend: bool = True,                     # Flag to show or hide the legend.
@@ -379,40 +381,116 @@ def plot_combined_2d_latent_space(
 ) -> None:
     """
     Plots the combined latent space of real and synthetic data.
-    Assumes the latent space is already 2D.
+    Assumes the latent space is 2D. If synthetic_latent is a 3D array, it plots arrows.
+    Numeric annotations for arrows are only displayed if synthetic_labels are provided.
     """
-    # Concatenate real and synthetic latent representations
-    combined_latent = np.concatenate([real_latent, synthetic_latent], axis=0)
-
-    # Create labels for real and synthetic data
-    real_labels = np.zeros(real_latent.shape[0], dtype=int)
-    if isinstance(synthetic_labels, int):
-        synthetic_labels = np.full(synthetic_latent.shape[0], synthetic_labels, dtype=int)
-    synthetic_labels = np.array(synthetic_labels)
-    combined_labels = np.concatenate([real_labels, synthetic_labels], axis=0)
-
-    # Ensure the latent space is 2D
-    assert combined_latent.shape[1] == 2, "The latent space representations must be 2D."
-
-    # Create a color map with enough colors
-    cmap = plt.get_cmap('tab20', len(np.unique(combined_labels)))
-    norm = mcolors.BoundaryNorm(boundaries=np.arange(len(np.unique(combined_labels))+1)-0.5, ncolors=len(np.unique(combined_labels)))
-
-    # Plotting
     plt.figure(figsize=figsize)
-    scatter = plt.scatter(combined_latent[:, 0], combined_latent[:, 1], c=combined_labels, cmap=cmap, norm=norm, alpha=0.7)
-    
-    if annotation_mode == 'legend' and show_legend:
-        # Create custom legend
-        unique_labels = np.unique(combined_labels)
-        custom_handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=cmap(norm(label)), markersize=10) for label in unique_labels]
-        custom_labels = ["Real"] + [f"Synthetic {label}" for label in np.unique(synthetic_labels)]
-        plt.legend(custom_handles, custom_labels, title="Classes", loc='upper right')  # Place legend in the upper right corner
-    
-    elif annotation_mode == 'numbers':
-        # Annotate only synthetic points with their class labels
-        for i in range(real_latent.shape[0], combined_latent.shape[0]):
-            plt.annotate(combined_labels[i], (combined_latent[i, 0], combined_latent[i, 1]), fontsize=9, alpha=0.7)
+
+    if synthetic_latent.ndim == 2:
+        # Handle 2D synthetic_latent as points
+        combined_latent = np.concatenate([real_latent, synthetic_latent], axis=0)
+
+        # Create labels for real and synthetic data
+        real_labels = np.zeros(real_latent.shape[0], dtype=int)
+        if synthetic_labels is not None:
+            if isinstance(synthetic_labels, int):
+                synthetic_labels_array = np.full(synthetic_latent.shape[0], synthetic_labels, dtype=int)
+            else:
+                synthetic_labels_array = np.array(synthetic_labels)
+            combined_labels = np.concatenate([real_labels, synthetic_labels_array], axis=0)
+        else:
+            combined_labels = real_labels
+
+        # Ensure the latent space is 2D
+        assert combined_latent.shape[1] == 2, "The latent space representations must be 2D."
+
+        # Create a color map with enough colors
+        if synthetic_labels is not None:
+            unique_labels = np.unique(combined_labels)
+            cmap = plt.get_cmap('tab20', len(unique_labels))
+            norm = mcolors.BoundaryNorm(boundaries=np.arange(len(unique_labels)+1)-0.5, ncolors=len(unique_labels))
+        else:
+            cmap = plt.get_cmap('tab20')
+            norm = None
+
+        # Plotting
+        scatter = plt.scatter(
+            combined_latent[:, 0],
+            combined_latent[:, 1],
+            c=combined_labels if synthetic_labels is not None else 'blue',
+            cmap=cmap,
+            norm=norm,
+            alpha=0.2 if synthetic_labels is None else 1,
+            label='Real' if synthetic_labels is None else None
+        )
+        
+        if synthetic_labels is not None:
+            if annotation_mode == 'legend' and show_legend:
+                # Create custom legend
+                unique_labels = np.unique(combined_labels)
+                custom_handles = [
+                    plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=cmap(norm(label)), markersize=10)
+                    for label in unique_labels
+                ]
+                custom_labels = ["Real"] + [f"Synthetic {label}" for label in np.unique(synthetic_labels_array)]
+                plt.legend(custom_handles, custom_labels, title="Classes", loc='upper right')  # Place legend in the upper right corner
+            
+            elif annotation_mode == 'numbers':
+                # Annotate only synthetic points with their class labels
+                for i in range(real_latent.shape[0], combined_latent.shape[0]):
+                    plt.annotate(
+                        combined_labels[i],
+                        (combined_latent[i, 0], combined_latent[i, 1]),
+                        fontsize=9,
+                        alpha=1
+                    )
+
+    elif synthetic_latent.ndim == 3:
+        # Handle 3D synthetic_latent as arrows
+        n_arrows = synthetic_latent.shape[0]
+
+        # Ensure the latent space is 2D
+        assert synthetic_latent.shape[1:] == (2, 2), "For arrows, synthetic_latent must have shape (n, 2, 2)."
+
+        # Plot real data
+        plt.scatter(real_latent[:, 0], real_latent[:, 1], c='blue', label='Real', alpha=0.2)
+
+        if synthetic_labels is not None:
+            if isinstance(synthetic_labels, int):
+                synthetic_labels_array = [synthetic_labels] * n_arrows
+            else:
+                synthetic_labels_array = list(synthetic_labels)
+            for idx, arrow in enumerate(synthetic_latent):
+                start, end = arrow
+                plt.arrow(
+                    start[0], start[1],
+                    end[0] - start[0], end[1] - start[1],
+                    head_width=0.05,
+                    head_length=0.1,
+                    fc='red',
+                    ec='red',
+                    alpha=1
+                )
+                plt.text(end[0], end[1], str(synthetic_labels_array[idx]), fontsize=9, color='red')
+        else:
+            # Plot arrows without annotations
+            for arrow in synthetic_latent:
+                start, end = arrow
+                plt.arrow(
+                    start[0], start[1],
+                    end[0] - start[0], end[1] - start[1],
+                    head_width=0.05,
+                    head_length=0.1,
+                    fc='red',
+                    ec='red',
+                    alpha=1
+                )
+
+        if show_legend and synthetic_labels is not None:
+            plt.legend(title="Classes", loc='upper right')
+
+    else:
+        raise ValueError("synthetic_latent must be either a 2D or 3D array.")
 
     # Save the plot if a save path is provided
     if save_path:
@@ -421,7 +499,7 @@ def plot_combined_2d_latent_space(
     else:
         plt.show()
 
-# %% ../nbs/13_latent_space.ipynb 9
+# %% ../nbs/13_latent_space.ipynb 8
 def reduce_dimensions_latent_space(latent_representations: np.ndarray,  # Precomputed latent representations (numpy array).
                       labels: np.ndarray,                  # Labels for the data points, used for coloring in the plot.
                       techniques: List[str] = ['PCA'],     # Techniques to use for reduction ('PCA', 't-SNE', 'UMAP', 'LDA').
@@ -545,7 +623,7 @@ def reduce_dimensions_latent_space(latent_representations: np.ndarray,  # Precom
 
     return reduced_latent_spaces
 
-# %% ../nbs/13_latent_space.ipynb 10
+# %% ../nbs/13_latent_space.ipynb 9
 def reduce_dimensions_combined_latent_space(
     train_latent: np.ndarray,                  # Latent representations of training data.
     val_latent: np.ndarray,                    # Latent representations of validation data.
@@ -592,7 +670,7 @@ def reduce_dimensions_combined_latent_space(
 
     return reduced_latent_spaces
 
-# %% ../nbs/13_latent_space.ipynb 16
+# %% ../nbs/13_latent_space.ipynb 15
 def linear_interpolation(z1, z2, steps):
     """Perform linear interpolation between two points."""
     return np.linspace(z1, z2, steps)
@@ -644,7 +722,7 @@ def interpolate_sample(centroids, granularity=10, variance=0.0):
     else:
         return np.empty((0, latent_dim))
 
-# %% ../nbs/13_latent_space.ipynb 18
+# %% ../nbs/13_latent_space.ipynb 17
 def compute_centroids(latents, labels, method='mean', return_labels=False, **kwargs):
     """
     Compute the centroid of each class in the latent space using various methods.
