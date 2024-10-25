@@ -5,9 +5,10 @@
 # %% auto 0
 __all__ = ['DISTANCE_FUNCTIONS', 'plot_metric_heatmaps', 'plot_comparison', 'calculate_closest_feature_distances',
            'find_non_matching_elements', 'evaluate_clustering_multiple_labels', 'euclidean_distance',
-           'manhattan_distance', 'cosine_distance', 'dtw_distance', 'calculate_distance', 'calculate_distances_batch',
-           'find_nearest_points', 'find_nearest_points_batch', 'orbits_distances', 'find_nearest_orbits',
-           'find_nearest_orbits_batch', 'calculate_pairwise_distances', 'evaluate_distance_metrics_and_clustering']
+           'manhattan_distance', 'cosine_distance', 'dtw_distance', 'calculate_distance',
+           'calculate_pairwise_distances', 'calculate_distances_batch', 'find_nearest_points',
+           'find_nearest_points_batch', 'orbits_distances', 'find_nearest_orbits', 'find_nearest_orbits_batch',
+           'calculate_pairwise_orbit_distances', 'evaluate_distance_metrics_and_clustering']
 
 # %% ../nbs/09_evaluation.ipynb 2
 import numpy as np
@@ -313,7 +314,27 @@ def calculate_distance(point1: np.ndarray, point2: np.ndarray, distance_metric: 
     else:
         raise ValueError('Unknown distance metric: ' + distance_metric)
 
-# %% ../nbs/09_evaluation.ipynb 23
+# %% ../nbs/09_evaluation.ipynb 22
+def calculate_pairwise_distances(array1: np.ndarray, array2: np.ndarray, distance_metric: str = 'euclidean') -> np.ndarray:
+    """
+    Calculates the distance between corresponding pairs of points from two arrays using the specified distance metric.
+    
+    :param array1: A 2D numpy array where each row represents a data point.
+    :param array2: A 2D numpy array where each row represents a data point.
+    :param distance_metric: The distance metric to use ('euclidean', 'manhattan', 'cosine', 'dtw').
+    :return: A 1D numpy array containing the distances between corresponding pairs.
+    """
+    if array1.shape != array2.shape:
+        raise ValueError("Both input arrays must have the same shape.")
+    
+    distances = np.array([
+        calculate_distance(point1, point2, distance_metric)
+        for point1, point2 in zip(array1, array2)
+    ])
+    
+    return distances
+
+# %% ../nbs/09_evaluation.ipynb 24
 def calculate_distances_batch(single_points: np.ndarray, points_array: np.ndarray, distance_metric: str = 'euclidean') -> np.ndarray:
     """
     Calculates the distances between single data points and an array of data points based on the specified distance metric.
@@ -334,7 +355,7 @@ def calculate_distances_batch(single_points: np.ndarray, points_array: np.ndarra
     
     return np.array(distances)
 
-# %% ../nbs/09_evaluation.ipynb 25
+# %% ../nbs/09_evaluation.ipynb 26
 def find_nearest_points(single_point: np.ndarray, points_array: np.ndarray, n: int, distance_metric: str = 'euclidean') -> tuple:
     
     distances = calculate_distances_batch(single_point, points_array, distance_metric=distance_metric)
@@ -344,14 +365,14 @@ def find_nearest_points(single_point: np.ndarray, points_array: np.ndarray, n: i
 
     # Gather the nearest distances using the indices
     nearest_distances = distances[nearest_indices]
-
+    
     # If only one nearest point is requested, return a single int and float
     if n == 1:
         return nearest_indices[0], nearest_distances[0]
 
     return nearest_indices, nearest_distances
 
-# %% ../nbs/09_evaluation.ipynb 26
+# %% ../nbs/09_evaluation.ipynb 27
 def find_nearest_points_batch(single_points: np.ndarray, points_array: np.ndarray, n: int, distance_metric: str = 'euclidean') -> tuple:
     """
     Finds the nearest indices and distances for a batch of single data points to an array of data points based on the specified distance metric.
@@ -372,7 +393,7 @@ def find_nearest_points_batch(single_points: np.ndarray, points_array: np.ndarra
     
     return np.array(all_nearest_indices), np.array(all_nearest_distances)
 
-# %% ../nbs/09_evaluation.ipynb 28
+# %% ../nbs/09_evaluation.ipynb 29
 def orbits_distances(
     orbit_data1: np.ndarray,                # Shape: [n_samples1, n_features, n_time_steps] or [n_features, n_time_steps]
     orbit_data2: np.ndarray,                # Shape: [n_samples2, n_features, n_time_steps] or [n_features, n_time_steps]
@@ -435,13 +456,13 @@ def orbits_distances(
     # Initialize the distance matrix
     if n_samples1 == 1 and n_samples2 == 1:
         # Both are single orbits
-        distances = np.array([[selected_distance_func(orbit_data1[0], orbit_data2[0])]])
+        distances = np.array([selected_distance_func(orbit_data1[0], orbit_data2[0])])
     elif n_samples1 == 1:
         # orbit_data1 is single, orbit_data2 is multiple
-        distances = np.array([[selected_distance_func(orbit_data1[0], orbit_data2[j]) for j in range(n_samples2)]])
+        distances = np.array([selected_distance_func(orbit_data1[0], orbit_data2[j]) for j in range(n_samples2)])
     elif n_samples2 == 1:
         # orbit_data2 is single, orbit_data1 is multiple
-        distances = np.array([[selected_distance_func(orbit_data1[i], orbit_data2[0])] for i in range(n_samples1)])
+        distances = np.array([selected_distance_func(orbit_data1[i], orbit_data2[0]) for i in range(n_samples1)])
     else:
         # Both are multiple
         distances = np.zeros((n_samples1, n_samples2), dtype=float)
@@ -449,9 +470,13 @@ def orbits_distances(
             for j in range(n_samples2):
                 distances[i, j] = selected_distance_func(orbit_data1[i], orbit_data2[j])
 
+    # Convert to 1D array if one of the inputs was a single orbit
+    if n_samples1 == 1 or n_samples2 == 1:
+        distances = distances.flatten()
+
     return distances
 
-# %% ../nbs/09_evaluation.ipynb 30
+# %% ../nbs/09_evaluation.ipynb 31
 def find_nearest_orbits(
     single_orbit: np.ndarray,
     orbit_data: np.ndarray,
@@ -485,9 +510,12 @@ def find_nearest_orbits(
     # Get the corresponding distances
     nearest_distances = distances[nearest_indices]
     
-    return nearest_indices, nearest_distances
+    if n == 1:
+        return nearest_indices[0], nearest_distances[0]
+    else:
+        return nearest_indices, nearest_distances
 
-# %% ../nbs/09_evaluation.ipynb 31
+# %% ../nbs/09_evaluation.ipynb 32
 def find_nearest_orbits_batch(
     single_orbits: np.ndarray,       # Shape: [num_single_orbits, n_features, n_time_steps]
     orbit_data: np.ndarray,          # Shape: [n_samples, n_features, n_time_steps]
@@ -536,8 +564,8 @@ def find_nearest_orbits_batch(
 
     return nearest_indices_all, nearest_distances_all
 
-# %% ../nbs/09_evaluation.ipynb 33
-def calculate_pairwise_distances(
+# %% ../nbs/09_evaluation.ipynb 34
+def calculate_pairwise_orbit_distances(
     orbit_data1: np.ndarray,       # Shape: [n_samples, n_features, n_time_steps]
     orbit_data2: np.ndarray,       # Shape: [n_samples, n_features, n_time_steps]
     distance_metric: str = 'euclidean'  # Distance metric
@@ -574,7 +602,7 @@ def calculate_pairwise_distances(
     
     return distances
 
-# %% ../nbs/09_evaluation.ipynb 35
+# %% ../nbs/09_evaluation.ipynb 36
 def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
                                     true_labels: np.ndarray,
                                     distance_metrics: list = None,
