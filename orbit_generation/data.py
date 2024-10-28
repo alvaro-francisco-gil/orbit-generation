@@ -4,7 +4,7 @@
 
 # %% auto 0
 __all__ = ['EPS', 'load_orbit_data', 'load_memmap_array', 'get_orbit_features', 'save_data', 'get_example_orbit_data',
-           'sample_orbits', 'create_dataloaders', 'TSFeatureWiseScaler', 'TSGlobalScaler']
+           'sample_orbits', 'discard_random_labels', 'create_dataloaders', 'TSFeatureWiseScaler', 'TSGlobalScaler']
 
 # %% ../nbs/01_data.ipynb 2
 import h5py
@@ -191,6 +191,17 @@ def sample_orbits(orbit_data: np.ndarray,  # Orbit data array
     return sampled_data, sampled_labels
 
 # %% ../nbs/01_data.ipynb 20
+def discard_random_labels(data, labels, discard_labels):
+    # Get unique labels
+    unique_labels = np.unique(labels)
+    # Randomly select labels to discard
+    discarded = np.random.choice(unique_labels, size=discard_labels, replace=False)
+    # Create a mask for samples that are not discarded
+    mask = ~np.isin(labels, discarded)
+    # Return the discarded labels and the filtered dataset
+    return discarded.tolist(), data[mask], labels[mask]
+
+# %% ../nbs/01_data.ipynb 22
 def create_dataloaders(scaled_data, val_split=0.2, batch_size=32):
     if val_split > 0:
         X_train, X_val = train_test_split(
@@ -210,10 +221,10 @@ def create_dataloaders(scaled_data, val_split=0.2, batch_size=32):
     
     return train_dataloader, val_dataloader
 
-# %% ../nbs/01_data.ipynb 22
+# %% ../nbs/01_data.ipynb 24
 EPS = 1e-18  # A small epsilon to prevent division by zero
 
-# %% ../nbs/01_data.ipynb 23
+# %% ../nbs/01_data.ipynb 25
 class TSFeatureWiseScaler():
     """
     Scales time series data feature-wise using PyTorch tensors.
@@ -299,7 +310,7 @@ class TSFeatureWiseScaler():
         self.fit(X)
         return self.transform(X)
 
-# %% ../nbs/01_data.ipynb 24
+# %% ../nbs/01_data.ipynb 26
 class TSGlobalScaler():
     """
     Scales time series data globally using PyTorch tensors.
