@@ -154,7 +154,7 @@ def get_example_orbit_data():
     
     return data
 
-# %% ../nbs/01_data.ipynb 18
+# %% ../nbs/01_data.ipynb 21
 def sample_orbits(orbit_data: np.ndarray,  # Orbit data array
                   sample_spec: dict or int, # Number of samples per class (dict) or total number of samples (int)
                   labels: np.ndarray = None # Optional: Array of labels corresponding to each orbit
@@ -191,7 +191,7 @@ def sample_orbits(orbit_data: np.ndarray,  # Orbit data array
     
     return sampled_data, sampled_labels
 
-# %% ../nbs/01_data.ipynb 21
+# %% ../nbs/01_data.ipynb 24
 def discard_random_labels(data, labels, discard_labels):
     # Get unique labels
     unique_labels = np.unique(labels)
@@ -202,7 +202,7 @@ def discard_random_labels(data, labels, discard_labels):
     # Return the discarded labels and the filtered dataset
     return discarded.tolist(), data[mask], labels[mask]
 
-# %% ../nbs/01_data.ipynb 23
+# %% ../nbs/01_data.ipynb 26
 def remove_duplicates_preserve_order(input_list):
     unique_items = []
     seen = set()
@@ -212,7 +212,7 @@ def remove_duplicates_preserve_order(input_list):
             unique_items.append(item)
     return unique_items
 
-# %% ../nbs/01_data.ipynb 25
+# %% ../nbs/01_data.ipynb 28
 def create_dataloaders(scaled_data, val_split=0.2, batch_size=32):
     if val_split > 0:
         X_train, X_val = train_test_split(
@@ -232,10 +232,10 @@ def create_dataloaders(scaled_data, val_split=0.2, batch_size=32):
     
     return train_dataloader, val_dataloader
 
-# %% ../nbs/01_data.ipynb 27
+# %% ../nbs/01_data.ipynb 30
 EPS = 1e-18  # A small epsilon to prevent division by zero
 
-# %% ../nbs/01_data.ipynb 28
+# %% ../nbs/01_data.ipynb 31
 class TSFeatureWiseScaler():
     """
     Scales time series data feature-wise using PyTorch tensors.
@@ -321,7 +321,7 @@ class TSFeatureWiseScaler():
         self.fit(X)
         return self.transform(X)
 
-# %% ../nbs/01_data.ipynb 29
+# %% ../nbs/01_data.ipynb 32
 class TSGlobalScaler():
     """
     Scales time series data globally using PyTorch tensors.
