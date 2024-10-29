@@ -4,8 +4,8 @@
 
 # %% auto 0
 __all__ = ['EPS', 'load_orbit_data', 'load_memmap_array', 'get_orbit_features', 'save_data', 'get_example_orbit_data',
-           'sample_orbits', 'discard_random_labels', 'remove_duplicates_preserve_order', 'create_dataloaders',
-           'TSFeatureWiseScaler', 'TSGlobalScaler']
+           'order_labels_and_array_with_target', 'sample_orbits', 'discard_random_labels',
+           'remove_duplicates_preserve_order', 'create_dataloaders', 'TSFeatureWiseScaler', 'TSGlobalScaler']
 
 # %% ../nbs/01_data.ipynb 2
 import h5py
@@ -153,6 +153,23 @@ def get_example_orbit_data():
     data = np.transpose(data, (2, 1, 0))
     
     return data
+
+# %% ../nbs/01_data.ipynb 18
+def order_labels_and_array_with_target(labels, array, target_label):
+    # Convert labels to a numpy array if it's not already
+    labels = np.array(labels)
+    n = len(labels)
+    
+    # Create index arrays to sort based on target label
+    primary_indices = [i for i in range(n) if labels[i] == target_label]
+    secondary_indices = [i for i in range(n) if labels[i] != target_label]
+    combined_indices = primary_indices + secondary_indices
+    
+    # Use indices to sort labels and array
+    ordered_labels = labels[combined_indices]
+    ordered_array = array[combined_indices]
+    
+    return ordered_labels, ordered_array
 
 # %% ../nbs/01_data.ipynb 21
 def sample_orbits(orbit_data: np.ndarray,  # Orbit data array

@@ -802,5 +802,118 @@
         "family_silhouette_score": 0.35384804010391235,
         "family_jaccard": 0.0016857846742047151,
         "family_accuracy": 0.62421829196795
+    },
+    {
+        "id": 16,
+        "parameters": {
+            "model_name": "vae_conv5_legit",
+            "data_used": "EM_N_fix_1500",
+            "latent_dim": 2,
+            "feature_dim": 7,
+            "seq_len": 100,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "epochs": 25,
+            "beta": 0.1,
+            "lr": 0.0003,
+            "dropout_rate": 0.2,
+            "samples_to_generate": 100,
+            "distance_metric": "euclidean",
+            "max_iter_convergence": 20,
+            "families_to_discard": 4
+        },
+        "discarded_family_ids": [
+            4,
+            31,
+            36,
+            39
+        ],
+        "discarded_families": [
+            "S_DPO",
+            "S_LPOW",
+            "S_R21",
+            "S_R32"
+        ],
+        "val_total_loss": 0.953795313835144,
+        "val_reconstruction_loss": 0.34097447991371155,
+        "val_kl_loss": 0.6128209233283997,
+        "train_total_loss": 1.3789246082305908,
+        "train_reconstruction_loss": 0.7548551559448242,
+        "train_kl_loss": 0.624069333076477,
+        "position_error": 0.21838552329413763,
+        "velocity_error": 0.36938091965887243,
+        "energy_error": 0.6190192340873182,
+        "disorder_metric": 186.64,
+        "correct_order": 74.5,
+        "inversions": 121.01,
+        "kendall_tau_distance": 0.04889526340389128,
+        "family_ari": 0.5388218645298586,
+        "family_nmi": 0.811027560761171,
+        "family_homogeneity": 0.7917816217749425,
+        "family_completeness": 0.8312324358217165,
+        "family_v-measure": 0.8110275607611709,
+        "family_fmi": 0.5608733259633956,
+        "family_purity": 0.6889183613321544,
+        "family_silhouette_score": 0.4052621126174927,
+        "family_jaccard": 0.007664305955404998,
+        "family_accuracy": 0.6050692602416741
+    },
+    {
+        "id": 17,
+        "parameters": {
+            "model_name": "vae_conv5_legit",
+            "data_used": "EM_N_fix_1500",
+            "latent_dim": 2,
+            "feature_dim": 7,
+            "seq_len": 100,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "epochs": 25,
+            "beta": 0.1,
+            "lr": 0.001,
+            "dropout_rate": 0.2,
+            "samples_to_generate": 100,
+            "distance_metric": "euclidean",
+            "max_iter_convergence": 20,
+            "families_to_discard": 4
+        },
+        "discarded_family_ids": [
+            34,
+            1,
+            2,
+            9
+        ],
+        "discarded_families": [
+            "S_R13",
+            "S_BN",
+            "S_BS",
+            "S_L1_HS"
+        ]
+    },
+    {
+        "id": 18,
+        "parameters": {
+            "model_name": "vae_conv5_legit",
+            "data_used": "EM_N_fix_1500",
+            "latent_dim": 2,
+            "feature_dim": 7,
+            "seq_len": 100,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "epochs": 25,
+            "beta": 0.1,
+            "lr": 0.003,
+            "dropout_rate": 0.2,
+            "samples_to_generate": 100,
+            "distance_metric": "euclidean",
+            "max_iter_convergence": 20,
+            "families_to_discard": 4
+        },
+        "discarded_families": [
+            "S_L4_SP",
+            "S_L1_HN",
+            "S_DRO",
+            "S_DPO"
+        ]
     }
 ]

@@ -4,7 +4,8 @@
 
 # %% auto 0
 __all__ = ['setup_new_experiment', 'convert_numpy_types', 'add_experiment_metrics', 'get_experiment_parameters',
-           'convert_notebook', 'read_json_to_dataframe', 'create_experiment_image_grid', 'plot_corr_matrix']
+           'get_experiment_data', 'convert_notebook', 'read_json_to_dataframe', 'create_experiment_image_grid',
+           'plot_corr_matrix']
 
 # %% ../nbs/08_experiment.ipynb 2
 import os
@@ -184,6 +185,49 @@ def get_experiment_parameters(experiments_folder: str,                    # Path
     raise ValueError(f"Experiment with the specified ID {experiment_id} does not exist.")
 
 # %% ../nbs/08_experiment.ipynb 12
+def get_experiment_data(experiments_folder: str,
+                        experiment_id: int,
+                        json_file: Optional[str] = None
+                       ) -> Dict[str, Any]:
+    """
+    Retrieves all data for an experiment from the JSON file based on the given ID.
+    
+    Args:
+    experiments_folder (str): Path to the folder containing all experiments.
+    experiment_id (int): ID to identify the experiment.
+    json_file (Optional[str]): Optional path to the JSON file tracking experiment data.
+    
+    Returns:
+    Dict[str, Any]: A dictionary containing all data for the specified experiment.
+    
+    Raises:
+    FileNotFoundError: If the experiments folder or JSON file doesn't exist.
+    ValueError: If the experiment with the specified ID is not found.
+    """
+    # Ensure the experiments folder exists
+    if not os.path.exists(experiments_folder):
+        raise FileNotFoundError(f"The experiments folder '{experiments_folder}' does not exist.")
+
+    # Default JSON file to 'experiments.json' in the experiments_folder if not provided
+    if json_file is None:
+        json_file = os.path.join(experiments_folder, 'experiments.json')
+
+    if not os.path.isfile(json_file):
+        raise FileNotFoundError(f"The JSON file '{json_file}' does not exist.")
+
+    # Load existing experiments from the JSON file
+    with open(json_file, mode='r') as file:
+        experiments = json.load(file)
+
+    # Find the matching experiment and return all its data
+    for experiment in experiments:
+        if experiment['id'] == int(experiment_id):
+            return experiment
+
+    # If the experiment is not found, raise an error
+    raise ValueError(f"Experiment with the specified ID {experiment_id} does not exist.")
+
+# %% ../nbs/08_experiment.ipynb 14
 def convert_notebook(notebook_path: str,                # The path to the notebook to convert.
                      output_folder: str,                # The folder to save the converted file.
                      output_filename: str,              # The name of the output file.
@@ -214,7 +258,7 @@ def convert_notebook(notebook_path: str,                # The path to the notebo
         print(e.stderr)
         raise
 
-# %% ../nbs/08_experiment.ipynb 13
+# %% ../nbs/08_experiment.ipynb 15
 def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
     """
     Reads a JSON file containing experiment results and returns a DataFrame.
@@ -240,7 +284,7 @@ def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
     df = pd.DataFrame(records)
     return df
 
-# %% ../nbs/08_experiment.ipynb 14
+# %% ../nbs/08_experiment.ipynb 16
 def create_experiment_image_grid(experiments_folder, image_suffix, crop_length, font_size=12, save_path=None, grid_size=(3, 2), experiment_indices=None, hspace=-0.37):
     if experiment_indices is None:
         experiment_indices = [1, 2, 3, 4, 5, 6]  # Default set of indices
@@ -297,7 +341,7 @@ def create_experiment_image_grid(experiments_folder, image_suffix, crop_length, 
     # Display the grid
     plt.show()
 
-# %% ../nbs/08_experiment.ipynb 15
+# %% ../nbs/08_experiment.ipynb 17
 def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm', save_path: Optional[str] = None):
     """
     Plots a correlation matrix heatmap with annotations.
