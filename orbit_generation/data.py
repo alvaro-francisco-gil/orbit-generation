@@ -4,7 +4,8 @@
 
 # %% auto 0
 __all__ = ['EPS', 'load_orbit_data', 'load_memmap_array', 'get_orbit_features', 'save_data', 'get_example_orbit_data',
-           'sample_orbits', 'discard_random_labels', 'create_dataloaders', 'TSFeatureWiseScaler', 'TSGlobalScaler']
+           'sample_orbits', 'discard_random_labels', 'remove_duplicates_preserve_order', 'create_dataloaders',
+           'TSFeatureWiseScaler', 'TSGlobalScaler']
 
 # %% ../nbs/01_data.ipynb 2
 import h5py
@@ -21,7 +22,7 @@ from sklearn.model_selection import train_test_split
 from unittest.mock import patch, MagicMock
 from fastcore.test import test_eq
 
-# %% ../nbs/01_data.ipynb 5
+# %% ../nbs/01_data.ipynb 6
 def load_orbit_data(file_path: str,  # The path to the .mat, .h5, or .npy file.
                     variable_name: Optional[str] = None,  # Name of the variable in the .mat file, optional.
                     dataset_path: Optional[str] = None  # Path to the dataset in the .h5 file, optional.
@@ -55,7 +56,7 @@ def load_orbit_data(file_path: str,  # The path to the .mat, .h5, or .npy file.
     
     return data
 
-# %% ../nbs/01_data.ipynb 7
+# %% ../nbs/01_data.ipynb 8
 def load_memmap_array(file_path: str,  # The path to the .npy file as a string.
                       mode: str = 'c'  # Mode for memory-mapping ('r', 'r+', 'w+', 'c').
                      ) -> np.memmap:   # Returns a memory-mapped array.
@@ -81,7 +82,7 @@ def load_memmap_array(file_path: str,  # The path to the .npy file as a string.
     # Load the .npy file as a memmap object with the specified mode
     return np.load(file_path, mmap_mode=mode)
 
-# %% ../nbs/01_data.ipynb 8
+# %% ../nbs/01_data.ipynb 9
 def get_orbit_features(file_path: str,  # The path to the file (can be .mat, .h5, or .npy).
                        variable_name: Optional[str] = None,  # Name of the variable in the .mat file, optional.
                        dataset_path: Optional[str] = None  # Path to the dataset in the .h5 file, optional.
@@ -104,7 +105,7 @@ def get_orbit_features(file_path: str,  # The path to the file (can be .mat, .h5
 
     return features
 
-# %% ../nbs/01_data.ipynb 11
+# %% ../nbs/01_data.ipynb 12
 def save_data(data: np.ndarray,  # The numpy array data to save.
               file_name: str  # The name of the file to save the data in, including the extension.
              ) -> None:
@@ -127,7 +128,7 @@ def save_data(data: np.ndarray,  # The numpy array data to save.
         # Raise an error for unsupported file types
         raise ValueError("Unsupported file extension. Supported extensions are '.hdf5' or '.npy'.")
 
-# %% ../nbs/01_data.ipynb 14
+# %% ../nbs/01_data.ipynb 15
 def get_example_orbit_data():
     """
     Load orbit data from a hardcoded MAT file located in the `data` directory.
@@ -153,7 +154,7 @@ def get_example_orbit_data():
     
     return data
 
-# %% ../nbs/01_data.ipynb 17
+# %% ../nbs/01_data.ipynb 18
 def sample_orbits(orbit_data: np.ndarray,  # Orbit data array
                   sample_spec: dict or int, # Number of samples per class (dict) or total number of samples (int)
                   labels: np.ndarray = None # Optional: Array of labels corresponding to each orbit
@@ -190,7 +191,7 @@ def sample_orbits(orbit_data: np.ndarray,  # Orbit data array
     
     return sampled_data, sampled_labels
 
-# %% ../nbs/01_data.ipynb 20
+# %% ../nbs/01_data.ipynb 21
 def discard_random_labels(data, labels, discard_labels):
     # Get unique labels
     unique_labels = np.unique(labels)
@@ -201,7 +202,17 @@ def discard_random_labels(data, labels, discard_labels):
     # Return the discarded labels and the filtered dataset
     return discarded.tolist(), data[mask], labels[mask]
 
-# %% ../nbs/01_data.ipynb 22
+# %% ../nbs/01_data.ipynb 23
+def remove_duplicates_preserve_order(input_list):
+    unique_items = []
+    seen = set()
+    for item in input_list:
+        if item not in seen:
+            seen.add(item)
+            unique_items.append(item)
+    return unique_items
+
+# %% ../nbs/01_data.ipynb 25
 def create_dataloaders(scaled_data, val_split=0.2, batch_size=32):
     if val_split > 0:
         X_train, X_val = train_test_split(
@@ -221,10 +232,10 @@ def create_dataloaders(scaled_data, val_split=0.2, batch_size=32):
     
     return train_dataloader, val_dataloader
 
-# %% ../nbs/01_data.ipynb 24
+# %% ../nbs/01_data.ipynb 27
 EPS = 1e-18  # A small epsilon to prevent division by zero
 
-# %% ../nbs/01_data.ipynb 25
+# %% ../nbs/01_data.ipynb 28
 class TSFeatureWiseScaler():
     """
     Scales time series data feature-wise using PyTorch tensors.
@@ -310,7 +321,7 @@ class TSFeatureWiseScaler():
         self.fit(X)
         return self.transform(X)
 
-# %% ../nbs/01_data.ipynb 26
+# %% ../nbs/01_data.ipynb 29
 class TSGlobalScaler():
     """
     Scales time series data globally using PyTorch tensors.
