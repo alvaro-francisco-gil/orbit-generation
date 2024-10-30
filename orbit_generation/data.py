@@ -210,12 +210,19 @@ def sample_orbits(orbit_data: np.ndarray,  # Orbit data array
 
 # %% ../nbs/01_data.ipynb 24
 def discard_random_labels(data, labels, discard_labels):
-    # Get unique labels
-    unique_labels = np.unique(labels)
-    # Randomly select labels to discard
-    discarded = np.random.choice(unique_labels, size=discard_labels, replace=False)
+    # Check if discard_labels is a list
+    if isinstance(discard_labels, list):
+        # Use the provided list of labels to discard
+        discarded = np.array(discard_labels)
+    else:
+        # Get unique labels
+        unique_labels = np.unique(labels)
+        # Randomly select labels to discard
+        discarded = np.random.choice(unique_labels, size=discard_labels, replace=False)
+    
     # Create a mask for samples that are not discarded
     mask = ~np.isin(labels, discarded)
+    
     # Return the discarded labels and the filtered dataset
     return discarded.tolist(), data[mask], labels[mask]
 
