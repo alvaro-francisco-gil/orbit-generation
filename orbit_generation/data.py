@@ -155,7 +155,7 @@ def get_example_orbit_data():
     return data
 
 # %% ../nbs/01_data.ipynb 18
-def order_labels_and_array_with_target(labels, array, target_label):
+def order_labels_and_array_with_target(labels, array, target_label, place_at_end=False):
     # Convert labels to a numpy array if it's not already
     labels = np.array(labels)
     n = len(labels)
@@ -163,7 +163,12 @@ def order_labels_and_array_with_target(labels, array, target_label):
     # Create index arrays to sort based on target label
     primary_indices = [i for i in range(n) if labels[i] == target_label]
     secondary_indices = [i for i in range(n) if labels[i] != target_label]
-    combined_indices = primary_indices + secondary_indices
+
+    # If place_at_end is True, reorder the indices
+    if place_at_end:
+        combined_indices = secondary_indices + primary_indices
+    else:
+        combined_indices = primary_indices + secondary_indices
     
     # Use indices to sort labels and array
     ordered_labels = labels[combined_indices]

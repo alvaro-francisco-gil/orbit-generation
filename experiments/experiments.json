@@ -823,16 +823,16 @@
             "families_to_discard": 4
         },
         "discarded_family_ids": [
-            4,
-            31,
-            36,
-            39
+            42.0,
+            21.0,
+            13.0,
+            3.0
         ],
         "discarded_families": [
-            "S_DPO",
-            "S_LPOW",
-            "S_R21",
-            "S_R32"
+            "S_R43",
+            "S_L3_V",
+            "S_L2_HN",
+            "S_DN"
         ],
         "val_total_loss": 0.953795313835144,
         "val_reconstruction_loss": 0.34097447991371155,

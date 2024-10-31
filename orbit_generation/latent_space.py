@@ -4,8 +4,8 @@
 
 # %% auto 0
 __all__ = ['plot_2d_latent_space', 'plot_combined_2d_latent_space', 'reduce_dimensions_latent_space',
-           'reduce_dimensions_combined_latent_space', 'linear_interpolation', 'slerp', 'interpolate_sample',
-           'compute_centroids', 'geometric_median', 'compute_medoid', 'trimmed_mean_centroid']
+           'reduce_dimensions_combined_latent_space', 'sample_random_distributions', 'linear_interpolation', 'slerp',
+           'interpolate_sample', 'compute_centroids', 'geometric_median', 'compute_medoid', 'trimmed_mean_centroid']
 
 # %% ../nbs/13_latent_space.ipynb 2
 import numpy as np
@@ -24,8 +24,13 @@ import umap.umap_ as umap
 from sklearn.preprocessing import LabelEncoder
 from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
+import torch
+import random
 
-# %% ../nbs/13_latent_space.ipynb 5
+# %% ../nbs/13_latent_space.ipynb 3
+from .architectures import Sampling
+
+# %% ../nbs/13_latent_space.ipynb 6
 def plot_2d_latent_space(
     latent_representations: np.ndarray,
     labels: np.ndarray,
@@ -369,7 +374,7 @@ def plot_2d_latent_space(
 
         plt.show()
 
-# %% ../nbs/13_latent_space.ipynb 6
+# %% ../nbs/13_latent_space.ipynb 7
 def plot_combined_2d_latent_space(
     real_latent: np.ndarray,                      # Latent representations of real data.
     synthetic_latent: np.ndarray,                 # Latent representations of synthetic data or arrows.
@@ -499,7 +504,7 @@ def plot_combined_2d_latent_space(
     else:
         plt.show()
 
-# %% ../nbs/13_latent_space.ipynb 8
+# %% ../nbs/13_latent_space.ipynb 9
 def reduce_dimensions_latent_space(latent_representations: np.ndarray,  # Precomputed latent representations (numpy array).
                       labels: np.ndarray,                  # Labels for the data points, used for coloring in the plot.
                       techniques: List[str] = ['PCA'],     # Techniques to use for reduction ('PCA', 't-SNE', 'UMAP', 'LDA').
@@ -623,7 +628,7 @@ def reduce_dimensions_latent_space(latent_representations: np.ndarray,  # Precom
 
     return reduced_latent_spaces
 
-# %% ../nbs/13_latent_space.ipynb 9
+# %% ../nbs/13_latent_space.ipynb 10
 def reduce_dimensions_combined_latent_space(
     train_latent: np.ndarray,                  # Latent representations of training data.
     val_latent: np.ndarray,                    # Latent representations of validation data.
@@ -670,7 +675,38 @@ def reduce_dimensions_combined_latent_space(
 
     return reduced_latent_spaces
 
-# %% ../nbs/13_latent_space.ipynb 15
+# %% ../nbs/13_latent_space.ipynb 16
+def sample_random_distributions(means, log_vars, n_samples: int) -> torch.Tensor:
+    # Convert to PyTorch tensors if inputs are NumPy arrays
+    if isinstance(means, np.ndarray):
+        means = torch.from_numpy(means).float()
+    if isinstance(log_vars, np.ndarray):
+        log_vars = torch.from_numpy(log_vars).float()
+
+    assert means.shape == log_vars.shape, "Means and log variances must have the same shape"
+    assert means.dim() == 2, "Input tensors must be 2-dimensional"
+
+    num_distributions, latent_dim = means.shape
+    sampling_layer = Sampling()
+    samples = []
+
+    for _ in range(n_samples):
+        # Randomly choose a distribution
+        idx = random.randint(0, num_distributions - 1)
+        
+        # Get the mean and log variance for the chosen distribution
+        z_mean = means[idx].unsqueeze(0)
+        z_log_var = log_vars[idx].unsqueeze(0)
+        
+        # Sample from the chosen distribution
+        sample = sampling_layer.forward(z_mean, z_log_var)
+        samples.append(sample)
+
+    # Stack all samples into a single tensor
+    return torch.cat(samples, dim=0)
+
+
+# %% ../nbs/13_latent_space.ipynb 17
 def linear_interpolation(z1, z2, steps):
     """Perform linear interpolation between two points."""
     return np.linspace(z1, z2, steps)
@@ -722,7 +758,7 @@ def interpolate_sample(centroids, granularity=10, variance=0.0):
     else:
         return np.empty((0, latent_dim))
 
-# %% ../nbs/13_latent_space.ipynb 17
+# %% ../nbs/13_latent_space.ipynb 20
 def compute_centroids(latents, labels, method='mean', return_labels=False, **kwargs):
     """
     Compute the centroid of each class in the latent space using various methods.
