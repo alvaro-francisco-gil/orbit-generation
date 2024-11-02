@@ -627,16 +627,14 @@ class InceptionTransposeBlock(nn.Module):
 
 # %% ../nbs/06_architectures.ipynb 29
 class InceptionTimeVAEEncoder(VAEEncoder):
-    def __init__(self, feat_dim=1, seq_len=160, n_filters=32, kernel_sizes=[5, 11, 23],
-                 bottleneck_channels=32, latent_dim=128, dropout_rate=0.5):
+    def __init__(self, feat_dim=7, seq_len=100, n_filters=32, kernel_sizes=[5, 11, 23],
+                 bottleneck_channels=32, latent_dim=2):
         super(InceptionTimeVAEEncoder, self).__init__(latent_dim=latent_dim)
         self.seq_len = seq_len
         self.feat_dim = feat_dim
         self.latent_dim = latent_dim
-        self.dropout_rate = dropout_rate
         
-        self.encoder = nn.Sequential(
-            nn.Unflatten(1, (feat_dim, seq_len)),
+        self.inception_blocks = nn.Sequential(
             InceptionBlock(
                 in_channels=feat_dim,
                 n_filters=n_filters,
@@ -662,34 +660,43 @@ class InceptionTimeVAEEncoder(VAEEncoder):
                 activation=nn.ReLU()
             ),
             nn.AdaptiveAvgPool1d(output_size=1),
-            nn.Flatten(),
-            nn.Dropout(p=dropout_rate)
+            nn.Flatten()
+        )
+
+        self.dense_layers = nn.Sequential(
+            nn.Linear(in_features=4 * n_filters * self.seq_len, out_features=512),
+            nn.ReLU(),
+            nn.Linear(in_features=512, out_features=64),
+            nn.ReLU(),
+            nn.Linear(in_features=64, out_features=self.latent_dim * 2)
         )
         
-        self.fc_mean = nn.Linear(in_features=4 * n_filters * 1, out_features=latent_dim)
-        self.fc_log_var = nn.Linear(in_features=4 * n_filters * 1, out_features=latent_dim)
-        
     def encode(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        x = self.encoder(x)
-        z_mean = self.fc_mean(x)
-        z_log_var = self.fc_log_var(x)
+        x = self.inception_blocks(x)
+        x = self.dense_layers(x)
+        z_mean, z_log_var = torch.split(x, self.latent_dim, dim=1)
         return z_mean, z_log_var
 
 # %% ../nbs/06_architectures.ipynb 31
 class InceptionTimeVAEDecoder(VAEDecoder):
-    def __init__(self, feat_dim=1, seq_len=160, n_filters=32, kernel_sizes=[5, 11, 23],
-                 bottleneck_channels=32, latent_dim=128, dropout_rate=0.5):
+    def __init__(self, feat_dim=7, seq_len=100, n_filters=32, kernel_sizes=[5, 11, 23],
+                 bottleneck_channels=32, latent_dim=2):
         super(InceptionTimeVAEDecoder, self).__init__(latent_dim=latent_dim)
         self.seq_len = seq_len
         self.feat_dim = feat_dim
         self.latent_dim = latent_dim
-        self.dropout_rate = dropout_rate
-             
-        self.decoder = nn.Sequential(
-            nn.Linear(in_features=latent_dim, out_features=4 * n_filters * 1),
+
+        self.dense_layers = nn.Sequential(
+            nn.Linear(in_features=self.latent_dim, out_features=64),
             nn.ReLU(),
-            nn.Dropout(p=dropout_rate),
-            nn.Unflatten(1, (4 * n_filters, 1)),  # Reshaping for convolutional layers
+            nn.Linear(in_features=64, out_features=512),
+            nn.ReLU(),
+            nn.Linear(in_features=512, out_features=4 * n_filters * self.seq_len),
+            nn.ReLU(),
+            nn.Unflatten(dim=1, unflattened_size=(64, self.seq_len))
+        )
+
+        self.inception_transpose_blocks = nn.Sequential(
             InceptionTransposeBlock(
                 in_channels=4 * n_filters,
                 out_channels=4 * n_filters,
@@ -718,12 +725,13 @@ class InceptionTimeVAEDecoder(VAEDecoder):
                 stride=1,
                 padding=1
             ),
-            nn.Sigmoid()  # Assuming input data is normalized between 0 and 1
+            nn.Sigmoid()
         )
         
     def decode(self, z: torch.Tensor) -> torch.Tensor:
-        reconstructed = self.decoder(z)
-        return reconstructed
+        z = self.dense_layers(z)
+        z = self.inception_transpose_blocks(z)
+        return z
 
 # %% ../nbs/06_architectures.ipynb 33
 def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, dropout_rate=0.2):
@@ -746,8 +754,7 @@ def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, dropout_rat
         n_filters=32,  # Adjust as needed
         kernel_sizes=[5, 11, 23],  # Adjust as needed
         bottleneck_channels=32,  # Adjust as needed
-        latent_dim=latent_dim,
-        dropout_rate=dropout_rate
+        latent_dim=latent_dim
     )
     
     decoder = InceptionTimeVAEDecoder(
@@ -756,8 +763,7 @@ def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, dropout_rat
         n_filters=32,  # Adjust as needed
         kernel_sizes=[5, 11, 23],  # Adjust as needed
         bottleneck_channels=32,  # Adjust as needed
-        latent_dim=latent_dim,
-        dropout_rate=dropout_rate
+        latent_dim=latent_dim
     )
     
     return encoder, decoder

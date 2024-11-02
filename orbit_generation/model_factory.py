@@ -41,8 +41,7 @@ def get_model(params):
             encoder, decoder = get_inception_time_vae_components(
                 seq_len=params['seq_len'], 
                 feat_dim=params['feature_dim'], 
-                latent_dim=params['latent_dim'],
-                dropout_rate=params.get('dropout_rate', 0.1)
+                latent_dim=params['latent_dim']
             )
 
         else:
