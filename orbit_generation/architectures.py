@@ -634,14 +634,15 @@ class InceptionTimeVAEEncoder(VAEEncoder):
         self.feat_dim = feat_dim
         self.latent_dim = latent_dim
         
-        self.inception_blocks = nn.Sequential(
+        self.inception_blocks = nn.ModuleList([
             InceptionBlock(
                 in_channels=feat_dim,
                 n_filters=n_filters,
                 kernel_sizes=kernel_sizes,
                 bottleneck_channels=bottleneck_channels,
                 use_residual=True,
-                activation=nn.ReLU()
+                activation=nn.ReLU(),
+                return_indices=True
             ),
             InceptionBlock(
                 in_channels=4 * n_filters,
@@ -649,7 +650,8 @@ class InceptionTimeVAEEncoder(VAEEncoder):
                 kernel_sizes=kernel_sizes,
                 bottleneck_channels=bottleneck_channels,
                 use_residual=True,
-                activation=nn.ReLU()
+                activation=nn.ReLU(),
+                return_indices=True
             ),
             InceptionBlock(
                 in_channels=4 * n_filters,
@@ -657,10 +659,12 @@ class InceptionTimeVAEEncoder(VAEEncoder):
                 kernel_sizes=kernel_sizes,
                 bottleneck_channels=bottleneck_channels,
                 use_residual=True,
-                activation=nn.ReLU()
-            ),
-            nn.Flatten()
-        )
+                activation=nn.ReLU(),
+                return_indices=True
+            )
+        ])
+
+        self.flatten = nn.Flatten()
 
         self.dense_layers = nn.Sequential(
             nn.Linear(in_features=4 * n_filters * self.seq_len, out_features=512),
@@ -670,11 +674,17 @@ class InceptionTimeVAEEncoder(VAEEncoder):
             nn.Linear(in_features=64, out_features=self.latent_dim * 2)
         )
         
-    def encode(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        x = self.inception_blocks(x)
+    def encode(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, list]:
+        indices_list = []
+        for block in self.inception_blocks:
+            x, indices = block(x)
+            indices_list.append(indices)
+        
+        x = self.flatten(x)
         x = self.dense_layers(x)
         z_mean, z_log_var = torch.split(x, self.latent_dim, dim=1)
-        return z_mean, z_log_var
+        
+        return z_mean, z_log_var, indices_list
 
 # %% ../nbs/06_architectures.ipynb 31
 class InceptionTimeVAEDecoder(VAEDecoder):
@@ -695,7 +705,7 @@ class InceptionTimeVAEDecoder(VAEDecoder):
             nn.Unflatten(dim=1, unflattened_size=(4 * n_filters, self.seq_len))
         )
 
-        self.inception_transpose_blocks = nn.Sequential(
+        self.inception_transpose_blocks = nn.ModuleList([
             InceptionTransposeBlock(
                 in_channels=4 * n_filters,
                 out_channels=4 * n_filters,
@@ -716,20 +726,15 @@ class InceptionTimeVAEDecoder(VAEDecoder):
                 kernel_sizes=kernel_sizes,
                 bottleneck_channels=bottleneck_channels,
                 activation=nn.ReLU()
-            ),
-            nn.ConvTranspose1d(
-                in_channels=feat_dim,
-                out_channels=feat_dim,
-                kernel_size=3,
-                stride=1,
-                padding=1
-            ),
-            nn.Sigmoid()
-        )
+            )
+        ])
         
-    def decode(self, z: torch.Tensor) -> torch.Tensor:
+    def decode(self, z: torch.Tensor, indices_list: list) -> torch.Tensor:
         z = self.dense_layers(z)
-        z = self.inception_transpose_blocks(z)
+        
+        for i in range(len(self.inception_transpose_blocks)):
+            z = self.inception_transpose_blocks[i](z, indices_list[-(i+1)])
+        
         return z
 
 # %% ../nbs/06_architectures.ipynb 33

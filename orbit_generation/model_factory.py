@@ -7,7 +7,7 @@ __all__ = ['get_model']
 
 # %% ../nbs/11_model_factory.ipynb 2
 from .architectures import get_conv5_vae_components, get_conv5_legit_tsgm_vae_components, get_inception_time_vae_components
-from .vae import BetaVAE
+from .vae import BetaVAE, InceptionTimeVAE
 
 import torch
 
@@ -15,8 +15,27 @@ import torch
 def get_model(params):
     model_name = params['model_name']
 
+    if model_name == 'vae_inception_time':
+        # Accessing InceptionTime VAE components using parameters from the dictionary
+        encoder, decoder = get_inception_time_vae_components(
+            seq_len=params['seq_len'], 
+            feat_dim=params['feature_dim'], 
+            latent_dim=params['latent_dim']
+        )
+        # Build the InceptionTimeVAE
+        vae = InceptionTimeVAE(
+            encoder=encoder,
+            decoder=decoder,
+            beta=params.get('beta', 1.0),
+            loss_fn=params.get('loss_fn', None),
+            optimizer_cls=params.get('optimizer_cls', torch.optim.Adam),
+            lr=params.get('lr', None)
+        )
+
+        return vae
+
     # Check if the model name starts with 'vae'
-    if model_name.startswith('vae'):
+    elif model_name.startswith('vae'):
         # Handle specific VAE models
         if model_name == 'vae_conv5_legit':
             # Accessing model configuration from the zoo using parameters from the dictionary
@@ -34,14 +53,6 @@ def get_model(params):
                 feat_dim=params['feature_dim'], 
                 latent_dim=params['latent_dim'],
                 dropout_rate=params.get('dropout_rate', 0.1)
-            )
-
-        elif model_name == 'vae_inception_time':
-            # Accessing InceptionTime VAE components using parameters from the dictionary
-            encoder, decoder = get_inception_time_vae_components(
-                seq_len=params['seq_len'], 
-                feat_dim=params['feature_dim'], 
-                latent_dim=params['latent_dim']
             )
 
         else:
