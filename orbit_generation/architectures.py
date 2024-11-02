@@ -659,7 +659,6 @@ class InceptionTimeVAEEncoder(VAEEncoder):
                 use_residual=True,
                 activation=nn.ReLU()
             ),
-            nn.AdaptiveAvgPool1d(output_size=1),
             nn.Flatten()
         )
 
@@ -693,7 +692,7 @@ class InceptionTimeVAEDecoder(VAEDecoder):
             nn.ReLU(),
             nn.Linear(in_features=512, out_features=4 * n_filters * self.seq_len),
             nn.ReLU(),
-            nn.Unflatten(dim=1, unflattened_size=(64, self.seq_len))
+            nn.Unflatten(dim=1, unflattened_size=(4 * n_filters, self.seq_len))
         )
 
         self.inception_transpose_blocks = nn.Sequential(
@@ -734,7 +733,7 @@ class InceptionTimeVAEDecoder(VAEDecoder):
         return z
 
 # %% ../nbs/06_architectures.ipynb 33
-def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, dropout_rate=0.2):
+def get_inception_time_vae_components(seq_len, feat_dim, latent_dim):
     """
     Returns an instance of InceptionTimeVAEEncoder and InceptionTimeVAEDecoder based on the given parameters.
     
