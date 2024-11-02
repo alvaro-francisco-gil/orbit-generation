@@ -6,7 +6,7 @@
 __all__ = ['get_model']
 
 # %% ../nbs/11_model_factory.ipynb 2
-from .architectures import get_conv5_vae_components, get_conv5_legit_tsgm_vae_components
+from .architectures import get_conv5_vae_components, get_conv5_legit_tsgm_vae_components, get_inception_time_vae_components
 from .vae import BetaVAE
 
 import torch
@@ -30,6 +30,15 @@ def get_model(params):
         elif model_name == 'vae_conv5_1':
             # Accessing model configuration from the zoo using parameters from the dictionary
             encoder, decoder = get_conv5_vae_components(
+                seq_len=params['seq_len'], 
+                feat_dim=params['feature_dim'], 
+                latent_dim=params['latent_dim'],
+                dropout_rate=params.get('dropout_rate', 0.1)
+            )
+
+        elif model_name == 'vae_inception_time':
+            # Accessing InceptionTime VAE components using parameters from the dictionary
+            encoder, decoder = get_inception_time_vae_components(
                 seq_len=params['seq_len'], 
                 feat_dim=params['feature_dim'], 
                 latent_dim=params['latent_dim'],

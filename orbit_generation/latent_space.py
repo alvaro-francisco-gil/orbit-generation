@@ -676,7 +676,7 @@ def reduce_dimensions_combined_latent_space(
     return reduced_latent_spaces
 
 # %% ../nbs/13_latent_space.ipynb 16
-def sample_random_distributions(means, log_vars, n_samples: int) -> torch.Tensor:
+def sample_random_distributions(means, log_vars, n_samples: int, log_var_multiplier: float = 1.0) -> torch.Tensor:
     # Convert to PyTorch tensors if inputs are NumPy arrays
     if isinstance(means, np.ndarray):
         means = torch.from_numpy(means).float()
@@ -690,14 +690,20 @@ def sample_random_distributions(means, log_vars, n_samples: int) -> torch.Tensor
     sampling_layer = Sampling()
     samples = []
 
+    # Apply log variance multiplier
+    log_vars = log_vars * log_var_multiplier
+
+    distribution_idx = 0
+
     for _ in range(n_samples):
-        # Randomly choose a distribution
-        idx = random.randint(0, num_distributions - 1)
-        
+        # Select distribution iteratively
+        idx = distribution_idx % num_distributions
+        distribution_idx += 1
+
         # Get the mean and log variance for the chosen distribution
         z_mean = means[idx].unsqueeze(0)
         z_log_var = log_vars[idx].unsqueeze(0)
-        
+
         # Sample from the chosen distribution
         sample = sampling_layer.forward(z_mean, z_log_var)
         samples.append(sample)
