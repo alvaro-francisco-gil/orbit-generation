@@ -114,7 +114,7 @@ class VAEEncoder(ABC, nn.Module):
         """
         Encodes the input tensor into mean and log variance tensors.
 
-        :param x: Input tensor of shape (batch_size, num_features, sequence_length)
+        :param x: Input tensor of shape (batch_size, num_features, seq_len)
         :return: Tuple containing mean and log variance tensors.
         """
         pass
@@ -134,7 +134,7 @@ class VAEDecoder(ABC, nn.Module):
         Decodes the latent tensor back to the original data space.
 
         :param z: Latent tensor of shape (batch_size, latent_dim)
-        :return: Reconstructed tensor of shape (batch_size, num_features, sequence_length)
+        :return: Reconstructed tensor of shape (batch_size, num_features, seq_len)
         """
         pass
 
@@ -627,12 +627,12 @@ class InceptionTransposeBlock(nn.Module):
 
 # %% ../nbs/06_architectures.ipynb 29
 class InceptionTimeVAEEncoder(VAEEncoder):
-    def __init__(self, num_features=1, sequence_length=160, n_filters=32, kernel_sizes=[5, 11, 23],
+    def __init__(self, num_features=1, seq_len=160, n_filters=32, kernel_sizes=[5, 11, 23],
                  bottleneck_channels=32, latent_dim=128, dropout_rate=0.5):
         super(InceptionTimeVAEEncoder, self).__init__(latent_dim=latent_dim)
         
         self.encoder = nn.Sequential(
-            nn.Unflatten(1, (num_features, sequence_length)),
+            nn.Unflatten(1, (num_features, seq_len)),
             InceptionBlock(
                 in_channels=num_features,
                 n_filters=n_filters,
@@ -673,7 +673,7 @@ class InceptionTimeVAEEncoder(VAEEncoder):
 
 # %% ../nbs/06_architectures.ipynb 31
 class InceptionTimeVAEDecoder(VAEDecoder):
-    def __init__(self, num_features=1, sequence_length=160, n_filters=32, kernel_sizes=[5, 11, 23],
+    def __init__(self, num_features=1, seq_len=160, n_filters=32, kernel_sizes=[5, 11, 23],
                  bottleneck_channels=32, latent_dim=128, dropout_rate=0.5):
         super(InceptionTimeVAEDecoder, self).__init__(latent_dim=latent_dim)
         
@@ -734,7 +734,7 @@ def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, dropout_rat
     """
     encoder = InceptionTimeVAEEncoder(
         num_features=feat_dim,
-        sequence_length=seq_len,
+        seq_len=seq_len,
         n_filters=32,  # Adjust as needed
         kernel_sizes=[5, 11, 23],  # Adjust as needed
         bottleneck_channels=32,  # Adjust as needed
@@ -744,7 +744,7 @@ def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, dropout_rat
     
     decoder = InceptionTimeVAEDecoder(
         num_features=feat_dim,
-        sequence_length=seq_len,
+        seq_len=seq_len,
         n_filters=32,  # Adjust as needed
         kernel_sizes=[5, 11, 23],  # Adjust as needed
         bottleneck_channels=32,  # Adjust as needed
