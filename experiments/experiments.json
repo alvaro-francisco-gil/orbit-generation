@@ -982,5 +982,55 @@
         "correct_order": 70.735,
         "inversions": 204.44,
         "kendall_tau_distance": 0.08260202020202011
+    },
+    {
+        "id": 20,
+        "parameters": {
+            "model_name": "vae_inception_time",
+            "data_used": "EM_N_fix_1500",
+            "latent_dim": 2,
+            "feature_dim": 7,
+            "seq_len": 100,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "epochs": 25,
+            "beta": 0.1,
+            "lr": 0.001,
+            "dropout_rate": 0.2,
+            "samples_to_generate": 100,
+            "distance_metric": "euclidean",
+            "max_iter_convergence": 20,
+            "families_to_discard": 10
+        },
+        "discarded_family_ids": [
+            13.0,
+            28.0,
+            19.0,
+            36.0,
+            5.0,
+            29.0,
+            2.0,
+            26.0,
+            20.0,
+            18.0
+        ],
+        "discarded_families": [
+            "S_L2_HN",
+            "S_L5_SP",
+            "S_L3_HS",
+            "S_R21",
+            "S_DRO",
+            "S_L5_V",
+            "S_BS",
+            "S_L5_A",
+            "S_L3_L",
+            "S_L3_HN"
+        ],
+        "val_total_loss": 0.1655905842781067,
+        "val_reconstruction_loss": 0.16558854281902313,
+        "val_kl_loss": 2.058210384348058e-06,
+        "train_total_loss": 0.2255537062883377,
+        "train_reconstruction_loss": 0.2255515456199646,
+        "train_kl_loss": 2.0020186184410704e-06
     }
 ]
