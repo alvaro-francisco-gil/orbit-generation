@@ -15,7 +15,7 @@ import torch
 import torch.nn as nn
 from abc import ABC, abstractmethod
 from torch import Tensor
-from .architectures import Sampling
+from .architectures import Sampling, InceptionTimeVAEEncoder, InceptionTimeVAEDecoder
 
 # %% ../nbs/10_vae.ipynb 3
 class AbstractVAE(ABC):
