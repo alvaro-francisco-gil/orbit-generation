@@ -280,7 +280,7 @@ def get_first_period_fixed_step_dataset(file_path: str,                  # Path 
 
 # %% ../nbs/05_dataset.ipynb 25
 def get_first_period_dataset(file_path: str,                             # Path to the HDF5 file.
-                             segment_length: Optional[int] = None        # Desired length of each segment, optional.
+                             segment_length: Optional[int] = 100        # Desired length of each segment, optional.
                             ) -> Tuple[np.ndarray,                      # 3D numpy array of orbits.
                                     pd.DataFrame,                       # DataFrame containing orbit features.
                                     np.ndarray,                         # NumPy array of IDs representing each new segment.
