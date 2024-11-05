@@ -16,7 +16,7 @@ import pandas as pd
 from typing import Tuple, List, Dict, Any, Optional
 
 from .processing import pad_and_convert_to_3d, segment_and_convert_to_3d, add_time_vector_to_orbits, resample_3d_array
-from .constants import ORBIT_CLASS_DF
+from .constants import EXTENDED_ORBIT_CLASSIFICATION
 
 # %% ../nbs/05_dataset.ipynb 4
 def get_orbit_data_from_hdf5(file_path: str                   # Path to the HDF5 file.
@@ -158,10 +158,10 @@ def get_orbit_classes(values: List[Any]) -> Tuple[List[Any], List[Any], List[Any
     Returns:
     Tuple[List[Any], List[Any], List[Any], List[Any]]: Four lists with substituted values from 'Label', 'Type', 'Subtype', and 'Direction' columns.
     """
-    labels = substitute_values_from_df(values, ORBIT_CLASS_DF, 'Label')
-    types = substitute_values_from_df(values, ORBIT_CLASS_DF, 'Type')
-    subtypes = substitute_values_from_df(values, ORBIT_CLASS_DF, 'Subtype')
-    directions = substitute_values_from_df(values, ORBIT_CLASS_DF, 'Direction')
+    labels = substitute_values_from_df(values, EXTENDED_ORBIT_CLASSIFICATION, 'Label')
+    types = substitute_values_from_df(values, EXTENDED_ORBIT_CLASSIFICATION, 'Type')
+    subtypes = substitute_values_from_df(values, EXTENDED_ORBIT_CLASSIFICATION, 'Subtype')
+    directions = substitute_values_from_df(values, EXTENDED_ORBIT_CLASSIFICATION, 'Direction')
 
     return labels, types, subtypes, directions
 
