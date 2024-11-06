@@ -24,6 +24,9 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
+from sklearn.model_selection import cross_val_predict
 from scipy.spatial.distance import squareform
 from fastdtw import fastdtw
 import matplotlib.pyplot as plt
@@ -747,7 +750,7 @@ def machine_learning_evaluation(X, y, print_results=False):
         data = []
         for algo, result in results.items():
             for metric in metrics:
-                value = np.mean([v[metric] for k, v in result['report'].items() if k != 'accuracy'])
+                value = np.mean([v[metric] for k, v in result['report'].items() if k not in ['accuracy', 'macro avg', 'weighted avg']])
                 data.append([algo, metric, value])
 
         df = pd.DataFrame(data, columns=['Algorithm', 'Metric', 'Value'])
@@ -757,13 +760,10 @@ def machine_learning_evaluation(X, y, print_results=False):
         sns.heatmap(pivot_df, annot=True, cmap='YlGnBu', fmt='.3f')
         plt.title('Performance Metrics Heatmap')
         plt.show()
-        
-    # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # List of algorithms to evaluate
     algorithms = {
-        'Logistic Regression': LogisticRegression(max_iter=2000),  # Increased max_iter
+        'Logistic Regression': LogisticRegression(max_iter=2000),
         'Decision Tree': DecisionTreeClassifier(),
         'Support Vector Machine': SVC(),
         'Random Forest': RandomForestClassifier()
@@ -773,10 +773,14 @@ def machine_learning_evaluation(X, y, print_results=False):
 
     # Train and evaluate each algorithm
     for name, model in algorithms.items():
-        model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
-        accuracy = accuracy_score(y_test, y_pred)
-        report = classification_report(y_test, y_pred, output_dict=True, zero_division=0)  # Handle zero division
+        # Create a pipeline that scales the data and then applies the model
+        pipeline = make_pipeline(StandardScaler(), model)
+        
+        # Use cross-validation to get predictions
+        y_pred = cross_val_predict(pipeline, X, y, cv=5)
+        
+        accuracy = accuracy_score(y, y_pred)
+        report = classification_report(y, y_pred, output_dict=True, zero_division=0)
         results[name] = {'accuracy': accuracy, 'report': report}
 
     if print_results:
