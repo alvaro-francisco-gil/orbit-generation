@@ -4,7 +4,7 @@
 
 # %% auto 0
 __all__ = ['plot_3d_points', 'visualize_static_orbits', 'visualize_orbits_minimal', 'export_dynamic_orbits_html',
-           'plot_grouped_features', 'plot_value_proportions']
+           'plot_histogram', 'plot_grouped_features', 'plot_value_proportions']
 
 # %% ../nbs/03_visualization.ipynb 2
 import numpy as np
@@ -15,36 +15,55 @@ import seaborn as sns
 from typing import Optional, List, Dict, Union
 
 # %% ../nbs/03_visualization.ipynb 5
-def plot_3d_points(data, plot_velocity=True, arrow_width=0.005):
+def plot_3d_points(data, labels=None, plot_velocity=True, arrow_width=0.005, show_legend=True):
     """
     Plots each point in space with a 3D arrow based on the first 3 coordinates (position)
-    and the next 3 coordinates (velocity).
+    and optionally the next 3 coordinates (velocity).
 
     Parameters:
-    data (numpy.ndarray): Array of shape (samples, 6, 1) where:
-                          - data[:, 0:3, 0] represents the 3D positions (x, y, z)
-                          - data[:, 3:6, 0] represents the velocity components (vx, vy, vz)
-    plot_velocity (bool): If True, plot arrows representing velocity vectors.
+    data (numpy.ndarray): Array of shape (samples, 3) for positions or (samples, 6) for positions and velocities.
+                          - data[:, 0:3] represents the 3D positions (x, y, z)
+                          - data[:, 3:6] represents the velocity components (vx, vy, vz) if provided
+    labels (list of str): Optional list of labels for color coding the points.
+    plot_velocity (bool): If True and velocities are provided, plot arrows representing velocity vectors.
     arrow_width (float): Width of the arrows.
+    show_legend (bool): If True, show the legend for color coding.
     """
-    # Reshape data to remove the last singleton dimension for easier access
-    data = data.reshape(-1, 6)
-
-    # Extract position (x, y, z) and velocity (vx, vy, vz) components
-    positions = data[:, 0:3]
-    velocities = data[:, 3:6]
+    # Check if velocities are provided by looking at the shape of the input data
+    if data.shape[1] == 6:
+        # Both positions and velocities are provided
+        positions = data[:, 0:3]
+        velocities = data[:, 3:6]
+    elif data.shape[1] == 3:
+        # Only positions are provided
+        positions = data[:, 0:3]
+        velocities = None
+        plot_velocity = False  # Disable velocity plotting since it's not available
+    else:
+        raise ValueError("Data must have shape (samples, 3) for positions or (samples, 6) for positions and velocities.")
 
     # Create a 3D plot
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
-    # Plot each point with an arrow
-    for pos, vel in zip(positions, velocities):
-        # Plot the point in space
-        ax.scatter(pos[0], pos[1], pos[2], color='blue')
+    # Color mapping if labels are provided
+    if labels is not None:
+        unique_labels = list(set(labels))
+        colors = plt.cm.get_cmap('viridis', len(unique_labels))  # Use a colormap
+        label_color_mapping = {label: colors(i) for i, label in enumerate(unique_labels)}
 
-        # Add an arrow representing the velocity vector if plot_velocity is True
-        if plot_velocity:
+    # Plot each point with an optional arrow
+    for i, pos in enumerate(positions):
+        # Determine the color based on label
+        color = label_color_mapping[labels[i]] if labels is not None else 'blue'
+        
+        # Plot the point in space
+        ax.scatter(pos[0], pos[1], pos[2], color=color,
+                   label=labels[i] if labels is not None and labels[i] not in ax.get_legend_handles_labels()[1] else "")
+
+        # Add an arrow representing the velocity vector if plot_velocity is True and velocities exist
+        if plot_velocity and velocities is not None:
+            vel = velocities[i]
             ax.quiver(
                 pos[0], pos[1], pos[2],  # Starting point of the arrow
                 vel[0], vel[1], vel[2],  # Direction and length of the arrow
@@ -64,6 +83,10 @@ def plot_3d_points(data, plot_velocity=True, arrow_width=0.005):
     ax.set_xlim(x_limits)
     ax.set_ylim(y_limits)
     ax.set_zlim(z_limits)
+
+    # Show legend if required
+    if show_legend and labels is not None:
+        ax.legend()
 
     # Show plot
     plt.show()
@@ -296,74 +319,116 @@ def export_dynamic_orbits_html(data: np.ndarray,  # Orbit data as a 3D numpy arr
     print(f"Visualization saved to {filename}")
 
 # %% ../nbs/03_visualization.ipynb 21
+def plot_histogram(data, bins=10, title='Histogram', xlabel='Data', ylabel='Frequency'):
+    """
+    Plots a histogram for the given data.
+
+    Parameters:
+    data : list, array, or pandas Series
+        The data to be plotted.
+    bins : int, optional
+        Number of histogram bins to use (default is 10).
+    title : str, optional
+        Title of the histogram (default is 'Histogram').
+    xlabel : str, optional
+        Label for the x-axis (default is 'Data').
+    ylabel : str, optional
+        Label for the y-axis (default is 'Frequency').
+    """
+    plt.figure(figsize=(10, 6))
+    plt.hist(data, bins=bins, edgecolor='black')
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.grid(True, alpha=0.3)
+    plt.show()
+
+# %% ../nbs/03_visualization.ipynb 22
 def plot_grouped_features(df: pd.DataFrame,               # DataFrame containing the data.
                           columns: List[str],             # List of column names to plot.
                           group_col: str,                 # Column name to group by.
-                          plot_type: str                  # Type of plot: 'violin', 'box', 'facetgrid', or 'histogram'
+                          plot_type: str,                 # Type of plot: 'violin', 'box', 'facetgrid', or 'histogram'
+                          figsize: tuple = (5, 5),        # Size of the plot (width, height) per subplot
+                          fontsize: int = 10              # Font size for labels and titles
                          ) -> None:
     """
     Group the DataFrame by a specified column and plot the specified type of plot for each column for each group.
+    
+    Parameters:
+    - df : pd.DataFrame : The DataFrame containing the data.
+    - columns : List[str] : List of column names to plot.
+    - group_col : str : Column name to group by.
+    - plot_type : str : Type of plot ('violin', 'box', 'facetgrid', or 'histogram').
+    - figsize : tuple : Size of each subplot (width, height). Default is (5, 5).
+    - fontsize : int : Font size for labels and titles. Default is 10.
     """
     if plot_type not in ['violin', 'box', 'facetgrid', 'histogram']:
         raise ValueError("plot_type must be one of 'violin', 'box', 'facetgrid', or 'histogram'")
     
+    plt.rcParams.update({'font.size': fontsize})
+    
     if plot_type in ['violin', 'box']:
-        # Set up the matplotlib figure
-        fig, axs = plt.subplots(1, len(columns), figsize=(5 * len(columns), 5))
+        fig, axs = plt.subplots(1, len(columns), figsize=(figsize[0] * len(columns), figsize[1]))
         
-        # If only one column, axs is not an array, so make it an array
         if len(columns) == 1:
             axs = [axs]
         
-        # Plot each specified column
         for i, column in enumerate(columns):
             if plot_type == 'violin':
                 sns.violinplot(x=group_col, y=column, data=df, ax=axs[i])
-                axs[i].set_title(f'Violin plot of {column.capitalize()} by {group_col.capitalize()}')
+                axs[i].set_title(f'Violin plot of {column.capitalize()} by {group_col.capitalize()}', fontsize=fontsize+2)
             elif plot_type == 'box':
                 sns.boxplot(x=group_col, y=column, data=df, ax=axs[i])
-                axs[i].set_title(f'Box plot of {column.capitalize()} by {group_col.capitalize()}')
-            axs[i].set_xlabel(group_col.capitalize())
-            axs[i].set_ylabel(column.capitalize())
+                axs[i].set_title(f'Box plot of {column.capitalize()} by {group_col.capitalize()}', fontsize=fontsize+2)
+            axs[i].set_xlabel(group_col.capitalize(), fontsize=fontsize)
+            axs[i].set_ylabel(column.capitalize(), fontsize=fontsize)
+            axs[i].tick_params(axis='both', which='major', labelsize=fontsize)
+            # Rotate x-axis labels vertically
+            axs[i].tick_params(axis='x', rotation=90)
         
-        # Adjust layout and show the plot
         plt.tight_layout()
         plt.show()
 
     elif plot_type == 'facetgrid':
         for column in columns:
-            g = sns.FacetGrid(df, col=group_col, col_wrap=4, height=4, sharex=False, sharey=False)
+            g = sns.FacetGrid(df, col=group_col, col_wrap=4, height=figsize[1], sharex=False, sharey=False)
             g.map(plt.hist, column, bins=20, edgecolor='black')
             g.set_axis_labels(column.capitalize(), 'Frequency')
             g.set_titles(col_template=f"{column.capitalize()} | {{col_name}} {group_col}")
-            plt.show()
-
-    elif plot_type == 'histogram':
-        # Group by the specified column
-        grouped = df.groupby(group_col)
-
-        # Plot histograms for each group
-        for group_name, group in grouped:
-            num_columns = len(columns)
-            fig, axs = plt.subplots(1, num_columns, figsize=(5 * num_columns, 5))
-            
-            # If only one column, axs is not an array, so make it an array
-            if num_columns == 1:
-                axs = [axs]
-            
-            # Plot each specified column
-            for i, column in enumerate(columns):
-                axs[i].hist(group[column], bins=20, edgecolor='black')
-                axs[i].set_title(f'{column.capitalize()} for {group_col.capitalize()}: {group_name}')
-                axs[i].set_xlabel(column.capitalize())
-                axs[i].set_ylabel('Frequency')
-                axs[i].grid(True)
-            
-            # Adjust layout and show the plot
+            for ax in g.axes.flat:
+                ax.tick_params(axis='both', which='major', labelsize=fontsize)
+                ax.set_xlabel(ax.get_xlabel(), fontsize=fontsize)
+                ax.set_ylabel(ax.get_ylabel(), fontsize=fontsize)
+                ax.set_title(ax.get_title(), fontsize=fontsize+2)
+                # Rotate x-axis labels vertically
+                ax.tick_params(axis='x', rotation=90)
             plt.tight_layout()
             plt.show()
 
-# %% ../nbs/03_visualization.ipynb 22
+    elif plot_type == 'histogram':
+        grouped = df.groupby(group_col)
+
+        for group_name, group in grouped:
+            num_columns = len(columns)
+            fig, axs = plt.subplots(1, num_columns, figsize=(figsize[0] * num_columns, figsize[1]))
+            
+            if num_columns == 1:
+                axs = [axs]
+            
+            for i, column in enumerate(columns):
+                axs[i].hist(group[column], bins=20, edgecolor='black')
+                axs[i].set_title(f'{column.capitalize()} for {group_col.capitalize()}: {group_name}', fontsize=fontsize+2)
+                axs[i].set_xlabel(column.capitalize(), fontsize=fontsize)
+                axs[i].set_ylabel('Frequency', fontsize=fontsize)
+                axs[i].tick_params(axis='both', which='major', labelsize=fontsize)
+                # Rotate x-axis labels vertically
+                axs[i].tick_params(axis='x', rotation=90)
+                axs[i].grid(True)
+            
+            plt.tight_layout()
+            plt.show()
+
+# %% ../nbs/03_visualization.ipynb 23
 def plot_value_proportions(data: Optional[Union[List[int], np.ndarray]],  # List or array of ID values to filter the DataFrame.
                            classification_df: pd.DataFrame,               # DataFrame containing the data.
                            id_col_classification: Optional[str] = None,   # Column name to be used as ID.
