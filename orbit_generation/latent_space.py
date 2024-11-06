@@ -5,7 +5,8 @@
 # %% auto 0
 __all__ = ['plot_2d_latent_space', 'plot_combined_2d_latent_space', 'reduce_dimensions_latent_space',
            'reduce_dimensions_combined_latent_space', 'sample_random_distributions', 'linear_interpolation', 'slerp',
-           'interpolate_sample', 'compute_centroids', 'geometric_median', 'compute_medoid', 'trimmed_mean_centroid']
+           'interpolate_sample', 'grid_sample', 'compute_centroids', 'geometric_median', 'compute_medoid',
+           'trimmed_mean_centroid']
 
 # %% ../nbs/13_latent_space.ipynb 2
 import numpy as np
@@ -16,7 +17,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from matplotlib.gridspec import GridSpec
 from sklearn.preprocessing import LabelEncoder
-from typing import Optional, List, Any, Union, Dict
+from typing import Optional, List, Any, Union, Dict, Tuple
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
@@ -764,7 +765,39 @@ def interpolate_sample(centroids, granularity=10, variance=0.0):
     else:
         return np.empty((0, latent_dim))
 
-# %% ../nbs/13_latent_space.ipynb 20
+# %% ../nbs/13_latent_space.ipynb 19
+def grid_sample(
+    encodings: np.ndarray,                      # Array of latent encodings with shape (n_samples, 2)
+    grid_size: Tuple[int, int] = (10, 10)       # Grid size as (rows, cols)
+) -> np.ndarray:
+    """
+    Performs grid sampling on the given encodings and returns sampled grid points as a NumPy array.
+    
+    Parameters:
+        encodings (np.ndarray): Array of shape (n_samples, 2), where each row represents (x, y) coordinates.
+        grid_size (Tuple[int, int], optional): Tuple defining the number of samples horizontally and vertically as (rows, cols). Defaults to (10, 10).
+    
+    Returns:
+        np.ndarray: Array of shape (rows * cols, 2) containing the sampled grid points.
+    """
+    if encodings.ndim != 2 or encodings.shape[1] != 2:
+        raise ValueError("Encodings should be a 2D array with shape (n_samples, 2)")
+
+    # Calculate the bounds of the latent space
+    x_min, y_min = np.min(encodings, axis=0)
+    x_max, y_max = np.max(encodings, axis=0)
+    
+    # Generate linearly spaced points for the grid
+    x_lin = np.linspace(x_min, x_max, grid_size[0])
+    y_lin = np.linspace(y_min, y_max, grid_size[1])
+    
+    # Create a meshgrid and combine into (rows * cols, 2) array
+    xx, yy = np.meshgrid(x_lin, y_lin)
+    grid_points = np.vstack([xx.ravel(), yy.ravel()]).T  # Shape: (rows * cols, 2)
+    
+    return grid_points
+
+# %% ../nbs/13_latent_space.ipynb 22
 def compute_centroids(latents, labels, method='mean', return_labels=False, **kwargs):
     """
     Compute the centroid of each class in the latent space using various methods.
