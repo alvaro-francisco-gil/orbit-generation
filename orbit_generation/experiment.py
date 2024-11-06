@@ -21,8 +21,6 @@ from PIL import Image, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
 import torch
 
-from .constants import ORBIT_CLASS_DF
-
 # %% ../nbs/08_experiment.ipynb 5
 def setup_new_experiment(params: Dict[str, Any],              # Dictionary of parameters for the new experiment.
                          experiments_folder: str,             # Path to the folder containing all experiments.
