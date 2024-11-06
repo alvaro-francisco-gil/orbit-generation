@@ -15,7 +15,7 @@ import seaborn as sns
 from typing import Optional, List, Dict, Union
 
 # %% ../nbs/03_visualization.ipynb 5
-def plot_3d_points(data, labels=None, plot_velocity=True, arrow_width=0.005, show_legend=True):
+def plot_3d_points(data, labels=None, plot_velocity=True, arrow_width=0.005, show_legend=True, figsize=(10, 8)):
     """
     Plots each point in space with a 3D arrow based on the first 3 coordinates (position)
     and optionally the next 3 coordinates (velocity).
@@ -28,6 +28,7 @@ def plot_3d_points(data, labels=None, plot_velocity=True, arrow_width=0.005, sho
     plot_velocity (bool): If True and velocities are provided, plot arrows representing velocity vectors.
     arrow_width (float): Width of the arrows.
     show_legend (bool): If True, show the legend for color coding.
+    figsize (tuple): Size of the figure in inches (width, height). Default is (10, 8).
     """
     # Check if velocities are provided by looking at the shape of the input data
     if data.shape[1] == 6:
@@ -42,8 +43,8 @@ def plot_3d_points(data, labels=None, plot_velocity=True, arrow_width=0.005, sho
     else:
         raise ValueError("Data must have shape (samples, 3) for positions or (samples, 6) for positions and velocities.")
 
-    # Create a 3D plot
-    fig = plt.figure()
+    # Create a 3D plot with adjustable size
+    fig = plt.figure(figsize=figsize)
     ax = fig.add_subplot(111, projection='3d')
 
     # Color mapping if labels are provided
