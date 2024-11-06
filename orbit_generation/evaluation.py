@@ -8,16 +8,22 @@ __all__ = ['DISTANCE_FUNCTIONS', 'plot_metric_heatmaps', 'plot_comparison', 'cal
            'manhattan_distance', 'cosine_distance', 'dtw_distance', 'calculate_distance',
            'calculate_pairwise_distances', 'calculate_distances_batch', 'find_nearest_points',
            'find_nearest_points_batch', 'orbits_distances', 'find_nearest_orbits', 'find_nearest_orbits_batch',
-           'calculate_pairwise_orbit_distances', 'evaluate_distance_metrics_and_clustering']
+           'calculate_pairwise_orbit_distances', 'evaluate_distance_metrics_and_clustering',
+           'machine_learning_evaluation']
 
 # %% ../nbs/09_evaluation.ipynb 2
 import numpy as np
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.mixture import GaussianMixture
-from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score, homogeneity_score, completeness_score, v_measure_score, fowlkes_mallows_score, silhouette_score, jaccard_score, confusion_matrix
+from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score, homogeneity_score, completeness_score, v_measure_score, fowlkes_mallows_score, silhouette_score, jaccard_score, confusion_matrix, accuracy_score, classification_report
 from sklearn.metrics.cluster import contingency_matrix
 from scipy.optimize import linear_sum_assignment
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
 from scipy.spatial.distance import squareform
 from fastdtw import fastdtw
 import matplotlib.pyplot as plt
@@ -629,12 +635,7 @@ def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
         return cm[row_ind, col_ind].sum() / np.sum(cm)
 
     # Define available distance metrics
-    available_distance_metrics = {
-        'euclidean': euclidean_distance_array,
-        'manhattan': manhattan_distance_array,
-        'cosine': cosine_distance_array,
-        'dtw': dtw_distance_array
-    }
+    available_distance_metrics = list(DISTANCE_FUNCTIONS.keys())
     
     # Define available clustering algorithms
     available_clustering_algorithms = {
@@ -656,7 +657,7 @@ def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
     
     # If no metrics specified, use all available
     if distance_metrics is None:
-        distance_metrics = list(available_distance_metrics.keys())
+        distance_metrics = available_distance_metrics
     
     # If no algorithms specified, use all available
     if clustering_algorithms is None:
@@ -678,8 +679,7 @@ def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
             continue
         
         print(f"Computing {distance_metric} distances...")
-        metric_func = available_distance_metrics[distance_metric]
-        distance_matrix = metric_func(orbit_data)
+        distance_matrix = orbits_distances(orbit_data, orbit_data, distance_metric)
 
         if np.any(distance_matrix < 0):
             distance_matrix = distance_matrix - np.min(distance_matrix)
@@ -726,4 +726,60 @@ def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
     
     return results
 
+# %% ../nbs/09_evaluation.ipynb 38
+def machine_learning_evaluation(X, y, print_results=False):
 
+    def visualize_results(results):
+        # Accuracy comparison
+        accuracies = [result['accuracy'] for result in results.values()]
+        plt.figure(figsize=(10, 6))
+        bars = plt.bar(results.keys(), accuracies)
+        plt.title('Accuracy Comparison')
+        plt.ylabel('Accuracy')
+        plt.ylim(0, 1)
+        for bar in bars:
+            yval = bar.get_height()
+            plt.text(bar.get_x() + bar.get_width()/2, yval, round(yval, 2), ha='center', va='bottom')
+        plt.show()
+
+        # Detailed metrics heatmap
+        metrics = ['precision', 'recall', 'f1-score']
+        data = []
+        for algo, result in results.items():
+            for metric in metrics:
+                value = np.mean([v[metric] for k, v in result['report'].items() if k != 'accuracy'])
+                data.append([algo, metric, value])
+
+        df = pd.DataFrame(data, columns=['Algorithm', 'Metric', 'Value'])
+        pivot_df = df.pivot(index='Algorithm', columns='Metric', values='Value')
+
+        plt.figure(figsize=(12, 8))
+        sns.heatmap(pivot_df, annot=True, cmap='YlGnBu', fmt='.3f')
+        plt.title('Performance Metrics Heatmap')
+        plt.show()
+        
+    # Split the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # List of algorithms to evaluate
+    algorithms = {
+        'Logistic Regression': LogisticRegression(max_iter=2000),  # Increased max_iter
+        'Decision Tree': DecisionTreeClassifier(),
+        'Support Vector Machine': SVC(),
+        'Random Forest': RandomForestClassifier()
+    }
+
+    results = {}
+
+    # Train and evaluate each algorithm
+    for name, model in algorithms.items():
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+        accuracy = accuracy_score(y_test, y_pred)
+        report = classification_report(y_test, y_pred, output_dict=True, zero_division=0)  # Handle zero division
+        results[name] = {'accuracy': accuracy, 'report': report}
+
+    if print_results:
+        visualize_results(results)
+
+    return results
