@@ -49,8 +49,8 @@ def plot_3d_points(data, labels=None, plot_velocity=True, arrow_width=0.005, sho
     # Color mapping if labels are provided
     if labels is not None:
         unique_labels = list(set(labels))
-        colors = plt.cm.get_cmap('viridis', len(unique_labels))  # Use a colormap
-        label_color_mapping = {label: colors(i) for i, label in enumerate(unique_labels)}
+        colors = plt.colormaps['viridis'](np.linspace(0, 1, len(unique_labels)))
+        label_color_mapping = {label: colors[i] for i, label in enumerate(unique_labels)}
 
     # Plot each point with an optional arrow
     for i, pos in enumerate(positions):
