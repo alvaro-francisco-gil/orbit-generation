@@ -14,22 +14,24 @@ import torch
 # %% ../nbs/11_model_factory.ipynb 3
 def get_model(params):
     model_name = params['model_name']
-
+    model_kwargs = params.get('model_kwargs', {})
+    
     if model_name == 'vae_inception_time':
         # Accessing InceptionTime VAE components using parameters from the dictionary
         encoder, decoder = get_inception_time_vae_components(
             seq_len=params['seq_len'], 
             feat_dim=params['feature_dim'], 
-            latent_dim=params['latent_dim']
+            latent_dim=params['latent_dim'],
+            model_kwargs=model_kwargs
         )
         # Build the InceptionTimeVAE
         vae = InceptionTimeVAE(
             encoder=encoder,
             decoder=decoder,
-            beta=params.get('beta', 1.0),
-            loss_fn=params.get('loss_fn', None),
-            optimizer_cls=params.get('optimizer_cls', torch.optim.Adam),
-            lr=params.get('lr', None)
+            beta=model_kwargs.get('beta', 1.0),
+            loss_fn=model_kwargs.get('loss_fn', None),
+            optimizer_cls=model_kwargs.get('optimizer_cls', torch.optim.Adam),
+            lr=model_kwargs.get('lr', params.get('lr'))
         )
 
         return vae
@@ -43,7 +45,7 @@ def get_model(params):
                 seq_len=params['seq_len'], 
                 feat_dim=params['feature_dim'], 
                 latent_dim=params['latent_dim'],
-                dropout_rate=params.get('dropout_rate', 0.1)
+                dropout_rate=model_kwargs.get('dropout_rate', 0.1)
             )
 
         elif model_name == 'vae_conv5_1':
@@ -52,7 +54,7 @@ def get_model(params):
                 seq_len=params['seq_len'], 
                 feat_dim=params['feature_dim'], 
                 latent_dim=params['latent_dim'],
-                dropout_rate=params.get('dropout_rate', 0.1)
+                dropout_rate=model_kwargs.get('dropout_rate', 0.1)
             )
 
         else:
@@ -62,10 +64,10 @@ def get_model(params):
         vae = BetaVAE(
             encoder=encoder,
             decoder=decoder,
-            beta=params.get('beta', 1.0),
-            loss_fn=params.get('loss_fn', None),
-            optimizer_cls=params.get('optimizer_cls', torch.optim.Adam),
-            lr=params.get('lr', None)
+            beta=model_kwargs.get('beta', 1.0),
+            loss_fn=model_kwargs.get('loss_fn', None),
+            optimizer_cls=model_kwargs.get('optimizer_cls', torch.optim.Adam),
+            lr=model_kwargs.get('lr', params.get('lr'))
         )
         
         return vae

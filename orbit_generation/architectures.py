@@ -738,7 +738,7 @@ class InceptionTimeVAEDecoder(VAEDecoder):
         return z
 
 # %% ../nbs/06_architectures.ipynb 33
-def get_inception_time_vae_components(seq_len, feat_dim, latent_dim):
+def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, model_kwargs):
     """
     Returns an instance of InceptionTimeVAEEncoder and InceptionTimeVAEDecoder based on the given parameters.
     
@@ -746,7 +746,7 @@ def get_inception_time_vae_components(seq_len, feat_dim, latent_dim):
         seq_len (int): Length of input sequence.
         feat_dim (int): Dimensionality of input features.
         latent_dim (int): Dimensionality of the latent space.
-        dropout_rate (float): Dropout rate to use in the model.
+        model_kwargs (dict): Dictionary containing model-specific keyword arguments.
     
     Returns:
         encoder (InceptionTimeVAEEncoder): The encoder part of the VAE.
@@ -755,18 +755,18 @@ def get_inception_time_vae_components(seq_len, feat_dim, latent_dim):
     encoder = InceptionTimeVAEEncoder(
         feat_dim=feat_dim,
         seq_len=seq_len,
-        n_filters=32,  # Adjust as needed
-        kernel_sizes=[5, 11, 23],  # Adjust as needed
-        bottleneck_channels=32,  # Adjust as needed
+        n_filters=model_kwargs.get('n_filters', 32),
+        kernel_sizes=model_kwargs.get('kernel_sizes', [5, 11, 23]),
+        bottleneck_channels=model_kwargs.get('bottleneck_channels', 32),
         latent_dim=latent_dim
     )
     
     decoder = InceptionTimeVAEDecoder(
         feat_dim=feat_dim,
         seq_len=seq_len,
-        n_filters=32,  # Adjust as needed
-        kernel_sizes=[5, 11, 23],  # Adjust as needed
-        bottleneck_channels=32,  # Adjust as needed
+        n_filters=model_kwargs.get('n_filters', 32),
+        kernel_sizes=model_kwargs.get('kernel_sizes', [5, 11, 23]),
+        bottleneck_channels=model_kwargs.get('bottleneck_channels', 32),
         latent_dim=latent_dim
     )
     

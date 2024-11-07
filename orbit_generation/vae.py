@@ -168,3 +168,7 @@ class InceptionTimeVAE(BetaVAE):
         z = self.sampling(z_mean, z_log_var)
         x_recon = self.decode(z, indices_list)
         return x_recon, z_mean, z_log_var
+    
+    def sample(self, num_samples: int, indices_list: list) -> Tensor:
+        z = torch.randn(num_samples, self.latent_dim).to(self.device)
+        return self.decode(z, indices_list)
