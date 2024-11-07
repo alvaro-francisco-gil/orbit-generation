@@ -897,30 +897,41 @@ class WPInceptionTimeVAEDecoder(VAEDecoder):
         return z
 
 # %% ../nbs/06_architectures.ipynb 35
-def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, model_kwargs):
+def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, model_kwargs, without_pooling=True):
     """
-    Returns an instance of InceptionTimeVAEEncoder and InceptionTimeVAEDecoder based on the given parameters.
-    
+    Returns an instance of InceptionTimeVAEEncoder or WPInceptionTimeVAEEncoder and InceptionTimeVAEDecoder based on the given parameters.
+
     Args:
         seq_len (int): Length of input sequence.
         feat_dim (int): Dimensionality of input features.
         latent_dim (int): Dimensionality of the latent space.
         model_kwargs (dict): Dictionary containing model-specific keyword arguments.
-    
+        without_pooling (bool): If True, returns WPInceptionTimeVAEEncoder instead of InceptionTimeVAEEncoder.
+
     Returns:
-        encoder (InceptionTimeVAEEncoder): The encoder part of the VAE.
+        encoder (InceptionTimeVAEEncoder or WPInceptionTimeVAEEncoder): The encoder part of the VAE.
         decoder (InceptionTimeVAEDecoder): The decoder part of the VAE.
     """
-    encoder = InceptionTimeVAEEncoder(
-        feat_dim=feat_dim,
-        seq_len=seq_len,
-        n_filters=model_kwargs.get('n_filters', 32),
-        kernel_sizes=model_kwargs.get('kernel_sizes', [5, 11, 23]),
-        bottleneck_channels=model_kwargs.get('bottleneck_channels', 32),
-        latent_dim=latent_dim
-    )
+    if without_pooling:
+        encoder = WPInceptionTimeVAEEncoder(
+            feat_dim=feat_dim,
+            seq_len=seq_len,
+            n_filters=model_kwargs.get('n_filters', 32),
+            kernel_sizes=model_kwargs.get('kernel_sizes', [5, 11, 23]),
+            bottleneck_channels=model_kwargs.get('bottleneck_channels', 32),
+            latent_dim=latent_dim
+        )
+    else:
+        encoder = InceptionTimeVAEEncoder(
+            feat_dim=feat_dim,
+            seq_len=seq_len,
+            n_filters=model_kwargs.get('n_filters', 32),
+            kernel_sizes=model_kwargs.get('kernel_sizes', [5, 11, 23]),
+            bottleneck_channels=model_kwargs.get('bottleneck_channels', 32),
+            latent_dim=latent_dim
+        )
     
-    decoder = InceptionTimeVAEDecoder(
+    decoder = WPInceptionTimeVAEDecoder(
         feat_dim=feat_dim,
         seq_len=seq_len,
         n_filters=model_kwargs.get('n_filters', 32),
