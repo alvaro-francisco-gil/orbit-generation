@@ -731,12 +731,23 @@ def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
 
 # %% ../nbs/09_evaluation.ipynb 38
 def machine_learning_evaluation(X, y, print_results=False):
+    """
+    Evaluates multiple machine learning algorithms on the provided dataset.
 
+    Parameters:
+    - X: Features, expected to be a 2D array. If higher dimensions, the function attempts to reshape.
+    - y: Target labels.
+    - print_results: If True, visualizes the evaluation results.
+
+    Returns:
+    - results: Dictionary containing accuracy and classification report for each algorithm.
+    """
+    
     def visualize_results(results):
         # Accuracy comparison
         accuracies = [result['accuracy'] for result in results.values()]
         plt.figure(figsize=(10, 6))
-        bars = plt.bar(results.keys(), accuracies)
+        bars = plt.bar(results.keys(), accuracies, color='skyblue')
         plt.title('Accuracy Comparison')
         plt.ylabel('Accuracy')
         plt.ylim(0, 1)
@@ -750,16 +761,33 @@ def machine_learning_evaluation(X, y, print_results=False):
         data = []
         for algo, result in results.items():
             for metric in metrics:
-                value = np.mean([v[metric] for k, v in result['report'].items() if k not in ['accuracy', 'macro avg', 'weighted avg']])
+                value = np.mean([
+                    v[metric] for k, v in result['report'].items() 
+                    if k not in ['accuracy', 'macro avg', 'weighted avg']
+                ])
                 data.append([algo, metric, value])
 
         df = pd.DataFrame(data, columns=['Algorithm', 'Metric', 'Value'])
         pivot_df = df.pivot(index='Algorithm', columns='Metric', values='Value')
 
         plt.figure(figsize=(12, 8))
-        sns.heatmap(pivot_df, annot=True, cmap='YlGnBu', fmt='.3f')
+        sns.heatmap(pivot_df, annot=True, cmap='YlGnBu', fmt='.2f')
         plt.title('Performance Metrics Heatmap')
         plt.show()
+
+    # Validate and reshape X if necessary
+    if isinstance(X, np.ndarray):
+        if X.ndim > 2:
+            try:
+                # Flatten all dimensions except the first (samples)
+                X = X.reshape(X.shape[0], -1)
+                print("Input features reshaped to 2D for processing.")
+            except Exception as e:
+                raise ValueError(f"Error reshaping input features: {e}")
+        elif X.ndim < 2:
+            raise ValueError(f"Input features must be at least 2D, but got {X.ndim}D.")
+    else:
+        raise TypeError("Input features X must be a NumPy array.")
 
     # List of algorithms to evaluate
     algorithms = {
@@ -773,15 +801,19 @@ def machine_learning_evaluation(X, y, print_results=False):
 
     # Train and evaluate each algorithm
     for name, model in algorithms.items():
-        # Create a pipeline that scales the data and then applies the model
-        pipeline = make_pipeline(StandardScaler(), model)
-        
-        # Use cross-validation to get predictions
-        y_pred = cross_val_predict(pipeline, X, y, cv=5)
-        
-        accuracy = accuracy_score(y, y_pred)
-        report = classification_report(y, y_pred, output_dict=True, zero_division=0)
-        results[name] = {'accuracy': accuracy, 'report': report}
+        try:
+            # Create a pipeline that scales the data and then applies the model
+            pipeline = make_pipeline(StandardScaler(), model)
+            
+            # Use cross-validation to get predictions
+            y_pred = cross_val_predict(pipeline, X, y, cv=5)
+            
+            accuracy = accuracy_score(y, y_pred)
+            report = classification_report(y, y_pred, output_dict=True, zero_division=0)
+            results[name] = {'accuracy': accuracy, 'report': report}
+        except Exception as e:
+            print(f"Error evaluating {name}: {e}")
+            results[name] = {'accuracy': None, 'report': None}
 
     if print_results:
         visualize_results(results)

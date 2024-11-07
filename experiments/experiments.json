@@ -1032,5 +1032,127 @@
         "train_total_loss": 0.2255537062883377,
         "train_reconstruction_loss": 0.2255515456199646,
         "train_kl_loss": 2.0020186184410704e-06
+    },
+    {
+        "id": 21,
+        "parameters": {
+            "data_used": "EM_N_fix_1500",
+            "families_to_discard": 10,
+            "seq_len": 100,
+            "feature_dim": 7,
+            "epochs": 15,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "lr": 0.001,
+            "model_name": "vae_inception_time",
+            "latent_dim": 2,
+            "model_kwargs": {
+                "beta": 1,
+                "n_filters": 32,
+                "kernel_sizes": [
+                    2,
+                    5,
+                    10
+                ],
+                "bottleneck_channels": 32
+            },
+            "max_iter_convergence": 20,
+            "input_seq_len_convergence": 100,
+            "samples_to_generate": 100,
+            "distance_metric": "euclidean"
+        },
+        "discarded_family_ids": [
+            11.0,
+            24.0,
+            5.0,
+            39.0,
+            2.0,
+            42.0,
+            40.0,
+            3.0,
+            19.0,
+            13.0
+        ],
+        "discarded_families": [
+            "S_L1_V",
+            "S_L4_SP",
+            "S_DRO",
+            "S_R32",
+            "S_BS",
+            "S_R43",
+            "S_R34",
+            "S_DN",
+            "S_L3_HS",
+            "S_L2_HN"
+        ]
+    },
+    {
+        "id": 22,
+        "parameters": {
+            "data_used": "EM_N_fix_1500",
+            "families_to_discard": 10,
+            "seq_len": 100,
+            "feature_dim": 7,
+            "epochs": 15,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "lr": 0.001,
+            "model_name": "vae_inception_time",
+            "latent_dim": 2,
+            "model_kwargs": {
+                "beta": 1,
+                "n_filters": 32,
+                "kernel_sizes": [
+                    3,
+                    5,
+                    13
+                ],
+                "bottleneck_channels": 32
+            },
+            "max_iter_convergence": 20,
+            "input_seq_len_convergence": 100,
+            "samples_to_generate": 100,
+            "distance_metric": "euclidean"
+        },
+        "discarded_family_ids": [
+            8.0,
+            10.0,
+            1.0,
+            15.0,
+            42.0,
+            40.0,
+            17.0,
+            32.0,
+            3.0,
+            4.0
+        ],
+        "discarded_families": [
+            "S_L1_HN",
+            "S_L1_L",
+            "S_BN",
+            "S_L2_L",
+            "S_R43",
+            "S_R34",
+            "S_L3_A",
+            "S_R11",
+            "S_DN",
+            "S_DPO"
+        ],
+        "val_total_loss": 1.4216773509979248,
+        "val_reconstruction_loss": 1.389054775238037,
+        "val_kl_loss": 0.03262241557240486,
+        "train_total_loss": 0.800597608089447,
+        "train_reconstruction_loss": 0.7853243350982666,
+        "train_kl_loss": 0.015273871831595898,
+        "family_ari": 0.26742636088523597,
+        "family_nmi": 0.5987745493983654,
+        "family_homogeneity": 0.5605984779474777,
+        "family_completeness": 0.6425300615979637,
+        "family_v-measure": 0.5987745493983654,
+        "family_fmi": 0.3232790465359316,
+        "family_purity": 0.4365097993193287,
+        "family_silhouette_score": 0.39618733525276184,
+        "family_jaccard": 0.007139309647834783,
+        "family_accuracy": 0.38343504283534796
     }
 ]

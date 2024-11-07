@@ -16,14 +16,19 @@ def get_model(params):
     model_name = params['model_name']
     model_kwargs = params.get('model_kwargs', {})
     
-    if model_name == 'vae_inception_time':
+    if model_name == 'inception_time_vae' or model_name == 'inception_time_wp_vae':
+        # Determine whether to use WPInceptionTimeVAEEncoder (without pooling)
+        without_pooling = (model_name == 'inception_time_wp_vae')
+        
         # Accessing InceptionTime VAE components using parameters from the dictionary
         encoder, decoder = get_inception_time_vae_components(
             seq_len=params['seq_len'], 
             feat_dim=params['feature_dim'], 
             latent_dim=params['latent_dim'],
-            model_kwargs=model_kwargs
+            model_kwargs=model_kwargs,
+            without_pooling=without_pooling
         )
+        
         # Build the InceptionTimeVAE
         vae = InceptionTimeVAE(
             encoder=encoder,
