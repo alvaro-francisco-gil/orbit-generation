@@ -226,7 +226,7 @@ class Conv5Decoder(VAEDecoder):
         return z
 
 # %% ../nbs/06_architectures.ipynb 17
-def get_conv5_vae_components(seq_len, feat_dim, latent_dim, dropout_rate=0.2):
+def get_conv5_vae_components(seq_len, feat_dim, latent_dim, **kwargs):
     """
     Returns an instance of Conv5Encoder and Conv5Decoder based on the given parameters.
     
@@ -234,12 +234,13 @@ def get_conv5_vae_components(seq_len, feat_dim, latent_dim, dropout_rate=0.2):
         seq_len (int): Length of input sequence.
         feat_dim (int): Dimensionality of input features.
         latent_dim (int): Dimensionality of the latent space.
-        dropout_rate (float): Dropout rate to use in the model.
+        **kwargs: Additional keyword arguments to be passed to the encoder and decoder.
     
     Returns:
         encoder (Conv5Encoder): The encoder part of the VAE.
         decoder (Conv5Decoder): The decoder part of the VAE.
     """
+    dropout_rate = kwargs.get('dropout_rate', 0.2)
     encoder = Conv5Encoder(seq_len, feat_dim, latent_dim, dropout_rate)
     decoder = Conv5Decoder(seq_len, feat_dim, latent_dim, dropout_rate)
     
@@ -328,7 +329,7 @@ class Conv5DecoderLegitTsgm(VAEDecoder):
         return z
 
 # %% ../nbs/06_architectures.ipynb 24
-def get_conv5_legit_tsgm_vae_components(seq_len, feat_dim, latent_dim, dropout_rate=0.2):
+def get_conv5_legit_tsgm_vae_components(seq_len, feat_dim, latent_dim, **kwargs):
     """
     Returns an instance of Conv5Encoder and Conv5Decoder based on the given parameters.
     
@@ -336,12 +337,13 @@ def get_conv5_legit_tsgm_vae_components(seq_len, feat_dim, latent_dim, dropout_r
         seq_len (int): Length of input sequence.
         feat_dim (int): Dimensionality of input features.
         latent_dim (int): Dimensionality of the latent space.
-        dropout_rate (float): Dropout rate to use in the model.
+        **kwargs: Additional keyword arguments to be passed to the encoder and decoder.
     
     Returns:
         encoder (Conv5Encoder): The encoder part of the VAE.
         decoder (Conv5Decoder): The decoder part of the VAE.
     """
+    dropout_rate = kwargs.get('dropout_rate', 0.2)
     encoder = Conv5EncoderLegitTsgm(seq_len, feat_dim, latent_dim, dropout_rate)
     decoder = Conv5DecoderLegitTsgm(seq_len, feat_dim, latent_dim, dropout_rate)
     

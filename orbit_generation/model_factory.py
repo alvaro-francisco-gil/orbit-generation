@@ -7,7 +7,7 @@ __all__ = ['get_model']
 
 # %% ../nbs/11_model_factory.ipynb 2
 from .architectures import get_conv5_vae_components, get_conv5_legit_tsgm_vae_components, get_inception_time_vae_components
-from .vae import BetaVAE, InceptionTimeVAE
+from .vae import BetaVAE
 
 import torch
 
@@ -16,56 +16,42 @@ def get_model(params):
     model_name = params['model_name']
     model_kwargs = params.get('model_kwargs', {})
     
-    if model_name == 'inception_time_vae' or model_name == 'inception_time_wp_vae':
-        # Determine whether to use WPInceptionTimeVAEEncoder (without pooling)
-        without_pooling = (model_name == 'inception_time_wp_vae')
+    if 'vae' in model_name.lower():
+        if model_name == 'inception_time_vae' or model_name == 'inception_time_wp_vae':
+            # Determine whether to use WPInceptionTimeVAEEncoder (without pooling)
+            without_pooling = (model_name == 'inception_time_wp_vae')
+            
+            # Passing model_kwargs directly to the function
+            encoder, decoder = get_inception_time_vae_components(
+                seq_len=params['seq_len'], 
+                feat_dim=params['feature_dim'], 
+                latent_dim=params['latent_dim'],
+                without_pooling=without_pooling,
+                **model_kwargs
+            )
         
-        # Accessing InceptionTime VAE components using parameters from the dictionary
-        encoder, decoder = get_inception_time_vae_components(
-            seq_len=params['seq_len'], 
-            feat_dim=params['feature_dim'], 
-            latent_dim=params['latent_dim'],
-            model_kwargs=model_kwargs,
-            without_pooling=without_pooling
-        )
-        
-        # Build the InceptionTimeVAE
-        vae = InceptionTimeVAE(
-            encoder=encoder,
-            decoder=decoder,
-            beta=model_kwargs.get('beta', 1.0),
-            loss_fn=model_kwargs.get('loss_fn', None),
-            optimizer_cls=model_kwargs.get('optimizer_cls', torch.optim.Adam),
-            lr=model_kwargs.get('lr', params.get('lr'))
-        )
-
-        return vae
-
-    # Check if the model name starts with 'vae'
-    elif model_name.startswith('vae'):
-        # Handle specific VAE models
-        if model_name == 'vae_conv5_legit':
-            # Accessing model configuration from the zoo using parameters from the dictionary
+        elif model_name == 'vae_conv5_legit':
+            # Passing model_kwargs directly to the function
             encoder, decoder = get_conv5_legit_tsgm_vae_components(
                 seq_len=params['seq_len'], 
                 feat_dim=params['feature_dim'], 
                 latent_dim=params['latent_dim'],
-                dropout_rate=model_kwargs.get('dropout_rate', 0.1)
+                **model_kwargs
             )
 
         elif model_name == 'vae_conv5_1':
-            # Accessing model configuration from the zoo using parameters from the dictionary
+            # Passing model_kwargs directly to the function
             encoder, decoder = get_conv5_vae_components(
                 seq_len=params['seq_len'], 
                 feat_dim=params['feature_dim'], 
                 latent_dim=params['latent_dim'],
-                dropout_rate=model_kwargs.get('dropout_rate', 0.1)
+                **model_kwargs
             )
 
         else:
             raise ValueError(f"Unknown VAE model: {model_name}")
         
-        # Build the VAE
+        # Build the VAE using BetaVAE for all VAE types
         vae = BetaVAE(
             encoder=encoder,
             decoder=decoder,
