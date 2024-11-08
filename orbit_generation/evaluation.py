@@ -686,7 +686,9 @@ def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
 
         if np.any(distance_matrix < 0):
             distance_matrix = distance_matrix - np.min(distance_matrix)
-            np.fill_diagonal(distance_matrix, 0)
+        np.fill_diagonal(distance_matrix, 0)  # Ensure diagonal is exactly zero
+        if not np.allclose(distance_matrix, distance_matrix.T, atol=1e-8):
+            raise ValueError("Distance matrix is not symmetric within tolerance")
         
         for algo_name in clustering_algorithms:
             if algo_name not in available_clustering_algorithms:
