@@ -17,6 +17,9 @@ def get_model(params):
     model_kwargs = params.get('model_kwargs', {})
     
     if 'vae' in model_name.lower():
+
+        beta = model_kwargs.pop('beta', 1.0)
+
         if model_name == 'inception_time_vae' or model_name == 'inception_time_wp_vae':
             # Determine whether to use WPInceptionTimeVAEEncoder (without pooling)
             without_pooling = (model_name == 'inception_time_wp_vae')
@@ -55,7 +58,7 @@ def get_model(params):
         vae = BetaVAE(
             encoder=encoder,
             decoder=decoder,
-            beta=model_kwargs.get('beta', 1.0),
+            beta=beta,
             loss_fn=model_kwargs.get('loss_fn', None),
             optimizer_cls=model_kwargs.get('optimizer_cls', torch.optim.Adam),
             lr=model_kwargs.get('lr', params.get('lr'))

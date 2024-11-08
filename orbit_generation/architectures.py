@@ -901,7 +901,7 @@ class WPInceptionTimeVAEDecoder(VAEDecoder):
         return z
 
 # %% ../nbs/06_architectures.ipynb 35
-def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, model_kwargs, without_pooling=True):
+def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, without_pooling=True, **model_kwargs):
     """
     Returns an instance of InceptionTimeVAEEncoder or WPInceptionTimeVAEEncoder and InceptionTimeVAEDecoder based on the given parameters.
 
