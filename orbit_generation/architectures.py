@@ -896,7 +896,7 @@ class WPInceptionTimeVAEDecoder(VAEDecoder):
     def decode(self, z: torch.Tensor) -> torch.Tensor:
         z = self.dense_layers(z)
         for block in self.inception_transpose_blocks:
-            x = block(x)
+            z = block(z)
         
         return z
 
