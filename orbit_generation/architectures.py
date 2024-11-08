@@ -840,7 +840,8 @@ class WPInceptionTimeVAEEncoder(VAEEncoder):
         )
         
     def encode(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, list]:
-        x = self.inception_blocks(x)
+        for block in self.inception_blocks:
+            x = block(x)
         x = self.flatten(x)
         x = self.dense_layers(x)
         z_mean, z_log_var = torch.split(x, self.latent_dim, dim=1)
@@ -892,7 +893,8 @@ class WPInceptionTimeVAEDecoder(VAEDecoder):
         
     def decode(self, z: torch.Tensor) -> torch.Tensor:
         z = self.dense_layers(z)
-        z = self.inception_transpose_blocks(z)
+        for block in self.inception_transpose_blocks:
+            x = block(x)
         
         return z
 
