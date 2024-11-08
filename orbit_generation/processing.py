@@ -4,7 +4,7 @@
 
 # %% auto 0
 __all__ = ['downsample_3d_array', 'resample_3d_array', 'average_downsample_3d_array', 'reorder_orbits', 'pad_and_convert_to_3d',
-           'segment_and_convert_to_3d', 'add_time_vector_to_orbits']
+           'segment_and_convert_to_3d', 'add_time_vector_to_orbits', 'interpolate_equal_times']
 
 # %% ../nbs/02_processing.ipynb 2
 from scipy.interpolate import interp1d
@@ -262,3 +262,43 @@ def add_time_vector_to_orbits(orbits: Dict[int, np.ndarray],  # Dictionary of or
         updated_orbits[key] = updated_orbit
 
     return updated_orbits
+
+# %% ../nbs/02_processing.ipynb 25
+def interpolate_equal_times(orbit_dataset: np.ndarray) -> np.ndarray:
+    num_orbits, num_scalars, num_timesteps = orbit_dataset.shape
+    processed_dataset = np.zeros_like(orbit_dataset, dtype=float)  # Explicitly use float
+    
+    for i in range(num_orbits):
+        orbit_data = orbit_dataset[i]
+        time_steps = orbit_data[0]  # Correctly extract time steps
+        
+        first_unequal = np.argmax(time_steps != time_steps[0])
+        if first_unequal == 0:  # All values are equal
+            first_unequal = len(time_steps)
+        
+        if first_unequal > 1:
+            new_orbit_data = np.copy(orbit_data).astype(float)  # Convert to float
+            
+            # Perform interpolation for the full range
+            num_points = first_unequal
+            if first_unequal < len(time_steps):
+                interp_times = np.linspace(time_steps[0], time_steps[first_unequal], num_points)
+            else:
+                interp_times = np.linspace(0, 1, num_points)
+            
+            new_orbit_data[0, :first_unequal] = interp_times
+            
+            # Interpolate other scalar values
+            for j in range(1, num_scalars):
+                if first_unequal < len(time_steps):
+                    f = interp1d([time_steps[0], time_steps[first_unequal]], 
+                                             [orbit_data[j, 0], orbit_data[j, first_unequal]])
+                    new_orbit_data[j, :first_unequal] = f(interp_times)
+                else:
+                    new_orbit_data[j, :first_unequal] = orbit_data[j, :first_unequal]
+            
+            processed_dataset[i] = new_orbit_data
+        else:
+            processed_dataset[i] = orbit_data.astype(float)  # Convert to float
+    
+    return processed_dataset
