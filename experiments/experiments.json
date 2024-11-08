@@ -1154,5 +1154,81 @@
         "family_silhouette_score": 0.39618733525276184,
         "family_jaccard": 0.007139309647834783,
         "family_accuracy": 0.38343504283534796
+    },
+    {
+        "id": 23,
+        "parameters": {
+            "data_used": "EM_N_fix_1500",
+            "families_to_discard": 10,
+            "seq_len": 100,
+            "feature_dim": 7,
+            "epochs": 15,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "lr": 0.001,
+            "model_name": "inception_time_wp_vae",
+            "latent_dim": 2,
+            "model_kwargs": {
+                "beta": 1,
+                "n_filters": 32,
+                "kernel_sizes": [
+                    3,
+                    5,
+                    13
+                ],
+                "bottleneck_channels": 32
+            },
+            "max_iter_convergence": 20,
+            "input_seq_len_convergence": 100,
+            "samples_to_generate": 100,
+            "distance_metric": "euclidean"
+        },
+        "discarded_family_ids": [
+            17.0,
+            4.0,
+            22.0,
+            7.0,
+            15.0,
+            29.0,
+            37.0,
+            11.0,
+            21.0,
+            14.0
+        ],
+        "discarded_families": [
+            "S_L3_A",
+            "S_DPO",
+            "S_L4_A",
+            "S_L1_A",
+            "S_L2_L",
+            "S_L5_V",
+            "S_R23",
+            "S_L1_V",
+            "S_L3_V",
+            "S_L2_HS"
+        ],
+        "val_total_loss": 5.594226837158203,
+        "val_reconstruction_loss": 1.905501365661621,
+        "val_kl_loss": 3.6887245178222656,
+        "train_total_loss": 6.032435417175293,
+        "train_reconstruction_loss": 2.2375853061676025,
+        "train_kl_loss": 3.7948496341705322,
+        "family_ari": 0.5406029137805735,
+        "family_nmi": 0.8157732129851816,
+        "family_homogeneity": 0.792161571767597,
+        "family_completeness": 0.8408356632623386,
+        "family_v-measure": 0.8157732129851816,
+        "family_fmi": 0.5696414976212042,
+        "family_purity": 0.6969750784348546,
+        "family_silhouette_score": 0.5561145544052124,
+        "family_jaccard": 0.020719100266407282,
+        "family_accuracy": 0.629846682057657,
+        "position_error": 0.2500118870670501,
+        "velocity_error": 0.4276968875367855,
+        "energy_error": 1.8097268721771738,
+        "disorder_metric": 277.78,
+        "correct_order": 63.95666666666666,
+        "inversions": 178.74666666666667,
+        "kendall_tau_distance": 0.07415561221475064
     }
 ]
