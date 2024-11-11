@@ -4,8 +4,8 @@
 
 # %% auto 0
 __all__ = ['setup_new_experiment', 'convert_numpy_types', 'add_experiment_metrics', 'get_experiment_parameters',
-           'get_experiment_data', 'convert_notebook', 'read_json_to_dataframe', 'create_experiment_image_grid',
-           'plot_corr_matrix']
+           'get_experiment_data', 'convert_notebook', 'read_json_to_dataframe', 'generate_parameter_sets',
+           'create_experiment_image_grid', 'plot_corr_matrix']
 
 # %% ../nbs/08_experiment.ipynb 2
 import os
@@ -20,6 +20,7 @@ from typing import Dict, Any, List, Optional, Tuple
 from PIL import Image, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
 import torch
+import itertools
 
 # %% ../nbs/08_experiment.ipynb 5
 def setup_new_experiment(params: Dict[str, Any],              # Dictionary of parameters for the new experiment.
@@ -282,7 +283,26 @@ def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
     df = pd.DataFrame(records)
     return df
 
-# %% ../nbs/08_experiment.ipynb 16
+# %% ../nbs/08_experiment.ipynb 17
+def generate_parameter_sets(params, model_specific_params):
+    keys, values = zip(*params.items())
+    combinations = [dict(zip(keys, v)) for v in itertools.product(*[
+        value if isinstance(value, list) else [value] for value in values
+    ])]
+    
+    final_combinations = []
+    for combo in combinations:
+        model_name = combo['model_name']
+        if model_name in model_specific_params:
+            model_kwargs = model_specific_params[model_name].copy()
+            combo['model_kwargs'] = model_kwargs
+            combo['model_kwargs']['beta'] = combo.pop('beta')
+            final_combinations.append(combo)
+    
+    return final_combinations
+
+
+# %% ../nbs/08_experiment.ipynb 19
 def create_experiment_image_grid(experiments_folder, image_suffix, crop_length, font_size=12, save_path=None, grid_size=(3, 2), experiment_indices=None, hspace=-0.37):
     if experiment_indices is None:
         experiment_indices = [1, 2, 3, 4, 5, 6]  # Default set of indices
@@ -339,7 +359,7 @@ def create_experiment_image_grid(experiments_folder, image_suffix, crop_length, 
     # Display the grid
     plt.show()
 
-# %% ../nbs/08_experiment.ipynb 17
+# %% ../nbs/08_experiment.ipynb 20
 def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm', save_path: Optional[str] = None):
     """
     Plots a correlation matrix heatmap with annotations.
