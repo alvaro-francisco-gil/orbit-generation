@@ -1230,5 +1230,133 @@
         "correct_order": 63.95666666666666,
         "inversions": 178.74666666666667,
         "kendall_tau_distance": 0.07415561221475064
+    },
+    {
+        "id": 24,
+        "parameters": {
+            "data_used": "EM_N_fix_1500",
+            "families_to_discard": 0,
+            "seq_len": 100,
+            "feature_dim": 7,
+            "epochs": 50,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "lr": 0.001,
+            "model_name": "vae_conv5",
+            "latent_dim": 2,
+            "model_kwargs": {
+                "dropout_rate": 0.2,
+                "beta": 0.001
+            },
+            "max_iter_convergence": 20,
+            "input_seq_len_convergence": 1,
+            "samples_to_generate": 100,
+            "distance_metric": "euclidean"
+        },
+        "discarded_family_ids": [],
+        "discarded_families": []
+    },
+    {
+        "id": 25,
+        "parameters": {
+            "data_used": "EM_N_fix_1500",
+            "families_to_discard": 0,
+            "seq_len": 100,
+            "feature_dim": 7,
+            "epochs": 50,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "lr": 0.001,
+            "model_name": "vae_conv5_legit",
+            "latent_dim": 2,
+            "model_kwargs": {
+                "dropout_rate": 0.2,
+                "beta": 0.001
+            },
+            "max_iter_convergence": 20,
+            "input_seq_len_convergence": 1,
+            "samples_to_generate": 100,
+            "distance_metric": "euclidean"
+        },
+        "discarded_family_ids": [],
+        "discarded_families": []
+    },
+    {
+        "id": 26,
+        "parameters": {
+            "data_used": "EM_N_fix_1500",
+            "families_to_discard": 10,
+            "seq_len": 100,
+            "feature_dim": 7,
+            "epochs": 15,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "lr": 0.001,
+            "model_name": "vae_conv5_legit",
+            "latent_dim": 2,
+            "model_kwargs": {
+                "beta": 1,
+                "n_filters": 32,
+                "kernel_sizes": [
+                    3,
+                    5,
+                    13
+                ],
+                "bottleneck_channels": 32
+            },
+            "max_iter_convergence": 20,
+            "input_seq_len_convergence": 100,
+            "samples_to_generate": 100,
+            "distance_metric": "euclidean"
+        },
+        "discarded_family_ids": [
+            35.0,
+            16.0,
+            2.0,
+            36.0,
+            8.0,
+            17.0,
+            38.0,
+            7.0,
+            26.0,
+            12.0
+        ],
+        "discarded_families": [
+            "S_R14",
+            "S_L2_V",
+            "S_BS",
+            "S_R21",
+            "S_L1_HN",
+            "S_L3_A",
+            "S_R31",
+            "S_L1_A",
+            "S_L5_A",
+            "S_L2_A"
+        ]
+    },
+    {
+        "id": 27,
+        "parameters": {
+            "data_used": "EM_N_fix_1500",
+            "families_to_discard": 0,
+            "seq_len": 100,
+            "feature_dim": 7,
+            "epochs": 50,
+            "val_split": 0.05,
+            "batch_size": 32,
+            "lr": 0.001,
+            "model_name": "vae_conv5_legit",
+            "latent_dim": 2,
+            "model_kwargs": {
+                "dropout_rate": 0.2,
+                "beta": 0.2
+            },
+            "max_iter_convergence": 20,
+            "input_seq_len_convergence": 1,
+            "samples_to_generate": 100,
+            "distance_metric": "euclidean"
+        },
+        "discarded_family_ids": [],
+        "discarded_families": []
     }
 ]
