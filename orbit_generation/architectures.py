@@ -145,7 +145,7 @@ class VAEDecoder(ABC, nn.Module):
 # %% ../nbs/06_architectures.ipynb 13
 class Conv5Encoder(VAEEncoder):
     def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, dropout_rate: float):
-        super(VAEEncoder, self).__init__(latent_dim=latent_dim)
+        super().__init__(latent_dim=latent_dim)
         self.seq_len = seq_len
         self.feat_dim = feat_dim
         self.dropout_rate = dropout_rate
@@ -186,7 +186,7 @@ class Conv5Encoder(VAEEncoder):
 # %% ../nbs/06_architectures.ipynb 15
 class Conv5Decoder(VAEDecoder):
     def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, dropout_rate: float):
-        super(VAEDecoder, self).__init__(latent_dim=latent_dim)
+        super().__init__(latent_dim=latent_dim)
         self.seq_len = seq_len
         self.feat_dim = feat_dim
         self.dropout_rate = dropout_rate
@@ -247,7 +247,7 @@ def get_conv5_vae_components(seq_len, feat_dim, latent_dim, **kwargs):
 # %% ../nbs/06_architectures.ipynb 20
 class Conv5EncoderLegitTsgm(VAEEncoder):
     def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, dropout_rate: float):
-        super(VAEEncoder, self).__init__(latent_dim=latent_dim)
+        super().__init__(latent_dim=latent_dim)
         self.seq_len = seq_len
         self.feat_dim = feat_dim
         self.dropout_rate = dropout_rate
@@ -288,11 +288,10 @@ class Conv5EncoderLegitTsgm(VAEEncoder):
 # %% ../nbs/06_architectures.ipynb 22
 class Conv5DecoderLegitTsgm(VAEDecoder):
     def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, dropout_rate: float):
-        super(VAEDecoder, self).__init__(latent_dim=latent_dim)
+        super().__init__(latent_dim=latent_dim)
         self.seq_len = seq_len
         self.feat_dim = feat_dim
         self.dropout_rate = dropout_rate
-
         # Dense layers to upscale the latent dimensions
         self.dense_layers = nn.Sequential(
             nn.Linear(in_features=self.latent_dim, out_features=64),
