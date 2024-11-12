@@ -148,7 +148,6 @@ class Conv5Encoder(VAEEncoder):
         super(VAEEncoder, self).__init__(latent_dim=latent_dim)
         self.seq_len = seq_len
         self.feat_dim = feat_dim
-        self.latent_dim = latent_dim
         self.dropout_rate = dropout_rate
         
         self.convo_layers = nn.Sequential(
@@ -190,7 +189,6 @@ class Conv5Decoder(VAEDecoder):
         super(VAEDecoder, self).__init__(latent_dim=latent_dim)
         self.seq_len = seq_len
         self.feat_dim = feat_dim
-        self.latent_dim = latent_dim
         self.dropout_rate = dropout_rate
         
         self.dense_layers = nn.Sequential(
@@ -252,7 +250,6 @@ class Conv5EncoderLegitTsgm(VAEEncoder):
         super(VAEEncoder, self).__init__(latent_dim=latent_dim)
         self.seq_len = seq_len
         self.feat_dim = feat_dim
-        self.latent_dim = latent_dim
         self.dropout_rate = dropout_rate
         
         self.convo_layers = nn.Sequential(
@@ -294,7 +291,6 @@ class Conv5DecoderLegitTsgm(VAEDecoder):
         super(VAEDecoder, self).__init__(latent_dim=latent_dim)
         self.seq_len = seq_len
         self.feat_dim = feat_dim
-        self.latent_dim = latent_dim
         self.dropout_rate = dropout_rate
 
         # Dense layers to upscale the latent dimensions
