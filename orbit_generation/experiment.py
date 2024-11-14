@@ -4,23 +4,28 @@
 
 # %% auto 0
 __all__ = ['setup_new_experiment', 'convert_numpy_types', 'add_experiment_metrics', 'get_experiment_parameters',
-           'get_experiment_data', 'convert_notebook', 'read_json_to_dataframe', 'generate_parameter_sets',
-           'create_experiment_image_grid', 'plot_corr_matrix']
+           'get_experiment_data', 'concatenate_orbits_from_experiment_folder', 'convert_notebook',
+           'read_json_to_dataframe', 'generate_parameter_sets', 'create_experiment_image_grid', 'plot_corr_matrix',
+           'execute_parameter_notebook', 'paralelize_notebook_experiment']
 
 # %% ../nbs/08_experiment.ipynb 2
 import os
-import csv
 import pandas as pd
 import subprocess
 import numpy as np
 import shutil
 import seaborn as sns
 import json
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, Optional
 from PIL import Image, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
 import torch
 import itertools
+import nbformat
+import papermill as pm
+import re
+import logging
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 # %% ../nbs/08_experiment.ipynb 5
 def setup_new_experiment(params: Dict[str, Any],              # Dictionary of parameters for the new experiment.
@@ -226,7 +231,30 @@ def get_experiment_data(experiments_folder: str,
     # If the experiment is not found, raise an error
     raise ValueError(f"Experiment with the specified ID {experiment_id} does not exist.")
 
-# %% ../nbs/08_experiment.ipynb 14
+# %% ../nbs/08_experiment.ipynb 13
+def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len):
+    arrays = []
+    
+    for folder in os.listdir(experiments_folder):
+        if folder.startswith('experiment_') and os.path.isdir(os.path.join(experiments_folder, folder)):
+            # Extract the experiment number using regex
+            match = re.search(r'experiment_(\d+)', folder)
+            if match:
+                experiment_id = match.group(1)
+                generated_data_path = os.path.join(experiments_folder, folder, f'exp{experiment_id}_generated_orbits.npy')
+                
+                if os.path.isfile(generated_data_path):
+                    generated_orbit = np.load(generated_data_path)
+                    
+                    if generated_orbit.shape[-1] == seq_len:
+                        arrays.append(generated_orbit)
+    
+    if arrays:
+        return np.concatenate(arrays, axis=0)
+    else:
+        return np.array([])
+
+# %% ../nbs/08_experiment.ipynb 15
 def convert_notebook(notebook_path: str,                # The path to the notebook to convert.
                      output_folder: str,                # The folder to save the converted file.
                      output_filename: str,              # The name of the output file.
@@ -257,7 +285,7 @@ def convert_notebook(notebook_path: str,                # The path to the notebo
         print(e.stderr)
         raise
 
-# %% ../nbs/08_experiment.ipynb 15
+# %% ../nbs/08_experiment.ipynb 16
 def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
     """
     Reads a JSON file containing experiment results and returns a DataFrame.
@@ -283,7 +311,7 @@ def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
     df = pd.DataFrame(records)
     return df
 
-# %% ../nbs/08_experiment.ipynb 17
+# %% ../nbs/08_experiment.ipynb 18
 def generate_parameter_sets(params, model_specific_params):
     keys, values = zip(*params.items())
     combinations = [dict(zip(keys, v)) for v in itertools.product(*[
@@ -302,7 +330,7 @@ def generate_parameter_sets(params, model_specific_params):
     return final_combinations
 
 
-# %% ../nbs/08_experiment.ipynb 19
+# %% ../nbs/08_experiment.ipynb 20
 def create_experiment_image_grid(experiments_folder, image_suffix, crop_length, font_size=12, save_path=None, grid_size=(3, 2), experiment_indices=None, hspace=-0.37):
     if experiment_indices is None:
         experiment_indices = [1, 2, 3, 4, 5, 6]  # Default set of indices
@@ -359,7 +387,7 @@ def create_experiment_image_grid(experiments_folder, image_suffix, crop_length, 
     # Display the grid
     plt.show()
 
-# %% ../nbs/08_experiment.ipynb 20
+# %% ../nbs/08_experiment.ipynb 21
 def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm', save_path: Optional[str] = None):
     """
     Plots a correlation matrix heatmap with annotations.
@@ -392,3 +420,79 @@ def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm',
 
     # Show the plot
     plt.show()
+
+# %% ../nbs/08_experiment.ipynb 23
+def execute_parameter_notebook(notebook_to_execute, output_dir, i, params):
+    try:
+        # Generate output filenames
+        base_name = os.path.splitext(os.path.basename(notebook_to_execute))[0]
+        output_notebook = os.path.join(output_dir, f"{base_name}_execution_{i}.ipynb")
+
+        # Read the notebook
+        with open(notebook_to_execute, 'r', encoding='utf-8') as f:
+            nb = nbformat.read(f, as_version=4)
+        
+        nb = pm.execute_notebook(
+            nb,
+            output_notebook,
+            parameters=params,
+            kernel_name='pytorch',
+            timeout=10000,
+            log_output=True
+        )
+        
+        logging.info(f"Completed execution {i}")
+        return i
+
+    except Exception as e:
+        logging.error(f"Error in execution {i}: {str(e)}")
+        logging.error(f"Parameters used: {params}")
+        import traceback
+        logging.error(f"Traceback: {traceback.format_exc()}")
+        return None
+
+# %% ../nbs/08_experiment.ipynb 24
+def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_dir, checkpoint_file, max_workers=3):
+    # Ensure output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Initialize or load checkpoint
+    if os.path.exists(checkpoint_file):
+        with open(checkpoint_file, 'r') as f:
+            checkpoint = json.load(f)
+    else:
+        checkpoint = {'completed': []}
+    
+    # Ensure checkpoint is a dictionary with a 'completed' key
+    if not isinstance(checkpoint, dict) or 'completed' not in checkpoint:
+        checkpoint = {'completed': []}
+    
+    # Filter out already completed executions
+    remaining_executions = [i for i in range(len(parameter_sets)) if i not in checkpoint['completed']]
+    
+    logging.info(f"Starting execution. {len(remaining_executions)} executions remaining.")
+    
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        futures = []
+        for i in remaining_executions:
+            future = executor.submit(
+                execute_parameter_notebook,
+                notebook_to_execute=notebook_to_execute,
+                output_dir=output_dir,
+                i=i,
+                params=parameter_sets[i]
+            )
+            futures.append(future)
+        
+        for future in as_completed(futures):
+            result = future.result()
+            if result is not None:
+                logging.info(f"Execution {result} completed successfully.")
+                # Update checkpoint
+                checkpoint['completed'].append(result)
+                with open(checkpoint_file, 'w') as f:
+                    json.dump(checkpoint, f)
+            else:
+                logging.warning("An execution failed.")
+    
+    logging.info("All executions completed.")
