@@ -4,7 +4,7 @@
 
 # %% auto 0
 __all__ = ['plot_3d_points', 'visualize_static_orbits', 'visualize_orbits_minimal', 'export_dynamic_orbits_html',
-           'plot_histogram', 'plot_grouped_features', 'plot_value_proportions']
+           'plot_histogram', 'plot_grouped_features', 'plot_value_proportions', 'plot_mean_distance_by_group_column']
 
 # %% ../nbs/03_visualization.ipynb 2
 import numpy as np
@@ -524,3 +524,32 @@ def plot_value_proportions(data: Optional[Union[List[int], np.ndarray]],  # List
             ax = plt.gca()
             plot_pie(ax, values, f'Proportion of orbits by {column}', i, show_percentages[i], show_labels[i])
             plt.show()
+
+# %% ../nbs/03_visualization.ipynb 24
+def plot_mean_distance_by_group_column(df, group_column, value_column):
+    # Calculate mean and standard deviation for each group
+    stats_df = df.groupby(group_column)[value_column].agg(['mean', 'std']).reset_index()
+
+    # Create the plot
+    plt.figure(figsize=(12, 6))
+
+    # Plot mean distances with error bars
+    plt.errorbar(stats_df[group_column], stats_df['mean'], 
+                 yerr=stats_df['std'], fmt='o', capsize=5, capthick=2, 
+                 ecolor='red', markeredgecolor='black', markerfacecolor='blue')
+
+    # Customize the plot
+    plt.title(f'Mean {value_column} by {group_column}', fontsize=16)
+    plt.xlabel(f'{group_column}', fontsize=14)
+    plt.ylabel(f'Mean {value_column}', fontsize=14)
+    plt.xticks(stats_df[group_column])
+    plt.grid(True, linestyle='--', alpha=0.7)
+
+    # Add text labels for mean and std dev
+    for i, row in stats_df.iterrows():
+        plt.text(row[group_column], row['mean'], 
+                 f"Mean: {row['mean']:.2f}\nStd: {row['std']:.2f}", 
+                 horizontalalignment='left', verticalalignment='bottom')
+
+    plt.tight_layout()
+    plt.show()
