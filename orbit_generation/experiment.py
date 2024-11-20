@@ -437,7 +437,7 @@ def execute_parameter_notebook(notebook_to_execute, output_dir, i, params):
             output_notebook,
             parameters=params,
             kernel_name='pytorch',
-            timeout=10000,
+            timeout=100000,
             log_output=True
         )
         
