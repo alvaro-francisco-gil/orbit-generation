@@ -27,6 +27,7 @@ from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 import torch
 import random
+from scipy.stats import qmc
 
 # %% ../nbs/13_latent_space.ipynb 3
 from .architectures import Sampling
@@ -767,35 +768,44 @@ def interpolate_sample(centroids, granularity=10, variance=0.0):
 
 # %% ../nbs/13_latent_space.ipynb 19
 def grid_sample(
-    encodings: np.ndarray,                      # Array of latent encodings with shape (n_samples, 2)
-    grid_size: Tuple[int, int] = (10, 10)       # Grid size as (rows, cols)
+    encodings: np.ndarray,
+    grid_size: Union[int, Tuple[int, ...]] = 100
 ) -> np.ndarray:
-    """
-    Performs grid sampling on the given encodings and returns sampled grid points as a NumPy array.
+    if encodings.ndim != 2:
+        raise ValueError("Encodings should be a 2D array with shape (n_samples, n_dimensions)")
     
-    Parameters:
-        encodings (np.ndarray): Array of shape (n_samples, 2), where each row represents (x, y) coordinates.
-        grid_size (Tuple[int, int], optional): Tuple defining the number of samples horizontally and vertically as (rows, cols). Defaults to (10, 10).
+    n_dimensions = encodings.shape[1]  # Fix: use [1] to get number of dimensions
     
-    Returns:
-        np.ndarray: Array of shape (rows * cols, 2) containing the sampled grid points.
-    """
-    if encodings.ndim != 2 or encodings.shape[1] != 2:
-        raise ValueError("Encodings should be a 2D array with shape (n_samples, 2)")
+    if isinstance(grid_size, tuple):
+        if len(grid_size) != n_dimensions:
+            raise ValueError(f"grid_size tuple should have {n_dimensions} elements")
+        total_samples = np.prod(grid_size)
+    else:
+        total_samples = grid_size
 
     # Calculate the bounds of the latent space
-    x_min, y_min = np.min(encodings, axis=0)
-    x_max, y_max = np.max(encodings, axis=0)
+    min_bounds = np.min(encodings, axis=0)
+    max_bounds = np.max(encodings, axis=0)
     
-    # Generate linearly spaced points for the grid
-    x_lin = np.linspace(x_min, x_max, grid_size[0])
-    y_lin = np.linspace(y_min, y_max, grid_size[1])
-    
-    # Create a meshgrid and combine into (rows * cols, 2) array
-    xx, yy = np.meshgrid(x_lin, y_lin)
-    grid_points = np.vstack([xx.ravel(), yy.ravel()]).T  # Shape: (rows * cols, 2)
-    
-    return grid_points
+    if n_dimensions <= 2:
+        # Use grid sampling for 1D and 2D
+        if n_dimensions == 1:
+            return np.linspace(min_bounds[0], max_bounds[0], total_samples).astype(np.float32).reshape(-1, 1)
+        else:
+            samples_per_dim = int(np.sqrt(total_samples))
+            x = np.linspace(min_bounds[0], max_bounds[0], samples_per_dim)
+            y = np.linspace(min_bounds[1], max_bounds[1], samples_per_dim)
+            xx, yy = np.meshgrid(x, y)
+            return np.column_stack([xx.ravel(), yy.ravel()]).astype(np.float32)
+    else:
+        # Use Sobol sequence for higher dimensions
+        sampler = qmc.Sobol(d=n_dimensions, scramble=True)
+        samples = sampler.random(n=total_samples)
+        
+        # Scale samples to the range of the encodings
+        scaled_samples = qmc.scale(samples, min_bounds, max_bounds)
+        
+        return scaled_samples.astype(np.float32)
 
 # %% ../nbs/13_latent_space.ipynb 22
 def compute_centroids(latents, labels, method='mean', return_labels=False, **kwargs):
