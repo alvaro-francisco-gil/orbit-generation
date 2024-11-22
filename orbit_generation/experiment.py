@@ -448,8 +448,19 @@ def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm',
     plt.show()
 
 # %% ../nbs/08_experiment.ipynb 24
-def execute_parameter_notebook(notebook_to_execute, output_dir, i, params):
+def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, checkpoint_file):
     try:
+        # Mark as started
+        with open(checkpoint_file, 'r+') as f:
+            checkpoint = json.load(f)
+            if i not in checkpoint['started']:
+                checkpoint['started'].append(i)
+                f.seek(0)
+                json.dump(checkpoint, f)
+                f.truncate()
+        
+        logging.info(f"Starting execution {i}")
+
         # Generate output filenames
         base_name = os.path.splitext(os.path.basename(notebook_to_execute))[0]
         output_notebook = os.path.join(output_dir, f"{base_name}_execution_{i}.ipynb")
@@ -501,17 +512,13 @@ def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_d
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         futures = []
         for i in remaining_executions:
-            checkpoint['started'].append(i)
-            with open(checkpoint_file, 'w') as f:
-                json.dump(checkpoint, f)
-            logging.info(f"Starting execution {i}")
-            
             future = executor.submit(
                 execute_parameter_notebook,
                 notebook_to_execute=notebook_to_execute,
                 output_dir=output_dir,
                 i=i,
-                params=parameter_sets[i-1]
+                params=parameter_sets[i-1],
+                checkpoint_file=checkpoint_file
             )
             futures.append(future)
         
@@ -520,9 +527,12 @@ def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_d
             if result is not None:
                 logging.info(f"Execution {result} completed successfully.")
                 # Update checkpoint
-                checkpoint['completed'].append(result)
-                with open(checkpoint_file, 'w') as f:
+                with open(checkpoint_file, 'r+') as f:
+                    checkpoint = json.load(f)
+                    checkpoint['completed'].append(result)
+                    f.seek(0)
                     json.dump(checkpoint, f)
+                    f.truncate()
             else:
                 logging.warning("An execution failed.")
     
