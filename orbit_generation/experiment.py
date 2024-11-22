@@ -493,16 +493,19 @@ def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_d
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
     
-    # Initialize or load checkpoint
     if os.path.exists(checkpoint_file):
         with open(checkpoint_file, 'r') as f:
             checkpoint = json.load(f)
     else:
         checkpoint = {'completed': [], 'started': []}
-    
+        with open(checkpoint_file, 'w') as f:
+            json.dump(checkpoint, f)
+
     # Ensure checkpoint is a dictionary with 'completed' and 'started' keys
     if not isinstance(checkpoint, dict) or 'completed' not in checkpoint or 'started' not in checkpoint:
         checkpoint = {'completed': [], 'started': []}
+        with open(checkpoint_file, 'w') as f:
+            json.dump(checkpoint, f)
     
     # Filter out already completed executions
     remaining_executions = [i for i in range(1, len(parameter_sets) + 1) if i not in checkpoint['completed']]
