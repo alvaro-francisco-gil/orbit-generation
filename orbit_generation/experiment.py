@@ -80,6 +80,68 @@ def setup_new_experiment(params: Dict[str, Any],              # Dictionary of pa
     return new_experiment_folder
 
 # %% ../nbs/08_experiment.ipynb 6
+def setup_new_experiment(params: Dict[str, Any], experiments_folder: str, json_file: Optional[str] = None) -> str:
+    """
+    Sets up a new experiment by creating a new folder and updating the JSON file with experiment parameters.
+    """
+    def deep_compare(dict1, dict2):
+        if isinstance(dict1, dict) and isinstance(dict2, dict):
+            return all(key in dict2 and deep_compare(dict1[key], dict2[key]) for key in dict1) and \
+                all(key in dict1 and deep_compare(dict1[key], dict2[key]) for key in dict2)
+        return dict1 == dict2
+    # Ensure the experiments folder exists
+    if not os.path.exists(experiments_folder):
+        os.makedirs(experiments_folder)
+
+    # Default JSON file to 'experiments.json' in the experiments_folder if not provided
+    if json_file is None:
+        json_file = os.path.join(experiments_folder, 'experiments.json')
+
+    # Load existing experiments from the JSON file if it exists
+    experiments = []
+    if os.path.isfile(json_file):
+        try:
+            with open(json_file, mode='r') as file:
+                experiments = json.load(file)
+            logging.info(f"Loaded {len(experiments)} existing experiments from {json_file}")
+        except json.JSONDecodeError as e:
+            logging.error(f"Error reading JSON file: {e}")
+            logging.info("Starting with an empty list of experiments")
+
+    # Check if the parameters already exist in the JSON file
+    for experiment in experiments:
+        if deep_compare(params, experiment['parameters']):
+            candidate_folder = os.path.join(experiments_folder, f"experiment_{experiment['id']}")
+            if os.path.exists(candidate_folder):
+                logging.info(f'Parameters match existing experiment: {candidate_folder}')
+                return candidate_folder
+        else:
+            logging.debug(f"Parameters do not match experiment {experiment['id']}")
+
+    # Determine the next experiment number
+    next_experiment_number = max((experiment['id'] for experiment in experiments), default=0) + 1
+
+    # Create a new folder for the next experiment
+    new_experiment_folder = os.path.join(experiments_folder, f'experiment_{next_experiment_number}')
+    os.makedirs(new_experiment_folder, exist_ok=True)
+
+    # Add the new experiment to the list and save to JSON file
+    new_experiment = {
+        'id': next_experiment_number,
+        'parameters': params
+    }
+    experiments.append(new_experiment)
+    try:
+        with open(json_file, mode='w') as file:
+            json.dump(experiments, file, indent=4)
+        logging.info(f'New experiment {next_experiment_number} parameters saved to {json_file}')
+    except Exception as e:
+        logging.error(f"Error writing to JSON file: {e}")
+
+    logging.info(f'New experiment setup complete: {new_experiment_folder}')
+    return new_experiment_folder
+
+# %% ../nbs/08_experiment.ipynb 7
 def create_experiments_json(parameter_sets, output_file='experiments.json'):
     """
     Create an experiments.json file from given parameter sets.
@@ -105,7 +167,7 @@ def create_experiments_json(parameter_sets, output_file='experiments.json'):
     
     print(f"Experiments JSON file created: {output_file}")
 
-# %% ../nbs/08_experiment.ipynb 8
+# %% ../nbs/08_experiment.ipynb 9
 def convert_numpy_types(obj):
     """
     Recursively convert numpy types and tensors to native Python types for JSON serialization.
@@ -125,7 +187,7 @@ def convert_numpy_types(obj):
     else:
         return obj
 
-# %% ../nbs/08_experiment.ipynb 9
+# %% ../nbs/08_experiment.ipynb 10
 def add_experiment_metrics(experiments_folder: str,                    # Path to the folder containing all experiments.
                            params: Optional[Dict[str, Any]] = None,    # Optional dictionary of parameters identifying the experiment.
                            experiment_id: Optional[int] = None,        # Optional ID to identify the experiment.
@@ -183,7 +245,7 @@ def add_experiment_metrics(experiments_folder: str,                    # Path to
         experiment_id = experiment['id']
         print(f'Metrics added to experiment with ID {experiment_id} in {json_file}.')
 
-# %% ../nbs/08_experiment.ipynb 11
+# %% ../nbs/08_experiment.ipynb 12
 def get_experiment_parameters(experiments_folder: str,                    # Path to the folder containing all experiments.
                               experiment_id: int,                         # ID to identify the experiment.
                               json_file: Optional[str] = None             # Optional path to the JSON file tracking experiment parameters and metrics.
@@ -214,7 +276,7 @@ def get_experiment_parameters(experiments_folder: str,                    # Path
     # If the experiment is not found, raise an error
     raise ValueError(f"Experiment with the specified ID {experiment_id} does not exist.")
 
-# %% ../nbs/08_experiment.ipynb 13
+# %% ../nbs/08_experiment.ipynb 14
 def get_experiment_data(experiments_folder: str,
                         experiment_id: int,
                         json_file: Optional[str] = None
@@ -257,7 +319,7 @@ def get_experiment_data(experiments_folder: str,
     # If the experiment is not found, raise an error
     raise ValueError(f"Experiment with the specified ID {experiment_id} does not exist.")
 
-# %% ../nbs/08_experiment.ipynb 14
+# %% ../nbs/08_experiment.ipynb 15
 def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len):
     arrays = []
     
@@ -280,7 +342,7 @@ def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len):
     else:
         return np.array([])
 
-# %% ../nbs/08_experiment.ipynb 16
+# %% ../nbs/08_experiment.ipynb 17
 def convert_notebook(notebook_path: str,                # The path to the notebook to convert.
                      output_folder: str,                # The folder to save the converted file.
                      output_filename: str,              # The name of the output file.
@@ -311,7 +373,7 @@ def convert_notebook(notebook_path: str,                # The path to the notebo
         print(e.stderr)
         raise
 
-# %% ../nbs/08_experiment.ipynb 17
+# %% ../nbs/08_experiment.ipynb 18
 def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
     """
     Reads a JSON file containing experiment results and returns a DataFrame.
@@ -337,7 +399,7 @@ def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
     df = pd.DataFrame(records)
     return df
 
-# %% ../nbs/08_experiment.ipynb 19
+# %% ../nbs/08_experiment.ipynb 20
 def generate_parameter_sets(params, model_specific_params):
     keys, values = zip(*params.items())
     combinations = [dict(zip(keys, v)) for v in itertools.product(*[
@@ -356,7 +418,7 @@ def generate_parameter_sets(params, model_specific_params):
     return final_combinations
 
 
-# %% ../nbs/08_experiment.ipynb 21
+# %% ../nbs/08_experiment.ipynb 22
 def create_experiment_image_grid(experiments_folder, image_suffix, crop_length, font_size=12, save_path=None, grid_size=(3, 2), experiment_indices=None, hspace=-0.37):
     if experiment_indices is None:
         experiment_indices = [1, 2, 3, 4, 5, 6]  # Default set of indices
@@ -413,7 +475,7 @@ def create_experiment_image_grid(experiments_folder, image_suffix, crop_length, 
     # Display the grid
     plt.show()
 
-# %% ../nbs/08_experiment.ipynb 22
+# %% ../nbs/08_experiment.ipynb 23
 def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm', save_path: Optional[str] = None):
     """
     Plots a correlation matrix heatmap with annotations.
@@ -447,7 +509,7 @@ def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm',
     # Show the plot
     plt.show()
 
-# %% ../nbs/08_experiment.ipynb 24
+# %% ../nbs/08_experiment.ipynb 25
 def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, checkpoint_file):
     try:
         # Mark as started
@@ -488,7 +550,7 @@ def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, check
         logging.error(f"Traceback: {traceback.format_exc()}")
         return None
 
-# %% ../nbs/08_experiment.ipynb 25
+# %% ../nbs/08_experiment.ipynb 26
 def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_dir, checkpoint_file, max_workers=3):
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
