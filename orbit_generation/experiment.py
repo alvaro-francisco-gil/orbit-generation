@@ -461,26 +461,32 @@ def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_d
         with open(checkpoint_file, 'r') as f:
             checkpoint = json.load(f)
     else:
-        checkpoint = {'completed': []}
+        checkpoint = {'completed': [], 'started': []}
     
-    # Ensure checkpoint is a dictionary with a 'completed' key
-    if not isinstance(checkpoint, dict) or 'completed' not in checkpoint:
-        checkpoint = {'completed': []}
+    # Ensure checkpoint is a dictionary with 'completed' and 'started' keys
+    if not isinstance(checkpoint, dict) or 'completed' not in checkpoint or 'started' not in checkpoint:
+        checkpoint = {'completed': [], 'started': []}
     
     # Filter out already completed executions
-    remaining_executions = [i for i in range(len(parameter_sets)) if i not in checkpoint['completed']]
+    remaining_executions = [i for i in range(1, len(parameter_sets) + 1) if i not in checkpoint['completed']]
     
     logging.info(f"Starting execution. {len(remaining_executions)} executions remaining.")
     
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         futures = []
         for i in remaining_executions:
+            if i not in checkpoint['started']:
+                checkpoint['started'].append(i)
+                with open(checkpoint_file, 'w') as f:
+                    json.dump(checkpoint, f)
+                logging.info(f"Starting execution {i}")
+            
             future = executor.submit(
                 execute_parameter_notebook,
                 notebook_to_execute=notebook_to_execute,
                 output_dir=output_dir,
                 i=i,
-                params=parameter_sets[i]
+                params=parameter_sets[i-1]
             )
             futures.append(future)
         
