@@ -501,11 +501,10 @@ def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_d
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         futures = []
         for i in remaining_executions:
-            if i not in checkpoint['started']:
-                checkpoint['started'].append(i)
-                with open(checkpoint_file, 'w') as f:
-                    json.dump(checkpoint, f)
-                logging.info(f"Starting execution {i}")
+            checkpoint['started'].append(i)
+            with open(checkpoint_file, 'w') as f:
+                json.dump(checkpoint, f)
+            logging.info(f"Starting execution {i}")
             
             future = executor.submit(
                 execute_parameter_notebook,

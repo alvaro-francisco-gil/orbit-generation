@@ -647,7 +647,6 @@ def reduce_dimensions_combined_latent_space(
     """
     models = {
         'PCA': PCA(n_components=n_components),
-        't-SNE': TSNE(n_components=n_components, **kwargs),
         'UMAP': umap.UMAP(n_components=n_components, **kwargs),
         'LDA': LinearDiscriminantAnalysis(n_components=n_components)
     }
