@@ -219,24 +219,29 @@ def evaluate_clustering_multiple_labels(latent_representations: np.ndarray,  # T
         else:
             raise ValueError("Unsupported clustering method. Choose from 'kmeans', 'gmm', 'dbscan'.")
         
-        # Calculate clustering metrics
-        ari = adjusted_rand_score(true_labels, pred_labels)
-        nmi = normalized_mutual_info_score(true_labels, pred_labels)
-        homogeneity = homogeneity_score(true_labels, pred_labels)
-        completeness = completeness_score(true_labels, pred_labels)
-        v_measure = v_measure_score(true_labels, pred_labels)
-        fmi = fowlkes_mallows_score(true_labels, pred_labels)
-        
-        # Purity
-        cont_matrix = contingency_matrix(true_labels, pred_labels)
-        purity = np.sum(np.amax(cont_matrix, axis=0)) / np.sum(cont_matrix)
-        
-        # Silhouette Score
-        silhouette = silhouette_score(latent_representations, pred_labels)
-        
-        # Jaccard Coefficient and Accuracy
-        jaccard = jaccard_score(true_labels, pred_labels, average='macro')
-        accuracy = calculate_clustering_accuracy(true_labels, pred_labels)
+        # Check if only one label is predicted
+        if len(np.unique(pred_labels)) == 1:
+            print(f"Warning: Only one cluster predicted for {label_names[i]}. Some metrics will be NaN.")
+            ari = nmi = homogeneity = completeness = v_measure = fmi = purity = silhouette = jaccard = accuracy = float('nan')
+        else:
+            # Calculate clustering metrics
+            ari = adjusted_rand_score(true_labels, pred_labels)
+            nmi = normalized_mutual_info_score(true_labels, pred_labels)
+            homogeneity = homogeneity_score(true_labels, pred_labels)
+            completeness = completeness_score(true_labels, pred_labels)
+            v_measure = v_measure_score(true_labels, pred_labels)
+            fmi = fowlkes_mallows_score(true_labels, pred_labels)
+            
+            # Purity
+            cont_matrix = contingency_matrix(true_labels, pred_labels)
+            purity = np.sum(np.amax(cont_matrix, axis=0)) / np.sum(cont_matrix)
+            
+            # Silhouette Score
+            silhouette = silhouette_score(latent_representations, pred_labels)
+            
+            # Jaccard Coefficient and Accuracy
+            jaccard = jaccard_score(true_labels, pred_labels, average='macro')
+            accuracy = calculate_clustering_accuracy(true_labels, pred_labels)
         
         # Store the results for this set of labels
         combined_metrics.update({
