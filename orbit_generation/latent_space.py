@@ -783,8 +783,10 @@ def grid_sample(
         total_samples = grid_size
 
     # Calculate the bounds of the latent space
+    epsilon = 1e-10  # or another small value
     min_bounds = np.min(encodings, axis=0)
     max_bounds = np.max(encodings, axis=0)
+    max_bounds = np.maximum(max_bounds, min_bounds + epsilon)
     
     if n_dimensions <= 2:
         # Use grid sampling for 1D and 2D
