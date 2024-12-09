@@ -623,7 +623,7 @@ def reduce_dimensions_latent_space(latent_representations: np.ndarray,  # Precom
     if plot and grid_view:
         plt.tight_layout()
         if save_path:
-            grid_save_path = f"{save_path}_grid.png"
+            grid_save_path = f"{save_path}.png"
             plt.savefig(grid_save_path, bbox_inches='tight')
             print(f"Saved grid plot to {grid_save_path}")
         plt.show()
