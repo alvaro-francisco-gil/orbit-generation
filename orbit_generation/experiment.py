@@ -5,8 +5,8 @@
 # %% auto 0
 __all__ = ['setup_new_experiment', 'create_experiments_json', 'convert_numpy_types', 'add_experiment_metrics',
            'get_experiment_parameters', 'get_experiment_data', 'read_json_to_dataframe',
-           'concatenate_orbits_from_experiment_folder', 'generate_parameter_sets', 'execute_parameter_notebook',
-           'paralelize_notebook_experiment']
+           'concatenate_orbits_from_experiment_folder', 'concatenate_csvs_from_experiment_folder',
+           'generate_parameter_sets', 'execute_parameter_notebook', 'paralelize_notebook_experiment']
 
 # %% ../nbs/08_experiment.ipynb 2
 import os
@@ -302,6 +302,33 @@ def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len):
         return np.array([])
 
 # %% ../nbs/08_experiment.ipynb 20
+def concatenate_csvs_from_experiment_folder(experiments_folder, file_suffix):
+    dataframes = []
+    
+    for folder in os.listdir(experiments_folder):
+        if folder.startswith('experiment_') and os.path.isdir(os.path.join(experiments_folder, folder)):
+            # Extract the experiment number using regex
+            match = re.search(r'experiment_(\d+)', folder)
+            if match:
+                experiment_id = match.group(1)
+                csv_file_path = os.path.join(experiments_folder, folder, f'exp{experiment_id}_{file_suffix}.csv')
+                
+                if os.path.isfile(csv_file_path):
+                    # Load the CSV file into a DataFrame
+                    df = pd.read_csv(csv_file_path)
+                    
+                    # Add a column to identify the experiment
+                    df['experiment_id'] = experiment_id
+                    
+                    dataframes.append(df)
+    
+    # Concatenate all DataFrames along rows
+    if dataframes:
+        return pd.concat(dataframes, axis=0, ignore_index=True)
+    else:
+        return pd.DataFrame()
+
+# %% ../nbs/08_experiment.ipynb 22
 def generate_parameter_sets(params, model_specific_params):
     keys, values = zip(*params.items())
     combinations = [dict(zip(keys, v)) for v in itertools.product(*[
@@ -320,7 +347,7 @@ def generate_parameter_sets(params, model_specific_params):
     return final_combinations
 
 
-# %% ../nbs/08_experiment.ipynb 22
+# %% ../nbs/08_experiment.ipynb 24
 def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, checkpoint_file):
     try:
         # Mark as started
@@ -361,7 +388,7 @@ def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, check
         logging.error(f"Traceback: {traceback.format_exc()}")
         return None
 
-# %% ../nbs/08_experiment.ipynb 23
+# %% ../nbs/08_experiment.ipynb 25
 def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_dir, checkpoint_file, max_workers=3):
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
