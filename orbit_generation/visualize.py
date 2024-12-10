@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageFont
 import pandas as pd
 import seaborn as sns
+import os
 from scipy import stats
 from typing import Optional, List, Dict, Union, Any
 
