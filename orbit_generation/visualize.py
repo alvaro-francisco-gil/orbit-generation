@@ -4,15 +4,18 @@
 
 # %% auto 0
 __all__ = ['plot_3d_points', 'visualize_static_orbits', 'visualize_orbits_minimal', 'export_dynamic_orbits_html',
-           'plot_histogram', 'plot_grouped_features', 'plot_value_proportions', 'plot_mean_distance_by_group_column']
+           'plot_histogram', 'plot_grouped_features', 'plot_value_proportions', 'plot_mean_distance_by_group_column',
+           'plot_corr_matrix', 'summarize_and_test', 'create_image_grid_from_routes']
 
 # %% ../nbs/03_visualization.ipynb 2
 import numpy as np
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
+from PIL import Image, ImageDraw, ImageFont
 import pandas as pd
 import seaborn as sns
-from typing import Optional, List, Dict, Union
+from scipy import stats
+from typing import Optional, List, Dict, Union, Any
 
 # %% ../nbs/03_visualization.ipynb 5
 def plot_3d_points(data, labels=None, plot_velocity=True, arrow_width=0.005, show_legend=True, figsize=(10, 8)):
@@ -552,4 +555,197 @@ def plot_mean_distance_by_group_column(df, group_column, value_column):
                  horizontalalignment='left', verticalalignment='bottom')
 
     plt.tight_layout()
+    plt.show()
+
+# %% ../nbs/03_visualization.ipynb 27
+def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm', save_path: Optional[str] = None):
+    """
+    Plots a correlation matrix heatmap with annotations.
+    
+    Parameters:
+    dataframe (pd.DataFrame): The DataFrame containing the data to be analyzed.
+    figsize (tuple): The size of the figure (width, height).
+    cmap (str): The color map to be used for the heatmap.
+    save_path (Optional[str]): The path to save the plot image. If None, the plot is not saved.
+    
+    Returns:
+    None: Displays the correlation matrix heatmap.
+    """
+    # Calculate the correlation matrix
+    corr_matrix = dataframe.corr()
+
+    # Set up the matplotlib figure
+    plt.figure(figsize=figsize)
+
+    # Draw the heatmap with the correlation numbers
+    sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap=cmap, cbar=True, linewidths=.5, square=True)
+
+    # Set the title
+    plt.title('Correlation Matrix of Metrics')
+
+    # Save the plot if a save path is provided
+    if save_path:
+        plt.savefig(save_path, bbox_inches='tight')
+        print(f"Plot saved to {save_path}")
+
+    # Show the plot
+    plt.show()
+
+# %% ../nbs/03_visualization.ipynb 29
+def summarize_and_test(
+    df: pd.DataFrame, 
+    group_col: str, 
+    features: List[str] = None, 
+    visualize: bool = True, 
+    figsize: tuple = (10, 40), 
+    plot_significant_only: bool = True
+) -> Dict[str, Any]:
+    
+    def group_and_summarize(df: pd.DataFrame, group_col: str, features: List[str]) -> Dict[str, Dict[str, Any]]:
+        summary_stats = {}
+        groups = df[group_col].unique()
+        for group in groups:
+            group_data = df[df[group_col] == group]
+            mean_values = group_data[features].mean()
+            std_dev = group_data[features].std()
+            summary_stats[group] = {'mean': mean_values, 'std_dev': std_dev}
+        return summary_stats
+
+    def perform_anova(df: pd.DataFrame, group_col: str, features: List[str]) -> Dict[str, Dict[str, Any]]:
+        anova_results = {}
+        for feature in features:
+            groups = [group[feature].dropna() for name, group in df.groupby(group_col)]
+            f_stat, p_value = stats.f_oneway(*groups)
+            anova_results[feature] = {'f_stat': f_stat, 'p_value': p_value}
+        return anova_results
+
+    def visualize_summary(summary_stats: dict, anova_results: dict, figsize: tuple, plot_significant_only: bool):
+        groups = list(summary_stats.keys())
+        features = list(next(iter(summary_stats.values()))['mean'].index)
+
+        # Filter significant features if required
+        if plot_significant_only:
+            features = [feature for feature in features if anova_results[feature]['p_value'] < 0.05]
+
+        # Check if there are any features to plot
+        if not features:
+            print("No significant features to plot.")
+            return
+
+        # Generate a color palette
+        color_palette = sns.color_palette("husl", n_colors=len(groups))
+
+        fig, axes = plt.subplots(nrows=len(features), ncols=1, figsize=figsize)
+        if len(features) == 1:
+            axes = [axes]
+        fig.tight_layout(pad=5.0)
+
+        for i, feature in enumerate(features):
+            means = [summary_stats[group]['mean'][feature] for group in groups]
+            std_devs = [summary_stats[group]['std_dev'][feature] for group in groups]
+
+            bars = axes[i].bar(groups, means, yerr=std_devs, capsize=5, color=color_palette)
+            
+            p_value = anova_results[feature]['p_value']
+            significance = '*' if p_value < 0.05 else 'ns'
+            axes[i].set_title(f'{feature} (p={p_value:.3f}, {significance})')
+            axes[i].set_ylabel('Value')
+            axes[i].set_ylim(0, max(means) + 1.5 * max(std_devs))
+
+            # Add mean values on top of each bar
+            for bar in bars:
+                height = bar.get_height()
+                axes[i].text(bar.get_x() + bar.get_width()/2., height,
+                            f'{height:.2f}',
+                            ha='center', va='bottom')
+
+        plt.xlabel('Groups')
+        plt.show()
+
+    # If features are not specified, use all columns except the grouping column
+    if features is None:
+        features = [col for col in df.columns if col != group_col]
+
+    # Ensure all specified features exist in the DataFrame
+    missing_features = [f for f in features if f not in df.columns]
+    if missing_features:
+        raise KeyError(f"The following features are not in the DataFrame: {missing_features}")
+
+    summary_stats = group_and_summarize(df, group_col, features)
+    anova_results = perform_anova(df, group_col, features)
+    
+    if visualize:
+        visualize_summary(summary_stats, anova_results, figsize, plot_significant_only)
+    
+    return {
+        'summary_stats': summary_stats,
+        'anova_results': anova_results
+    }
+
+# %% ../nbs/03_visualization.ipynb 32
+def create_image_grid_from_routes(image_routes, crop_length=0, font_size=12, save_path=None, grid_size=(3, 2), hspace=-0.37, label_images=False):
+    """
+    Create a grid of images from a list of image paths.
+
+    Args:
+        image_routes (list): List of image file paths.
+        crop_length (int): Number of pixels to crop from each side of the image.
+        font_size (int): Font size for the experiment label.
+        save_path (str): Path to save the generated grid image. If None, the grid is not saved.
+        grid_size (tuple): Number of rows and columns in the grid.
+        hspace (float): Vertical spacing between grid rows.
+        label_images (bool): Whether to add labels to images.
+
+    Returns:
+        None
+    """
+    # Set up the plot with dynamic grid sizing
+    fig, axes = plt.subplots(*grid_size, figsize=(5 * grid_size[1], 5 * grid_size[0]))  # Adjusted figsize dynamically
+    axes = axes.flatten()
+
+    # Hide all axes initially
+    for ax in axes:
+        ax.axis('off')
+
+    max_images = grid_size[0] * grid_size[1]  # Maximum number of images in the grid
+    processed_images = 0
+
+    for idx, image_path in enumerate(image_routes):
+        if processed_images >= max_images:
+            break
+
+        if os.path.exists(image_path):
+            # Load and crop the image
+            img = Image.open(image_path)
+            img = img.crop((crop_length, crop_length, img.width - crop_length, img.height - crop_length))
+            
+            if label_images:
+                # Draw label on the image if label_images is True
+                draw = ImageDraw.Draw(img)
+                try:
+                    font = ImageFont.truetype("arial.ttf", font_size)
+                except IOError:
+                    font = ImageFont.load_default()
+                text = f"Image {idx + 1}"
+                draw.text((10, 10), text, font=font, fill=(255, 255, 255))
+
+            # Show image in the grid
+            axes[processed_images].imshow(img)
+            if label_images:
+                axes[processed_images].set_title(text)
+            processed_images += 1
+        else:
+            # If the image does not exist, display an error message in the grid cell
+            axes[processed_images].text(0.5, 0.5, 'Image not found', horizontalalignment='center', verticalalignment='center')
+            processed_images += 1
+
+    # Adjust layout
+    plt.tight_layout()
+    plt.subplots_adjust(hspace=hspace)  # Reduce vertical spacing
+
+    # Save the grid if a save path is provided
+    if save_path:
+        plt.savefig(save_path, bbox_inches='tight')
+
+    # Display the grid
     plt.show()
