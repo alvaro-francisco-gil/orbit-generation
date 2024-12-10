@@ -4,7 +4,7 @@
 
 # %% auto 0
 __all__ = ['setup_new_experiment', 'create_experiments_json', 'convert_numpy_types', 'add_experiment_metrics',
-           'get_experiment_parameters', 'get_experiment_data', 'read_json_to_dataframe',
+           'get_experiment_parameters', 'get_experiment_data', 'read_json_to_dataframe', 'generate_image_paths',
            'concatenate_orbits_from_experiment_folder', 'concatenate_csvs_from_experiment_folder',
            'generate_parameter_sets', 'execute_parameter_notebook', 'paralelize_notebook_experiment']
 
@@ -279,6 +279,15 @@ def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
     return df
 
 # %% ../nbs/08_experiment.ipynb 18
+def generate_image_paths(folder_prefix, unique_ids, file_suffix):
+    file_paths = []
+    for unique_id in unique_ids:
+        file_name = f"exp{unique_id}{file_suffix}"
+        file_path = f"{folder_prefix}{unique_id}/images/{file_name}"
+        file_paths.append(file_path)
+    return file_paths
+
+# %% ../nbs/08_experiment.ipynb 20
 def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len):
     arrays = []
     
@@ -301,7 +310,7 @@ def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len):
     else:
         return np.array([])
 
-# %% ../nbs/08_experiment.ipynb 20
+# %% ../nbs/08_experiment.ipynb 22
 def concatenate_csvs_from_experiment_folder(experiments_folder, file_suffix):
     dataframes = []
     
@@ -328,7 +337,7 @@ def concatenate_csvs_from_experiment_folder(experiments_folder, file_suffix):
     else:
         return pd.DataFrame()
 
-# %% ../nbs/08_experiment.ipynb 22
+# %% ../nbs/08_experiment.ipynb 24
 def generate_parameter_sets(params, model_specific_params):
     keys, values = zip(*params.items())
     combinations = [dict(zip(keys, v)) for v in itertools.product(*[
@@ -347,7 +356,7 @@ def generate_parameter_sets(params, model_specific_params):
     return final_combinations
 
 
-# %% ../nbs/08_experiment.ipynb 24
+# %% ../nbs/08_experiment.ipynb 26
 def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, checkpoint_file):
     try:
         # Mark as started
@@ -388,7 +397,7 @@ def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, check
         logging.error(f"Traceback: {traceback.format_exc()}")
         return None
 
-# %% ../nbs/08_experiment.ipynb 25
+# %% ../nbs/08_experiment.ipynb 27
 def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_dir, checkpoint_file, max_workers=3):
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
