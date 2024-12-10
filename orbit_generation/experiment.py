@@ -4,21 +4,16 @@
 
 # %% auto 0
 __all__ = ['setup_new_experiment', 'create_experiments_json', 'convert_numpy_types', 'add_experiment_metrics',
-           'get_experiment_parameters', 'get_experiment_data', 'concatenate_orbits_from_experiment_folder',
-           'convert_notebook', 'read_json_to_dataframe', 'generate_parameter_sets', 'create_experiment_image_grid',
-           'plot_corr_matrix', 'execute_parameter_notebook', 'paralelize_notebook_experiment']
+           'get_experiment_parameters', 'get_experiment_data', 'read_json_to_dataframe',
+           'concatenate_orbits_from_experiment_folder', 'generate_parameter_sets', 'execute_parameter_notebook',
+           'paralelize_notebook_experiment']
 
 # %% ../nbs/08_experiment.ipynb 2
 import os
 import pandas as pd
-import subprocess
 import numpy as np
-import shutil
-import seaborn as sns
 import json
 from typing import Dict, Any, Optional
-from PIL import Image, ImageDraw, ImageFont
-import matplotlib.pyplot as plt
 import torch
 import itertools
 import nbformat
@@ -27,7 +22,7 @@ import re
 import logging
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-# %% ../nbs/08_experiment.ipynb 5
+# %% ../nbs/08_experiment.ipynb 6
 def setup_new_experiment(params: Dict[str, Any],              # Dictionary of parameters for the new experiment.
                          experiments_folder: str,             # Path to the folder containing all experiments.
                          json_file: Optional[str] = None      # Optional path to the JSON file tracking experiment parameters.
@@ -79,7 +74,7 @@ def setup_new_experiment(params: Dict[str, Any],              # Dictionary of pa
 
     return new_experiment_folder
 
-# %% ../nbs/08_experiment.ipynb 6
+# %% ../nbs/08_experiment.ipynb 7
 def create_experiments_json(parameter_sets, output_file='experiments.json'):
     """
     Create an experiments.json file from given parameter sets.
@@ -105,7 +100,7 @@ def create_experiments_json(parameter_sets, output_file='experiments.json'):
     
     print(f"Experiments JSON file created: {output_file}")
 
-# %% ../nbs/08_experiment.ipynb 8
+# %% ../nbs/08_experiment.ipynb 9
 def convert_numpy_types(obj):
     """
     Recursively convert numpy types and tensors to native Python types for JSON serialization.
@@ -125,7 +120,7 @@ def convert_numpy_types(obj):
     else:
         return obj
 
-# %% ../nbs/08_experiment.ipynb 9
+# %% ../nbs/08_experiment.ipynb 10
 def add_experiment_metrics(experiments_folder: str,                    # Path to the folder containing all experiments.
                            params: Optional[Dict[str, Any]] = None,    # Optional dictionary of parameters identifying the experiment.
                            experiment_id: Optional[int] = None,        # Optional ID to identify the experiment.
@@ -183,7 +178,7 @@ def add_experiment_metrics(experiments_folder: str,                    # Path to
         experiment_id = experiment['id']
         print(f'Metrics added to experiment with ID {experiment_id} in {json_file}.')
 
-# %% ../nbs/08_experiment.ipynb 11
+# %% ../nbs/08_experiment.ipynb 12
 def get_experiment_parameters(experiments_folder: str,                    # Path to the folder containing all experiments.
                               experiment_id: int,                         # ID to identify the experiment.
                               json_file: Optional[str] = None             # Optional path to the JSON file tracking experiment parameters and metrics.
@@ -214,7 +209,7 @@ def get_experiment_parameters(experiments_folder: str,                    # Path
     # If the experiment is not found, raise an error
     raise ValueError(f"Experiment with the specified ID {experiment_id} does not exist.")
 
-# %% ../nbs/08_experiment.ipynb 13
+# %% ../nbs/08_experiment.ipynb 14
 def get_experiment_data(experiments_folder: str,
                         experiment_id: int,
                         json_file: Optional[str] = None
@@ -257,61 +252,7 @@ def get_experiment_data(experiments_folder: str,
     # If the experiment is not found, raise an error
     raise ValueError(f"Experiment with the specified ID {experiment_id} does not exist.")
 
-# %% ../nbs/08_experiment.ipynb 14
-def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len):
-    arrays = []
-    
-    for folder in os.listdir(experiments_folder):
-        if folder.startswith('experiment_') and os.path.isdir(os.path.join(experiments_folder, folder)):
-            # Extract the experiment number using regex
-            match = re.search(r'experiment_(\d+)', folder)
-            if match:
-                experiment_id = match.group(1)
-                generated_data_path = os.path.join(experiments_folder, folder, f'exp{experiment_id}_generated_orbits.npy')
-                
-                if os.path.isfile(generated_data_path):
-                    generated_orbit = np.load(generated_data_path)
-                    
-                    if generated_orbit.shape[-1] == seq_len:
-                        arrays.append(generated_orbit)
-    
-    if arrays:
-        return np.concatenate(arrays, axis=0)
-    else:
-        return np.array([])
-
-# %% ../nbs/08_experiment.ipynb 16
-def convert_notebook(notebook_path: str,                # The path to the notebook to convert.
-                     output_folder: str,                # The folder to save the converted file.
-                     output_filename: str,              # The name of the output file.
-                     format: str = 'html'               # The format to convert the notebook to ('html' or 'pdf').
-                    ) -> None:                          # This function does not return a value.
-    """
-    Convert the specified Jupyter notebook to HTML or PDF.
-
-    :param notebook_path: The path to the notebook to convert.
-    :param output_folder: The folder to save the converted file.
-    :param output_filename: The name of the output file.
-    :param format: The format to convert the notebook to ('html' or 'pdf').
-    """
-    if format == 'pdf' and shutil.which('pandoc') is None:
-        raise RuntimeError("Pandoc is required for PDF conversion but was not found. Please install Pandoc: https://pandoc.org/installing.html")
-
-    # Create the full path for the output file
-    os.makedirs(output_folder, exist_ok=True)
-    output_path = os.path.join(output_folder, f"{output_filename}.{format}")
-
-    # Convert the notebook using nbconvert
-    command = f"jupyter nbconvert --to {format} \"{notebook_path}\" --output \"{output_path}\""
-    try:
-        subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
-        print(f"Notebook converted to {format.upper()} and saved at {output_path}")
-    except subprocess.CalledProcessError as e:
-        print(f"An error occurred while converting the notebook to {format.upper()}:")
-        print(e.stderr)
-        raise
-
-# %% ../nbs/08_experiment.ipynb 17
+# %% ../nbs/08_experiment.ipynb 15
 def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
     """
     Reads a JSON file containing experiment results and returns a DataFrame.
@@ -337,7 +278,30 @@ def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
     df = pd.DataFrame(records)
     return df
 
-# %% ../nbs/08_experiment.ipynb 19
+# %% ../nbs/08_experiment.ipynb 18
+def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len):
+    arrays = []
+    
+    for folder in os.listdir(experiments_folder):
+        if folder.startswith('experiment_') and os.path.isdir(os.path.join(experiments_folder, folder)):
+            # Extract the experiment number using regex
+            match = re.search(r'experiment_(\d+)', folder)
+            if match:
+                experiment_id = match.group(1)
+                generated_data_path = os.path.join(experiments_folder, folder, f'exp{experiment_id}_generated_orbits.npy')
+                
+                if os.path.isfile(generated_data_path):
+                    generated_orbit = np.load(generated_data_path)
+                    
+                    if generated_orbit.shape[-1] == seq_len:
+                        arrays.append(generated_orbit)
+    
+    if arrays:
+        return np.concatenate(arrays, axis=0)
+    else:
+        return np.array([])
+
+# %% ../nbs/08_experiment.ipynb 20
 def generate_parameter_sets(params, model_specific_params):
     keys, values = zip(*params.items())
     combinations = [dict(zip(keys, v)) for v in itertools.product(*[
@@ -356,98 +320,7 @@ def generate_parameter_sets(params, model_specific_params):
     return final_combinations
 
 
-# %% ../nbs/08_experiment.ipynb 21
-def create_experiment_image_grid(experiments_folder, image_suffix, crop_length, font_size=12, save_path=None, grid_size=(3, 2), experiment_indices=None, hspace=-0.37):
-    if experiment_indices is None:
-        experiment_indices = [1, 2, 3, 4, 5, 6]  # Default set of indices
-
-    # Set the directory for experiments
-    experiments = [d for d in os.listdir(experiments_folder) if os.path.isdir(os.path.join(experiments_folder, d)) and 'experiment_' in d]
-    experiments.sort()  # Sorting to maintain numerical order
-    
-    # Set up the plot with dynamic grid sizing
-    fig, axes = plt.subplots(*grid_size, figsize=(5 * grid_size[1], 5 * grid_size[0]))  # Adjusted figsize dynamically
-    axes = axes.flatten()
-    
-    for ax in axes:
-        ax.axis('off')  # Hide axes
-
-    # Process each experiment folder
-    max_images = grid_size[0] * grid_size[1]
-    processed_images = 0
-    for idx in experiment_indices:
-        if processed_images >= max_images:
-            break
-        experiment_name = f'experiment_{idx}'
-        image_path = os.path.join(experiments_folder, experiment_name, 'images', f'exp{idx}_{image_suffix}')
-        if os.path.exists(image_path):
-            # Load and crop the image
-            img = Image.open(image_path)
-            img = img.crop((crop_length, crop_length, img.width - crop_length, img.height - crop_length))
-            
-            # Draw label
-            draw = ImageDraw.Draw(img)
-            try:
-                font = ImageFont.truetype("arial.ttf", font_size)
-            except IOError:
-                font = ImageFont.load_default()
-            text = f"Experiment {idx}"
-            draw.text((10, 10), text, font=font, fill=(255, 255, 255))
-
-            # Show image in grid
-            axes[processed_images].imshow(img)
-            axes[processed_images].set_title(text)
-            processed_images += 1
-        else:
-            axes[processed_images].text(0.5, 0.5, 'Image not found', horizontalalignment='center', verticalalignment='center')
-            processed_images += 1
-
-    # Adjust layout
-    plt.tight_layout()
-    plt.subplots_adjust(hspace=hspace)  # Reduce vertical spacing
-
-    # Save the grid if save_path is provided
-    if save_path:
-        plt.savefig(save_path, bbox_inches='tight')
-
-    # Display the grid
-    plt.show()
-
 # %% ../nbs/08_experiment.ipynb 22
-def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm', save_path: Optional[str] = None):
-    """
-    Plots a correlation matrix heatmap with annotations.
-    
-    Parameters:
-    dataframe (pd.DataFrame): The DataFrame containing the data to be analyzed.
-    figsize (tuple): The size of the figure (width, height).
-    cmap (str): The color map to be used for the heatmap.
-    save_path (Optional[str]): The path to save the plot image. If None, the plot is not saved.
-    
-    Returns:
-    None: Displays the correlation matrix heatmap.
-    """
-    # Calculate the correlation matrix
-    corr_matrix = dataframe.corr()
-
-    # Set up the matplotlib figure
-    plt.figure(figsize=figsize)
-
-    # Draw the heatmap with the correlation numbers
-    sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap=cmap, cbar=True, linewidths=.5, square=True)
-
-    # Set the title
-    plt.title('Correlation Matrix of Metrics')
-
-    # Save the plot if a save path is provided
-    if save_path:
-        plt.savefig(save_path, bbox_inches='tight')
-        print(f"Plot saved to {save_path}")
-
-    # Show the plot
-    plt.show()
-
-# %% ../nbs/08_experiment.ipynb 24
 def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, checkpoint_file):
     try:
         # Mark as started
@@ -488,7 +361,7 @@ def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, check
         logging.error(f"Traceback: {traceback.format_exc()}")
         return None
 
-# %% ../nbs/08_experiment.ipynb 25
+# %% ../nbs/08_experiment.ipynb 23
 def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_dir, checkpoint_file, max_workers=3):
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
