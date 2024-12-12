@@ -5,7 +5,7 @@
 # %% auto 0
 __all__ = ['plot_3d_points', 'visualize_static_orbits', 'visualize_orbits_minimal', 'export_dynamic_orbits_html',
            'plot_histogram', 'plot_grouped_features', 'plot_value_proportions', 'plot_mean_distance_by_group_column',
-           'plot_corr_matrix', 'summarize_and_test', 'create_image_grid_from_routes']
+           'plot_corr_matrix', 'summarize_and_test', 'plot_single_image', 'create_image_grid_from_routes']
 
 # %% ../nbs/03_visualization.ipynb 2
 import numpy as np
@@ -684,6 +684,47 @@ def summarize_and_test(
     }
 
 # %% ../nbs/03_visualization.ipynb 32
+def plot_single_image(image_path, crop_length=0, font_size=17, save_path=None, figsize=(15, 15), title=None):
+    """
+    Plot a single image with customization options.
+
+    Args:
+        image_path (str): Path to the image file.
+        crop_length (int): Number of pixels to crop from each side of the image.
+        font_size (int): Font size for the title.
+        save_path (str): Path to save the plotted image. If None, the image is not saved.
+        figsize (tuple): Size of the figure (width, height).
+        title (str): Title for the image.
+
+    Returns:
+        None
+    """
+    if not os.path.exists(image_path):
+        print(f"Error: The file '{image_path}' does not exist.")
+        return
+
+    # Load and crop the image
+    img = Image.open(image_path)
+    img = img.crop((crop_length, crop_length, img.width - crop_length, img.height - crop_length))
+
+    # Set up the plot
+    plt.figure(figsize=figsize)
+    plt.imshow(img)
+    plt.axis('off')  # Hide axes
+
+    # Add title if provided
+    if title:
+        plt.title(title, fontsize=font_size)
+
+    # Save the plot if a save path is provided
+    if save_path:
+        plt.savefig(save_path, bbox_inches='tight')
+
+    # Display the plot
+    plt.show()
+
+
+# %% ../nbs/03_visualization.ipynb 33
 def create_image_grid_from_routes(image_routes, crop_length=0, font_size=12, save_path=None, grid_size=(3, 2), hspace=-0.37, label_images=None):
     """
     Create a grid of images from a list of image paths.
