@@ -684,7 +684,7 @@ def summarize_and_test(
     }
 
 # %% ../nbs/03_visualization.ipynb 32
-def create_image_grid_from_routes(image_routes, crop_length=0, font_size=12, save_path=None, grid_size=(3, 2), hspace=-0.37, label_images=False):
+def create_image_grid_from_routes(image_routes, crop_length=0, font_size=12, save_path=None, grid_size=(3, 2), hspace=-0.37, label_images=None):
     """
     Create a grid of images from a list of image paths.
 
@@ -695,7 +695,7 @@ def create_image_grid_from_routes(image_routes, crop_length=0, font_size=12, sav
         save_path (str): Path to save the generated grid image. If None, the grid is not saved.
         grid_size (tuple): Number of rows and columns in the grid.
         hspace (float): Vertical spacing between grid rows.
-        label_images (bool): Whether to add labels to images.
+        label_images (list or bool): List of labels for images or a boolean to add default labels.
 
     Returns:
         None
@@ -721,13 +721,16 @@ def create_image_grid_from_routes(image_routes, crop_length=0, font_size=12, sav
             img = img.crop((crop_length, crop_length, img.width - crop_length, img.height - crop_length))
             
             if label_images:
-                # Draw label on the image if label_images is True
+                # Draw label on the image if label_images is a list or True
                 draw = ImageDraw.Draw(img)
                 try:
                     font = ImageFont.truetype("arial.ttf", font_size)
                 except IOError:
                     font = ImageFont.load_default()
-                text = f"Image {idx + 1}"
+                if isinstance(label_images, list) and idx < len(label_images):
+                    text = label_images[idx]
+                else:
+                    text = f"Image {idx + 1}"
                 draw.text((10, 10), text, font=font, fill=(255, 255, 255))
 
             # Show image in the grid
