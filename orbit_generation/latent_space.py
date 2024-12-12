@@ -385,7 +385,8 @@ def plot_combined_2d_latent_space(
     save_path: Optional[str] = None,              # Optional path to save the plot image.
     show_legend: bool = True,                     # Flag to show or hide the legend.
     annotation_mode: str = 'legend',              # Mode for annotation: 'legend' for colored dots, 'numbers' for numeric annotations.
-    axis_labels: tuple = ('X-axis', 'Y-axis')     # Labels for the X and Y axes.
+    axis_labels: tuple = ('X-axis', 'Y-axis'),    # Labels for the X and Y axes.
+    title: Optional[str] = None                   # Title of the plot.
 ) -> None:
     """
     Plots the combined latent space of real and synthetic data.
@@ -401,6 +402,7 @@ def plot_combined_2d_latent_space(
         show_legend (bool): Flag to show or hide the legend.
         annotation_mode (str): Mode for annotation: 'legend' for colored dots, 'numbers' for numeric annotations.
         axis_labels (tuple): Labels for the X and Y axes.
+        title (Optional[str]): Title of the plot.
 
     Returns:
         None
@@ -516,6 +518,10 @@ def plot_combined_2d_latent_space(
     # Set axis labels using the single parameter tuple
     plt.xlabel(axis_labels[0], fontsize=14)
     plt.ylabel(axis_labels[1], fontsize=14)
+
+    # Set plot title if provided
+    if title is not None:
+        plt.title(title)
 
     # Save the plot if a save path is provided
     if save_path:
