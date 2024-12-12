@@ -103,10 +103,26 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
                             point_dict: Optional[Dict[str, tuple]] = None,  # Dictionary of extra points to plot.
                             show_legend: bool = True,  # Flag to indicate whether to show a legend.
                             save_path: Optional[str] = None,  # Path to save the figure; defaults to None.
-                            plot_reference_box: bool = True  # Flag to indicate whether to plot the reference box.
+                            plot_reference_box: bool = True,  # Flag to indicate whether to plot the reference box.
+                            title: Optional[str] = None,  # Custom title for the plot.
+                            orbit_names: Optional[List[str]] = None  # Custom names for orbits; defaults to "Orbit {index}".
                            ) -> None:
     """
     Visualizes orbits in 3D space and highlights specified time instants for each selected orbit.
+
+    Args:
+        data (np.ndarray): The orbit data with shape (num_orbits, 6, num_time_points).
+        time_instants (Optional[List[int]]): Time points to highlight; defaults to None.
+        orbit_indices (Optional[List[int]]): Indices of orbits to visualize; defaults to all.
+        point_dict (Optional[Dict[str, tuple]]): Dictionary of extra points to plot.
+        show_legend (bool): Flag to indicate whether to show a legend.
+        save_path (Optional[str]): Path to save the figure; defaults to None.
+        plot_reference_box (bool): Flag to indicate whether to plot the reference box.
+        title (Optional[str]): Custom title for the plot.
+        orbit_names (Optional[List[str]]): Custom names for orbits; defaults to "Orbit {index}".
+
+    Returns:
+        None
     """
     
     # Use Matplotlib's Computer Modern font
@@ -139,17 +155,21 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
     fig = plt.figure(figsize=(10, 8))
     ax = fig.add_subplot(111, projection='3d')
 
-    # Plot each selected orbit.
-    for index in orbit_indices:
+    # Plot each selected orbit with custom names if provided.
+    for idx, index in enumerate(orbit_indices):
         X = data[index, 0, :]  # X coordinates
         Y = data[index, 1, :]  # Y coordinates
         Z = data[index, 2, :]  # Z coordinates
-        ax.plot(X, Y, Z, label=f'Orbit {index}', alpha=0.5)  # Plot each orbit with a label.
+        
+        # Use custom orbit name if provided; otherwise default to "Orbit {index}".
+        orbit_label = orbit_names[idx] if orbit_names and idx < len(orbit_names) else f'Orbit {index}'
+        
+        ax.plot(X, Y, Z, label=orbit_label, alpha=0.5)  # Plot each orbit with a label.
 
     # Generate a color map for time instants if they exist.
     colors = plt.cm.jet(np.linspace(0, 1, len(time_instants)))
 
-    # Highlight specified time instants and add to the legend.
+    # Highlight specified time instants and add them to the legend.
     legend_added = set()  # Track which labels have been added to the legend
     if time_instants:
         for time_instant, color in zip(time_instants, colors):
@@ -171,7 +191,9 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-    plt.title('3D Orbits Static Visualization')
+    
+    # Set custom title if provided; otherwise use default title.
+    plt.title(title if title else '3D Orbits Static Visualization')
 
     # Display the legend if requested.
     if show_legend:
