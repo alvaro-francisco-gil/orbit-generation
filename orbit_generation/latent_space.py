@@ -521,7 +521,7 @@ def plot_combined_2d_latent_space(
 
     # Set plot title if provided
     if title is not None:
-        plt.title(title, fontsize=17)
+        plt.title(title, fontsize=16)
 
     # Save the plot if a save path is provided
     if save_path:
