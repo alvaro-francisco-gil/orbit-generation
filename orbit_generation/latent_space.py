@@ -384,12 +384,26 @@ def plot_combined_2d_latent_space(
     figsize: tuple = (12, 9),                     # Size of the figure.
     save_path: Optional[str] = None,              # Optional path to save the plot image.
     show_legend: bool = True,                     # Flag to show or hide the legend.
-    annotation_mode: str = 'legend'               # Mode for annotation: 'legend' for colored dots, 'numbers' for numeric annotations.
+    annotation_mode: str = 'legend',              # Mode for annotation: 'legend' for colored dots, 'numbers' for numeric annotations.
+    axis_labels: tuple = ('X-axis', 'Y-axis')     # Labels for the X and Y axes.
 ) -> None:
     """
     Plots the combined latent space of real and synthetic data.
     Assumes the latent space is 2D. If synthetic_latent is a 3D array, it plots arrows.
     Numeric annotations for arrows are only displayed if synthetic_labels are provided.
+
+    Args:
+        real_latent (np.ndarray): Latent representations of real data.
+        synthetic_latent (np.ndarray): Latent representations of synthetic data or arrows.
+        synthetic_labels (Optional[Union[int, List[int]]]): Labels for synthetic data. Can be None, a single label, or a list of labels.
+        figsize (tuple): Size of the figure.
+        save_path (Optional[str]): Optional path to save the plot image.
+        show_legend (bool): Flag to show or hide the legend.
+        annotation_mode (str): Mode for annotation: 'legend' for colored dots, 'numbers' for numeric annotations.
+        axis_labels (tuple): Labels for the X and Y axes.
+
+    Returns:
+        None
     """
     plt.figure(figsize=figsize)
 
@@ -498,6 +512,10 @@ def plot_combined_2d_latent_space(
 
     else:
         raise ValueError("synthetic_latent must be either a 2D or 3D array.")
+
+    # Set axis labels using the single parameter tuple
+    plt.xlabel(axis_labels[0], fontsize=14)
+    plt.ylabel(axis_labels[1], fontsize=14)
 
     # Save the plot if a save path is provided
     if save_path:
