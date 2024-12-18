@@ -215,10 +215,33 @@ def sample_orbits(orbit_data: np.ndarray,  # Orbit data array
 
 # %% ../nbs/01_data.ipynb 24
 def discard_random_labels(data, labels, discard_labels):
+    """
+    Discards random or specified labels from the dataset.
+
+    Parameters:
+    - data: np.ndarray, the dataset to filter.
+    - labels: np.ndarray, the labels corresponding to the data.
+    - discard_labels: Can be a list of labels to discard, an integer (number of labels to discard), 
+                      or a dictionary (treated as a list of keys). If empty, returns the original data.
+
+    Returns:
+    - discarded: List of discarded labels.
+    - filtered_data: Data with specified labels removed.
+    - filtered_labels: Labels with specified labels removed.
+    """
+    # Handle empty dictionary or empty list
+    if isinstance(discard_labels, dict) and not discard_labels:
+        return [], data, labels  # Return everything as is if dictionary is empty
+    elif isinstance(discard_labels, list) and not discard_labels:
+        return [], data, labels  # Return everything as is if list is empty
+    
     # Check if discard_labels is a list
     if isinstance(discard_labels, list):
         # Use the provided list of labels to discard
         discarded = np.array(discard_labels)
+    elif isinstance(discard_labels, dict):
+        # If it's a dictionary, use its keys as labels to discard
+        discarded = np.array(list(discard_labels.keys()))
     else:
         # Get unique labels
         unique_labels = np.unique(labels)
@@ -230,6 +253,7 @@ def discard_random_labels(data, labels, discard_labels):
     
     # Return the discarded labels and the filtered dataset
     return discarded.tolist(), data[mask], labels[mask]
+
 
 # %% ../nbs/01_data.ipynb 26
 def remove_duplicates_preserve_order(input_list):
