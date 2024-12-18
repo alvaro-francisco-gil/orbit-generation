@@ -7,7 +7,8 @@ __all__ = ['data_path', 'experiments_folder', 'setup_new_experiment', 'create_ex
            'add_experiment_metrics', 'get_experiment_parameters', 'get_experiment_data', 'read_json_to_dataframe',
            'generate_image_paths', 'concatenate_orbits_from_experiment_folder',
            'concatenate_csvs_from_experiment_folder', 'generate_parameter_sets', 'execute_parameter_notebook',
-           'paralelize_notebook_experiment', 'generate_file_paths', 'prepare_experiment_data']
+           'paralelize_notebook_experiment', 'generate_file_paths', 'prepare_experiment_data',
+           'prepare_and_train_model']
 
 # %% ../nbs/08_experiment.ipynb 2
 import os
@@ -512,6 +513,11 @@ def generate_file_paths(experiment_id, images_folder, experiment_folder):
     }
     return paths
 
+# %% ../nbs/08_experiment.ipynb 31
+from .dataset import get_first_period_dataset, get_orbit_classes
+from .data import TSFeatureWiseScaler, discard_random_labels
+import torch
+
 # %% ../nbs/08_experiment.ipynb 32
 def prepare_experiment_data(params, experiments_folder, data_path, want_to_discover):
     """
@@ -598,3 +604,77 @@ def prepare_experiment_data(params, experiments_folder, data_path, want_to_disco
     # Return processed data and metadata
     return scaled_data, orbit_df, family_labels, discarded_families, features, file_paths, experiment_id
 
+
+# %% ../nbs/08_experiment.ipynb 33
+from pytorch_lightning import Trainer
+from .model_factory import get_model
+from .data import create_dataloaders
+from .architectures import VAELossHistory
+
+# %% ../nbs/08_experiment.ipynb 34
+def prepare_and_train_model(params, scaled_data, experiments_folder, experiment_id, file_paths, want_to_train):
+    """
+    Prepare the model and either train it or load a pre-trained version based on the provided parameters.
+
+    Parameters:
+        params (dict): A dictionary containing all the experiment parameters.
+        scaled_data (torch.Tensor): The scaled data to be used for training or validation.
+        experiments_folder (str): The folder where experiments are stored.
+        experiment_id (int): The unique ID of the current experiment.
+        file_paths (dict): A dictionary containing file paths for saving/loading model and metrics.
+        want_to_train (bool): Flag indicating whether to train the model or load a pre-trained one.
+
+    Returns:
+        object: The trained or loaded model.
+    """
+    # Step 1: Initialize the model
+    model = get_model(params)
+
+    # Step 2: Handle training
+    if want_to_train:
+        # Create data loaders
+        train_loader, val_loader = create_dataloaders(
+            scaled_data,
+            val_split=params.get('val_split', 0.1),
+            batch_size=params.get('batch_size', 32)
+        )
+
+        # Initialize loss history callback
+        loss_history = VAELossHistory()
+
+        # Initialize Trainer
+        trainer = Trainer(
+            max_epochs=params.get('epochs', 10),
+            log_every_n_steps=10,
+            devices="auto",
+            accelerator="auto",
+            enable_progress_bar=True,
+            enable_model_summary=True,
+            callbacks=[loss_history]
+        )
+
+        # Train the model
+        trainer.fit(model, train_loader, val_loader)
+
+        # Log metrics
+        for metric_name, metric_value in trainer.callback_metrics.items():
+            print(f"{metric_name}: {metric_value}")
+
+        # Save metrics to experiment folder
+        add_experiment_metrics(
+            experiments_folder,
+            experiment_id=experiment_id,
+            metrics=trainer.callback_metrics
+        )
+
+        # Save model state to file
+        torch.save(model.state_dict(), file_paths['model_save_path'])
+
+        # Plot and save loss history
+        loss_history.plot_all_losses(save_path=file_paths['model_losses_path'])
+
+    else:
+        # Load pre-trained model state from file
+        model.load_state_dict(torch.load(file_paths['model_save_path'], weights_only=True))
+
+    return model
