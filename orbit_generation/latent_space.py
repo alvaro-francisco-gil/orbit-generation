@@ -925,19 +925,19 @@ def trimmed_mean_centroid(points, trim_ratio=0.1):
     return np.array([np.mean(dim) for dim in trimmed_points])
 
 # %% ../nbs/13_latent_space.ipynb 25
-def plot_linear_regression(latent_means, features, feature_names, normalize=True):
+def plot_linear_regression(latent_means, features, feature_names, normalize=False):
     """
     Perform linear regression for each feature, visualize the results, and return regression metrics.
     
     Parameters:
-    - latent_means: np.ndarray of shape (n_samples, latent_dim
-    ), the latent space coordinates.
+    - latent_means: np.ndarray of shape (n_samples, latent_dim), the latent space coordinates.
     - features: np.ndarray of shape (n_samples, n_features), the feature values.
     - feature_names: List of strings representing the names of the features.
     - normalize: Boolean, whether to normalize the features and latent space (default: False).
 
     Returns:
     - results: Dictionary containing coefficients, intercepts, and R² values for each feature.
+    - simple_results: Dictionary containing R² values for each feature with modified keys.
     """
     num_features = features.shape[1]
     fig, axes = plt.subplots(1, num_features, figsize=(5 * num_features, 5))
@@ -947,6 +947,7 @@ def plot_linear_regression(latent_means, features, feature_names, normalize=True
         axes = [axes]
     
     results = {}
+    simple_results = {}  # New dictionary for simpler results
     
     # Normalize data if requested
     if normalize:
@@ -976,6 +977,9 @@ def plot_linear_regression(latent_means, features, feature_names, normalize=True
             'r_squared': r_squared
         }
         
+        # Store only R² value with modified keys
+        simple_results[f'regression_{feature_name}_r2'] = r_squared
+        
         # Plot latent space with color-coded feature values
         scatter = axes[i].scatter(latent_means_normalized[:, 0], latent_means_normalized[:, 1], 
                                    c=target_feature_values, cmap='viridis', alpha=0.5)
@@ -986,7 +990,7 @@ def plot_linear_regression(latent_means, features, feature_names, normalize=True
         # Add colorbar
         plt.colorbar(scatter, ax=axes[i])
         
-        # Plot regression direction (line)#
+        # Plot regression direction (line)
         x_vals = np.array(axes[i].get_xlim())
         y_vals = coefficients[0] * x_vals + intercept
         axes[i].plot(x_vals, y_vals, '--r', label='Regression Line')
@@ -995,4 +999,4 @@ def plot_linear_regression(latent_means, features, feature_names, normalize=True
     plt.tight_layout()
     plt.show()
     
-    return results
+    return results, simple_results
