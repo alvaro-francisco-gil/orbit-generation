@@ -1899,13 +1899,13 @@
         "family_silhouette_score": 0.3077673017978668,
         "family_jaccard": 0.0,
         "family_accuracy": 0.666445842994369,
-        "position_error": 0.19862905332896952,
-        "velocity_error": 0.3510208400405864,
-        "energy_error": 0.7296323825543125,
-        "disorder_metric": 323.06666666666666,
-        "correct_order": 72.7,
-        "inversions": 218.26333333333332,
-        "kendall_tau_distance": 0.0881872053872052
+        "position_error": 0.20782120145701666,
+        "velocity_error": 0.36461669777203665,
+        "energy_error": 0.7779170761133234,
+        "disorder_metric": 326.53333333333336,
+        "correct_order": 73.43333333333334,
+        "inversions": 220.94666666666666,
+        "kendall_tau_distance": 0.08927138047138038
     },
     {
         "id": 37,
