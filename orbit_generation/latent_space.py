@@ -6,7 +6,7 @@
 __all__ = ['plot_2d_latent_space', 'plot_combined_2d_latent_space', 'reduce_dimensions_latent_space',
            'reduce_dimensions_combined_latent_space', 'sample_random_distributions', 'linear_interpolation', 'slerp',
            'interpolate_sample', 'grid_sample', 'compute_centroids', 'geometric_median', 'compute_medoid',
-           'trimmed_mean_centroid']
+           'trimmed_mean_centroid', 'plot_linear_regression']
 
 # %% ../nbs/13_latent_space.ipynb 2
 import numpy as np
@@ -26,8 +26,10 @@ from sklearn.preprocessing import LabelEncoder
 from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 import torch
-import random
 from scipy.stats import qmc
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+from sklearn.preprocessing import StandardScaler
 
 # %% ../nbs/13_latent_space.ipynb 3
 from .architectures import Sampling
@@ -921,3 +923,76 @@ def trimmed_mean_centroid(points, trim_ratio=0.1):
         trimmed_dim = sorted_dim[trim: -trim]
         trimmed_points.append(trimmed_dim)
     return np.array([np.mean(dim) for dim in trimmed_points])
+
+# %% ../nbs/13_latent_space.ipynb 25
+def plot_linear_regression(latent_means, features, feature_names, normalize=True):
+    """
+    Perform linear regression for each feature, visualize the results, and return regression metrics.
+    
+    Parameters:
+    - latent_means: np.ndarray of shape (n_samples, latent_dim
+    ), the latent space coordinates.
+    - features: np.ndarray of shape (n_samples, n_features), the feature values.
+    - feature_names: List of strings representing the names of the features.
+    - normalize: Boolean, whether to normalize the features and latent space (default: False).
+
+    Returns:
+    - results: Dictionary containing coefficients, intercepts, and R² values for each feature.
+    """
+    num_features = features.shape[1]
+    fig, axes = plt.subplots(1, num_features, figsize=(5 * num_features, 5))
+    
+    # Handle single feature case for consistent indexing
+    if num_features == 1:
+        axes = [axes]
+    
+    results = {}
+    
+    # Normalize data if requested
+    if normalize:
+        scaler_latent = StandardScaler()
+        latent_means_normalized = scaler_latent.fit_transform(latent_means)
+        scaler_features = StandardScaler()
+        features_normalized = scaler_features.fit_transform(features)
+    else:
+        latent_means_normalized = latent_means
+        features_normalized = features
+    
+    for i, feature_name in enumerate(feature_names):
+        target_feature_values = features_normalized[:, i]
+        
+        # Perform linear regression
+        model = LinearRegression()
+        model.fit(latent_means_normalized, target_feature_values)
+        coefficients = model.coef_
+        intercept = model.intercept_
+        predictions = model.predict(latent_means_normalized)
+        r_squared = r2_score(target_feature_values, predictions)
+        
+        # Store results
+        results[feature_name] = {
+            'coefficients': coefficients,
+            'intercept': intercept,
+            'r_squared': r_squared
+        }
+        
+        # Plot latent space with color-coded feature values
+        scatter = axes[i].scatter(latent_means_normalized[:, 0], latent_means_normalized[:, 1], 
+                                   c=target_feature_values, cmap='viridis', alpha=0.5)
+        axes[i].set_title(f'{feature_name} (R² = {r_squared:.4f})')
+        axes[i].set_xlabel('Latent Dimension 1')
+        axes[i].set_ylabel('Latent Dimension 2')
+        
+        # Add colorbar
+        plt.colorbar(scatter, ax=axes[i])
+        
+        # Plot regression direction (line)#
+        x_vals = np.array(axes[i].get_xlim())
+        y_vals = coefficients[0] * x_vals + intercept
+        axes[i].plot(x_vals, y_vals, '--r', label='Regression Line')
+        axes[i].legend()
+    
+    plt.tight_layout()
+    plt.show()
+    
+    return results
