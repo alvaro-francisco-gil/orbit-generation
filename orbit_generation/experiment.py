@@ -8,7 +8,7 @@ __all__ = ['data_path', 'experiments_folder', 'setup_new_experiment', 'create_ex
            'generate_image_paths', 'concatenate_orbits_from_experiment_folder',
            'concatenate_csvs_from_experiment_folder', 'generate_parameter_sets', 'execute_parameter_notebook',
            'paralelize_notebook_experiment', 'generate_file_paths', 'prepare_experiment_data',
-           'prepare_and_train_model', 'process_latent_space']
+           'prepare_and_train_model']
 
 # %% ../nbs/08_experiment.ipynb 2
 import os
@@ -384,13 +384,10 @@ def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, extra
         if extra_parameters is not None:
             params.update(extra_parameters)
 
-        # Inject parameters into the notebook
-        nb.cells.insert(0, nbformat.v4.new_code_cell(f"# Parameters\n{json.dumps(params)}"))
-
-        # Execute the notebook
-        pm.execute_notebook(
+        nb = pm.execute_notebook(
             nb,
             output_notebook,
+            parameters=params,
             kernel_name='pytorch',
             timeout=100000,
             log_output=True
@@ -686,56 +683,3 @@ def prepare_and_train_model(params, scaled_data, experiments_folder, experiment_
         model.load_state_dict(torch.load(file_paths['model_save_path'], weights_only=True))
 
     return model
-
-# %% ../nbs/08_experiment.ipynb 35
-def process_latent_space(model, scaled_data, family_labels, features, feature_names, save_paths):
-    """
-    Processes the latent space by encoding data, saving latent representations,
-    calculating standard deviations, and plotting latent spaces if applicable.
-
-    Parameters:
-        model (object): The trained model used for encoding.
-        scaled_data (torch.Tensor): Scaled input data.
-        family_labels (list or np.array): Labels for each data point.
-        features (np.array): Additional features to include in plots.
-        feature_names (list): Names of the features.
-        params (dict): Dictionary containing experiment parameters.
-        save_paths (dict): Dictionary containing paths for saving outputs.
-
-    Returns:
-        tuple: Latent means, latent log variances, and latent standard deviations.
-    """
-    # Encode scaled data
-    latent_means, latent_log_vars = model.encode(scaled_data)
-    latent_means = latent_means.detach().numpy()
-    latent_log_vars = latent_log_vars.detach().numpy()
-
-    # Save latent representations
-    latent_representation = np.concatenate((latent_means, latent_log_vars), axis=1)
-    np.save(save_paths['latent_representations_path'], latent_representation)
-
-    # Calculate standard deviations
-    latent_log_vars_tensor = torch.from_numpy(latent_log_vars)
-    latent_stdevs = torch.exp(0.5 * latent_log_vars_tensor).numpy()
-
-    # Plot 2D Latent Space if applicable
-    if latent_means.shape[1] == 2:
-        plot_2d_latent_space(
-            latent_means,
-            np.array(family_labels),
-            save_path=save_paths['latent_space_path'],
-            features=features,
-            feature_names=feature_names,
-            plot_std=True
-        )
-    else:
-        reduce_dimensions_latent_space(
-            latent_means,
-            np.array(family_labels),
-            techniques=['PCA', 'UMAP'],
-            save_path=save_paths['latent_space_path'],
-            show_legend=False
-        )
-
-    return latent_means, latent_log_vars, latent_stdevs
-
