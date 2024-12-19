@@ -262,7 +262,10 @@ def calculate_errors(
             total_time_steps += (len(unique_time_indices) - 1)
         
         # Calculate the mean error per time step across all orbits
-        avg_error_per_timestep = cumulative_error / total_time_steps
+        if total_time_steps > 0:
+            avg_error_per_timestep = cumulative_error / total_time_steps
+        else:
+            avg_error_per_timestep = 0.0
         
         if display_results:
             print(f"Cumulative {error_type} error for selected orbits: {cumulative_error}")
