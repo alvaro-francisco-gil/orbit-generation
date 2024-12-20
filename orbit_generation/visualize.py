@@ -105,7 +105,8 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
                             save_path: Optional[str] = None,  # Path to save the figure; defaults to None.
                             plot_reference_box: bool = True,  # Flag to indicate whether to plot the reference box.
                             title: Optional[str] = None,  # Custom title for the plot.
-                            orbit_names: Optional[List[str]] = None  # Custom names for orbits; defaults to "Orbit {index}".
+                            orbit_names: Optional[List[str]] = None,  # Custom names for orbits; defaults to "Orbit {index}".
+                            equal_aspect: bool = False  # Flag to enforce equal scaling for all axes.
                            ) -> None:
     """
     Visualizes orbits in 3D space and highlights specified time instants for each selected orbit.
@@ -120,6 +121,7 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
         plot_reference_box (bool): Flag to indicate whether to plot the reference box.
         title (Optional[str]): Custom title for the plot.
         orbit_names (Optional[List[str]]): Custom names for orbits; defaults to "Orbit {index}".
+        equal_aspect (bool): Flag to enforce equal scaling for all axes.
 
     Returns:
         None
@@ -166,10 +168,8 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
         
         ax.plot(X, Y, Z, label=orbit_label, alpha=0.5)  # Plot each orbit with a label.
 
-    # Generate a color map for time instants if they exist.
-    colors = plt.cm.jet(np.linspace(0, 1, len(time_instants)))
-
     # Highlight specified time instants and add them to the legend.
+    colors = plt.cm.jet(np.linspace(0, 1, len(time_instants)))
     legend_added = set()  # Track which labels have been added to the legend
     if time_instants:
         for time_instant, color in zip(time_instants, colors):
@@ -185,40 +185,45 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
     # Plot additional points if provided.
     if point_dict:
         for point_name, coords in point_dict.items():
-            ax.scatter(*coords, label=point_name, s=100, depthshade=True)  # Always add label for point_dict entries.
+            ax.scatter(*coords, label=point_name, s=100)
 
     # Set labels and title.
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
     
-    # Set custom title if provided; otherwise use default title.
     plt.title(title if title else '3D Orbits Static Visualization')
 
     # Display the legend if requested.
     if show_legend:
         ax.legend()
 
-    # Set the background color and plot reference box if requested.
+    # Handle axis scaling based on `equal_aspect` parameter
+    if equal_aspect:
+        x_range = np.ptp(data[:, 0])
+        y_range = np.ptp(data[:, 1])
+        z_range = np.ptp(data[:, 2])
+        
+        max_range = max(x_range, y_range, z_range)
+        
+        ax.set_box_aspect([x_range / max_range,
+                           y_range / max_range,
+                           z_range / max_range]) 
+
+    # Set axis limits and background options
+    ax.set_xlim([data[:, 0].min(), data[:, 0].max()])
+    ax.set_ylim([data[:, 1].min(), data[:, 1].max()])
+    ax.set_zlim([data[:, 2].min(), data[:, 2].max()])
+
     if plot_reference_box:
-        ax.set_facecolor('white')  # White background
-        ax.grid(True)  # Show grid
-        # Set limits for the reference box
-        ax.set_xlim([data[:, 0, :].min(), data[:, 0, :].max()])
-        ax.set_ylim([data[:, 1, :].min(), data[:, 1, :].max()])
-        ax.set_zlim([data[:, 2, :].min(), data[:, 2, :].max()])
+        ax.grid(True)
     else:
-        ax.set_facecolor('white')
         ax.grid(False)
-        ax.set_xticks([])
-        ax.set_yticks([])
-        ax.set_zticks([])
 
     # Save the figure if a save path is provided.
     if save_path:
         plt.savefig(save_path)
 
-    # Show the plot.
     plt.show()
 
 # %% ../nbs/03_visualization.ipynb 9
