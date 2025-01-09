@@ -7,7 +7,8 @@ __all__ = ['Sampling', 'VAELossHistory', 'VAEEncoder', 'VAEDecoder', 'Conv5Encod
            'Conv5EncoderLegitTsgm', 'Conv5DecoderLegitTsgm', 'get_conv5_legit_tsgm_vae_components', 'correct_sizes',
            'pass_through', 'Inception', 'InceptionBlock', 'InceptionWithoutPool', 'InceptionBlockWithoutPool',
            'InceptionTransposeWithoutPool', 'InceptionTransposeBlockWithoutPool', 'InceptionTimeVAEEncoder',
-           'WPInceptionTimeVAEEncoder', 'WPInceptionTimeVAEDecoder', 'get_inception_time_vae_components']
+           'WPInceptionTimeVAEEncoder', 'WPInceptionTimeVAEDecoder', 'get_inception_time_vae_components',
+           'cConv5EncoderLegitTsgm', 'cConv5DecoderLegitTsgm', 'get_conditional_conv5_legit_tsgm_vae_components']
 
 # %% ../nbs/06_architectures.ipynb 2
 import torch
@@ -938,5 +939,112 @@ def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, without_poo
         bottleneck_channels=model_kwargs.get('bottleneck_channels', 32),
         latent_dim=latent_dim
     )
+    
+    return encoder, decoder
+
+# %% ../nbs/06_architectures.ipynb 38
+class cConv5EncoderLegitTsgm(VAEEncoder):
+    def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, dropout_rate: float, cond_dim: int):
+        super().__init__(latent_dim=latent_dim)
+        self.seq_len = seq_len
+        self.feat_dim = feat_dim
+        self.dropout_rate = dropout_rate
+        self.cond_dim = cond_dim  # Dimension of the condition
+
+        self.convo_layers = nn.Sequential(
+            nn.Conv1d(in_channels=self.feat_dim + self.cond_dim, out_channels=64, kernel_size=10, stride=1, padding='same', groups=1),
+            nn.ReLU(),
+            nn.Dropout(p=dropout_rate),
+            nn.Conv1d(in_channels=64, out_channels=64, kernel_size=2, stride=1, padding='same'),
+            nn.ReLU(),
+            nn.Dropout(p=dropout_rate),
+            nn.Conv1d(in_channels=64, out_channels=64, kernel_size=2, stride=1, padding='same'),
+            nn.ReLU(),
+            nn.Dropout(p=dropout_rate),
+            nn.Conv1d(in_channels=64, out_channels=64, kernel_size=2, stride=1, padding='same'),
+            nn.ReLU(),
+            nn.Dropout(p=dropout_rate),
+            nn.Conv1d(in_channels=64, out_channels=64, kernel_size=4, stride=1, padding='same'),
+            nn.ReLU(),
+            nn.Dropout(p=dropout_rate),
+            nn.Flatten()
+        )
+
+        self.dense_layers = nn.Sequential(
+            nn.Linear(in_features=64 * self.seq_len, out_features=512),
+            nn.ReLU(),
+
+            nn.Linear(in_features=512, out_features=64),
+            nn.ReLU(),
+            nn.Linear(in_features=64, out_features=self.latent_dim * 2)  # Output z_mean and z_log_var
+        )
+
+    def encode(self, x: Tensor, cond: Tensor) -> tuple[Tensor, Tensor]:
+        # Concatenate condition along feature dimension
+        cond = cond.unsqueeze(2).repeat(1, 1, x.shape[2])  # Match sequence length
+        x = torch.cat([x, cond], dim=1)
+        
+        x = self.convo_layers(x)
+        x = self.dense_layers(x)
+        z_mean, z_log_var = torch.split(x, self.latent_dim, dim=1)
+        return z_mean, z_log_var
+
+# %% ../nbs/06_architectures.ipynb 39
+class cConv5DecoderLegitTsgm(VAEDecoder):
+    def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, cond_dim: int, dropout_rate: float):
+        super().__init__(latent_dim=latent_dim)
+        self.seq_len = seq_len
+        self.feat_dim = feat_dim
+        self.dropout_rate = dropout_rate
+        self.cond_dim = cond_dim  # Dimension of the condition
+
+        # Dense layers to upscale latent dimensions + condition
+        self.dense_layers = nn.Sequential(
+            nn.Linear(in_features=self.latent_dim + self.cond_dim, out_features=64),
+            nn.ReLU(),
+            nn.Linear(in_features=64, out_features=512),
+            nn.ReLU(),
+            nn.Linear(in_features=512, out_features=64 * seq_len),  # Adjust output size based on sequence length
+            nn.ReLU(),
+            nn.Unflatten(dim=1, unflattened_size=(64, seq_len))
+        )
+
+        # Transpose Convolutional layers with calculated padding for "same" effect
+        self.conv_transpose_layers = nn.Sequential(
+            nn.ConvTranspose1d(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1),
+            nn.ReLU(),
+            nn.Dropout(p=dropout_rate),
+            nn.ConvTranspose1d(in_channels=64, out_channels=self.feat_dim, kernel_size=11, stride=1, padding='same'),
+            nn.Sigmoid()
+        )
+
+    def decode(self, z: Tensor, cond: Tensor) -> Tensor:
+        # Concatenate condition with latent vector
+        z = torch.cat([z, cond], dim=-1)
+        
+        z = self.dense_layers(z)
+        z = self.conv_transpose_layers(z)
+        return z
+
+# %% ../nbs/06_architectures.ipynb 40
+def get_conditional_conv5_legit_tsgm_vae_components(seq_len, feat_dim, latent_dim, **kwargs):
+    """
+    Returns an instance of Conv5Encoder and Conv5Decoder based on the given parameters.
+    
+    Args:
+        seq_len (int): Length of input sequence.
+        feat_dim (int): Dimensionality of input features.
+        latent_dim (int): Dimensionality of the latent space.
+        **kwargs: Additional keyword arguments to be passed to the encoder and decoder.
+    
+    Returns:
+        encoder (Conv5Encoder): The encoder part of the VAE.
+        decoder (Conv5Decoder): The decoder part of the VAE.
+    """
+    dropout_rate = kwargs.get('dropout_rate', 0.2)
+    cond_dim = kwargs.get('cond_dim', 1)
+
+    encoder = cConv5EncoderLegitTsgm(seq_len, feat_dim, latent_dim, cond_dim, dropout_rate)
+    decoder = cConv5DecoderLegitTsgm(seq_len, feat_dim, latent_dim, cond_dim, dropout_rate)
     
     return encoder, decoder

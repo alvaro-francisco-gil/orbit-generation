@@ -6,8 +6,8 @@
 __all__ = ['get_model']
 
 # %% ../nbs/11_model_factory.ipynb 2
-from .architectures import get_conv5_vae_components, get_conv5_legit_tsgm_vae_components, get_inception_time_vae_components
-from .vae import BetaVAE
+from .architectures import get_conv5_vae_components, get_conditional_conv5_legit_tsgm_vae_components, get_conv5_legit_tsgm_vae_components, get_inception_time_vae_components
+from .vae import BetaVAE, cBetaVAE
 
 import torch
 
@@ -15,8 +15,36 @@ import torch
 def get_model(params):
     model_name = params['model_name']
     model_kwargs = params.get('model_kwargs', {})
+
+    if 'cvae' in model_name.lower():
+
+        beta = model_kwargs.pop('beta', 1.0)
+
+        if model_name == 'cvae_conv5_legit':
+            # Passing model_kwargs directly to the function
+            encoder, decoder = get_conditional_conv5_legit_tsgm_vae_components(
+                seq_len=params['seq_len'], 
+                feat_dim=params['feature_dim'], 
+                latent_dim=params['latent_dim'],
+                **model_kwargs
+            )
+
+        else:
+            raise ValueError(f"Unknown VAE model: {model_name}")
+        
+        # Build the VAE using BetaVAE for all VAE types
+        cvae = cBetaVAE(
+            encoder=encoder,
+            decoder=decoder,
+            beta=beta,
+            loss_fn=model_kwargs.get('loss_fn', None),
+            optimizer_cls=model_kwargs.get('optimizer_cls', torch.optim.Adam),
+            lr=model_kwargs.get('lr', params.get('lr'))
+        )
+        
+        return cvae
     
-    if 'vae' in model_name.lower():
+    elif 'vae' in model_name.lower():
 
         beta = model_kwargs.pop('beta', 1.0)
 
