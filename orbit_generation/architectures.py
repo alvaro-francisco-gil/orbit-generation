@@ -944,7 +944,7 @@ def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, without_poo
 
 # %% ../nbs/06_architectures.ipynb 38
 class cConv5EncoderLegitTsgm(VAEEncoder):
-    def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, dropout_rate: float, cond_dim: int):
+    def __init__(self, seq_len: int, feat_dim: int, latent_dim: int, cond_dim: int, dropout_rate: float):
         super().__init__(latent_dim=latent_dim)
         self.seq_len = seq_len
         self.feat_dim = feat_dim
@@ -952,7 +952,7 @@ class cConv5EncoderLegitTsgm(VAEEncoder):
         self.cond_dim = cond_dim  # Dimension of the condition
 
         self.convo_layers = nn.Sequential(
-            nn.Conv1d(in_channels=self.feat_dim + self.cond_dim, out_channels=64, kernel_size=10, stride=1, padding='same', groups=1),
+            nn.Conv1d(in_channels=self.feat_dim + self.cond_dim, out_channels=64, kernel_size=10, stride=1, padding='same'),
             nn.ReLU(),
             nn.Dropout(p=dropout_rate),
             nn.Conv1d(in_channels=64, out_channels=64, kernel_size=2, stride=1, padding='same'),

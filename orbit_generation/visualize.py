@@ -626,7 +626,9 @@ def summarize_and_test(
     features: List[str] = None, 
     visualize: bool = True, 
     figsize: tuple = (10, 40), 
-    plot_significant_only: bool = True
+    plot_significant_only: bool = True,
+    plot_continuous: bool = False,
+    show_values: bool = True
 ) -> Dict[str, Any]:
     
     def group_and_summarize(df: pd.DataFrame, group_col: str, features: List[str]) -> Dict[str, Dict[str, Any]]:
@@ -651,6 +653,9 @@ def summarize_and_test(
         groups = list(summary_stats.keys())
         features = list(next(iter(summary_stats.values()))['mean'].index)
 
+        # Ensure groups are sorted for proper plotting order
+        groups.sort()
+
         # Filter significant features if required
         if plot_significant_only:
             features = [feature for feature in features if anova_results[feature]['p_value'] < 0.05]
@@ -661,7 +666,7 @@ def summarize_and_test(
             return
 
         # Generate a color palette
-        color_palette = sns.color_palette("husl", n_colors=len(groups))
+        color_palette = sns.color_palette("husl", n_colors=len(features))
 
         fig, axes = plt.subplots(nrows=len(features), ncols=1, figsize=figsize)
         if len(features) == 1:
@@ -672,20 +677,39 @@ def summarize_and_test(
             means = [summary_stats[group]['mean'][feature] for group in groups]
             std_devs = [summary_stats[group]['std_dev'][feature] for group in groups]
 
-            bars = axes[i].bar(groups, means, yerr=std_devs, capsize=5, color=color_palette)
-            
-            p_value = anova_results[feature]['p_value']
-            significance = '*' if p_value < 0.05 else 'ns'
-            axes[i].set_title(f'{feature} (p={p_value:.3f}, {significance})')
-            axes[i].set_ylabel('Value')
-            axes[i].set_ylim(0, max(means) + 1.5 * max(std_devs))
+            if plot_continuous:
+                # Plot continuous line for means
+                axes[i].plot(groups, means, marker='o', color=color_palette[i], label=f'{feature} Mean')
+                # Plot shaded area for standard deviations
+                lower_bound = [m - s for m, s in zip(means, std_devs)]
+                upper_bound = [m + s for m, s in zip(means, std_devs)]
+                axes[i].fill_between(groups, lower_bound, upper_bound,
+                                     color=color_palette[i], alpha=0.2)
+                
+                # Add mean values on top of each dot if show_values is True
+                if show_values:
+                    for x, y in zip(groups, means):
+                        axes[i].text(x, y, f'{y:.2f}', ha='center', va='bottom', fontsize=10)
+                
+                axes[i].set_title(f'{feature} (p={anova_results[feature]["p_value"]:.3f})')
+                axes[i].set_ylabel('Value')
+                axes[i].legend()
+            else:
+                # Plot bar chart with error bars
+                bars = axes[i].bar(groups, means, yerr=std_devs, capsize=5, color=color_palette)
+                
+                p_value = anova_results[feature]['p_value']
+                significance = '*' if p_value < 0.05 else 'ns'
+                axes[i].set_title(f'{feature} (p={p_value:.3f}, {significance})')
+                axes[i].set_ylabel('Value')
+                axes[i].set_ylim(0, max(means) + 1.5 * max(std_devs))
 
-            # Add mean values on top of each bar
-            for bar in bars:
-                height = bar.get_height()
-                axes[i].text(bar.get_x() + bar.get_width()/2., height,
-                            f'{height:.2f}',
-                            ha='center', va='bottom')
+                # Add mean values on top of each bar if show_values is True
+                if show_values:
+                    for bar in bars:
+                        height = bar.get_height()
+                        axes[i].text(bar.get_x() + bar.get_width()/2., height,
+                                     f'{height:.2f}', ha='center', va='bottom')
 
         plt.xlabel('Groups')
         plt.show()
@@ -709,6 +733,7 @@ def summarize_and_test(
         'summary_stats': summary_stats,
         'anova_results': anova_results
     }
+
 
 # %% ../nbs/03_visualization.ipynb 32
 def plot_single_image(image_path, crop_length=0, font_size=17, save_path=None, figsize=(15, 15), title=None):
