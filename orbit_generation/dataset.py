@@ -6,7 +6,7 @@
 __all__ = ['get_orbit_data_from_hdf5', 'get_orbit_features_from_hdf5', 'get_orbit_features_from_folder',
            'substitute_values_from_df', 'get_orbit_classes', 'get_periods_of_orbit_dict',
            'get_first_period_of_fixed_period_dataset', 'get_full_fixed_step_dataset',
-           'get_first_period_fixed_step_dataset', 'get_first_period_dataset']
+           'get_first_period_fixed_step_dataset', 'get_first_period_dataset', 'get_first_period_dataset_all_systems']
 
 # %% ../nbs/05_dataset.ipynb 2
 import os
@@ -312,3 +312,59 @@ def get_first_period_dataset(file_path: str,                             # Path 
     else:
         raise ValueError("Unsupported file type. File name must contain either 'dt' or 'N'.")
 
+
+# %% ../nbs/05_dataset.ipynb 26
+def get_first_period_dataset_all_systems(folder_path: str, segment_length: Optional[int] = 100):
+    """
+    Processes all system files in a folder, concatenates their data while maintaining order.
+    
+    Parameters:
+        folder_path (str): Path to the folder containing system files.
+        segment_length (Optional[int]): Desired length of each segment.
+
+    Returns:
+        Tuple[np.ndarray, pd.DataFrame, np.ndarray, Dict[str, float]]:
+            - Concatenated orbits as a 3D NumPy array.
+            - Concatenated orbit DataFrame with an added 'system' column.
+            - Concatenated orbit IDs as a NumPy array.
+            - Merged system dictionary with keys prefixed by system names.
+    """
+    # List all .h5 files in the folder
+    files = [f for f in os.listdir(folder_path) if f.endswith('.h5')]
+
+    # Initialize containers for concatenation
+    all_orbits = []
+    all_orbit_dfs = []
+    all_system_dicts = {}
+
+    for file in sorted(files):  # Sort files to ensure consistent order
+        # Extract system name from the file name (first part before '_')
+        system_name = file.split('_')[0]
+
+        # Get the full file path
+        file_path = os.path.join(folder_path, file)
+
+        # Call the existing function to get data for the current file
+        orbits, orbit_df, orbits_ids, system_dict = get_first_period_dataset(file_path, segment_length)
+
+        # Append system name to the orbit_df
+        orbit_df['system'] = system_name
+
+        # Append data to the containers
+        all_orbits.append(orbits)
+        all_orbit_dfs.append(orbit_df)
+
+        # Update system_dict with system name as prefix for keys
+        for key, value in system_dict.items():
+            all_system_dicts[f"{system_name}_{key}"] = value
+
+    # Concatenate all orbits along the first dimension
+    concatenated_orbits = np.concatenate(all_orbits, axis=0)
+
+    # Concatenate all orbit_dfs and reset the index
+    concatenated_orbit_df = pd.concat(all_orbit_dfs, ignore_index=True)
+
+    # Generate orbit_ids as the index of the concatenated_orbit_df
+    concatenated_orbit_ids = np.arange(len(concatenated_orbit_df))
+
+    return concatenated_orbits, concatenated_orbit_df, concatenated_orbit_ids, all_system_dicts
