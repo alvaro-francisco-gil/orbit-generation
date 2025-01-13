@@ -6,7 +6,8 @@
 __all__ = ['get_orbit_data_from_hdf5', 'get_orbit_features_from_hdf5', 'get_orbit_features_from_folder',
            'substitute_values_from_df', 'get_orbit_classes', 'get_periods_of_orbit_dict',
            'get_first_period_of_fixed_period_dataset', 'get_full_fixed_step_dataset',
-           'get_first_period_fixed_step_dataset', 'get_first_period_dataset', 'get_first_period_dataset_all_systems']
+           'get_first_period_fixed_step_dataset', 'get_first_period_dataset', 'get_first_period_dataset_all_systems',
+           'get_system_constants']
 
 # %% ../nbs/05_dataset.ipynb 2
 import os
@@ -368,3 +369,32 @@ def get_first_period_dataset_all_systems(folder_path: str, segment_length: Optio
     concatenated_orbit_ids = np.arange(len(concatenated_orbit_df))
 
     return concatenated_orbits, concatenated_orbit_df, concatenated_orbit_ids, all_system_dicts
+
+# %% ../nbs/05_dataset.ipynb 28
+def get_system_constants(system_dict, system_labels, constant):
+    """
+    Extracts values for a specified constant from a system dictionary based on system labels.
+
+    Parameters:
+        system_dict (dict): Dictionary containing system constants for different systems.
+        system_labels (np.ndarray): Array of system labels.
+        constant (str): The constant to extract (e.g., 'mu', 'LU', etc.).
+
+    Returns:
+        np.ndarray: Array of constant values corresponding to the system labels.
+    """
+    # Create a list to store the constant values
+    constants = []
+
+    # Iterate over each label in system_labels
+    for label in system_labels:
+        # Construct the key by combining the label and constant
+        key = f"{label}_{constant}"
+        # Get the value from the system dictionary
+        value = system_dict.get(key, None)  # Use .get to handle missing keys gracefully
+        if value is None:
+            raise ValueError(f"Constant '{constant}' for system '{label}' not found in system_dict.")
+        constants.append(value)
+
+    # Convert the list to a numpy array for consistency
+    return np.array(constants)
