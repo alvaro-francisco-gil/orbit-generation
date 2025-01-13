@@ -1041,7 +1041,7 @@ class cConv5DecoderLegitTsgm(cVAEDecoder):
         
         # Dense layers to upscale the latent dimensions
         self.dense_layers = nn.Sequential(
-            nn.Linear(in_features=self.latent_dim, out_features=64),
+            nn.Linear(in_features=self.latent_dim + self.cond_dim, out_features=64),
             nn.ReLU(),
             nn.Linear(in_features=64, out_features=512),
             nn.ReLU(),
