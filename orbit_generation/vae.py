@@ -160,6 +160,20 @@ class cBetaVAE(pl.LightningModule, AbstractVAE):
         self.lr = lr
         self.save_hyperparameters(ignore=['encoder', 'decoder'])
 
+    def setup(self, stage=None):
+        self.train_metrics = MetricCollection({
+            'total_loss': MeanMetric(),
+            'reconstruction_loss': MeanMetric(),
+            'kl_loss': MeanMetric()
+        })
+        self.val_metrics = MetricCollection({
+            'total_loss': MeanMetric(),
+            'reconstruction_loss': MeanMetric(),
+            'kl_loss': MeanMetric()
+        })
+        self.train_metrics.to(self.device)
+        self.val_metrics.to(self.device)
+
     def encode(self, x: Tensor, cond: Tensor) -> tuple[Tensor, Tensor]:
         """
         Encodes the input tensor along with the condition into mean and log variance tensors.
