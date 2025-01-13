@@ -1022,6 +1022,10 @@ class cConv5EncoderLegitTsgm(cVAEEncoder):
     def encode(self, x: Tensor, cond: Tensor) -> tuple[Tensor, Tensor]:
         # Concatenate condition along feature dimension
         # cond shape: (batch_size, cond_dim). Expand to match (batch_size, cond_dim, seq_len)
+        # If cond is shape (N,), do this first:
+        if cond.ndim == 1:
+            cond = cond.unsqueeze(1)  # now shape is [N, 1]
+
         cond = cond.unsqueeze(2).repeat(1, 1, x.shape[2])
         x = torch.cat([x, cond], dim=1)  # (batch_size, feat_dim + cond_dim, seq_len)
         
