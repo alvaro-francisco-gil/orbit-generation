@@ -1039,9 +1039,9 @@ class cConv5DecoderLegitTsgm(cVAEDecoder):
         self.dropout_rate = dropout_rate
         self.cond_dim = cond_dim 
         
-        # Dense layers to upscale latent dimensions + condition
+        # Dense layers to upscale the latent dimensions
         self.dense_layers = nn.Sequential(
-            nn.Linear(in_features=self.latent_dim + self.cond_dim, out_features=64),
+            nn.Linear(in_features=self.latent_dim, out_features=64),
             nn.ReLU(),
             nn.Linear(in_features=64, out_features=512),
             nn.ReLU(),
@@ -1055,10 +1055,15 @@ class cConv5DecoderLegitTsgm(cVAEDecoder):
             nn.ConvTranspose1d(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
             nn.Dropout(p=dropout_rate),
-            nn.ConvTranspose1d(in_channels=64, out_channels=self.feat_dim, kernel_size=11, stride=1, padding='same'),
+            nn.ConvTranspose1d(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1),
+            nn.ReLU(),
+            nn.Dropout(p=dropout_rate),
+            nn.ConvTranspose1d(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1),
+            nn.ReLU(),
+            nn.Dropout(p=dropout_rate),
+            nn.ConvTranspose1d(in_channels=64, out_channels=self.feat_dim, kernel_size=11, stride=1, padding=5),
             nn.Sigmoid()
         )
-
     def decode(self, z: Tensor, cond: Tensor) -> Tensor:
         # Concatenate condition with latent vector
         # cond shape: (batch_size, cond_dim)
