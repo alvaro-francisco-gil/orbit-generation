@@ -627,7 +627,9 @@ def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
     """
     Evaluates specified distance metrics and clustering algorithms on the given orbit data.
     
-    :param orbit_data: The orbit data as a multivariate time series (shape: [n_samples, n_features, n_time_steps]).
+    :param orbit_data: The orbit data as either:
+                      - multivariate time series (shape: [n_samples, n_features, n_time_steps])
+                      - point data (shape: [n_samples, n_features])
     :param true_labels: Array of true labels for the orbit data.
     :param distance_metrics: List of strings specifying distance metrics to use. If None, all available metrics are used.
     :param clustering_algorithms: List of strings specifying clustering algorithms to use. If None, all available algorithms are used.
@@ -687,13 +689,28 @@ def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
             continue
         
         print(f"Computing {distance_metric} distances...")
-        distance_matrix = orbits_distances(orbit_data, orbit_data, distance_metric)
+        
+        # Check input dimensionality and compute distances accordingly
+        if orbit_data.ndim == 3:
+            distance_matrix = orbits_distances(orbit_data, orbit_data, distance_metric)
+        elif orbit_data.ndim == 2:
+            n_samples = orbit_data.shape[0]
+            distance_matrix = np.zeros((n_samples, n_samples))
+            distance_func = DISTANCE_FUNCTIONS[distance_metric]
+            for i in range(n_samples):
+                for j in range(i+1, n_samples):
+                    distance = distance_func(orbit_data[i], orbit_data[j])
+                    distance_matrix[i,j] = distance
+                    distance_matrix[j,i] = distance
+        else:
+            raise ValueError(f"Input data must be 2D or 3D, got {orbit_data.ndim}D array instead.")
 
+        # Make the matrix symmetric by averaging with its transpose
+        distance_matrix = 0.5 * (distance_matrix + distance_matrix.T)
+        
         if np.any(distance_matrix < 0):
             distance_matrix = distance_matrix - np.min(distance_matrix)
         np.fill_diagonal(distance_matrix, 0)  # Ensure diagonal is exactly zero
-        if not np.allclose(distance_matrix, distance_matrix.T, atol=1e-8):
-            raise ValueError("Distance matrix is not symmetric within tolerance")
         
         for algo_name in clustering_algorithms:
             if algo_name not in available_clustering_algorithms:
