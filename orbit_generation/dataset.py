@@ -282,7 +282,7 @@ def get_first_period_fixed_step_dataset(file_path: str,                  # Path 
 # %% ../nbs/05_dataset.ipynb 25
 def get_first_period_dataset(file_path: str,                             # Path to the HDF5 file.
                              segment_length: Optional[int] = 100        # Desired length of each segment, optional.
-                            ) -> Tuple[np.ndarray,                      # 3D numpy array of orbits.
+                            ) -> Tuple[np.memmap,                      # Memmap of segmented orbits.
                                     pd.DataFrame,                       # DataFrame containing orbit features.
                                     np.ndarray,                         # NumPy array of IDs representing each new segment.
                                     Dict[str, float]]:                  # Dictionary containing system features.
@@ -294,25 +294,37 @@ def get_first_period_dataset(file_path: str,                             # Path 
     file_name = os.path.basename(file_path)
     file_parts = file_name.split('_')
 
-    # Check if the second part of the file name is 'dt'
-    if file_parts[1] == 'dt':
-        # If 'dt' is present and segment_length is provided
-        if segment_length is not None:
-            orbits, orbit_df, orbits_ids, system_dict = get_first_period_fixed_step_dataset(file_path, segment_length)
-            return orbits, orbit_df, orbits_ids, system_dict
-        else:
-            raise ValueError("Segment length must be provided for 'dt' files.")
-    elif file_parts[1] == 'N':
-        # If 'N' is present
-        orbits, orbit_df, system_dict = get_first_period_of_fixed_period_dataset(file_path)
-        orbits_ids = np.arange(0, orbits.shape[0])  # Create an array of orbit IDs from 1 to the number of orbits
-        # Resample the orbits
-        if segment_length is not None:
-            orbits = resample_3d_array(data=orbits, axis=2, target_size=segment_length)
-        return orbits, orbit_df, orbits_ids, system_dict
-    else:
-        raise ValueError("Unsupported file type. File name must contain either 'dt' or 'N'.")
+    # Define the memmap file path
+    memmap_file_path = os.path.splitext(file_path)[0] + '_orbits.dat'
 
+    try:
+        # Check if the second part of the file name is 'dt'
+        if file_parts[1] == 'dt':
+            # If 'dt' is present and segment_length is provided
+            if segment_length is not None:
+                orbits, orbit_df, orbits_ids, system_dict = get_first_period_fixed_step_dataset(file_path, segment_length)
+                # Save the orbits to memmap
+                orbits_memmap = np.memmap(memmap_file_path, dtype='float32', mode='w+', shape=orbits.shape)
+                orbits_memmap[:] = orbits  # Write the data to memmap
+                return orbits_memmap, orbit_df, orbits_ids, system_dict
+            else:
+                raise ValueError("Segment length must be provided for 'dt' files.")
+        elif file_parts[1] == 'N':
+            # If 'N' is present
+            orbits, orbit_df, system_dict = get_first_period_of_fixed_period_dataset(file_path)
+            orbits_ids = np.arange(0, orbits.shape[0])  # Create an array of orbit IDs from 1 to the number of orbits
+            # Resample the orbits
+            if segment_length is not None:
+                orbits = resample_3d_array(data=orbits, axis=2, target_size=segment_length)
+            # Save the orbits to memmap
+            orbits_memmap = np.memmap(memmap_file_path, dtype='float32', mode='w+', shape=orbits.shape)
+            orbits_memmap[:] = orbits  # Write the data to memmap
+            return orbits_memmap, orbit_df, orbits_ids, system_dict
+        else:
+            raise ValueError("Unsupported file type. File name must contain either 'dt' or 'N'.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None, None, None, None  # Return placeholders in case of an error
 
 # %% ../nbs/05_dataset.ipynb 26
 def get_first_period_dataset_all_systems(folder_path: str, segment_length: Optional[int] = 100):
@@ -324,8 +336,8 @@ def get_first_period_dataset_all_systems(folder_path: str, segment_length: Optio
         segment_length (Optional[int]): Desired length of each segment.
 
     Returns:
-        Tuple[np.ndarray, pd.DataFrame, np.ndarray, Dict[str, float]]:
-            - Concatenated orbits as a 3D NumPy array.
+        Tuple[np.memmap, pd.DataFrame, np.ndarray, Dict[str, float]]:
+            - Concatenated orbits as a 3D NumPy memmap.
             - Concatenated orbit DataFrame with an added 'system' column.
             - Concatenated orbit IDs as a NumPy array.
             - Merged system dictionary with keys prefixed by system names.
@@ -359,8 +371,16 @@ def get_first_period_dataset_all_systems(folder_path: str, segment_length: Optio
         for key, value in system_dict.items():
             all_system_dicts[f"{system_name}_{key}"] = value
 
+    # Define the memmap file path for concatenated orbits
+    memmap_file_path = os.path.join(folder_path, 'concatenated_orbits.dat')
+
     # Concatenate all orbits along the first dimension
     concatenated_orbits = np.concatenate(all_orbits, axis=0)
+
+    # Save the concatenated orbits to memmap
+    orbits_memmap = np.memmap(memmap_file_path, dtype='float32', mode='w+', shape=concatenated_orbits.shape)
+    orbits_memmap[:] = concatenated_orbits  # Write the data to memmap
+    concatenated_orbits = orbits_memmap  # Use the memmap for return
 
     # Concatenate all orbit_dfs and reset the index
     concatenated_orbit_df = pd.concat(all_orbit_dfs, ignore_index=True)
