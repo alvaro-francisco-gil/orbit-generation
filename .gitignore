@@ -12,6 +12,9 @@ tsgm_examples/
 # Ignore environment secrets
 .devcontainer/.env
 
+# Ignore any lightning logs
+lightning_logs/
+
 _proc/
 
 *.bak
