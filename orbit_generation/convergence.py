@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # %% ../nbs/12_convergence.ipynb 5
-Main.include("../julia/convergence_algorithm.jl")
+Main.include("../../julia/convergence_algorithm.jl")
 
 def differential_correction(
     orbit: np.ndarray,
