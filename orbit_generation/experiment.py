@@ -290,7 +290,7 @@ def generate_image_paths(folder_prefix, unique_ids, file_suffix):
     return file_paths
 
 # %% ../nbs/08_experiment.ipynb 20
-def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len):
+def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len, file_suffix='_generated_orbits'):
     arrays = []
     
     for folder in os.listdir(experiments_folder):
@@ -299,7 +299,7 @@ def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len):
             match = re.search(r'experiment_(\d+)', folder)
             if match:
                 experiment_id = match.group(1)
-                generated_data_path = os.path.join(experiments_folder, folder, f'exp{experiment_id}_generated_orbits.npy')
+                generated_data_path = os.path.join(experiments_folder, folder, f'exp{experiment_id}{file_suffix}.npy')
                 
                 if os.path.isfile(generated_data_path):
                     generated_orbit = np.load(generated_data_path)
