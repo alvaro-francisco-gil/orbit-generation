@@ -6,9 +6,9 @@
 __all__ = ['data_path', 'experiments_folder', 'setup_new_experiment', 'create_experiments_json', 'convert_numpy_types',
            'add_experiment_metrics', 'get_experiment_parameters', 'get_experiment_data', 'read_json_to_dataframe',
            'generate_image_paths', 'concatenate_orbits_from_experiment_folder',
-           'concatenate_csvs_from_experiment_folder', 'generate_parameter_sets', 'execute_parameter_notebook',
-           'paralelize_notebook_experiment', 'generate_file_paths', 'prepare_experiment_data',
-           'prepare_and_train_model']
+           'concatenate_csvs_from_experiment_folder', 'concatenate_and_check_orbits_from_experiment_folder',
+           'generate_parameter_sets', 'execute_parameter_notebook', 'paralelize_notebook_experiment',
+           'generate_file_paths', 'prepare_experiment_data', 'prepare_and_train_model']
 
 # %% ../nbs/08_experiment.ipynb 2
 import os
@@ -340,6 +340,44 @@ def concatenate_csvs_from_experiment_folder(experiments_folder, file_suffix):
         return pd.DataFrame()
 
 # %% ../nbs/08_experiment.ipynb 24
+def concatenate_and_check_orbits_from_experiment_folder(experiments_folder, csv_file_name='_refined_orbits_df.csv', np_file_name='_refined_orbits'):
+    arrays = []
+    all_refined_orbit_dfs = []
+    
+    for folder in os.listdir(experiments_folder):
+        folder_path = os.path.join(experiments_folder, folder)  # Construct the folder path
+        
+        if folder.startswith('experiment_') and os.path.isdir(folder_path):
+            # Extract the experiment number using regex
+            match = re.search(r'experiment_(\d+)', folder)
+            if match:
+                experiment_id = match.group(1)
+                generated_data_path = os.path.join(folder_path, f'exp{experiment_id}{np_file_name}.npy')
+                refined_orbit_path = os.path.join(folder_path, f'exp{experiment_id}{csv_file_name}')  # Path to refined orbits
+                
+                if os.path.isfile(generated_data_path):
+                    generated_orbit = np.load(generated_data_path)
+                    
+                    # Load the refined orbits DataFrame
+                    if os.path.isfile(refined_orbit_path):
+                        refined_orbit_df = pd.read_csv(refined_orbit_path)
+                        
+                        # Check if the number of orbits matches the length of refined_orbit_df
+                        if generated_orbit.shape[0] != len(refined_orbit_df):
+                            print(f"Mismatch for experiment {experiment_id}: generated_orbit count = {generated_orbit.shape[0]}, refined_orbit_df length = {len(refined_orbit_df)}")
+                            continue  # Skip to the next folder if there is a mismatch
+                        
+                        all_refined_orbit_dfs.append(refined_orbit_df)
+                    
+                    arrays.append(generated_orbit)
+    
+    if arrays:
+        concatenated_orbit = np.concatenate(arrays, axis=0)
+        return concatenated_orbit, pd.concat(all_refined_orbit_dfs, ignore_index=True)
+    else:
+        return np.array([]), pd.DataFrame()
+
+# %% ../nbs/08_experiment.ipynb 26
 def generate_parameter_sets(params, model_specific_params):
     keys, values = zip(*params.items())
     combinations = [dict(zip(keys, v)) for v in itertools.product(*[
@@ -358,7 +396,7 @@ def generate_parameter_sets(params, model_specific_params):
     return final_combinations
 
 
-# %% ../nbs/08_experiment.ipynb 26
+# %% ../nbs/08_experiment.ipynb 28
 def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, extra_parameters=None, checkpoint_file=None):
     try:
         # Mark as started
@@ -403,7 +441,7 @@ def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, extra
         logging.error(f"Traceback: {traceback.format_exc()}")
         return None
 
-# %% ../nbs/08_experiment.ipynb 27
+# %% ../nbs/08_experiment.ipynb 29
 def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_dir, checkpoint_file, max_workers=3, extra_parameters=None):
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
@@ -457,11 +495,11 @@ def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_d
     
     logging.info("All executions completed.")
 
-# %% ../nbs/08_experiment.ipynb 29
+# %% ../nbs/08_experiment.ipynb 31
 data_path = r"/orbit-generation/data/orbits_fix_1500/EM_N_fix_1500.h5"
 experiments_folder = "../experiments"
 
-# %% ../nbs/08_experiment.ipynb 30
+# %% ../nbs/08_experiment.ipynb 32
 def generate_file_paths(experiment_id, images_folder, experiment_folder):
     """
     Generate a dictionary of file paths for an experiment.
@@ -518,12 +556,12 @@ def generate_file_paths(experiment_id, images_folder, experiment_folder):
     }
     return paths
 
-# %% ../nbs/08_experiment.ipynb 31
+# %% ../nbs/08_experiment.ipynb 33
 from .dataset import get_first_period_dataset, get_orbit_classes
 from .data import TSFeatureWiseScaler, discard_random_labels
 import torch
 
-# %% ../nbs/08_experiment.ipynb 32
+# %% ../nbs/08_experiment.ipynb 34
 def prepare_experiment_data(params, experiments_folder, data_path, want_to_discover):
     """
     Prepare the experiment data based on the provided parameters and configurations.
@@ -610,13 +648,13 @@ def prepare_experiment_data(params, experiments_folder, data_path, want_to_disco
     return scaled_data, orbit_df, family_labels, discarded_families, features, file_paths, experiment_id
 
 
-# %% ../nbs/08_experiment.ipynb 33
+# %% ../nbs/08_experiment.ipynb 35
 from pytorch_lightning import Trainer
 from .model_factory import get_model
 from .data import create_dataloaders
 from .architectures import VAELossHistory
 
-# %% ../nbs/08_experiment.ipynb 34
+# %% ../nbs/08_experiment.ipynb 36
 def prepare_and_train_model(params, scaled_data, experiments_folder, experiment_id, file_paths, want_to_train):
     """
     Prepare the model and either train it or load a pre-trained version based on the provided parameters.
