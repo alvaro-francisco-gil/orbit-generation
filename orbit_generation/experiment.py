@@ -362,6 +362,9 @@ def concatenate_and_check_orbits_from_experiment_folder(experiments_folder, csv_
                     if os.path.isfile(refined_orbit_path):
                         refined_orbit_df = pd.read_csv(refined_orbit_path)
                         
+                        # Add a column to identify the experiment
+                        refined_orbit_df['experiment_id'] = experiment_id
+                        
                         # Check if the number of orbits matches the length of refined_orbit_df
                         if generated_orbit.shape[0] != len(refined_orbit_df):
                             print(f"Mismatch for experiment {experiment_id}: generated_orbit count = {generated_orbit.shape[0]}, refined_orbit_df length = {len(refined_orbit_df)}")
