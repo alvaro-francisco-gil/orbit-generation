@@ -25,7 +25,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import make_pipeline
+from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_predict
 from scipy.spatial.distance import squareform
 from fastdtw import fastdtw
@@ -767,12 +767,12 @@ def machine_learning_evaluation(X, y, print_results=False, return_best_model=Fal
 
     Returns:
     - results: Dictionary containing accuracy and classification report for each algorithm.
-    - best_model: The model with the highest accuracy if return_best_model is True.
+    - best_model: The fitted model with the highest accuracy if return_best_model is True.
     """
     
     def visualize_results(results):
         # Accuracy comparison
-        accuracies = [result['accuracy'] for result in results.values()]
+        accuracies = [result['accuracy'] for result in results.values() if result['accuracy'] is not None]
         plt.figure(figsize=(10, 6))
         bars = plt.bar(results.keys(), accuracies, color='skyblue')
         plt.title('Accuracy Comparison')
@@ -787,12 +787,13 @@ def machine_learning_evaluation(X, y, print_results=False, return_best_model=Fal
         metrics = ['precision', 'recall', 'f1-score']
         data = []
         for algo, result in results.items():
-            for metric in metrics:
-                value = np.mean([
-                    v[metric] for k, v in result['report'].items() 
-                    if k not in ['accuracy', 'macro avg', 'weighted avg']
-                ])
-                data.append([algo, metric, value])
+            if result['report'] is not None:
+                for metric in metrics:
+                    value = np.mean([
+                        v[metric] for k, v in result['report'].items() 
+                        if k not in ['accuracy', 'macro avg', 'weighted avg']
+                    ])
+                    data.append([algo, metric, value])
 
         df = pd.DataFrame(data, columns=['Algorithm', 'Metric', 'Value'])
         pivot_df = df.pivot(index='Algorithm', columns='Metric', values='Value')
@@ -827,6 +828,7 @@ def machine_learning_evaluation(X, y, print_results=False, return_best_model=Fal
     results = {}
     best_model = None
     best_accuracy = 0
+    best_algorithm_name = None
 
     # Train and evaluate each algorithm
     for name, model in algorithms.items():
@@ -836,7 +838,7 @@ def machine_learning_evaluation(X, y, print_results=False, return_best_model=Fal
             if scale_data:
                 steps.append(('scaler', StandardScaler()))
             steps.append(('model', model))
-            pipeline = make_pipeline(*steps)
+            pipeline = Pipeline(steps)
             
             # Use cross-validation to get predictions
             y_pred = cross_val_predict(pipeline, X, y, cv=5)
@@ -845,10 +847,10 @@ def machine_learning_evaluation(X, y, print_results=False, return_best_model=Fal
             report = classification_report(y, y_pred, output_dict=True, zero_division=0)
             results[name] = {'accuracy': accuracy, 'report': report}
             
-            # Check for the best model
+            # Track the best performing algorithm
             if accuracy > best_accuracy:
                 best_accuracy = accuracy
-                best_model = model
+                best_algorithm_name = name
         except Exception as e:
             print(f"Error evaluating {name}: {e}")
             results[name] = {'accuracy': None, 'report': None}
@@ -856,7 +858,14 @@ def machine_learning_evaluation(X, y, print_results=False, return_best_model=Fal
     if print_results:
         visualize_results(results)
 
-    if return_best_model:
+    if return_best_model and best_algorithm_name is not None:
+        # Create and fit the best model on the full dataset
+        steps = []
+        if scale_data:
+            steps.append(('scaler', StandardScaler()))
+        steps.append(('model', algorithms[best_algorithm_name]))
+        best_model = Pipeline(steps)
+        best_model.fit(X, y)
         return results, best_model
 
     return results
