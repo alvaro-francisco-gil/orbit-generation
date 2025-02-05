@@ -754,7 +754,7 @@ def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
     return results
 
 # %% ../nbs/09_evaluation.ipynb 38
-def machine_learning_evaluation(X, y, print_results=False):
+def machine_learning_evaluation(X, y, print_results=False, return_best_model=False):
     """
     Evaluates multiple machine learning algorithms on the provided dataset.
 
@@ -762,9 +762,11 @@ def machine_learning_evaluation(X, y, print_results=False):
     - X: Features, expected to be a 2D array. If higher dimensions, the function attempts to reshape.
     - y: Target labels.
     - print_results: If True, visualizes the evaluation results.
+    - return_best_model: If True, returns the best model based on accuracy.
 
     Returns:
     - results: Dictionary containing accuracy and classification report for each algorithm.
+    - best_model: The model with the highest accuracy if return_best_model is True.
     """
     
     def visualize_results(results):
@@ -822,6 +824,8 @@ def machine_learning_evaluation(X, y, print_results=False):
     }
 
     results = {}
+    best_model = None
+    best_accuracy = 0
 
     # Train and evaluate each algorithm
     for name, model in algorithms.items():
@@ -835,11 +839,19 @@ def machine_learning_evaluation(X, y, print_results=False):
             accuracy = accuracy_score(y, y_pred)
             report = classification_report(y, y_pred, output_dict=True, zero_division=0)
             results[name] = {'accuracy': accuracy, 'report': report}
+            
+            # Check for the best model
+            if accuracy > best_accuracy:
+                best_accuracy = accuracy
+                best_model = model
         except Exception as e:
             print(f"Error evaluating {name}: {e}")
             results[name] = {'accuracy': None, 'report': None}
 
     if print_results:
         visualize_results(results)
+
+    if return_best_model:
+        return results, best_model
 
     return results
