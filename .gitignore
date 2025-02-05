@@ -15,6 +15,10 @@ tsgm_examples/
 # Ignore any lightning logs
 lightning_logs/
 
+# Ignore cursor files
+.cursorignore
+
+# Ignore any proc files
 _proc/
 
 *.bak
