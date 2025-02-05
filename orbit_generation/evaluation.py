@@ -754,7 +754,7 @@ def evaluate_distance_metrics_and_clustering(orbit_data: np.ndarray,
     return results
 
 # %% ../nbs/09_evaluation.ipynb 38
-def machine_learning_evaluation(X, y, print_results=False, return_best_model=False):
+def machine_learning_evaluation(X, y, print_results=False, return_best_model=False, scale_data=True):
     """
     Evaluates multiple machine learning algorithms on the provided dataset.
 
@@ -763,6 +763,7 @@ def machine_learning_evaluation(X, y, print_results=False, return_best_model=Fal
     - y: Target labels.
     - print_results: If True, visualizes the evaluation results.
     - return_best_model: If True, returns the best model based on accuracy.
+    - scale_data: If True, scales the features using StandardScaler.
 
     Returns:
     - results: Dictionary containing accuracy and classification report for each algorithm.
@@ -830,8 +831,12 @@ def machine_learning_evaluation(X, y, print_results=False, return_best_model=Fal
     # Train and evaluate each algorithm
     for name, model in algorithms.items():
         try:
-            # Create a pipeline that scales the data and then applies the model
-            pipeline = make_pipeline(StandardScaler(), model)
+            # Create a pipeline that optionally scales the data and then applies the model
+            steps = []
+            if scale_data:
+                steps.append(('scaler', StandardScaler()))
+            steps.append(('model', model))
+            pipeline = make_pipeline(*steps)
             
             # Use cross-validation to get predictions
             y_pred = cross_val_predict(pipeline, X, y, cv=5)
