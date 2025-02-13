@@ -292,7 +292,8 @@ def visualize_orbits_comparison(data1: np.ndarray,
                              title2: Optional[str] = "Set 2",
                              equal_aspect: bool = False,
                              title_size: int = 18,
-                             shared_scale: bool = False) -> None:
+                             shared_scale: bool = False,
+                             wspace: float = 0.3) -> None:
     """
     Visualizes two sets of orbits side by side in 3D space.
 
@@ -304,6 +305,7 @@ def visualize_orbits_comparison(data1: np.ndarray,
         equal_aspect (bool): Flag to enforce equal scaling for all axes
         title_size (int): Font size for the plot titles
         shared_scale (bool): If True, both plots will share the same scale and limits
+        wspace (float): Width spacing between subplots. Default is 0.3.
 
     Returns:
         None
@@ -385,7 +387,7 @@ def visualize_orbits_comparison(data1: np.ndarray,
         ax2.set_ylim([data2[:, 1].min(), data2[:, 1].max()])
         ax2.set_zlim([data2[:, 2].min(), data2[:, 2].max()])
 
-    plt.tight_layout()
+    plt.subplots_adjust(wspace=wspace)  # Adjust spacing between subplots
     plt.show()
 
 # %% ../nbs/03_visualization.ipynb 17
