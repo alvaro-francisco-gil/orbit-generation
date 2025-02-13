@@ -292,6 +292,7 @@ def visualize_orbits_comparison(data1: np.ndarray,
                              title2: Optional[str] = "Set 2",
                              equal_aspect: bool = False,
                              title_size: int = 18,
+                             title_pad: float = 20.0,
                              shared_scale: bool = False,
                              wspace: float = 0.3) -> None:
     """
@@ -304,6 +305,7 @@ def visualize_orbits_comparison(data1: np.ndarray,
         title2 (str): Title for the second plot
         equal_aspect (bool): Flag to enforce equal scaling for all axes
         title_size (int): Font size for the plot titles
+        title_pad (float): Padding between plot and title in points. Default is 20.0
         shared_scale (bool): If True, both plots will share the same scale and limits
         wspace (float): Width spacing between subplots. Default is 0.3.
 
@@ -344,8 +346,8 @@ def visualize_orbits_comparison(data1: np.ndarray,
         ax.set_zlabel('Z')
         ax.grid(True)
 
-    ax1.set_title(title1, fontsize=title_size)  # Set title size
-    ax2.set_title(title2, fontsize=title_size)  # Set title size
+    ax1.set_title(title1, fontsize=title_size, pad=title_pad)  # Set title size and padding
+    ax2.set_title(title2, fontsize=title_size, pad=title_pad)  # Set title size and padding
 
     # Handle axis scaling based on equal_aspect parameter
     if equal_aspect:
