@@ -47,6 +47,8 @@ def plot_2d_latent_space(
     show_legend: bool = True,
     legend_fontsize: int = 8,
     plot_std: bool = True,
+    title: Optional[str] = '2D Latent Space Visualization',  # New title parameter
+    axis_labels: Optional[Tuple[str, str]] = ('Dimension 1', 'Dimension 2'),  # New axis_labels parameter
     **kwargs: Any
 ) -> None:
     """
@@ -73,6 +75,10 @@ def plot_2d_latent_space(
         Font size for the legends.
     - plot_std: bool, default True
         If True, plots the standard deviation shading for feature distributions.
+    - title: Optional[str], default '2D Latent Space Visualization'
+        Title of the plot.
+    - axis_labels: Optional[Tuple[str, str]], default ('Dimension 1', 'Dimension 2')
+        Labels for the X and Y axes.
     - kwargs: Any
         Additional keyword arguments passed to scatter plots.
     """
@@ -154,9 +160,9 @@ def plot_2d_latent_space(
     if show_legend:
         ax_main.legend(title="Classes", fontsize=legend_fontsize)
 
-    ax_main.set_title('2D Latent Space Visualization')
-    ax_main.set_xlabel('Dimension 1')
-    ax_main.set_ylabel('Dimension 2')
+    ax_main.set_title(title)  # Use the title parameter
+    ax_main.set_xlabel(axis_labels[0])  # Use the axis_labels parameter
+    ax_main.set_ylabel(axis_labels[1])  # Use the axis_labels parameter
 
     # Set equal aspect ratio and adjust limits
     ax_main.set_aspect('equal')
