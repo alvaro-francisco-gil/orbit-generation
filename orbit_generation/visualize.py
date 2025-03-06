@@ -569,36 +569,22 @@ def plot_grouped_features(df: pd.DataFrame,               # DataFrame containing
             plt.show()
 
 # %% ../nbs/03_visualization.ipynb 24
-def plot_value_proportions(data: Optional[Union[List[int], np.ndarray]],  # List or array of ID values to filter the DataFrame.
-                           classification_df: pd.DataFrame,               # DataFrame containing the data.
-                           id_col_classification: Optional[str] = None,   # Column name to be used as ID.
-                           grid: Optional[str] = 'horizontal',            # Option to plot in grid (horizontal, vertical, or square) or separate images.
-                           show_percentages: Union[bool, List[bool]] = True, # Option to print or not print percentages.
-                           show_labels: Union[bool, List[bool]] = True,      # Option to print or not print labels.
-                           percentage_font_size: int = 10,                # Font size for percentages.
-                           label_distance: float = 1.1,                   # Distance of labels from center.
-                           pct_distance: float = 0.85,                    # Distance of percentages from center.
-                           explode_factor: float = 0.1                    # Factor to separate slices.
+def plot_value_proportions(data,  # List or array of labels to plot
+                           grid: str = 'horizontal',            # Option to plot in grid (horizontal, vertical, or square) or separate images.
+                           show_percentages: bool = True,       # Option to print or not print percentages.
+                           show_labels: bool = True,            # Option to print or not print labels.
+                           percentage_font_size: int = 10,      # Font size for percentages.
+                           label_distance: float = 1.1,         # Distance of labels from center.
+                           pct_distance: float = 0.85,          # Distance of percentages from center.
+                           explode_factor: float = 0.1          # Factor to separate slices.
                           ) -> None:
     """
-    Count occurrences of each unique value in data, map those counts to the DataFrame,
-    and plot the proportions in pie charts for each column except the ID column.
+    Count occurrences of each unique value in data and plot the proportions in pie charts.
     """
-    if data is not None:
-        if isinstance(data, np.ndarray):
-            data = data.tolist()
-        data_series = pd.Series(data)
-        data_counts = data_series.value_counts()
-        # Map counts to the DataFrame
-        if id_col_classification:
-            labels = classification_df.set_index(id_col_classification).loc[data_series].index
-        else:
-            labels = classification_df.loc[data_series.index].index
-    else:
-        labels = classification_df.index
-
-    label_counts = pd.Series(labels).value_counts()
-
+    # Convert data to pandas Series for easier counting
+    data_series = pd.Series(data)
+    label_counts = data_series.value_counts()
+    
     def make_autopct(values):
         def my_autopct(pct):
             total = sum(values)
@@ -606,15 +592,11 @@ def plot_value_proportions(data: Optional[Union[List[int], np.ndarray]],  # List
             return f'{pct:.1f}%' if show_percentages else None
         return my_autopct
 
-    columns_to_plot = [col for col in classification_df.columns if col != id_col_classification]
-    num_cols = len(columns_to_plot)
+    # Handle show_percentages and show_labels as single booleans
+    show_percentages_list = [show_percentages]
+    show_labels_list = [show_labels]
+    
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
-
-    # Handle list or single boolean for show_percentages and show_labels
-    if isinstance(show_percentages, bool):
-        show_percentages = [show_percentages] * num_cols
-    if isinstance(show_labels, bool):
-        show_labels = [show_labels] * num_cols
 
     def plot_pie(ax, values, title, idx, show_pct, show_lbl):
         explode = [explode_factor] * len(values)
@@ -629,40 +611,25 @@ def plot_value_proportions(data: Optional[Union[List[int], np.ndarray]],  # List
         ax.text(0, 0, str(total_classes), ha='center', va='center', fontsize=12, weight='bold')
 
     if grid == 'horizontal':
-        fig, axes = plt.subplots(1, num_cols, figsize=(num_cols * 6, 6))
-        axes = np.atleast_1d(axes)  # Ensure axes is always an array, even with a single subplot
-        for i, column in enumerate(columns_to_plot):
-            values = classification_df[column].reindex(labels).value_counts()
-            plot_pie(axes[i], values, f'Proportion of orbits by {column}', i, show_percentages[i], show_labels[i])
+        fig, axes = plt.subplots(1, 1, figsize=(10, 10))
+        plot_pie(axes, label_counts, 'Proportion of values', 0, show_percentages_list[0], show_labels_list[0])
         plt.tight_layout()
         plt.show()
     elif grid == 'vertical':
-        fig, axes = plt.subplots(num_cols, 1, figsize=(6, num_cols * 6))
-        axes = np.atleast_1d(axes)  # Ensure axes is always an array, even with a single subplot
-        for i, column in enumerate(columns_to_plot):
-            values = classification_df[column].reindex(labels).value_counts()
-            plot_pie(axes[i], values, f'Proportion of orbits by {column}', i, show_percentages[i], show_labels[i])
+        fig, axes = plt.subplots(1, 1, figsize=(10, 10))
+        plot_pie(axes, label_counts, 'Proportion of values', 0, show_percentages_list[0], show_labels_list[0])
         plt.tight_layout()
         plt.show()
     elif grid == 'square':
-        grid_size = int(np.ceil(np.sqrt(num_cols)))
-        fig, axes = plt.subplots(grid_size, grid_size, figsize=(grid_size * 6, grid_size * 6))
-        axes = axes.flatten()  # Flatten the 2D array of axes to make indexing easier
-        for i, column in enumerate(columns_to_plot):
-            values = classification_df[column].reindex(labels).value_counts()
-            plot_pie(axes[i], values, f'Proportion of orbits by {column}', i, show_percentages[i], show_labels[i])
-        # Hide any unused subplots
-        for j in range(i + 1, len(axes)):
-            fig.delaxes(axes[j])
+        fig, axes = plt.subplots(1, 1, figsize=(10, 10))
+        plot_pie(axes, label_counts, 'Proportion of values', 0, show_percentages_list[0], show_labels_list[0])
         plt.tight_layout()
         plt.show()
     else:
-        for i, column in enumerate(columns_to_plot):
-            plt.figure(figsize=(6, 6))
-            values = classification_df[column].reindex(labels).value_counts()
-            ax = plt.gca()
-            plot_pie(ax, values, f'Proportion of orbits by {column}', i, show_percentages[i], show_labels[i])
-            plt.show()
+        plt.figure(figsize=(10, 10))
+        ax = plt.gca()
+        plot_pie(ax, label_counts, 'Proportion of values', 0, show_percentages_list[0], show_labels_list[0])
+        plt.show()
 
 # %% ../nbs/03_visualization.ipynb 25
 def plot_mean_distance_by_group_column(df, group_column, value_column):
