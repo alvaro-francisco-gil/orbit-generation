@@ -50,6 +50,7 @@ def plot_2d_latent_space(
     title: Optional[str] = '2D Latent Space Visualization',  # New title parameter
     title_size: int = 14,  # New title_size parameter
     axis_labels: Optional[Tuple[str, str]] = ('Dimension 1', 'Dimension 2'),  # New axis_labels parameter
+    normalize_data: bool = True,  # New parameter to control normalization
     **kwargs: Any
 ) -> None:
     """
@@ -82,11 +83,14 @@ def plot_2d_latent_space(
         Font size for the title.
     - axis_labels: Optional[Tuple[str, str]], default ('Dimension 1', 'Dimension 2')
         Labels for the X and Y axes.
+    - normalize_data: bool, default False
+        If True, normalizes the latent representations.
     - kwargs: Any
         Additional keyword arguments passed to scatter plots.
     """
-    # Normalize latent representations
-    latent_representations = (latent_representations - np.mean(latent_representations, axis=0)) / np.std(latent_representations, axis=0)
+    # Normalize latent representations if requested
+    if normalize_data:
+        latent_representations = (latent_representations - np.mean(latent_representations, axis=0)) / np.std(latent_representations, axis=0)
 
     # Encode labels
     label_encoder = LabelEncoder()
@@ -163,23 +167,25 @@ def plot_2d_latent_space(
     if show_legend:
         ax_main.legend(title="Classes", fontsize=legend_fontsize)
 
-    ax_main.set_title(title, fontsize=title_size)  # Use the title parameter and title_size
-    ax_main.set_xlabel(axis_labels[0])  # Use the axis_labels parameter
-    ax_main.set_ylabel(axis_labels[1])  # Use the axis_labels parameter
+    if title is not None:
+        ax_main.set_title(title, fontsize=title_size)  # Use the title parameter and title_size
+    
+    if axis_labels is not None:
+        ax_main.set_xlabel(axis_labels[0])  # Use the axis_labels parameter
+        ax_main.set_ylabel(axis_labels[1])  # Use the axis_labels parameter
 
-    # Set equal aspect ratio and adjust limits
-    ax_main.set_aspect('equal')
+    # Set aspect ratio to be adjustable
+    ax_main.set_aspect('auto')
 
+    # Get data limits
     x_min, x_max = latent_representations[:, 0].min(), latent_representations[:, 0].max()
     y_min, y_max = latent_representations[:, 1].min(), latent_representations[:, 1].max()
-
-    max_range = max(x_max - x_min, y_max - y_min)
-
-    ax_main.set_xlim(x_min - (max_range - (x_max - x_min)) / 2,
-                     x_max + (max_range - (x_max - x_min)) / 2)
-
-    ax_main.set_ylim(y_min - (max_range - (y_max - y_min)) / 2,
-                     y_max + (max_range - (y_max - y_min)) / 2)
+    
+    # Set limits to fit the figsize with added space
+    x_margin = (x_max - x_min) * 0.1  # 10% margin
+    y_margin = (y_max - y_min) * 0.1  # 10% margin
+    ax_main.set_xlim(x_min - x_margin, x_max + x_margin)
+    ax_main.set_ylim(y_min - y_margin, y_max + y_margin)
 
     # Plot feature distributions with standard deviation if features are provided and plot_std is True
     if features is not None and feature_names is not None:
