@@ -2,9 +2,9 @@ data/orbits_dt_0_01
 data/orbits_fix_1500
 data/generated_converged_data
 experiments/*
-!experiments/
+# !experiments/
 !experiments/experiments.json
-!experiments/results
+# !experiments/results
 nbs_experiments/lightning_logs/
 nbs_experiments/wandb/
 tsgm_examples/
@@ -12,6 +12,13 @@ tsgm_examples/
 # Ignore environment secrets
 .devcontainer/.env
 
+# Ignore any lightning logs
+lightning_logs/
+
+# Ignore cursor files
+.cursorignore
+
+# Ignore any proc files
 _proc/
 
 *.bak

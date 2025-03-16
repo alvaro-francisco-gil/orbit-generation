@@ -4,7 +4,7 @@
 
 # %% auto 0
 __all__ = ['RELATIVE_TOLERANCE', 'ABSOLUTE_TOLERANCE', 'jacobi_constant', 'eom_cr3bp', 'prop_node', 'jacobi_test',
-           'dynamics_defect', 'calculate_errors']
+           'dynamics_defect', 'calculate_errors', 'calculate_errors_per_orbit']
 
 # %% ../nbs/07_propagation.ipynb 3
 import matplotlib.pyplot as plt
@@ -185,14 +185,15 @@ def dynamics_defect(X: np.ndarray,  # Time-state vector with shape (n, 7), where
     return errX, errV
 
 # %% ../nbs/07_propagation.ipynb 21
-def calculate_errors(orbit_data: np.ndarray,  # 3D array of orbit data
-                     mu: float,  # Gravitational parameter
-                     orbit_indices: List[int] = None,  # List of integers referring to the orbits to analyze
-                     error_types: List[str] = ['position', 'velocity', 'energy'],  # Types of errors to calculate
-                     time_step: Optional[float] = None,  # Optional time step if time dimension is not included
-                     display_results: bool = True,  # Boolean to control whether to display the results
-                     cumulative: bool = False  # Boolean to control cumulative or average error
-                    ) -> Dict[str, Tuple[float, float]]:
+def calculate_errors(
+    orbit_data: np.ndarray,  # 3D array of orbit data
+    mu: float,  # Gravitational parameter
+    orbit_indices: List[int] = None,  # List of integers referring to the orbits to analyze
+    error_types: List[str] = ['position', 'velocity', 'energy'],  # Types of errors to calculate
+    time_step: Optional[float] = None,  # Optional time step if time dimension is not included
+    display_results: bool = True,  # Boolean to control whether to display the results
+    cumulative: bool = False  # Boolean to control cumulative or average error
+) -> Dict[str, Tuple[float, float]]:
     """
     Calculate and return the cumulative error and the average error per time step
     for the selected orbits together. Optionally, display the evolution of each error as a chart.
@@ -213,9 +214,11 @@ def calculate_errors(orbit_data: np.ndarray,  # 3D array of orbit data
         raise ValueError("Invalid orbit_data shape. Must be (n, 6, m) or (n, 7, m)")
 
     errors = {}
-    
+    num_orbits = len(orbit_indices)
+
     for error_type in error_types:
         cumulative_error = 0.0
+        total_time_steps = 0
         error_evolution = np.zeros(orbit_data.shape[2] - 1)
         
         for idx in orbit_indices:
@@ -256,7 +259,13 @@ def calculate_errors(orbit_data: np.ndarray,  # 3D array of orbit data
             else:
                 raise ValueError("Invalid error type. Choose from 'position', 'velocity', or 'energy'.")
         
-        avg_error_per_timestep = cumulative_error / (len(unique_time_indices) - 1)
+            total_time_steps += (len(unique_time_indices) - 1)
+        
+        # Calculate the mean error per time step across all orbits
+        if total_time_steps > 0:
+            avg_error_per_timestep = cumulative_error / total_time_steps
+        else:
+            avg_error_per_timestep = 0.0
         
         if display_results:
             print(f"Cumulative {error_type} error for selected orbits: {cumulative_error}")
@@ -275,6 +284,80 @@ def calculate_errors(orbit_data: np.ndarray,  # 3D array of orbit data
         if cumulative:
             errors[f'{error_type}_error'] = (cumulative_error, avg_error_per_timestep)
         else:
-            errors[f'{error_type}_error'] = avg_error_per_timestep
+            # Compute the mean of average errors per orbit
+            mean_error = cumulative_error / num_orbits
+            errors[f'{error_type}_error'] = mean_error
+    
+    return errors
+
+# %% ../nbs/07_propagation.ipynb 23
+def calculate_errors_per_orbit(
+    orbit_data: np.ndarray,  # 3D array of orbit data
+    mu: float,  # Gravitational parameter
+    error_types: List[str] = ['position', 'velocity', 'energy'],  # Types of errors to calculate
+    time_step: Optional[float] = None,  # Optional time step if time dimension is not included
+    display_results: bool = False  # Boolean to control whether to display the results
+) -> Dict[str, np.ndarray]:
+    """
+    Calculate and return the average error per orbit for the selected error types.
+    Optionally, display the evolution of each error as a chart.
+    """
+    # Check if the time dimension is included in the data
+    if orbit_data.shape[1] == 6 and time_step is not None:
+        num_time_points = orbit_data.shape[2]
+        tvec = np.linspace(0, num_time_points * time_step, num_time_points + 1)
+        orbit_data_with_time = np.zeros((orbit_data.shape[0], 7, num_time_points))
+        orbit_data_with_time[:, 1:, :] = orbit_data
+        for i in range(num_time_points):
+            orbit_data_with_time[:, 0, i] = tvec[i]
+        orbit_data = orbit_data_with_time
+    elif orbit_data.shape[1] != 7:
+        raise ValueError("Invalid orbit_data shape. Must be (n, 6, m) or (n, 7, m)")
+
+    num_orbits = orbit_data.shape[0]
+    num_time_points = orbit_data.shape[2]
+    
+    # Initialize error arrays
+    position_errors = np.zeros(num_orbits)
+    velocity_errors = np.zeros(num_orbits)
+    energy_errors = np.zeros(num_orbits)
+    
+    for idx in range(num_orbits):
+        selected_orbit = orbit_data[idx, :, :].T  # Shape: (num_time_points, 7)
+        tvec = selected_orbit[:, 0]  # Time vector for the current orbit
+        unique_time_indices = np.where(np.diff(tvec) > 0)[0] + 1
+        unique_time_indices = np.insert(unique_time_indices, 0, 0)  # Include the first time point
+        
+        if 'position' in error_types:
+            pos_error, _ = dynamics_defect(selected_orbit[unique_time_indices, :], mu)
+            position_errors[idx] = pos_error / (len(unique_time_indices) - 1)
+        
+        if 'velocity' in error_types:
+            _, vel_error = dynamics_defect(selected_orbit[unique_time_indices, :], mu)
+            velocity_errors[idx] = vel_error / (len(unique_time_indices) - 1)
+        
+        if 'energy' in error_types:
+            energy_error = jacobi_test(selected_orbit[unique_time_indices, 1:], mu)
+            energy_errors[idx] = energy_error / (len(unique_time_indices) - 1)
+    
+    errors = {}
+    
+    if 'position' in error_types:
+        errors['position_error'] = position_errors
+        if display_results:
+            print("Average Position Error per Orbit:")
+            print(position_errors)
+    
+    if 'velocity' in error_types:
+        errors['velocity_error'] = velocity_errors
+        if display_results:
+            print("Average Velocity Error per Orbit:")
+            print(velocity_errors)
+    
+    if 'energy' in error_types:
+        errors['energy_error'] = energy_errors
+        if display_results:
+            print("Average Energy Error per Orbit:")
+            print(energy_errors)
     
     return errors
