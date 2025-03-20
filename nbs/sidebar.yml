@@ -4,9 +4,16 @@ website:
       - index.ipynb
       - 00_constants.ipynb
       - 01_data.ipynb
-      - 02_processing.ipynb
+      - 02_orbit_processing.ipynb
       - 03_visualization.ipynb
-      - 04_statistics.ipynb
+      - 04_orbit_statistics.ipynb
       - 05_dataset.ipynb
-      - 06_model.ipynb
+      - 06_architectures.ipynb
       - 07_propagation.ipynb
+      - 08_experiment.ipynb
+      - 09_evaluation.ipynb
+      - 10_vae.ipynb
+      - 11_model_factory.ipynb
+      - 12_convergence.ipynb
+      - 13_latent_space.ipynb
+      - 14_paper_specific.ipynb

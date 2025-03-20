@@ -12,12 +12,14 @@ from julia import Main
 import logging
 import numpy as np
 import pandas as pd
+import os
 
 # %% ../nbs/12_convergence.ipynb 3
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # %% ../nbs/12_convergence.ipynb 5
+print(os.getcwd())
 Main.include("../julia/convergence_algorithm.jl")
 
 def differential_correction(
