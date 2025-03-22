@@ -1005,11 +1005,46 @@ def plot_linear_regression(latent_means, features, feature_names, normalize=Fals
         # Add colorbar
         plt.colorbar(scatter, ax=axes[i])
         
-        # Plot regression direction (line)
-        x_vals = np.array(axes[i].get_xlim())
-        y_vals = coefficients[0] * x_vals + intercept
-        axes[i].plot(x_vals, y_vals, '--r', label='Regression Line')
-        axes[i].legend()
+        # Plot normalized regression direction (vector)
+        # Get current axis limits
+        x_min, x_max = axes[i].get_xlim()
+        y_min, y_max = axes[i].get_ylim()
+        
+        # Calculate the center point of the plot
+        center_x = (x_min + x_max) / 2
+        center_y = (y_min + y_max) / 2
+        
+        # Get both coefficients and normalize the direction vector
+        coef_x = coefficients[0]
+        coef_y = coefficients[1] if len(coefficients) > 1 else 0
+        
+        # Normalize the vector to unit length
+        vector_magnitude = np.sqrt(coef_x**2 + coef_y**2)
+        if vector_magnitude > 0:  # Avoid division by zero
+            normalized_coef_x = coef_x / vector_magnitude
+            normalized_coef_y = coef_y / vector_magnitude
+            
+            # Scale to a fixed proportion of the plot size
+            vector_scale = 0.4 * min(x_max - x_min, y_max - y_min)  # 40% of the smaller dimension
+            vector_dx = vector_scale * normalized_coef_x
+            vector_dy = vector_scale * normalized_coef_y
+            
+            # Draw arrow
+            axes[i].arrow(center_x, center_y, vector_dx, vector_dy, 
+                         head_width=0.07*vector_scale, head_length=0.15*vector_scale, 
+                         fc='red', ec='red', linewidth=2)
+        
+        # Maintain axis limits
+        axes[i].set_xlim(x_min, x_max)
+        axes[i].set_ylim(y_min, y_max)
+        
+        # Create a proper legend entry with matching color
+        from matplotlib.lines import Line2D
+        legend_element = Line2D([0], [0], marker='>',
+                                color='red', markerfacecolor='red',
+                                markersize=10, linestyle='-', linewidth=2,
+                                label='Regression Direction')
+        axes[i].legend(handles=[legend_element], loc='best')
     
     plt.tight_layout()
     plt.show()
