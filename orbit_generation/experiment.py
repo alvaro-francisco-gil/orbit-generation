@@ -212,24 +212,12 @@ def get_experiment_parameters(experiments_folder: str,                    # Path
     raise ValueError(f"Experiment with the specified ID {experiment_id} does not exist.")
 
 # %% ../nbs/08_experiment.ipynb 14
-def get_experiment_data(experiments_folder: str,
-                        experiment_id: int,
-                        json_file: Optional[str] = None
+def get_experiment_data(experiments_folder: str,  # Path to the folder containing all experiments
+                       experiment_id: int,  # ID to identify the experiment
+                       json_file: Optional[str] = None,  # Optional path to the JSON file tracking experiment data
                        ) -> Dict[str, Any]:
     """
     Retrieves all data for an experiment from the JSON file based on the given ID.
-    
-    Args:
-    experiments_folder (str): Path to the folder containing all experiments.
-    experiment_id (int): ID to identify the experiment.
-    json_file (Optional[str]): Optional path to the JSON file tracking experiment data.
-    
-    Returns:
-    Dict[str, Any]: A dictionary containing all data for the specified experiment.
-    
-    Raises:
-    FileNotFoundError: If the experiments folder or JSON file doesn't exist.
-    ValueError: If the experiment with the specified ID is not found.
     """
     # Ensure the experiments folder exists
     if not os.path.exists(experiments_folder):
@@ -255,15 +243,10 @@ def get_experiment_data(experiments_folder: str,
     raise ValueError(f"Experiment with the specified ID {experiment_id} does not exist.")
 
 # %% ../nbs/08_experiment.ipynb 15
-def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
+def read_json_to_dataframe(json_path: str,  # Path to the JSON file containing experiment results
+                          ) -> pd.DataFrame:
     """
     Reads a JSON file containing experiment results and returns a DataFrame.
-
-    Args:
-    - json_path (str): The path to the JSON file.
-
-    Returns:
-    - pd.DataFrame: A DataFrame containing the experiment results.
     """
     with open(json_path, 'r') as file:
         data = json.load(file)
@@ -281,7 +264,13 @@ def read_json_to_dataframe(json_path: str) -> pd.DataFrame:
     return df
 
 # %% ../nbs/08_experiment.ipynb 18
-def generate_image_paths(folder_prefix, unique_ids, file_suffix):
+def generate_image_paths(folder_prefix: str,  # Base folder path prefix for each experiment
+                        unique_ids: list[int],  # List of experiment IDs
+                        file_suffix: str,  # Suffix to append to the generated filenames
+                        ) -> list[str]:
+    """
+    Generates a list of image file paths based on experiment IDs and folder structure.
+    """
     file_paths = []
     for unique_id in unique_ids:
         file_name = f"exp{unique_id}{file_suffix}"
@@ -290,7 +279,13 @@ def generate_image_paths(folder_prefix, unique_ids, file_suffix):
     return file_paths
 
 # %% ../nbs/08_experiment.ipynb 20
-def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len, file_suffix='_generated_orbits'):
+def concatenate_orbits_from_experiment_folder(experiments_folder: str,  # Root folder containing experiment subfolders
+                                            seq_len: int,  # Expected sequence length of orbit data
+                                            file_suffix: str = '_generated_orbits',  # Suffix for orbit data files
+                                            ) -> np.ndarray:
+    """
+    Concatenates orbit data from multiple experiment folders into a single array.
+    """
     arrays = []
     
     for folder in os.listdir(experiments_folder):
@@ -313,7 +308,12 @@ def concatenate_orbits_from_experiment_folder(experiments_folder, seq_len, file_
         return np.array([])
 
 # %% ../nbs/08_experiment.ipynb 22
-def concatenate_csvs_from_experiment_folder(experiments_folder, file_suffix):
+def concatenate_csvs_from_experiment_folder(experiments_folder: str,  # Root folder containing experiment subfolders
+                                          file_suffix: str,  # Suffix for CSV files to concatenate
+                                          ) -> pd.DataFrame:
+    """
+    Concatenates CSV files from multiple experiment folders into a single DataFrame.
+    """
     dataframes = []
     
     for folder in os.listdir(experiments_folder):
@@ -340,7 +340,14 @@ def concatenate_csvs_from_experiment_folder(experiments_folder, file_suffix):
         return pd.DataFrame()
 
 # %% ../nbs/08_experiment.ipynb 24
-def concatenate_and_check_orbits_from_experiment_folder(experiments_folder, csv_file_name='_refined_orbits_df.csv', np_file_name='_refined_orbits'):
+def concatenate_and_check_orbits_from_experiment_folder(
+    experiments_folder: str,  # Root folder containing experiment subfolders
+    csv_file_name: str = '_refined_orbits_df.csv',  # Suffix for CSV files containing refined orbits
+    np_file_name: str = '_refined_orbits',  # Suffix for numpy files containing generated orbits
+    ) -> Tuple[np.ndarray, pd.DataFrame]:
+    """
+    Concatenates orbit data from multiple experiment folders and checks for consistency between generated and refined orbits.
+    """
     arrays = []
     all_refined_orbit_dfs = []
     
@@ -381,7 +388,12 @@ def concatenate_and_check_orbits_from_experiment_folder(experiments_folder, csv_
         return np.array([]), pd.DataFrame()
 
 # %% ../nbs/08_experiment.ipynb 26
-def generate_parameter_sets(params, model_specific_params):
+def generate_parameter_sets(params: Dict[str, Union[Any, List[Any]]],  # Dictionary of parameter names and their values/value lists
+                          model_specific_params: Dict[str, Dict],  # Dictionary mapping model names to their specific parameters
+                          ) -> List[Dict]:
+    """
+    Generates all possible parameter combinations from the given parameter sets and merges them with model-specific parameters.
+    """
     keys, values = zip(*params.items())
     combinations = [dict(zip(keys, v)) for v in itertools.product(*[
         value if isinstance(value, list) else [value] for value in values
@@ -400,7 +412,17 @@ def generate_parameter_sets(params, model_specific_params):
 
 
 # %% ../nbs/08_experiment.ipynb 28
-def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, extra_parameters=None, checkpoint_file=None):
+def execute_parameter_notebook(notebook_to_execute: str,  # Path to the notebook file to execute
+                             output_dir: str,  # Directory to save output notebook
+                             i: int,  # Execution index
+                             params: Dict,  # Parameters to pass to the notebook
+                             extra_parameters: Optional[Dict] = None,  # Additional parameters to merge with params
+                             checkpoint_file: Optional[str] = None,  # Path to checkpoint file
+                             ) -> Optional[int]:
+    """
+    Executes a Jupyter notebook with given parameters and saves the output.
+    Returns the execution index if successful, None if failed.
+    """
     try:
         # Mark as started
         with open(checkpoint_file, 'r+') as f:
@@ -445,7 +467,16 @@ def execute_parameter_notebook(notebook_to_execute, output_dir, i, params, extra
         return None
 
 # %% ../nbs/08_experiment.ipynb 29
-def paralelize_notebook_experiment(parameter_sets, notebook_to_execute, output_dir, checkpoint_file, max_workers=3, extra_parameters=None):
+def paralelize_notebook_experiment(parameter_sets: List[Dict],  # List of parameter dictionaries to execute
+                                 notebook_to_execute: str,  # Path to the notebook file to execute
+                                 output_dir: str,  # Directory to save execution outputs
+                                 checkpoint_file: str,  # Path to checkpoint file tracking execution progress
+                                 max_workers: int = 3,  # Maximum number of parallel workers
+                                 extra_parameters: Optional[Dict] = None,  # Additional parameters to pass to each execution
+                                 ) -> None:
+    """
+    Executes a Jupyter notebook multiple times in parallel with different parameter sets, tracking progress with checkpoints.
+    """
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
     
@@ -503,17 +534,12 @@ data_path = r"/orbit-generation/data/orbits_fix_1500/EM_N_fix_1500.h5"
 experiments_folder = "../experiments"
 
 # %% ../nbs/08_experiment.ipynb 32
-def generate_file_paths(experiment_id, images_folder, experiment_folder):
+def generate_file_paths(experiment_id: Union[int, str],  # Unique ID of the experiment
+                       images_folder: str,  # Folder path where image files are stored
+                       experiment_folder: str,  # Folder path where experiment-related files are stored
+                       ) -> Dict[str, str]:
     """
     Generate a dictionary of file paths for an experiment.
-
-    Parameters:
-        experiment_id (int or str): The unique ID of the experiment.
-        images_folder (str): The folder path where image files are stored.
-        experiment_folder (str): The folder path where experiment-related files are stored.
-
-    Returns:
-        dict: A dictionary containing all generated file paths.
     """
     paths = {
         # Images - Orbits
@@ -565,18 +591,13 @@ from .data import TSFeatureWiseScaler, discard_random_labels
 import torch
 
 # %% ../nbs/08_experiment.ipynb 34
-def prepare_experiment_data(params, experiments_folder, data_path, want_to_discover):
+def prepare_experiment_data(params: Dict[str, Any],  # Dictionary containing experiment parameters
+                          experiments_folder: str,  # Folder where experiments are stored
+                          data_path: str,  # Path to the dataset file
+                          want_to_discover: bool,  # Flag indicating whether to discover new families or use existing ones
+                          ) -> Tuple[torch.Tensor, pd.DataFrame, List[str], List[str], np.ndarray, Dict[str, str], int]:
     """
     Prepare the experiment data based on the provided parameters and configurations.
-
-    Parameters:
-        params (dict): A dictionary containing all the experiment parameters.
-        experiments_folder (str): The folder where experiments are stored.
-        data_path (str): Path to the dataset file.
-        want_to_discover (bool): Flag indicating whether to discover new families or use existing ones.
-
-    Returns:
-        tuple: Processed scaled data, orbit dataframe, family labels, and additional metadata.
     """
     # Step 1: Setup experiment folders
     experiment_folder = setup_new_experiment(params, experiments_folder)
@@ -658,20 +679,15 @@ from .data import create_dataloaders
 from .architectures import VAELossHistory
 
 # %% ../nbs/08_experiment.ipynb 36
-def prepare_and_train_model(params, scaled_data, experiments_folder, experiment_id, file_paths, want_to_train):
+def prepare_and_train_model(params: Dict[str, Any],  # Dictionary containing all experiment parameters
+                           scaled_data: torch.Tensor,  # Scaled data tensor for training/validation
+                           experiments_folder: str,  # Folder where experiments are stored
+                           experiment_id: int,  # Unique ID of current experiment
+                           file_paths: Dict[str, str],  # Dictionary of paths for model/metrics files
+                           want_to_train: bool,  # Whether to train model or load pre-trained
+                           ) -> nn.Module:
     """
     Prepare the model and either train it or load a pre-trained version based on the provided parameters.
-
-    Parameters:
-        params (dict): A dictionary containing all the experiment parameters.
-        scaled_data (torch.Tensor): The scaled data to be used for training or validation.
-        experiments_folder (str): The folder where experiments are stored.
-        experiment_id (int): The unique ID of the current experiment.
-        file_paths (dict): A dictionary containing file paths for saving/loading model and metrics.
-        want_to_train (bool): Flag indicating whether to train the model or load a pre-trained one.
-
-    Returns:
-        object: The trained or loaded model.
     """
     # Step 1: Initialize the model
     model = get_model(params)
