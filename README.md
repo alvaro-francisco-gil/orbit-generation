@@ -63,7 +63,7 @@ conducted](#Generative-Discovery-Experiment).
 |   |-- 11_model_factory.ipynb
 |   |-- 12_convergence.ipynb
 |   |-- 13_latent_space.ipynb
-|   |-- 14_paper_specific.ipynb
+|   |-- 14_path_utils.ipynb
 |   |-- index.ipynb
 |
 |-- nbs_experiments: Notebooks with research experiments using the library.  
