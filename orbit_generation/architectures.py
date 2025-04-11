@@ -226,21 +226,14 @@ class Conv5Decoder(VAEDecoder):
         return z
 
 # %% ../nbs/06_architectures.ipynb 17
-def get_conv5_vae_components(seq_len, feat_dim, latent_dim, **kwargs):
+def get_conv5_vae_components(seq_len: int,  # Length of input sequence
+                           feat_dim: int,  # Dimensionality of input features 
+                           latent_dim: int,  # Dimensionality of the latent space
+                           dropout_rate: float = 0.2,  # Dropout rate for regularization
+                           ) -> tuple[Conv5Encoder, Conv5Decoder]:
     """
-    Returns an instance of Conv5Encoder and Conv5Decoder based on the given parameters.
-    
-    Args:
-        seq_len (int): Length of input sequence.
-        feat_dim (int): Dimensionality of input features.
-        latent_dim (int): Dimensionality of the latent space.
-        **kwargs: Additional keyword arguments to be passed to the encoder and decoder.
-    
-    Returns:
-        encoder (Conv5Encoder): The encoder part of the VAE.
-        decoder (Conv5Decoder): The decoder part of the VAE.
+    Creates and returns encoder and decoder components for a convolutional VAE architecture.
     """
-    dropout_rate = kwargs.get('dropout_rate', 0.2)
     encoder = Conv5Encoder(seq_len, feat_dim, latent_dim, dropout_rate)
     decoder = Conv5Decoder(seq_len, feat_dim, latent_dim, dropout_rate)
     
@@ -326,21 +319,14 @@ class Conv5DecoderLegitTsgm(VAEDecoder):
         return z
 
 # %% ../nbs/06_architectures.ipynb 24
-def get_conv5_legit_tsgm_vae_components(seq_len, feat_dim, latent_dim, **kwargs):
+def get_conv5_legit_tsgm_vae_components(seq_len: int,  # Length of input sequence
+                                       feat_dim: int,  # Dimensionality of input features
+                                       latent_dim: int,  # Dimensionality of the latent space
+                                       dropout_rate: float = 0.2,  # Dropout rate for regularization
+                                       ) -> tuple[Conv5EncoderLegitTsgm, Conv5DecoderLegitTsgm]:
     """
-    Returns an instance of Conv5Encoder and Conv5Decoder based on the given parameters.
-    
-    Args:
-        seq_len (int): Length of input sequence.
-        feat_dim (int): Dimensionality of input features.
-        latent_dim (int): Dimensionality of the latent space.
-        **kwargs: Additional keyword arguments to be passed to the encoder and decoder.
-    
-    Returns:
-        encoder (Conv5Encoder): The encoder part of the VAE.
-        decoder (Conv5Decoder): The decoder part of the VAE.
+    Creates and returns encoder and decoder components for a Conv5 VAE model.
     """
-    dropout_rate = kwargs.get('dropout_rate', 0.2)
     encoder = Conv5EncoderLegitTsgm(seq_len, feat_dim, latent_dim, dropout_rate)
     decoder = Conv5DecoderLegitTsgm(seq_len, feat_dim, latent_dim, dropout_rate)
     
@@ -898,20 +884,14 @@ class WPInceptionTimeVAEDecoder(VAEDecoder):
         return z
 
 # %% ../nbs/06_architectures.ipynb 35
-def get_inception_time_vae_components(seq_len, feat_dim, latent_dim, without_pooling=True, **model_kwargs):
+def get_inception_time_vae_components(seq_len: int,  # Length of input sequence
+                                    feat_dim: int,  # Dimensionality of input features 
+                                    latent_dim: int,  # Dimensionality of the latent space
+                                    without_pooling: bool = True,  # If True, returns WPInceptionTimeVAEEncoder instead of InceptionTimeVAEEncoder
+                                    **model_kwargs: dict  # Dictionary containing model-specific keyword arguments
+                                    ) -> tuple[Union[InceptionTimeVAEEncoder, WPInceptionTimeVAEEncoder], WPInceptionTimeVAEDecoder]:
     """
-    Returns an instance of InceptionTimeVAEEncoder or WPInceptionTimeVAEEncoder and InceptionTimeVAEDecoder based on the given parameters.
-
-    Args:
-        seq_len (int): Length of input sequence.
-        feat_dim (int): Dimensionality of input features.
-        latent_dim (int): Dimensionality of the latent space.
-        model_kwargs (dict): Dictionary containing model-specific keyword arguments.
-        without_pooling (bool): If True, returns WPInceptionTimeVAEEncoder instead of InceptionTimeVAEEncoder.
-
-    Returns:
-        encoder (InceptionTimeVAEEncoder or WPInceptionTimeVAEEncoder): The encoder part of the VAE.
-        decoder (InceptionTimeVAEDecoder): The decoder part of the VAE.
+    Returns encoder and decoder components for an InceptionTime-based VAE architecture.
     """
     if without_pooling:
         encoder = WPInceptionTimeVAEEncoder(
@@ -1078,23 +1058,16 @@ class cConv5DecoderLegitTsgm(cVAEDecoder):
         return z
 
 # %% ../nbs/06_architectures.ipynb 42
-def get_conditional_conv5_legit_tsgm_vae_components(seq_len, feat_dim, latent_dim, **kwargs):
+def get_conditional_conv5_legit_tsgm_vae_components(
+    seq_len: int,  # Length of input sequence
+    feat_dim: int,  # Dimensionality of input features 
+    latent_dim: int,  # Dimensionality of the latent space
+    dropout_rate: float = 0.2,  # Dropout rate for regularization
+    cond_dim: int = 1,  # Dimensionality of conditional input
+) -> tuple[cConv5EncoderLegitTsgm, cConv5DecoderLegitTsgm]:
     """
-    Returns an instance of Conv5Encoder and Conv5Decoder based on the given parameters.
-    
-    Args:
-        seq_len (int): Length of input sequence.
-        feat_dim (int): Dimensionality of input features.
-        latent_dim (int): Dimensionality of the latent space.
-        **kwargs: Additional keyword arguments to be passed to the encoder and decoder.
-    
-    Returns:
-        encoder (Conv5Encoder): The encoder part of the VAE.
-        decoder (Conv5Decoder): The decoder part of the VAE.
+    Creates encoder and decoder components for a conditional convolutional VAE.
     """
-    dropout_rate = kwargs.get('dropout_rate', 0.2)
-    cond_dim = kwargs.get('cond_dim', 1)
-
     encoder = cConv5EncoderLegitTsgm(seq_len, feat_dim, latent_dim, cond_dim, dropout_rate)
     decoder = cConv5DecoderLegitTsgm(seq_len, feat_dim, latent_dim, cond_dim, dropout_rate)
     

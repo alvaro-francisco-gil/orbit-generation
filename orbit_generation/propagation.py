@@ -128,13 +128,6 @@ def jacobi_test(X: np.ndarray,  # State vector with shape (n, 6) or (n, 7), wher
     """
     Compute the energy error. X can have either 6 columns (state vector) or 7 columns (time + state vector).
     The returned quantity is the cumulative error with respect to the initial value. If propagation is perfect, err = 0 (or very small).
-    
-    Parameters:
-    X (np.ndarray): State vector with shape (n, 6) or (n, 7), where n is the number of samples.
-    mu (float): Gravitational parameter.
-    
-    Returns:
-    float: Cumulative energy error with respect to the initial value.
     """
     n, k = np.shape(X)
     
@@ -157,13 +150,6 @@ def dynamics_defect(X: np.ndarray,  # Time-state vector with shape (n, 7), where
     Compute the dynamical defect for the generated time-state sequence. 
     The returned quantity is the cumulative error on the position and velocity components.
     The overall metrics can be a combination of these two last errors.
-    
-    Parameters:
-    X (np.ndarray): Time-state vector with shape (n, 7), where the first column is the time vector.
-    mu (float): Gravitational parameter.
-    
-    Returns:
-    Tuple[float, float]: Cumulative errors in position and velocity.
     """
     n, m = np.shape(X)
     if m != 7:
