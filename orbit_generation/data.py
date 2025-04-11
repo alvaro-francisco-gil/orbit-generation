@@ -13,16 +13,17 @@ from scipy.io import loadmat
 import numpy as np
 import os
 import pandas as pd
-from typing import Optional, Any
+from typing import Optional, Any, Union, List, Dict, Tuple
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.model_selection import train_test_split
+from .path import get_data_path
 
 # %% ../nbs/01_data.ipynb 3
 from unittest.mock import patch, MagicMock
 from fastcore.test import test_eq
 
-# %% ../nbs/01_data.ipynb 6
+# %% ../nbs/01_data.ipynb 5
 def load_orbit_data(file_path: str,  # The path to the .mat, .h5, or .npy file.
                     variable_name: Optional[str] = None,  # Name of the variable in the .mat file, optional.
                     dataset_path: Optional[str] = None  # Path to the dataset in the .h5 file, optional.
@@ -56,23 +57,12 @@ def load_orbit_data(file_path: str,  # The path to the .mat, .h5, or .npy file.
     
     return data
 
-# %% ../nbs/01_data.ipynb 8
+# %% ../nbs/01_data.ipynb 7
 def load_memmap_array(file_path: str,  # The path to the .npy file as a string.
                       mode: str = 'c'  # Mode for memory-mapping ('r', 'r+', 'w+', 'c').
                      ) -> np.memmap:   # Returns a memory-mapped array.
     """
     Load a .npy file as a memory-mapped array using numpy.memmap.
-    
-    Args:
-    file_path: A string representing the path to the .npy file.
-    mode: The mode in which the file is to be opened. Valid options are:
-          - 'r'  : Read-only, no data can be modified.
-          - 'r+' : Read/write, modifications to the data are written to the file.
-          - 'w+' : Read/write, file is created if it does not exist, overwritten if it does.
-          - 'c'  : Copy-on-write, data can be modified in memory but changes are not saved to the file.
-
-    Returns:
-    A numpy.memmap object that behaves like a numpy array but with data stored on disk instead of in memory.
     """
     
     # Check if the file exists at the specified path
@@ -82,7 +72,7 @@ def load_memmap_array(file_path: str,  # The path to the .npy file as a string.
     # Load the .npy file as a memmap object with the specified mode
     return np.load(file_path, mmap_mode=mode)
 
-# %% ../nbs/01_data.ipynb 9
+# %% ../nbs/01_data.ipynb 8
 def get_orbit_features(file_path: str,  # The path to the file (can be .mat, .h5, or .npy).
                        variable_name: Optional[str] = None,  # Name of the variable in the .mat file, optional.
                        dataset_path: Optional[str] = None  # Path to the dataset in the .h5 file, optional.
@@ -105,7 +95,7 @@ def get_orbit_features(file_path: str,  # The path to the file (can be .mat, .h5
 
     return features
 
-# %% ../nbs/01_data.ipynb 12
+# %% ../nbs/01_data.ipynb 11
 def save_data(data: np.ndarray,  # The numpy array data to save.
               file_name: str  # The name of the file to save the data in, including the extension.
              ) -> None:
@@ -128,34 +118,30 @@ def save_data(data: np.ndarray,  # The numpy array data to save.
         # Raise an error for unsupported file types
         raise ValueError("Unsupported file extension. Supported extensions are '.hdf5' or '.npy'.")
 
-# %% ../nbs/01_data.ipynb 15
-def get_example_orbit_data():
+# %% ../nbs/01_data.ipynb 14
+def get_example_orbit_data(
+    ) -> np.ndarray:  # Return type annotation added
     """
-    Load orbit data from a hardcoded MAT file located in the `data` directory.
-    
-    The function is specifically designed to load the 'Xarray' variable 
-    from the '1_L2_S_200_EM_CR3BP.mat' file. This setup is intended for 
-    demonstration or testing purposes, where the data file and the variable 
-    of interest are known ahead of time.
-
-    :return: A numpy.ndarray containing the transposed data from the MAT file.
+    Load example orbit data from a numpy file located in the example_data directory.
     """
-    # Hardcoded file name and variable name
-    filename = "example_orbits_1_L2_S_200_EM_CR3BP.mat"
-    variable_name = 'Xarray'
+    # Construct path to example data file
+    data_path = get_data_path() / "example_training_data" / "example_orbits.npy"
     
-    # Assuming the notebook or script is executed in a directory at the same level as the `data` folder
-    matlab_file_path = '..' + "/data/example_data/" + filename
-    
-    # Assuming `load_orbit_data` is a predefined function that loads and returns data from the .mat file
-    data = load_orbit_data(str(matlab_file_path), variable_name=variable_name)
-    # Transpose the data for further use
-    data = np.transpose(data, (2, 1, 0))
+    # Convert Path to string before passing to load_orbit_data
+    data = load_orbit_data(str(data_path))
     
     return data
 
-# %% ../nbs/01_data.ipynb 18
-def order_labels_and_array_with_target(labels, array, target_label, place_at_end=False):
+# %% ../nbs/01_data.ipynb 17
+def order_labels_and_array_with_target(
+    labels: np.ndarray,  # Array of labels to be ordered
+    array: np.ndarray,  # Array to be ordered according to labels
+    target_label: str,  # Label to order by
+    place_at_end: bool = False,  # Whether to place target label at end
+    ) -> tuple[np.ndarray, np.ndarray]:  # Returns ordered labels and array
+    """
+    Orders labels and array by placing entries with target_label either at start or end.
+    """
     # Convert labels to a numpy array if it's not already
     labels = np.array(labels)
     n = len(labels)
@@ -176,22 +162,13 @@ def order_labels_and_array_with_target(labels, array, target_label, place_at_end
     
     return ordered_labels, ordered_array
 
-# %% ../nbs/01_data.ipynb 21
-def sample_orbits(orbit_data: np.ndarray,  # Orbit data array
-                  sample_spec: dict or int, # Number of samples per class (dict) or total number of samples (int)
-                  labels: np.ndarray = None # Optional: Array of labels corresponding to each orbit
-                 ) -> (np.ndarray, np.ndarray):
+# %% ../nbs/01_data.ipynb 20
+def sample_orbits(orbit_data: np.ndarray,  # Array of orbit data with shape (num_orbits, 6, num_time_points)
+                  sample_spec: Union[dict, int],  # Number of samples per class (dict) or total samples (int)
+                  labels: Optional[np.ndarray] = None,  # Array of labels for each orbit
+                  ) -> tuple[np.ndarray, Optional[np.ndarray]]:
     """
     Randomly sample orbits from the provided dataset.
-    
-    Parameters:
-        orbit_data (np.ndarray): Array of orbit data with shape (num_orbits, 6, num_time_points).
-        sample_spec (dict or int): If int, it is the total number of orbits to sample.
-                                   If dict, it specifies the number of samples for each class.
-        labels (np.ndarray, optional): Array of labels for each orbit.
-    
-    Returns:
-        tuple: A tuple containing the sampled orbit data and corresponding labels (if provided).
     """
     if labels is not None and isinstance(sample_spec, dict):
         # Sampling specified number of orbits for each class
@@ -213,21 +190,15 @@ def sample_orbits(orbit_data: np.ndarray,  # Orbit data array
     
     return sampled_data, sampled_labels
 
-# %% ../nbs/01_data.ipynb 24
-def discard_random_labels(data, labels, discard_labels):
+# %% ../nbs/01_data.ipynb 23
+def discard_random_labels(data: np.ndarray,  # Dataset to filter
+                         labels: np.ndarray,  # Labels corresponding to the data
+                         discard_labels: Union[List, Dict, int],  # Labels to discard - list, dict or number
+                         ) -> Tuple[List, np.ndarray, np.ndarray]:
     """
     Discards random or specified labels from the dataset.
-
-    Parameters:
-    - data: np.ndarray, the dataset to filter.
-    - labels: np.ndarray, the labels corresponding to the data.
-    - discard_labels: Can be a list of labels to discard, an integer (number of labels to discard), 
-                      or a dictionary (treated as a list of keys). If empty, returns the original data.
-
-    Returns:
-    - discarded: List of discarded labels.
-    - filtered_data: Data with specified labels removed.
-    - filtered_labels: Labels with specified labels removed.
+    
+    Returns tuple of (discarded labels, filtered data, filtered labels).
     """
     # Handle empty dictionary or empty list
     if isinstance(discard_labels, dict) and not discard_labels:
@@ -255,8 +226,12 @@ def discard_random_labels(data, labels, discard_labels):
     return discarded.tolist(), data[mask], labels[mask]
 
 
-# %% ../nbs/01_data.ipynb 26
-def remove_duplicates_preserve_order(input_list):
+# %% ../nbs/01_data.ipynb 25
+def remove_duplicates_preserve_order(input_list: List,  # Input list that may contain duplicates
+                                   ) -> List:  # Returns list with duplicates removed while preserving order
+    """
+    Removes duplicate items from a list while preserving the original order.
+    """
     unique_items = []
     seen = set()
     for item in input_list:
@@ -265,8 +240,14 @@ def remove_duplicates_preserve_order(input_list):
             unique_items.append(item)
     return unique_items
 
-# %% ../nbs/01_data.ipynb 28
-def create_dataloaders(scaled_data, val_split=0.2, batch_size=32):
+# %% ../nbs/01_data.ipynb 27
+def create_dataloaders(scaled_data: torch.Tensor,  # Input tensor of scaled data
+                      val_split: float = 0.2,  # Fraction of data to use for validation
+                      batch_size: int = 32,  # Batch size for dataloaders
+                      ) -> Tuple[DataLoader, Optional[DataLoader]]:  # Returns train and optional val dataloaders
+    """
+    Creates train and validation dataloaders from input tensor data.
+    """
     if val_split > 0:
         X_train, X_val = train_test_split(
             scaled_data,
@@ -285,10 +266,10 @@ def create_dataloaders(scaled_data, val_split=0.2, batch_size=32):
     
     return train_dataloader, val_dataloader
 
-# %% ../nbs/01_data.ipynb 30
+# %% ../nbs/01_data.ipynb 29
 EPS = 1e-18  # A small epsilon to prevent division by zero
 
-# %% ../nbs/01_data.ipynb 31
+# %% ../nbs/01_data.ipynb 30
 class TSFeatureWiseScaler():
     """
     Scales time series data feature-wise using PyTorch tensors.
@@ -374,7 +355,7 @@ class TSFeatureWiseScaler():
         self.fit(X)
         return self.transform(X)
 
-# %% ../nbs/01_data.ipynb 32
+# %% ../nbs/01_data.ipynb 31
 class TSGlobalScaler():
     """
     Scales time series data globally using PyTorch tensors.
