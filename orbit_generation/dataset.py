@@ -148,16 +148,10 @@ def substitute_values_from_df(values: List[Any],         # List of values to be 
     return substituted_values
 
 # %% ../nbs/05_dataset.ipynb 14
-def get_orbit_classes(values: List[Any]) -> Tuple[List[Any], List[Any], List[Any], List[Any]]:
+def get_orbit_classes(values: List[Any],  # List of values to be substituted with orbit classifications
+                     ) -> Tuple[List[Any], List[Any], List[Any], List[Any]]:
     """
-    Get orbit classes based on the given values and DataFrame. Returns four lists corresponding
-    to 'Label', 'Type', 'Subtype', and 'Direction' columns.
-
-    Parameters:
-    values (List[Any]): List of values to be substituted.
-
-    Returns:
-    Tuple[List[Any], List[Any], List[Any], List[Any]]: Four lists with substituted values from 'Label', 'Type', 'Subtype', and 'Direction' columns.
+    Get orbit classes by substituting values with their corresponding Label, Type, Subtype and Direction.
     """
     labels = substitute_values_from_df(values, EXTENDED_ORBIT_CLASSIFICATION, 'Label')
     types = substitute_values_from_df(values, EXTENDED_ORBIT_CLASSIFICATION, 'Type')
@@ -327,20 +321,14 @@ def get_first_period_dataset(file_path: str,                             # Path 
         return None, None, None, None  # Return placeholders in case of an error
 
 # %% ../nbs/05_dataset.ipynb 26
-def get_first_period_dataset_all_systems(folder_path: str, segment_length: Optional[int] = 100):
+def get_first_period_dataset_all_systems(folder_path: str,  # Path to the folder containing system files
+                                       segment_length: Optional[int] = 100,  # Desired length of each segment
+                                       ) -> Tuple[np.memmap,  # Concatenated orbits as a 3D NumPy memmap
+                                                pd.DataFrame,  # Concatenated orbit DataFrame with 'system' column
+                                                np.ndarray,  # Concatenated orbit IDs as a NumPy array  
+                                                Dict[str, float]]:  # Merged system dictionary with prefixed keys
     """
     Processes all system files in a folder, concatenates their data while maintaining order.
-    
-    Parameters:
-        folder_path (str): Path to the folder containing system files.
-        segment_length (Optional[int]): Desired length of each segment.
-
-    Returns:
-        Tuple[np.memmap, pd.DataFrame, np.ndarray, Dict[str, float]]:
-            - Concatenated orbits as a 3D NumPy memmap.
-            - Concatenated orbit DataFrame with an added 'system' column.
-            - Concatenated orbit IDs as a NumPy array.
-            - Merged system dictionary with keys prefixed by system names.
     """
     # List all .h5 files in the folder
     files = [f for f in os.listdir(folder_path) if f.endswith('.h5')]
@@ -391,17 +379,12 @@ def get_first_period_dataset_all_systems(folder_path: str, segment_length: Optio
     return concatenated_orbits, concatenated_orbit_df, concatenated_orbit_ids, all_system_dicts
 
 # %% ../nbs/05_dataset.ipynb 28
-def get_system_constants(system_dict, system_labels, constant):
+def get_system_constants(system_dict: Dict[str, float],  # Dictionary containing system constants for different systems
+                        system_labels: np.ndarray,  # Array of system labels
+                        constant: str,  # The constant to extract (e.g., 'mu', 'LU', etc.)
+                        ) -> np.ndarray:
     """
     Extracts values for a specified constant from a system dictionary based on system labels.
-
-    Parameters:
-        system_dict (dict): Dictionary containing system constants for different systems.
-        system_labels (np.ndarray): Array of system labels.
-        constant (str): The constant to extract (e.g., 'mu', 'LU', etc.).
-
-    Returns:
-        np.ndarray: Array of constant values corresponding to the system labels.
     """
     # Create a list to store the constant values
     constants = []
