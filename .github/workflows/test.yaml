@@ -37,26 +37,46 @@ jobs:
           
       - name: Install Julia
         run: |
+          echo "Installing Julia..."
           wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.5-linux-x86_64.tar.gz
           tar -xvzf julia-1.10.5-linux-x86_64.tar.gz
           sudo mv julia-1.10.5 /opt/julia
           sudo ln -s /opt/julia/bin/julia /usr/local/bin/julia
           rm julia-1.10.5-linux-x86_64.tar.gz
+          echo "Julia version:"
+          julia --version
+          echo "Julia path:"
+          which julia
           
       - name: Set up Julia environment
         run: |
+          echo "Setting up Julia environment..."
           export JULIA_DEPOT_PATH=/opt/julia_depot
           mkdir -p $JULIA_DEPOT_PATH
+          echo "JULIA_DEPOT_PATH: $JULIA_DEPOT_PATH"
+          
+          echo "Installing Julia packages..."
           julia -e 'using Pkg; Pkg.add(["DifferentialEquations", "Polynomials", "LinearAlgebra", "MAT", "NPZ", "IJulia"])'
+          
+          echo "Setting up IJulia..."
           julia -e 'using IJulia; IJulia.installkernel("Julia")'
           
       - name: Install and configure PyJulia
         run: |
+          echo "Installing PyJulia..."
           pip install julia
+          
+          echo "Initializing PyJulia..."
           python -c "import julia; julia.install()"
-          # Ensure Julia is in PATH for PyJulia
-          export PATH="/opt/julia/bin:$PATH"
-          python -c "from julia.api import Julia; jl = Julia(compiled_modules=False)"
+          
+          echo "Testing PyJulia import..."
+          python -c "from julia.api import Julia; print('PyJulia import successful')"
+          
+          echo "Testing Julia initialization..."
+          python -c "from julia.api import Julia; jl = Julia(compiled_modules=False); print('Julia initialization successful')"
+          
+          echo "Testing Julia package import..."
+          python -c "from julia import Main; print('Julia Main import successful')"
           
       - name: Run nbdev CI
         uses: fastai/workflows/nbdev-ci@master

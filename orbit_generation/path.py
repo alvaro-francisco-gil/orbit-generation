@@ -10,8 +10,10 @@ from pathlib import Path
 import os
 
 # %% ../nbs/15_path_utils.ipynb 4
-def get_project_root():
-    """Get the project root directory."""
+def get_project_root() -> Path:
+    """
+    Get the project root directory by searching for settings.ini or setup.py files.
+    """
     # Try to find the root by looking for setup.py or settings.ini
     current = Path(os.getcwd()).resolve()
     
@@ -29,15 +31,23 @@ def get_project_root():
     
     raise FileNotFoundError("Could not find project root directory")
 
-def get_data_path():
-    """Get the path to the data directory."""
+def get_data_path() -> Path:
+    """
+    Get the path to the data directory.
+    """
     return get_project_root() / 'data'
 
-def make_project_path(*parts):
-    """Create a path relative to the project root."""
+def make_project_path(*parts: str,  # Path components to join
+                     ) -> Path:
+    """
+    Create a path relative to the project root.
+    """
     return get_project_root().joinpath(*parts)
 
-def get_julia_file_path(filename: str) -> str:
-    """Get the absolute path to a Julia file."""
+def get_julia_file_path(filename: str,  # Name of the Julia file
+                       ) -> str:
+    """
+    Get the absolute path to a Julia file in the project's julia directory.
+    """
     root = get_project_root()
     return str(root / 'julia' / filename)
