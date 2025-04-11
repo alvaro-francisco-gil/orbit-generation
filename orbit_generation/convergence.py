@@ -8,6 +8,7 @@ __all__ = ['jl', 'logger', 'julia_path', 'differential_correction', 'create_conv
 
 # %% ../nbs/12_convergence.ipynb 2
 from julia.api import Julia
+from typing import Optional, List, Tuple
 jl = Julia(compiled_modules=False)
 from julia import Main
 import logging
@@ -24,41 +25,22 @@ logger = logging.getLogger(__name__)
 julia_path = get_julia_file_path('convergence_algorithm.jl')
 Main.include(julia_path)
 
-def differential_correction(
-    orbit: np.ndarray,
-    μ: float,
-    variable_time: bool = True,
-    time_flight: float = None,
-    jacobi_constant: float = None,
-    X_end: np.ndarray = None,
-    tol: float = 1e-9,
-    max_iter: int = 20,
-    printout: bool = False,
-    DX_0: np.ndarray = None,
-    X_big_0: np.ndarray = None,
-    δ: float = None
-):
+def differential_correction(orbit: np.ndarray,  # Orbit data with shape [num_timesteps, 7]
+                          μ: float,  # Gravitational parameter
+                          variable_time: bool = True,  # Whether to use variable time nodes
+                          time_flight: Optional[float] = None,  # Total time of flight
+                          jacobi_constant: Optional[float] = None,  # Jacobi constant
+                          X_end: Optional[np.ndarray] = None,  # Terminal state vector (shape: [6])
+                          tol: float = 1e-9,  # Tolerance for convergence
+                          max_iter: int = 20,  # Maximum number of iterations
+                          printout: bool = False,  # Whether to print iteration logs
+                          DX_0: Optional[np.ndarray] = None,  # Initial guess for state vector correction
+                          X_big_0: Optional[np.ndarray] = None,  # Auxiliary initial guess
+                          δ: Optional[float] = None,  # Step size or perturbation parameter
+                          ) -> Tuple[np.ndarray, np.ndarray, float, int, int]:
     """
-    Wrapper for the Julia differential_correction function.
-    
-    Parameters:
-        orbit (np.ndarray): Orbit data with shape [num_timesteps, 7].
-        μ (float): Gravitational parameter.
-        variable_time (bool): Whether to use variable time nodes.
-        time_flight (float, optional): Total time of flight.
-        jacobi_constant (float, optional): Jacobi constant.
-        X_end (np.ndarray, optional): Terminal state vector (shape: [6]).
-        tol (float): Tolerance for convergence.
-        max_iter (int): Maximum number of iterations.
-        printout (bool): Whether to print iteration logs.
-        DX_0 (np.ndarray, optional): Initial guess for state vector correction.
-        X_big_0 (np.ndarray, optional): Auxiliary initial guess.
-        δ (float, optional): Step size or perturbation parameter.
-
-    Returns:
-        tuple: (X_corrected, t_corrected, norm_F_or_G, iterations, success)
+    Performs differential correction on an orbit using Julia implementation.
     """
-
     # Convert Python None to Julia 'nothing' using an empty list
     julia_time_flight = [] if time_flight is None else float(time_flight)
     julia_jacobi_constant = [] if jacobi_constant is None else float(jacobi_constant)
@@ -97,25 +79,14 @@ def differential_correction(
     return X_corrected, t_vec_corrected, norm_F_or_G, iterations, success
 
 # %% ../nbs/12_convergence.ipynb 6
-def create_converged_orbits_df(
-    converged_indices, 
-    orbit_array, 
-    converged_orbits, 
-    errors, 
-    iterations
-):
+def create_converged_orbits_df(converged_indices: List[int],  # List of orbit indices that have converged
+                              orbit_array: np.ndarray,  # Original array containing all orbit data
+                              converged_orbits: np.ndarray,  # Array containing corrected converged orbits 
+                              errors: np.ndarray,  # Array of norm values for each converged orbit
+                              iterations: np.ndarray,  # Array of iteration counts for each converged orbit
+                              ) -> pd.DataFrame:
     """
     Creates a DataFrame containing detailed information about converged orbits.
-    
-    Parameters:
-        converged_indices (list): List of orbit indices that have converged.
-        orbit_array (np.ndarray): Original array containing all orbit data.
-        converged_orbits (np.ndarray): Array containing corrected converged orbits.
-        errors (np.ndarray): Array of norm values for each converged orbit.
-        iterations (np.ndarray): Array of iteration counts for each converged orbit.
-    
-    Returns:
-        pd.DataFrame: DataFrame with detailed information about each converged orbit.
     """
     data = []
     for idx, orbit_index in enumerate(converged_indices):
@@ -159,29 +130,15 @@ def create_converged_orbits_df(
 
 # %% ../nbs/12_convergence.ipynb 7
 def process_diferential_correction_orbits(
-    orbit_array: np.ndarray, 
-    μ: float, 
-    variable_time: bool = True, 
-    tol: float = 1e-9, 
-    max_iter: int = 20, 
-    printout: bool = False
-):
+    orbit_array: np.ndarray,  # Array containing orbit data with shape [num_orbits, num_timesteps, 7]. First element in last dimension is time
+    μ: float,  # Gravitational parameter
+    variable_time: bool = True,  # Whether to use variable time nodes for correction
+    tol: float = 1e-9,  # Tolerance for convergence in differential correction
+    max_iter: int = 20,  # Maximum number of iterations for differential correction
+    printout: bool = False,  # Whether to print iteration logs
+    ) -> tuple[np.ndarray, pd.DataFrame]:
     """
     Processes a set of orbits by providing the orbit array directly to differential correction.
-    
-    Parameters:
-        orbit_array (np.ndarray): Array containing orbit data with shape [num_orbits, num_timesteps, 7].
-                                   The first element in the last dimension is assumed to be time.
-        μ (float): Gravitational parameter.
-        variable_time (bool, optional): Whether to use variable time nodes for correction. Default is True.
-        tol (float, optional): Tolerance for convergence in differential correction. Default is 1e-9.
-        max_iter (int, optional): Maximum number of iterations for differential correction. Default is 20.
-        printout (bool, optional): Whether to print iteration logs. Default is False.
-    
-    Returns:
-        tuple: (converged_orbits_array, converged_orbits_df)
-               - converged_orbits_array: NumPy array with shape [num_converged_orbits, num_timesteps, 7] containing corrected orbits.
-               - converged_orbits_df: pandas DataFrame with detailed information about each converged orbit.
     """
     # Lists to store results
     converged_orbits_list = []

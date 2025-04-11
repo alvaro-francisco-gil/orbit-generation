@@ -243,12 +243,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Paper</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./path_utils.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Path Utils</span></a>
   </div>
@@ -365,17 +359,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>orbit_data <span class="op">=</span> get_example_orbit_data()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>(200, 6, 300)</code></pre>
+<pre><code>(400, 7, 100)</code></pre>
 </div>
 </div>
 <div id="cell-7" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Jacobi constants and energies for all orbits at all time points</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>jacobi_constants <span class="op">=</span> np.zeros((<span class="dv">200</span>, <span class="dv">300</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>total_energies <span class="op">=</span> np.zeros((<span class="dv">200</span>, <span class="dv">300</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>jacobi_constants <span class="op">=</span> np.zeros((<span class="dv">400</span>, <span class="dv">100</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>total_energies <span class="op">=</span> np.zeros((<span class="dv">400</span>, <span class="dv">100</span>))</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> orbit_index <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">200</span>):</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> time_index <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">300</span>):</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        X <span class="op">=</span> orbit_data[orbit_index, :, time_index]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> orbit_index <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">400</span>):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> time_index <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        X <span class="op">=</span> orbit_data[orbit_index, <span class="dv">1</span>:, time_index]</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        J, E <span class="op">=</span> jacobi_constant(X, EM_MU)</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        jacobi_constants[orbit_index, time_index] <span class="op">=</span> J</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        total_energies[orbit_index, time_index] <span class="op">=</span> E</span>
@@ -469,9 +463,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <div id="cell-10" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select a random orbit from the dataset</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>num_orbits, num_components, num_time_points <span class="op">=</span> orbit_data.shape</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>num_orbits, num_components, num_time_points <span class="op">=</span> orbit_data.shape  <span class="co"># Now (400,7,100)</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>random_orbit_index <span class="op">=</span> np.random.randint(<span class="dv">0</span>, num_orbits)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>X0 <span class="op">=</span> orbit_data[random_orbit_index, :, <span class="dv">0</span>]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>X0 <span class="op">=</span> orbit_data[random_orbit_index, :<span class="dv">6</span>, <span class="dv">0</span>]  <span class="co"># Take only first 6 components for state vector</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> <span class="fl">0.01215058560962404</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>T0 <span class="op">=</span> <span class="fl">2.7430007981241529E+0</span>  <span class="co"># Total time for the propagation, can be adjusted as needed</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -579,9 +573,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <div id="cell-13" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select a random orbit from the dataset</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>num_orbits, num_components, num_time_points <span class="op">=</span> orbit_data.shape</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>num_orbits, num_components, num_time_points <span class="op">=</span> orbit_data.shape  <span class="co"># (400, 7, 100)</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>random_orbit_index <span class="op">=</span> np.random.randint(<span class="dv">0</span>, num_orbits)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>X0 <span class="op">=</span> orbit_data[random_orbit_index, :, <span class="dv">0</span>]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>X0 <span class="op">=</span> orbit_data[random_orbit_index, <span class="dv">1</span>:, <span class="dv">0</span>]  <span class="co"># Take components 1-6 (skip time)</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> <span class="fl">0.01215058560962404</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>dt <span class="op">=</span> <span class="fl">0.1</span>  <span class="co"># Small time step for propagation</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -615,8 +609,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
 <span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Initial state vector: [ 1.02948208  0.         -0.1867957   0.         -0.11894369  0.        ]
-Final state vector after time step dt: [ 1.02873876 -0.01181343 -0.18439385 -0.01485109 -0.11651009  0.04812437]</code></pre>
+<pre><code>Initial state vector: [ 9.2006886e-01 -2.0666480e-29 -7.9184706e-13  1.5364921e-12
+ -1.9181405e+00 -5.0562638e-01]
+Final state vector after time step dt: [ 0.90657459 -0.18761657 -0.04958607 -0.3095898  -1.83133625 -0.48735496]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -637,9 +632,7 @@ Final state vector after time step dt: [ 1.02873876 -0.01181343 -0.18439385 -0.0
 <blockquote class="blockquote">
 <pre><code> jacobi_test (X:numpy.ndarray, mu:float)</code></pre>
 </blockquote>
-<p>*Compute the energy error. X can have either 6 columns (state vector) or 7 columns (time + state vector). The returned quantity is the cumulative error with respect to the initial value. If propagation is perfect, err = 0 (or very small).</p>
-<p>Parameters: X (np.ndarray): State vector with shape (n, 6) or (n, 7), where n is the number of samples. mu (float): Gravitational parameter.</p>
-<p>Returns: float: Cumulative energy error with respect to the initial value.*</p>
+<p><em>Compute the energy error. X can have either 6 columns (state vector) or 7 columns (time + state vector). The returned quantity is the cumulative error with respect to the initial value. If propagation is perfect, err = 0 (or very small).</em></p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
@@ -672,16 +665,14 @@ Final state vector after time step dt: [ 1.02873876 -0.01181343 -0.18439385 -0.0
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L153" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L146" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="dynamics_defect" class="level3">
 <h3 class="anchored" data-anchor-id="dynamics_defect">dynamics_defect</h3>
 <blockquote class="blockquote">
 <pre><code> dynamics_defect (X:numpy.ndarray, mu:float)</code></pre>
 </blockquote>
-<p>*Compute the dynamical defect for the generated time-state sequence. The returned quantity is the cumulative error on the position and velocity components. The overall metrics can be a combination of these two last errors.</p>
-<p>Parameters: X (np.ndarray): Time-state vector with shape (n, 7), where the first column is the time vector. mu (float): Gravitational parameter.</p>
-<p>Returns: Tuple[float, float]: Cumulative errors in position and velocity.*</p>
+<p><em>Compute the dynamical defect for the generated time-state sequence. The returned quantity is the cumulative error on the position and velocity components. The overall metrics can be a combination of these two last errors.</em></p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
@@ -715,44 +706,43 @@ Final state vector after time step dt: [ 1.02873876 -0.01181343 -0.18439385 -0.0
 </table>
 <div id="cell-17" class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select a random orbit from the dataset</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>num_orbits, num_components, num_time_points <span class="op">=</span> orbit_data.shape</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>num_orbits, num_components, num_time_points <span class="op">=</span> orbit_data.shape  <span class="co"># Should be (400, 7, 100)</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>random_orbit_index <span class="op">=</span> np.random.randint(<span class="dv">0</span>, num_orbits)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>selected_orbit <span class="op">=</span> orbit_data[random_orbit_index, :, :]</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a time column to the state vector for dynamics_defect function</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming the time steps are evenly spaced and given by the array tvec</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>tvec <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">2.7430007981241529E+0</span>, num_time_points)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>time_state_vector <span class="op">=</span> np.hstack((tvec.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), selected_orbit.T))</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Test jacobi_test function</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>energy_error <span class="op">=</span> jacobi_test(selected_orbit.T, mu)</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Cumulative energy error for the selected orbit:"</span>, energy_error)</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Test dynamics_defect function</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>pos_error, vel_error <span class="op">=</span> dynamics_defect(time_state_vector, mu)</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Cumulative position error for the selected orbit:"</span>, pos_error)</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Cumulative velocity error for the selected orbit:"</span>, vel_error)</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the numerically propagated orbit</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(orbit_data, time_instants<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">295</span>], orbit_indices<span class="op">=</span>[random_orbit_index])</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the cumulative errors calculated</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">'Cumulative Position Error'</span>, <span class="st">'Cumulative Velocity Error'</span>]</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> [pos_error, vel_error]</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>ax.bar(labels, errors, color<span class="op">=</span>[<span class="st">'blue'</span>, <span class="st">'green'</span>])</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Error'</span>)</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Cumulative Position and Velocity Errors'</span>)</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># The time vector is already included as the first component</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># No need to add time column since data is already (400,7,100)</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>time_state_vector <span class="op">=</span> selected_orbit.T  <span class="co"># Transpose to get (100,7) shape needed for dynamics_defect</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Test jacobi_test function</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>energy_error <span class="op">=</span> jacobi_test(time_state_vector, mu)  <span class="co"># Pass all 7 columns since jacobi_test handles both cases</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Cumulative energy error for the selected orbit:"</span>, energy_error)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Test dynamics_defect function</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>pos_error, vel_error <span class="op">=</span> dynamics_defect(time_state_vector, mu)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Cumulative position error for the selected orbit:"</span>, pos_error)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Cumulative velocity error for the selected orbit:"</span>, vel_error)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the numerically propagated orbit</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(orbit_data, time_instants<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>], orbit_indices<span class="op">=</span>[random_orbit_index])</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the cumulative errors calculated</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">'Cumulative Position Error'</span>, <span class="st">'Cumulative Velocity Error'</span>]</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> [pos_error, vel_error]</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>ax.bar(labels, errors, color<span class="op">=</span>[<span class="st">'blue'</span>, <span class="st">'green'</span>])</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Error'</span>)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Cumulative Position and Velocity Errors'</span>)</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Cumulative energy error for the selected orbit: 0.00022752154970095972
-Cumulative position error for the selected orbit: 0.07835299756599234
-Cumulative velocity error for the selected orbit: 0.147666860309554</code></pre>
+<pre><code>Cumulative energy error for the selected orbit: 0.00018692017
+Cumulative position error for the selected orbit: 1.4306169667270132e-05
+Cumulative velocity error for the selected orbit: 0.00011048713047470115</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -770,7 +760,7 @@ Cumulative velocity error for the selected orbit: 0.147666860309554</code></pre>
 </div>
 </div>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L188" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L174" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="calculate_errors" class="level3">
 <h3 class="anchored" data-anchor-id="calculate_errors">calculate_errors</h3>
@@ -849,10 +839,10 @@ Cumulative velocity error for the selected orbit: 0.147666860309554</code></pre>
 </tbody>
 </table>
 <div id="cell-19" class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors(orbit_data, EM_MU, orbit_indices <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>], time_step<span class="op">=</span><span class="fl">0.00917391571278981</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors(orbit_data, EM_MU, orbit_indices <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Cumulative position error for selected orbits: 0.234824159550522
-Average position error per time step: 0.0002617883607029231</code></pre>
+<pre><code>Cumulative position error for selected orbits: 0.0014242519694434052
+Average position error per time step: 4.7954611765771215e-06</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -862,8 +852,8 @@ Average position error per time step: 0.0002617883607029231</code></pre>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Cumulative velocity error for selected orbits: 0.44235011161515836
-Average velocity error per time step: 0.0004931439371406447</code></pre>
+<pre><code>Cumulative velocity error for selected orbits: 0.0798643959065006
+Average velocity error per time step: 0.00026890368992087745</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -873,8 +863,8 @@ Average velocity error per time step: 0.0004931439371406447</code></pre>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Cumulative energy error for selected orbits: 0.0006821222552635398
-Average energy error per time step: 7.604484451098548e-07</code></pre>
+<pre><code>Cumulative energy error for selected orbits: 0.06817007064819336
+Average energy error per time step: 0.00022952885774429888</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -885,7 +875,7 @@ Average energy error per time step: 7.604484451098548e-07</code></pre>
 </div>
 </div>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L294" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L280" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="calculate_errors_per_orbit" class="level3">
 <h3 class="anchored" data-anchor-id="calculate_errors_per_orbit">calculate_errors_per_orbit</h3>
@@ -952,14 +942,14 @@ Average energy error per time step: 7.604484451098548e-07</code></pre>
 </tbody>
 </table>
 <div id="cell-21" class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors_per_orbit(orbit_data[<span class="dv">0</span>:<span class="dv">3</span>], EM_MU, time_step<span class="op">=</span><span class="fl">0.00917391571278981</span>, display_results<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors_per_orbit(orbit_data[<span class="dv">0</span>:<span class="dv">3</span>], EM_MU, display_results<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Average Position Error per Orbit:
-[0.00026157 0.00026175 0.00026205]
+[5.14651324e-07 3.51359548e-07 1.35203727e-05]
 Average Velocity Error per Orbit:
-[0.00049252 0.00049305 0.00049387]
+[1.81187043e-06 1.44955704e-06 8.03449642e-04]
 Average Energy Error per Orbit:
-[7.60028806e-07 7.60374891e-07 7.60941638e-07]</code></pre>
+[3.79543121e-06 2.81285747e-06 6.81978301e-04]</code></pre>
 </div>
 </div>
 

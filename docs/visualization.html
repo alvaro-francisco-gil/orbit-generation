@@ -109,12 +109,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta property="og:image" content="https://alvaro-francisco-gil.github.io/orbit-generation/03_visualization_files/figure-html/cell-8-output-1.png">
 <meta property="og:site_name" content="orbit-generation">
 <meta property="og:image:height" content="657">
-<meta property="og:image:width" content="649">
+<meta property="og:image:width" content="644">
 <meta name="twitter:title" content="Visualization – orbit-generation">
 <meta name="twitter:description" content="Necessary scripts to visualize orbits">
 <meta name="twitter:image" content="https://alvaro-francisco-gil.github.io/orbit-generation/03_visualization_files/figure-html/cell-8-output-1.png">
 <meta name="twitter:image-height" content="657">
-<meta name="twitter:image-width" content="649">
+<meta name="twitter:image-width" content="644">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -243,12 +243,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Paper</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./path_utils.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Path Utils</span></a>
   </div>
@@ -334,37 +328,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot_3d_points" class="level3">
 <h3 class="anchored" data-anchor-id="plot_3d_points">plot_3d_points</h3>
 <blockquote class="blockquote">
-<pre><code> plot_3d_points (data, labels=None, plot_velocity=True, arrow_width=0.005,
-                 show_legend=True, figsize=(10, 8))</code></pre>
+<pre><code> plot_3d_points (data:numpy.ndarray, labels:Optional[List[str]]=None,
+                 plot_velocity:bool=True, arrow_width:float=0.005,
+                 show_legend:bool=True, figsize:tuple=(10, 8))</code></pre>
 </blockquote>
-<p>*Plots each point in space with a 3D arrow based on the first 3 coordinates (position) and optionally the next 3 coordinates (velocity).</p>
-<p>Parameters: data (numpy.ndarray): Array of shape (samples, 3) for positions or (samples, 6) for positions and velocities. - data[:, 0:3] represents the 3D positions (x, y, z) - data[:, 3:6] represents the velocity components (vx, vy, vz) if provided labels (list of str): Optional list of labels for color coding the points. plot_velocity (bool): If True and velocities are provided, plot arrows representing velocity vectors. arrow_width (float): Width of the arrows. show_legend (bool): If True, show the legend for color coding. figsize (tuple): Size of the figure in inches (width, height). Default is (10, 8).*</p>
-</section>
-</section>
-<section id="orbits" class="level2">
-<h2 class="anchored" data-anchor-id="orbits">Orbits</h2>
-<section id="static" class="level3">
-<h3 class="anchored" data-anchor-id="static">Static</h3>
-<hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L101" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-<section id="visualize_static_orbits" class="level3">
-<h3 class="anchored" data-anchor-id="visualize_static_orbits">visualize_static_orbits</h3>
-<blockquote class="blockquote">
-<pre><code> visualize_static_orbits (data:numpy.ndarray,
-                          time_instants:Optional[List[int]]=None,
-                          orbit_indices:Optional[List[int]]=None,
-                          point_dict:Optional[Dict[str,tuple]]=None,
-                          show_legend:bool=True,
-                          save_path:Optional[str]=None,
-                          plot_reference_box:bool=True,
-                          title:Optional[str]=None,
-                          orbit_names:Optional[List[str]]=None,
-                          equal_aspect:bool=False)</code></pre>
-</blockquote>
-<p>*Visualizes orbits in 3D space and highlights specified time instants for each selected orbit.</p>
-<p>Args: data (np.ndarray): The orbit data with shape (num_orbits, 6, num_time_points). time_instants (Optional[List[int]]): Time points to highlight; defaults to None. orbit_indices (Optional[List[int]]): Indices of orbits to visualize; defaults to all. point_dict (Optional[Dict[str, tuple]]): Dictionary of extra points to plot. show_legend (bool): Flag to indicate whether to show a legend. save_path (Optional[str]): Path to save the figure; defaults to None. plot_reference_box (bool): Flag to indicate whether to plot the reference box. title (Optional[str]): Custom title for the plot. orbit_names (Optional[List[str]]): Custom names for orbits; defaults to “Orbit {index}”. equal_aspect (bool): Flag to enforce equal scaling for all axes.</p>
-<p>Returns: None*</p>
+<p><em>Plots each point in space with a 3D arrow based on the first 3 coordinates (position) and optionally the next 3 coordinates (velocity).</em></p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
@@ -385,7 +353,91 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>data</td>
 <td>ndarray</td>
 <td></td>
-<td>The orbit data with shape (num_orbits, 6, num_time_points).</td>
+<td>Array of shape (samples, 3) for positions or (samples, 6) for positions and velocities.</td>
+</tr>
+<tr class="even">
+<td>labels</td>
+<td>Optional</td>
+<td>None</td>
+<td>Optional list of labels for color coding the points.</td>
+</tr>
+<tr class="odd">
+<td>plot_velocity</td>
+<td>bool</td>
+<td>True</td>
+<td>If True and velocities are provided, plot arrows representing velocity vectors.</td>
+</tr>
+<tr class="even">
+<td>arrow_width</td>
+<td>float</td>
+<td>0.005</td>
+<td>Width of the arrows.</td>
+</tr>
+<tr class="odd">
+<td>show_legend</td>
+<td>bool</td>
+<td>True</td>
+<td>If True, show the legend for color coding.</td>
+</tr>
+<tr class="even">
+<td>figsize</td>
+<td>tuple</td>
+<td>(10, 8)</td>
+<td>Size of the figure in inches (width, height).</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>None</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="orbits" class="level2">
+<h2 class="anchored" data-anchor-id="orbits">Orbits</h2>
+<section id="static" class="level3">
+<h3 class="anchored" data-anchor-id="static">Static</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L97" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="visualize_static_orbits" class="level3">
+<h3 class="anchored" data-anchor-id="visualize_static_orbits">visualize_static_orbits</h3>
+<blockquote class="blockquote">
+<pre><code> visualize_static_orbits (data:numpy.ndarray,
+                          time_instants:Optional[List[int]]=None,
+                          orbit_indices:Optional[List[int]]=None,
+                          point_dict:Optional[Dict[str,tuple]]=None,
+                          show_legend:bool=True,
+                          save_path:Optional[str]=None,
+                          plot_reference_box:bool=True,
+                          title:Optional[str]=None,
+                          orbit_names:Optional[List[str]]=None,
+                          equal_aspect:bool=False)</code></pre>
+</blockquote>
+<p><em>Visualizes orbits in 3D space and highlights specified time instants for each selected orbit. If data has 7 scalars instead of 6, the first scalar (assumed to be time) is removed.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>data</td>
+<td>ndarray</td>
+<td></td>
+<td>The orbit data with shape (num_orbits, 6 or 7, num_time_points).</td>
 </tr>
 <tr class="even">
 <td>time_instants</td>
@@ -450,7 +502,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L231" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L218" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="visualize_orbits_minimal" class="level3">
 <h3 class="anchored" data-anchor-id="visualize_orbits_minimal">visualize_orbits_minimal</h3>
@@ -510,7 +562,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L289" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L276" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="visualize_orbits_comparison" class="level3">
 <h3 class="anchored" data-anchor-id="visualize_orbits_comparison">visualize_orbits_comparison</h3>
@@ -522,9 +574,85 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                               title_pad:float=20.0,
                               shared_scale:bool=False, wspace:float=0.3)</code></pre>
 </blockquote>
-<p>*Visualizes two sets of orbits side by side in 3D space.</p>
-<p>Args: data1 (np.ndarray): First set of orbit data with shape (num_orbits, 6, num_time_points) data2 (np.ndarray): Second set of orbit data with shape (num_orbits, 6, num_time_points) title1 (str): Title for the first plot title2 (str): Title for the second plot equal_aspect (bool): Flag to enforce equal scaling for all axes title_size (int): Font size for the plot titles title_pad (float): Padding between plot and title in points. Default is 20.0 shared_scale (bool): If True, both plots will share the same scale and limits wspace (float): Width spacing between subplots. Default is 0.3.</p>
-<p>Returns: None*</p>
+<p><em>Visualizes two sets of orbits side by side in 3D space.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>data1</td>
+<td>ndarray</td>
+<td></td>
+<td>First set of orbit data with shape (num_orbits, 6, num_time_points)</td>
+</tr>
+<tr class="even">
+<td>data2</td>
+<td>ndarray</td>
+<td></td>
+<td>Second set of orbit data with shape (num_orbits, 6, num_time_points)</td>
+</tr>
+<tr class="odd">
+<td>title1</td>
+<td>Optional</td>
+<td>Set 1</td>
+<td>Title for the first plot</td>
+</tr>
+<tr class="even">
+<td>title2</td>
+<td>Optional</td>
+<td>Set 2</td>
+<td>Title for the second plot</td>
+</tr>
+<tr class="odd">
+<td>equal_aspect</td>
+<td>bool</td>
+<td>False</td>
+<td>Flag to enforce equal scaling for all axes</td>
+</tr>
+<tr class="even">
+<td>title_size</td>
+<td>int</td>
+<td>18</td>
+<td>Font size for the plot titles</td>
+</tr>
+<tr class="odd">
+<td>title_pad</td>
+<td>float</td>
+<td>20.0</td>
+<td>Padding between plot and title in points</td>
+</tr>
+<tr class="even">
+<td>shared_scale</td>
+<td>bool</td>
+<td>False</td>
+<td>If True, both plots will share the same scale and limits</td>
+</tr>
+<tr class="odd">
+<td>wspace</td>
+<td>float</td>
+<td>0.3</td>
+<td>Width spacing between subplots</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>None</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <div id="cell-9" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.data <span class="im">import</span> get_example_orbit_data</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.constants <span class="im">import</span> EM_POINTS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -533,11 +661,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>orbit_data<span class="op">=</span> get_example_orbit_data()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>(200, 6, 300)</code></pre>
+<pre><code>(400, 7, 100)</code></pre>
 </div>
 </div>
 <div id="cell-11" class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data, orbit_indices<span class="op">=</span>[<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">70</span>,<span class="dv">140</span>,<span class="dv">190</span>], point_dict<span class="op">=</span>EM_POINTS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data, orbit_indices<span class="op">=</span>[<span class="dv">315</span>,<span class="dv">120</span>,<span class="dv">70</span>,<span class="dv">180</span>,<span class="dv">190</span>], point_dict<span class="op">=</span>EM_POINTS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -547,7 +675,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="cell-12" class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data,time_instants<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">50</span>], orbit_indices<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">20</span>,<span class="dv">40</span>], plot_reference_box<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data, time_instants<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">50</span>], orbit_indices<span class="op">=</span>[<span class="dv">40</span>], plot_reference_box<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -560,7 +688,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="dynamic" class="level3">
 <h3 class="anchored" data-anchor-id="dynamic">Dynamic</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L396" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L370" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="export_dynamic_orbits_html" class="level3">
 <h3 class="anchored" data-anchor-id="export_dynamic_orbits_html">export_dynamic_orbits_html</h3>
@@ -627,9 +755,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <div id="cell-15" class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>export_dynamic_orbits_html(data<span class="op">=</span>orbit_data, filename<span class="op">=</span><span class="st">'../data/example_data/example_orbits.html'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>export_dynamic_orbits_html(data<span class="op">=</span>orbit_data, filename<span class="op">=</span><span class="st">'../data/example_training_data/example_orbits_visualization.html'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Visualization saved to ../data/example_data/example_orbits.html</code></pre>
+<pre><code>Visualization saved to ../data/example_training_data/example_orbits_visualization.html</code></pre>
 </div>
 </div>
 <p><a href="../data/example_orbits.html">View Orbit Visualization</a></p>
@@ -638,17 +766,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="orbit-features" class="level2">
 <h2 class="anchored" data-anchor-id="orbit-features">Orbit Features</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L462" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L436" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="plot_histogram" class="level3">
 <h3 class="anchored" data-anchor-id="plot_histogram">plot_histogram</h3>
 <blockquote class="blockquote">
-<pre><code> plot_histogram (data, bins=10, title='Histogram', xlabel='Data',
-                 ylabel='Frequency')</code></pre>
+<pre><code> plot_histogram (data:Union[list,numpy.ndarray,pandas.core.series.Series],
+                 bins:int=10, title:str='Histogram', xlabel:str='Data',
+                 ylabel:str='Frequency')</code></pre>
 </blockquote>
-<p>*Plots a histogram for the given data.</p>
-<p>Parameters: data : list, array, or pandas Series The data to be plotted. bins : int, optional Number of histogram bins to use (default is 10). title : str, optional Title of the histogram (default is ‘Histogram’). xlabel : str, optional Label for the x-axis (default is ‘Data’). ylabel : str, optional Label for the y-axis (default is ‘Frequency’).*</p>
+<p><em>Plots a histogram for the given data.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>data</td>
+<td>Union</td>
+<td></td>
+<td>The data to be plotted</td>
+</tr>
+<tr class="even">
+<td>bins</td>
+<td>int</td>
+<td>10</td>
+<td>Number of histogram bins to use</td>
+</tr>
+<tr class="odd">
+<td>title</td>
+<td>str</td>
+<td>Histogram</td>
+<td>Title of the histogram</td>
+</tr>
+<tr class="even">
+<td>xlabel</td>
+<td>str</td>
+<td>Data</td>
+<td>Label for the x-axis</td>
+</tr>
+<tr class="odd">
+<td>ylabel</td>
+<td>str</td>
+<td>Frequency</td>
+<td>Label for the y-axis</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>None</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L487" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L454" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_grouped_features" class="level3">
 <h3 class="anchored" data-anchor-id="plot_grouped_features">plot_grouped_features</h3>
@@ -657,8 +833,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                         group_col:str, plot_type:str, figsize:tuple=(5,
                         5), fontsize:int=10)</code></pre>
 </blockquote>
-<p>*Group the DataFrame by a specified column and plot the specified type of plot for each column for each group.</p>
-<p>Parameters: - df : pd.DataFrame : The DataFrame containing the data. - columns : List[str] : List of column names to plot. - group_col : str : Column name to group by. - plot_type : str : Type of plot (‘violin’, ‘box’, ‘facetgrid’, or ‘histogram’). - figsize : tuple : Size of each subplot (width, height). Default is (5, 5). - fontsize : int : Font size for labels and titles. Default is 10.*</p>
+<p><em>Group the DataFrame by a specified column and plot the specified type of plot for each column for each group.</em></p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
@@ -720,7 +895,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L572" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L531" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_value_proportions" class="level3">
 <h3 class="anchored" data-anchor-id="plot_value_proportions">plot_value_proportions</h3>
@@ -807,7 +982,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L635" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L594" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_mean_distance_by_group_column" class="level3">
 <h3 class="anchored" data-anchor-id="plot_mean_distance_by_group_column">plot_mean_distance_by_group_column</h3>
@@ -821,22 +996,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="correlation-matrix" class="level3">
 <h3 class="anchored" data-anchor-id="correlation-matrix">Correlation Matrix</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L664" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L623" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_corr_matrix" class="level3">
 <h3 class="anchored" data-anchor-id="plot_corr_matrix">plot_corr_matrix</h3>
 <blockquote class="blockquote">
-<pre><code> plot_corr_matrix (dataframe:pandas.core.frame.DataFrame, figsize=(14,
-                   10), cmap='coolwarm', save_path:Optional[str]=None)</code></pre>
+<pre><code> plot_corr_matrix (dataframe:pandas.core.frame.DataFrame,
+                   figsize:tuple=(14, 10), cmap:str='coolwarm',
+                   save_path:Optional[str]=None)</code></pre>
 </blockquote>
-<p>*Plots a correlation matrix heatmap with annotations.</p>
-<p>Parameters: dataframe (pd.DataFrame): The DataFrame containing the data to be analyzed. figsize (tuple): The size of the figure (width, height). cmap (str): The color map to be used for the heatmap. save_path (Optional[str]): The path to save the plot image. If None, the plot is not saved.</p>
-<p>Returns: None: Displays the correlation matrix heatmap.*</p>
+<p><em>Plots a correlation matrix heatmap with annotations.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>dataframe</td>
+<td>DataFrame</td>
+<td></td>
+<td>The DataFrame containing the data to be analyzed.</td>
+</tr>
+<tr class="even">
+<td>figsize</td>
+<td>tuple</td>
+<td>(14, 10)</td>
+<td>The size of the figure (width, height).</td>
+</tr>
+<tr class="odd">
+<td>cmap</td>
+<td>str</td>
+<td>coolwarm</td>
+<td>The color map to be used for the heatmap.</td>
+</tr>
+<tr class="even">
+<td>save_path</td>
+<td>Optional</td>
+<td>None</td>
+<td>The path to save the plot image. If None, the plot is not saved.</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>None</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="features-summary" class="level3">
 <h3 class="anchored" data-anchor-id="features-summary">Features Summary</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L698" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L652" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="summarize_and_test" class="level3">
 <h3 class="anchored" data-anchor-id="summarize_and_test">summarize_and_test</h3>
@@ -854,30 +1076,156 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="images" class="level3">
 <h3 class="anchored" data-anchor-id="images">Images</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L814" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L768" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_single_image" class="level3">
 <h3 class="anchored" data-anchor-id="plot_single_image">plot_single_image</h3>
 <blockquote class="blockquote">
-<pre><code> plot_single_image (image_path, crop_length=0, font_size=17,
-                    save_path=None, figsize=(15, 15), title=None)</code></pre>
+<pre><code> plot_single_image (image_path:str, crop_length:int=0, font_size:int=17,
+                    save_path:Optional[str]=None, figsize:tuple=(15, 15),
+                    title:Optional[str]=None)</code></pre>
 </blockquote>
-<p>*Plot a single image with customization options.</p>
-<p>Args: image_path (str): Path to the image file. crop_length (int): Number of pixels to crop from each side of the image. font_size (int): Font size for the title. save_path (str): Path to save the plotted image. If None, the image is not saved. figsize (tuple): Size of the figure (width, height). title (str): Title for the image.</p>
-<p>Returns: None*</p>
+<p><em>Plot a single image with customization options.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>image_path</td>
+<td>str</td>
+<td></td>
+<td>Path to the image file.</td>
+</tr>
+<tr class="even">
+<td>crop_length</td>
+<td>int</td>
+<td>0</td>
+<td>Number of pixels to crop from each side of the image.</td>
+</tr>
+<tr class="odd">
+<td>font_size</td>
+<td>int</td>
+<td>17</td>
+<td>Font size for the title.</td>
+</tr>
+<tr class="even">
+<td>save_path</td>
+<td>Optional</td>
+<td>None</td>
+<td>Path to save the plotted image. If None, the image is not saved.</td>
+</tr>
+<tr class="odd">
+<td>figsize</td>
+<td>tuple</td>
+<td>(15, 15)</td>
+<td>Size of the figure (width, height).</td>
+</tr>
+<tr class="even">
+<td>title</td>
+<td>Optional</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>None</strong></td>
+<td></td>
+<td><strong>Title for the image.</strong></td>
+</tr>
+</tbody>
+</table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L855" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/visualize.py#L803" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="create_image_grid_from_routes" class="level3">
 <h3 class="anchored" data-anchor-id="create_image_grid_from_routes">create_image_grid_from_routes</h3>
 <blockquote class="blockquote">
-<pre><code> create_image_grid_from_routes (image_routes, crop_length=0, font_size=12,
-                                save_path=None, grid_size=(3, 2),
-                                hspace=-0.37, label_images=None)</code></pre>
+<pre><code> create_image_grid_from_routes (image_routes:list, crop_length:int=0,
+                                font_size:int=12,
+                                save_path:Optional[str]=None,
+                                grid_size:tuple=(3, 2),
+                                hspace:float=-0.37,
+                                label_images:Optional[list]=None)</code></pre>
 </blockquote>
-<p>*Create a grid of images from a list of image paths.</p>
-<p>Args: image_routes (list): List of image file paths. crop_length (int): Number of pixels to crop from each side of the image. font_size (int): Font size for the experiment label. save_path (str): Path to save the generated grid image. If None, the grid is not saved. grid_size (tuple): Number of rows and columns in the grid. hspace (float): Vertical spacing between grid rows. label_images (list or bool): List of labels for images or a boolean to add default labels.</p>
-<p>Returns: None*</p>
+<p><em>Create a grid of images from a list of image paths.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>image_routes</td>
+<td>list</td>
+<td></td>
+<td>List of image file paths.</td>
+</tr>
+<tr class="even">
+<td>crop_length</td>
+<td>int</td>
+<td>0</td>
+<td>Number of pixels to crop from each side of the image.</td>
+</tr>
+<tr class="odd">
+<td>font_size</td>
+<td>int</td>
+<td>12</td>
+<td>Font size for the experiment label.</td>
+</tr>
+<tr class="even">
+<td>save_path</td>
+<td>Optional</td>
+<td>None</td>
+<td>Path to save the generated grid image. If None, the grid is not saved.</td>
+</tr>
+<tr class="odd">
+<td>grid_size</td>
+<td>tuple</td>
+<td>(3, 2)</td>
+<td>Number of rows and columns in the grid.</td>
+</tr>
+<tr class="even">
+<td>hspace</td>
+<td>float</td>
+<td>-0.37</td>
+<td>Vertical spacing between grid rows.</td>
+</tr>
+<tr class="odd">
+<td>label_images</td>
+<td>Optional</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>None</strong></td>
+<td></td>
+<td><strong>List of labels for images or a boolean to add default labels.</strong></td>
+</tr>
+</tbody>
+</table>
 
 
 </section>

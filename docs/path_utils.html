@@ -203,12 +203,6 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Paper</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./path_utils.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Path Utils</span></a>
   </div>
@@ -264,24 +258,66 @@ ul.task-list li input[type="checkbox"] {
 <section id="path-handling" class="level2">
 <h2 class="anchored" data-anchor-id="path-handling">Path Handling</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/path.py#L40" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/path.py#L47" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="get_julia_file_path" class="level3">
 <h3 class="anchored" data-anchor-id="get_julia_file_path">get_julia_file_path</h3>
 <blockquote class="blockquote">
 <pre><code> get_julia_file_path (filename:str)</code></pre>
 </blockquote>
-<p><em>Get the absolute path to a Julia file.</em></p>
+<p><em>Get the absolute path to a Julia file in the project’s julia directory.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>filename</td>
+<td>str</td>
+<td>Name of the Julia file</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>str</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/path.py#L36" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/path.py#L40" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="make_project_path" class="level3">
 <h3 class="anchored" data-anchor-id="make_project_path">make_project_path</h3>
 <blockquote class="blockquote">
-<pre><code> make_project_path (*parts)</code></pre>
+<pre><code> make_project_path (*parts:str)</code></pre>
 </blockquote>
 <p><em>Create a path relative to the project root.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>parts</td>
+<td>str</td>
+<td>Path components to join</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>Path</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/path.py#L32" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/path.py#L34" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_data_path" class="level3">
 <h3 class="anchored" data-anchor-id="get_data_path">get_data_path</h3>
@@ -297,7 +333,7 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <pre><code> get_project_root ()</code></pre>
 </blockquote>
-<p><em>Get the project root directory.</em></p>
+<p><em>Get the project root directory by searching for settings.ini or setup.py files.</em></p>
 
 
 </section>

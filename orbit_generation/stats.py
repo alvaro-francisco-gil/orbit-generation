@@ -9,7 +9,7 @@ __all__ = ['calculate_overall_spatial_statistics', 'calculate_per_orbit_spatial_
 # %% ../nbs/04_orbit_statistics.ipynb 2
 import numpy as np
 import matplotlib.pyplot as plt
-from typing import List, Dict
+from typing import List, Dict, Tuple, Optional
 
 # %% ../nbs/04_orbit_statistics.ipynb 7
 def calculate_overall_spatial_statistics(
@@ -93,7 +93,7 @@ def calculate_per_orbit_spatial_statistics(orbits: np.ndarray,  # A numpy array 
 
 # %% ../nbs/04_orbit_statistics.ipynb 11
 def plot_time_increments(orbit_dataset: np.ndarray,  # The 3D numpy array representing the orbits
-                         orbits_to_plot: List[int] = None,  # Optional list of integers referring to the orbits to plot
+                         orbits_to_plot: Optional[List[int]] = None,  # Optional list of integers referring to the orbits to plot
                          show_legend: bool = True  # Boolean to control the display of the legend
                         ) -> None:
     """
