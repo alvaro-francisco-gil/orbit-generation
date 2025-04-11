@@ -244,7 +244,7 @@
     "href": "index.html",
     "title": "orbit-generation",
     "section": "",
-    "text": "orbit-generation\nThis library has been built using nbdev, which means that the source code of the library is stored in Jupyter notebooks inside the nbs folder. These notebooks are then automatically converted into Python files inside the orbit_generation folder.\nApart from the library, we have included research experiments using the library in the nbs_experiments folder.\nFirst, we will review the library structure, functions, and finally, we will explain the experiments conducted.",
+    "text": "orbit-generation-pic\nThis library has been built using nbdev, which means that the source code of the library is stored in Jupyter notebooks inside the nbs folder. These notebooks are then automatically converted into Python files inside the orbit_generation folder.\nApart from the library, we have included research experiments using the library in the nbs_experiments folder.\nFirst, we will review the library structure, functions, and finally, we will explain the experiments conducted.",
     "crumbs": [
       "orbit-generation"
     ]
