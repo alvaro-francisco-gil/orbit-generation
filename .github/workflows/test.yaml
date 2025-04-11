@@ -60,6 +60,9 @@ jobs:
           
           julia -e 'using Pkg; println("Environment path: ", Base.active_project()); Pkg.status()'
           
+          export JULIA_ENV_PATH=$(julia -e 'println(Base.active_project())')
+          echo "JULIA_ENV_PATH: $JULIA_ENV_PATH"
+          
           echo "Setting up IJulia..."
           julia -e 'using IJulia; IJulia.installkernel("Julia")'
           
@@ -73,7 +76,9 @@ jobs:
           export PYTHON=$(which python)
           
           echo "Building PyCall with the correct Python..."
-          julia -e 'using Pkg; ENV["PYTHON"]="'$(which python)'"; Pkg.build("PyCall")'
+          JULIA_ENV_PATH=$(julia -e 'println(Base.active_project())')
+          echo "Using Julia environment at: $JULIA_ENV_PATH"
+          julia -e 'using Pkg; Pkg.activate(); ENV["PYTHON"]="'$(which python)'"; Pkg.build("PyCall")'
           
           echo "Initializing PyJulia..."
           python -c "import julia; julia.install()"
@@ -87,8 +92,8 @@ jobs:
           echo "Testing Julia package import..."
           python -c "from julia import Main; print('Julia Main import successful')"
           
-          echo "Verifying DifferentialEquations is available..."
-          python -c "from julia.api import Julia; jl = Julia(compiled_modules=False); from julia import Main; Main.eval('println(\"DifferentialEquations package test:\"); using DifferentialEquations; println(\"Successfully loaded DifferentialEquations\")')"
+          echo "Loading and listing installed Julia packages..."
+          python -c "from julia.api import Julia; jl = Julia(compiled_modules=False); from julia import Main; Main.eval('using Pkg; println(\"Environment: \", Base.active_project()); Pkg.status(); println(\"Attempting to load DifferentialEquations\"); try using DifferentialEquations; println(\"DifferentialEquations loaded successfully\") catch e; println(e) end')"
           
           echo "JULIA_DEPOT_PATH=${JULIA_DEPOT_PATH}" >> $GITHUB_ENV
           echo "PYTHON=$(which python)" >> $GITHUB_ENV
