@@ -81,11 +81,12 @@ conducted](#Generative-Discovery-Experiment).
 |  
 |-- settings.ini: Configuration file for `nbdev`.  
 |  
-|-- setup.py: Script for installing the package.  
+|-- setup.py: Script for installing the package.
+```
 
 ## Library Modules
 
-```sh
+``` sh
 pip install orbit_generation
 ```
 

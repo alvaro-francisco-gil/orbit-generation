@@ -254,7 +254,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#publications" id="toc-publications" class="nav-link active" data-scroll-target="#publications">Publications</a></li>
-  <li><a href="#structure" id="toc-structure" class="nav-link" data-scroll-target="#structure">Structure</a>
+  <li><a href="#structure" id="toc-structure" class="nav-link" data-scroll-target="#structure">Structure</a></li>
+  <li><a href="#library-modules" id="toc-library-modules" class="nav-link" data-scroll-target="#library-modules">Library Modules</a>
   <ul class="collapse">
   <li><a href="#constants" id="toc-constants" class="nav-link" data-scroll-target="#constants">0. Constants</a></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">1. Data</a></li>
@@ -378,21 +379,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 |  
 |-- settings.ini: Configuration file for `nbdev`.  
 |  
-|-- setup.py: Script for installing the package.  
-
-## Library Modules
-
-```sh
-pip install orbit_generation</code></pre>
+|-- setup.py: Script for installing the package.</code></pre>
+</section>
+<section id="library-modules" class="level2">
+<h2 class="anchored" data-anchor-id="library-modules">Library Modules</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install orbit_generation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="constants" class="level3">
 <h3 class="anchored" data-anchor-id="constants">0. Constants</h3>
 <p>This module contains physical constants and orbit labels.</p>
 <div id="cell-10" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.constants <span class="im">import</span> MU_BY_SYSTEM, EM_POINTS, EM_MU</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.constants <span class="im">import</span> MU_BY_SYSTEM, EM_POINTS, EM_MU</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-11" class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>MU_BY_SYSTEM</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>MU_BY_SYSTEM</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="59">
 <pre><code>{'SaE': 1.901109735892602e-07,
  'MP': 1.611081404409632e-08,
  'SaT': 0.0002366393158331484,
@@ -403,8 +403,8 @@ pip install orbit_generation</code></pre>
 </div>
 </div>
 <div id="cell-12" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>EM_POINTS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>EM_POINTS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="60">
 <pre><code>{'Moon': (0.987849414390376, 0, 0),
  'Earth': (-0.01215058560962404, 0, 0),
  'Lagrange 1': (0.8369, 0, 0),
@@ -419,12 +419,12 @@ pip install orbit_generation</code></pre>
 <h3 class="anchored" data-anchor-id="data">1. Data</h3>
 <p>This module provides utilities for handling orbit data.</p>
 <div id="cell-15" class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.data <span class="im">import</span> get_example_orbit_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.data <span class="im">import</span> get_example_orbit_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-16" class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>orbit_data <span class="op">=</span> get_example_orbit_data()</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>orbit_data <span class="op">=</span> get_example_orbit_data()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="62">
 <pre><code>(400, 7, 100)</code></pre>
 </div>
 </div>
@@ -455,12 +455,12 @@ pip install orbit_generation</code></pre>
 <h3 class="anchored" data-anchor-id="processing">2. Processing</h3>
 <p>This module performs various processing tasks on the orbit data described above, including downsampling, interpolation, and reshaping.</p>
 <div id="cell-21" class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.processing <span class="im">import</span> resample_3d_array</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.processing <span class="im">import</span> resample_3d_array</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-22" class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>resampled_orbit_data <span class="op">=</span> resample_3d_array(data<span class="op">=</span>orbit_data, axis<span class="op">=</span><span class="dv">2</span>, target_size<span class="op">=</span> <span class="dv">50</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>resampled_orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>resampled_orbit_data <span class="op">=</span> resample_3d_array(data<span class="op">=</span>orbit_data, axis<span class="op">=</span><span class="dv">2</span>, target_size<span class="op">=</span> <span class="dv">50</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>resampled_orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="64">
 <pre><code>(400, 7, 50)</code></pre>
 </div>
 </div>
@@ -475,10 +475,10 @@ pip install orbit_generation</code></pre>
 <section id="orbits" class="level4">
 <h4 class="anchored" data-anchor-id="orbits">Orbits</h4>
 <div id="cell-27" class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.visualize <span class="im">import</span> visualize_static_orbits, export_dynamic_orbits_html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.visualize <span class="im">import</span> visualize_static_orbits, export_dynamic_orbits_html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-28" class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(orbit_data, show_legend<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(orbit_data, show_legend<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -488,7 +488,7 @@ pip install orbit_generation</code></pre>
 </div>
 </div>
 <div id="cell-29" class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data, orbit_indices<span class="op">=</span>[<span class="dv">315</span>,<span class="dv">120</span>,<span class="dv">70</span>,<span class="dv">180</span>,<span class="dv">190</span>], point_dict<span class="op">=</span>EM_POINTS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data, orbit_indices<span class="op">=</span>[<span class="dv">315</span>,<span class="dv">120</span>,<span class="dv">70</span>,<span class="dv">180</span>,<span class="dv">190</span>], point_dict<span class="op">=</span>EM_POINTS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -498,7 +498,7 @@ pip install orbit_generation</code></pre>
 </div>
 </div>
 <div id="cell-30" class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data, time_instants<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">50</span>], orbit_indices<span class="op">=</span>[<span class="dv">40</span>], plot_reference_box<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data, time_instants<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">50</span>], orbit_indices<span class="op">=</span>[<span class="dv">40</span>], plot_reference_box<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -508,7 +508,7 @@ pip install orbit_generation</code></pre>
 </div>
 </div>
 <div id="cell-31" class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>export_dynamic_orbits_html(data<span class="op">=</span>orbit_data, filename<span class="op">=</span><span class="st">'../data/example_training_data/example_orbits_visualization.html'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>export_dynamic_orbits_html(data<span class="op">=</span>orbit_data, filename<span class="op">=</span><span class="st">'../data/example_training_data/example_orbits_visualization.html'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Visualization saved to ../data/example_training_data/example_orbits_visualization.html</code></pre>
 </div>
@@ -536,10 +536,10 @@ pip install orbit_generation</code></pre>
 <h3 class="anchored" data-anchor-id="statistics">4. Statistics</h3>
 <p>This module analyzes the orbital data using descriptive statistics.</p>
 <div id="cell-37" class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.stats <span class="im">import</span> plot_histograms_position, plot_histograms_comparison</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.stats <span class="im">import</span> plot_histograms_position, plot_histograms_comparison</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-38" class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>plot_histograms_position(orbit_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plot_histograms_position(orbit_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -549,7 +549,7 @@ pip install orbit_generation</code></pre>
 </div>
 </div>
 <div id="cell-39" class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plot_histograms_comparison(orbit_data[<span class="dv">0</span>:<span class="dv">200</span>,<span class="dv">1</span>:], orbit_data[<span class="dv">200</span>:<span class="dv">400</span>,<span class="dv">1</span>:], normalize<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>plot_histograms_comparison(orbit_data[<span class="dv">0</span>:<span class="dv">200</span>,<span class="dv">1</span>:], orbit_data[<span class="dv">200</span>:<span class="dv">400</span>,<span class="dv">1</span>:], normalize<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -564,7 +564,7 @@ pip install orbit_generation</code></pre>
 <p>Scripts to build the different datasets used for modeling.</p>
 <p>The following function was used to obtain the datasets for the research:</p>
 <div id="cell-42" class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.dataset <span class="im">import</span> get_first_period_dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.dataset <span class="im">import</span> get_first_period_dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The function takes: - file_path: Path to HDF5 file containing orbit data - segment_length: Optional length to segment orbits into (default 100)</p>
 <p>Returns: - Segmented orbits as memory-mapped array - DataFrame with orbit features - Array of segment IDs - Dictionary of system features (mass ratios, etc)</p>
@@ -573,17 +573,17 @@ pip install orbit_generation</code></pre>
 <h3 class="anchored" data-anchor-id="architectures">6. Architectures</h3>
 <p>Module where different model architectures are defined—such as losses, decoders, and callbacks—designed to be modular and reusable.</p>
 <div id="cell-46" class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.architectures <span class="im">import</span> Conv5Encoder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.architectures <span class="im">import</span> Conv5Encoder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-47" class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Conv5Encoder(</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    seq_len<span class="op">=</span><span class="dv">100</span>,      <span class="co"># Sequence length for input data</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    feat_dim<span class="op">=</span><span class="dv">7</span>,       <span class="co"># Feature dimension (number of features per timestep)</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    latent_dim<span class="op">=</span><span class="dv">32</span>,    <span class="co"># Dimension of latent space</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    dropout_rate<span class="op">=</span><span class="fl">0.1</span>  <span class="co"># Dropout rate for regularization</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Conv5Encoder Summary:"</span>)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model._modules) <span class="co"># Access modules dictionary since it extends nn.Module</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Conv5Encoder(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    seq_len<span class="op">=</span><span class="dv">100</span>,      <span class="co"># Sequence length for input data</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    feat_dim<span class="op">=</span><span class="dv">7</span>,       <span class="co"># Feature dimension (number of features per timestep)</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    latent_dim<span class="op">=</span><span class="dv">32</span>,    <span class="co"># Dimension of latent space</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    dropout_rate<span class="op">=</span><span class="fl">0.1</span>  <span class="co"># Dropout rate for regularization</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Conv5Encoder Summary:"</span>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model._modules) <span class="co"># Access modules dictionary since it extends nn.Module</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Conv5Encoder Summary:
 {'convo_layers': Sequential(
@@ -617,10 +617,10 @@ pip install orbit_generation</code></pre>
 <h3 class="anchored" data-anchor-id="propagation">7. Propagation</h3>
 <p>This module enables orbit propagation and measures physical consistency.</p>
 <div id="cell-50" class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.propagation <span class="im">import</span> calculate_errors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.propagation <span class="im">import</span> calculate_errors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-51" class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors(orbit_data, EM_MU, orbit_indices <span class="op">=</span> [<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors(orbit_data, EM_MU, orbit_indices <span class="op">=</span> [<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cumulative position error for selected orbits: 5.095048112547387e-05
 Average position error per time step: 5.14651324499736e-07</code></pre>
@@ -664,11 +664,11 @@ Average energy error per time step: 3.7954312119836686e-06</code></pre>
 <h3 class="anchored" data-anchor-id="evaluation">9. Evaluation</h3>
 <p>Module to evaluate distances, clustering metrics and vanilla machine learning models.</p>
 <div id="cell-56" class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.evaluation <span class="im">import</span> calculate_pairwise_orbit_distances</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.evaluation <span class="im">import</span> calculate_pairwise_orbit_distances</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-57" class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>calculate_pairwise_orbit_distances(orbit_data[<span class="dv">0</span>:<span class="dv">1</span>], orbit_data[<span class="dv">1</span>:<span class="dv">2</span>], distance_metric<span class="op">=</span><span class="st">'manhattan'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>calculate_pairwise_orbit_distances(orbit_data[<span class="dv">0</span>:<span class="dv">1</span>], orbit_data[<span class="dv">1</span>:<span class="dv">2</span>], distance_metric<span class="op">=</span><span class="st">'manhattan'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="79">
 <pre><code>array([85.13618469])</code></pre>
 </div>
 </div>
@@ -677,13 +677,13 @@ Average energy error per time step: 3.7954312119836686e-06</code></pre>
 <h3 class="anchored" data-anchor-id="variational-auto-encoder-vae">10. Variational Auto Encoder (VAE)</h3>
 <p>This module builds VAE models using the architecures from <a href="./nbs/06_architectures.ipynb"><code>6. Architectures</code></a></p>
 <div id="cell-60" class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.vae <span class="im">import</span> BetaVAE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.vae <span class="im">import</span> BetaVAE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-61" class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"BetaVAE properties:"</span>)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> BetaVAE.__dict__.items():</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> key.startswith(<span class="st">'_'</span>):</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"- </span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"BetaVAE properties:"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> BetaVAE.__dict__.items():</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> key.startswith(<span class="st">'_'</span>):</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"- </span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>BetaVAE properties:
 - setup
@@ -705,23 +705,23 @@ Average energy error per time step: 3.7954312119836686e-06</code></pre>
 <h3 class="anchored" data-anchor-id="model-factory">11. Model Factory</h3>
 <p>Module to create model instances based on configuration files.</p>
 <div id="cell-64" class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.model_factory <span class="im">import</span> get_model</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.model_factory <span class="im">import</span> get_model</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-65" class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'model_name'</span>: <span class="st">'inception_time_vae'</span>,</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'seq_len'</span>: <span class="dv">100</span>,</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'feature_dim'</span>: <span class="dv">6</span>,</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'latent_dim'</span>: <span class="dv">32</span>,</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'model_kwargs'</span>: {</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'beta'</span>: <span class="fl">1.0</span>,</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'lr'</span>: <span class="fl">0.001</span>,</span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'optimizer_cls'</span>: torch.optim.Adam</span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> get_model(params)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'model_name'</span>: <span class="st">'inception_time_vae'</span>,</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'seq_len'</span>: <span class="dv">100</span>,</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'feature_dim'</span>: <span class="dv">6</span>,</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'latent_dim'</span>: <span class="dv">32</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'model_kwargs'</span>: {</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'beta'</span>: <span class="fl">1.0</span>,</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'lr'</span>: <span class="fl">0.001</span>,</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'optimizer_cls'</span>: torch.optim.Adam</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> get_model(params)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="convergence" class="level3">
