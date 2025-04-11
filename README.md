@@ -23,22 +23,22 @@ will explain the experiments conducted.
 |  
 |-- .github: workflows for continuous integration in Git.  
 |  
-|-- LICENSE: Project license file.  
-|  
-|-- MANIFEST.in: Specifies which files to include in the package distribution.  
-|  
-|-- README.md: Documentation for the project.  
-|  
-|-- data: Contains datasets, precomputed scalers, and example data. 
+|-- data: The folder where datasets are stored, in GitHub only example data is included. 
 |   |-- example_data
-|   |-- input_scaler.pkl
-|   |-- orbit_scaler.pkl
-|   `-- orbits_fix_1500
+|   |-- orbits_fix_1500 (needs to be downloaded)
 |
 |-- docs: Documentation files for the project. 
+|
+|-- experiments: Results about the experiments performed. 
+|
+|-- index_files: Auto-generated images to be used in the README.md. 
 | 
 |-- julia: Scripts written in Julia for specific computations. 
 |   `-- convergence_algorithm.jl
+|
+|-- models: Some Machine Learning models used in the experiments.
+|   |-- family_classificators
+|   |-- orbit_generators
 |
 |-- nbs: Jupyter notebooks containing the source code for the library.  
 |   |-- 00_constants.ipynb
@@ -62,7 +62,15 @@ will explain the experiments conducted.
 |   |-- 01_generative_discovery_em
 |   |-- 02_conditional_generation_systems
 |
-|-- orbit_generation: Auto-generated Python package containing the processed library code.  
+|-- orbit_generation: Auto-generated Python package containing the processed library code. 
+|  
+|-- .gitignore: Defines files Git should ignore.
+|  
+|-- LICENSE: Project license file.  
+|  
+|-- MANIFEST.in: Specifies which files to include in the package distribution.   
+|  
+|-- README.md: Documentation for the project, auto-generated from index.ipynb.  
 |  
 |-- settings.ini: Configuration file for `nbdev`.  
 |  
