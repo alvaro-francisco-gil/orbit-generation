@@ -12,16 +12,12 @@ import matplotlib.pyplot as plt
 from typing import List, Dict
 
 # %% ../nbs/04_orbit_statistics.ipynb 7
-def calculate_overall_spatial_statistics(orbits: np.ndarray) -> np.ndarray:
+def calculate_overall_spatial_statistics(
+    orbits: np.ndarray,  # Array of shape (number_of_orbits, 6 or 7, number_of_time_instants) containing orbit data
+) -> np.ndarray:
     """
     Calculate the overall min, mean, max, and percentile statistics for each scalar 
     (position and velocity in X, Y, Z) across all time instants and orbits.
-
-    Parameters:
-    - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6 or 7, number_of_time_instants) containing orbit data.
-
-    Returns:
-    - np.ndarray: A NumPy array containing statistics for each scalar.
     """
     stats = []  # List to store statistics for each scalar.
     scalar_names = ['posx', 'posy', 'posz', 'velx', 'vely', 'velz']  # List of scalar names.
@@ -52,17 +48,10 @@ def calculate_overall_spatial_statistics(orbits: np.ndarray) -> np.ndarray:
     return np.array(stats)
 
 # %% ../nbs/04_orbit_statistics.ipynb 9
-def calculate_per_orbit_spatial_statistics(orbits: np.ndarray) -> np.ndarray:
+def calculate_per_orbit_spatial_statistics(orbits: np.ndarray,  # A numpy array of shape (number_of_orbits, 6 or 7, number_of_time_instants) containing orbit data
+                                         ) -> np.ndarray:
     """
-    Calculate per-orbit min, mean, max, and percentile statistics for each scalar 
-    (position and velocity in X, Y, Z) across all time instants.
-
-    Parameters:
-    - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6 or 7, number_of_time_instants) containing orbit data.
-
-    Returns:
-    - np.ndarray: A NumPy array of shape (number_of_orbits, number_of_scalars, number_of_stats)
-                  containing statistics for each scalar per orbit.
+    Calculate per-orbit min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants.
     """
     stats = []  # List to store statistics for each orbit.
     scalar_names = ['posx', 'posy', 'posz', 'velx', 'vely', 'velz']  # List of scalar names.
@@ -109,13 +98,6 @@ def plot_time_increments(orbit_dataset: np.ndarray,  # The 3D numpy array repres
                         ) -> None:
     """
     Plots the time as a function to visualize how it increments for each orbit.
-
-    Parameters:
-    orbit_dataset (np.ndarray): A 3D numpy array where the first dimension is the number of orbits,
-                                the second dimension contains 7 scalars (time, posx, posy, posz, velx, vely, velz),
-                                and the third dimension is the time steps.
-    orbits_to_plot (list[int], optional): List of integers referring to the orbits to plot. If None, plots all orbits.
-    show_legend (bool, optional): Whether to display the legend. Default is True.
     """
     num_orbits = orbit_dataset.shape[0]
 
@@ -140,7 +122,18 @@ def plot_time_increments(orbit_dataset: np.ndarray,  # The 3D numpy array repres
     plt.show()
 
 # %% ../nbs/04_orbit_statistics.ipynb 13
-def plot_orbit_data_lengths(orbit_data, key_range=(1, 36072), dimension=0, bins=30, color='blue', plot=True, title='Histogram of Orbits Time Steps'):
+def plot_orbit_data_lengths(orbit_data: Dict[int, np.ndarray],  # Dictionary mapping orbit IDs to orbit data arrays
+                          key_range: Tuple[int, int] = (1, 36072),  # Range of orbit IDs to analyze (start, end)
+                          dimension: int = 0,  # Dimension of the orbit data to measure length
+                          bins: int = 30,  # Number of bins for histogram
+                          color: str = 'blue',  # Color of histogram bars
+                          plot: bool = True,  # Whether to plot the histogram
+                          title: str = 'Histogram of Orbits Time Steps'  # Title of the plot
+                          ) -> Optional[List[int]]:
+    """
+    Analyzes and optionally plots the distribution of time steps across multiple orbits.
+    Returns the list of lengths if plot=False, otherwise displays histogram and returns None.
+    """
     lengths = []
     
     # Iterate over each dataset name within the provided range
@@ -168,18 +161,13 @@ def plot_orbit_data_lengths(orbit_data, key_range=(1, 36072), dimension=0, bins=
         return lengths
 
 # %% ../nbs/04_orbit_statistics.ipynb 14
-def plot_histograms_position(data: np.ndarray,                  # The orbit data array of shape (num_orbits, num_scalars, num_time_points).
-                             save_path: str = None,             # Optional path to save the plot image.
-                             last_time_elements: bool = True    # Whether to plot only the last elements of the time vectors.
-                            ) -> None:
+def plot_histograms_position(data: np.ndarray,  # The orbit data array of shape (num_orbits, num_scalars, num_time_points)
+                           save_path: Optional[str] = None,  # Optional path to save the plot image
+                           last_time_elements: bool = True,  # Whether to plot only the last elements of the time vectors
+                           ) -> None:
     """
     Plots histograms for the scalar values (position and velocity in X, Y, Z, and optionally time) across all orbits
     and time points. Handles arrays with 6 or 7 scalar dimensions, with the 7th being 'time'.
-
-    Parameters:
-    - data (np.ndarray): The orbit data array.
-    - save_path (str, optional): If provided, the plot will be saved to this file path.
-    - last_time_elements (bool): If True, plot only the last elements of the time vectors for the time histogram.
     """
     # Check the number of scalars and adjust scalar names accordingly
     num_scalars = data.shape[1]
