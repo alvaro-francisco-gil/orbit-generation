@@ -2,38 +2,70 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://alvaro-francisco-gil.github.io/orbit-generation/data.html</loc>
-    <lastmod>2024-06-07T11:20:36.286Z</lastmod>
+    <lastmod>2025-03-17T09:48:43.642Z</lastmod>
   </url>
   <url>
     <loc>https://alvaro-francisco-gil.github.io/orbit-generation/dataset.html</loc>
-    <lastmod>2024-06-07T11:20:36.346Z</lastmod>
+    <lastmod>2025-03-17T09:48:41.986Z</lastmod>
   </url>
   <url>
-    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/processing.html</loc>
-    <lastmod>2024-06-07T11:30:37.684Z</lastmod>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/vae.html</loc>
+    <lastmod>2025-03-17T09:48:44.106Z</lastmod>
   </url>
   <url>
-    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/constants.html</loc>
-    <lastmod>2024-06-07T11:30:37.700Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/visualization.html</loc>
-    <lastmod>2024-06-07T11:20:36.670Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/statistics.html</loc>
-    <lastmod>2024-06-07T11:28:37.884Z</lastmod>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/latent_space.html</loc>
+    <lastmod>2025-04-11T08:55:48.663Z</lastmod>
   </url>
   <url>
     <loc>https://alvaro-francisco-gil.github.io/orbit-generation/index.html</loc>
-    <lastmod>2024-06-07T11:20:35.962Z</lastmod>
+    <lastmod>2025-03-17T09:48:40.618Z</lastmod>
   </url>
   <url>
-    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/model.html</loc>
-    <lastmod>2024-06-07T11:20:37.226Z</lastmod>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/convergence.html</loc>
+    <lastmod>2025-04-11T10:07:25.999Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/evaluation.html</loc>
+    <lastmod>2025-03-17T09:48:42.042Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/orbit_statistics.html</loc>
+    <lastmod>2025-03-17T09:48:43.402Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/orbit_processing.html</loc>
+    <lastmod>2025-03-17T09:48:41.490Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/visualization.html</loc>
+    <lastmod>2025-03-17T09:48:43.894Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/architectures.html</loc>
+    <lastmod>2025-03-17T09:48:44.318Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/paper_specific.html</loc>
+    <lastmod>2025-03-17T09:48:41.638Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/constants.html</loc>
+    <lastmod>2025-03-17T09:48:41.230Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/path_utils.html</loc>
+    <lastmod>2025-04-11T10:04:58.838Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/model_factory.html</loc>
+    <lastmod>2025-03-17T09:48:44.134Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alvaro-francisco-gil.github.io/orbit-generation/experiment.html</loc>
+    <lastmod>2025-03-17T09:48:44.698Z</lastmod>
   </url>
   <url>
     <loc>https://alvaro-francisco-gil.github.io/orbit-generation/propagation.html</loc>
-    <lastmod>2024-06-07T11:29:23.232Z</lastmod>
+    <lastmod>2025-03-17T09:48:43.946Z</lastmod>
   </url>
 </urlset>

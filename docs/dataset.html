@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="Scripts to build the different datasets used for modeling">
 
-<title>orbit-generation - Dataset</title>
+<title>Dataset – orbit-generation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -36,10 +70,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e198e139e5394bcefc774cae535a6f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,10 +104,10 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="orbit-generation - Dataset">
+<meta property="og:title" content="Dataset – orbit-generation">
 <meta property="og:description" content="Scripts to build the different datasets used for modeling">
 <meta property="og:site_name" content="orbit-generation">
-<meta name="twitter:title" content="orbit-generation - Dataset">
+<meta name="twitter:title" content="Dataset – orbit-generation">
 <meta name="twitter:description" content="Scripts to build the different datasets used for modeling">
 <meta name="twitter:card" content="summary">
 </head>
@@ -96,11 +130,11 @@ ul.task-list li input[type="checkbox"] {
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dataset.html">Dataset</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -131,7 +165,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./processing.html" class="sidebar-item-text sidebar-link">
+  <a href="./orbit_processing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Processing</span></a>
   </div>
 </li>
@@ -143,7 +177,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./statistics.html" class="sidebar-item-text sidebar-link">
+  <a href="./orbit_statistics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Statistics</span></a>
   </div>
 </li>
@@ -155,14 +189,62 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Model</span></a>
+  <a href="./architectures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Architectures</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./propagation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Propagation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Evaluation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vae.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VAE</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model_factory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Factory</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./convergence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Convergence</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./latent_space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Latent Space</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paper</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./path_utils.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Path Utils</span></a>
   </div>
 </li>
     </ul>
@@ -178,16 +260,37 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#read-data" id="toc-read-data" class="nav-link active" data-scroll-target="#read-data">Read Data</a>
   <ul class="collapse">
   <li><a href="#get_orbit_data_from_hdf5" id="toc-get_orbit_data_from_hdf5" class="nav-link" data-scroll-target="#get_orbit_data_from_hdf5">get_orbit_data_from_hdf5</a></li>
+  </ul></li>
+  <li><a href="#get-features" id="toc-get-features" class="nav-link" data-scroll-target="#get-features">Get Features</a>
+  <ul class="collapse">
+  <li><a href="#orbit-features" id="toc-orbit-features" class="nav-link" data-scroll-target="#orbit-features">Orbit Features</a></li>
   <li><a href="#get_orbit_features_from_hdf5" id="toc-get_orbit_features_from_hdf5" class="nav-link" data-scroll-target="#get_orbit_features_from_hdf5">get_orbit_features_from_hdf5</a></li>
   <li><a href="#get_orbit_features_from_folder" id="toc-get_orbit_features_from_folder" class="nav-link" data-scroll-target="#get_orbit_features_from_folder">get_orbit_features_from_folder</a></li>
+  <li><a href="#system-features" id="toc-system-features" class="nav-link" data-scroll-target="#system-features">System Features</a></li>
   </ul></li>
-  <li><a href="#datasets-fixed-period" id="toc-datasets-fixed-period" class="nav-link" data-scroll-target="#datasets-fixed-period">Datasets fixed Period</a>
+  <li><a href="#get-classes" id="toc-get-classes" class="nav-link" data-scroll-target="#get-classes">Get Classes</a>
   <ul class="collapse">
+  <li><a href="#substitute_values_from_df" id="toc-substitute_values_from_df" class="nav-link" data-scroll-target="#substitute_values_from_df">substitute_values_from_df</a></li>
+  <li><a href="#get_orbit_classes" id="toc-get_orbit_classes" class="nav-link" data-scroll-target="#get_orbit_classes">get_orbit_classes</a></li>
+  </ul></li>
+  <li><a href="#get-periods" id="toc-get-periods" class="nav-link" data-scroll-target="#get-periods">Get Periods</a>
+  <ul class="collapse">
+  <li><a href="#get_periods_of_orbit_dict" id="toc-get_periods_of_orbit_dict" class="nav-link" data-scroll-target="#get_periods_of_orbit_dict">get_periods_of_orbit_dict</a></li>
+  </ul></li>
+  <li><a href="#get-dataset" id="toc-get-dataset" class="nav-link" data-scroll-target="#get-dataset">Get Dataset</a>
+  <ul class="collapse">
+  <li><a href="#fixed-period" id="toc-fixed-period" class="nav-link" data-scroll-target="#fixed-period">Fixed Period</a></li>
+  <li><a href="#get_first_period_of_fixed_period_dataset" id="toc-get_first_period_of_fixed_period_dataset" class="nav-link" data-scroll-target="#get_first_period_of_fixed_period_dataset">get_first_period_of_fixed_period_dataset</a></li>
+  <li><a href="#fixed-step" id="toc-fixed-step" class="nav-link" data-scroll-target="#fixed-step">Fixed Step</a></li>
+  <li><a href="#get_full_fixed_step_dataset" id="toc-get_full_fixed_step_dataset" class="nav-link" data-scroll-target="#get_full_fixed_step_dataset">get_full_fixed_step_dataset</a></li>
+  <li><a href="#get_first_period_fixed_step_dataset" id="toc-get_first_period_fixed_step_dataset" class="nav-link" data-scroll-target="#get_first_period_fixed_step_dataset">get_first_period_fixed_step_dataset</a></li>
+  <li><a href="#first-period" id="toc-first-period" class="nav-link" data-scroll-target="#first-period">First Period</a></li>
   <li><a href="#get_first_period_dataset" id="toc-get_first_period_dataset" class="nav-link" data-scroll-target="#get_first_period_dataset">get_first_period_dataset</a></li>
+  <li><a href="#get_first_period_dataset_all_systems" id="toc-get_first_period_dataset_all_systems" class="nav-link" data-scroll-target="#get_first_period_dataset_all_systems">get_first_period_dataset_all_systems</a></li>
   </ul></li>
-  <li><a href="#dataset-fixed-step" id="toc-dataset-fixed-step" class="nav-link" data-scroll-target="#dataset-fixed-step">Dataset fixed Step</a>
+  <li><a href="#get-constants" id="toc-get-constants" class="nav-link" data-scroll-target="#get-constants">Get Constants</a>
   <ul class="collapse">
-  <li><a href="#get_segmented_dataset" id="toc-get_segmented_dataset" class="nav-link" data-scroll-target="#get_segmented_dataset">get_segmented_dataset</a></li>
+  <li><a href="#get_system_constants" id="toc-get_system_constants" class="nav-link" data-scroll-target="#get_system_constants">get_system_constants</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
@@ -223,14 +326,14 @@ ul.task-list li input[type="checkbox"] {
 <section id="read-data" class="level2">
 <h2 class="anchored" data-anchor-id="read-data">Read Data</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L17" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L23" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="get_orbit_data_from_hdf5" class="level3">
 <h3 class="anchored" data-anchor-id="get_orbit_data_from_hdf5">get_orbit_data_from_hdf5</h3>
 <blockquote class="blockquote">
 <pre><code> get_orbit_data_from_hdf5 (file_path:str)</code></pre>
 </blockquote>
 <p><em>Load orbit data from an HDF5 file.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -251,13 +354,19 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td><strong>Returns</strong></td>
-<td><strong>typing.Tuple[typing.Dict[int, numpy.ndarray], pandas.core.frame.DataFrame, typing.Dict[str, float]]</strong></td>
+<td><strong>Tuple</strong></td>
 <td><strong>Dictionary of orbits with numerical keys.</strong></td>
 </tr>
 </tbody>
 </table>
+</section>
+</section>
+<section id="get-features" class="level2">
+<h2 class="anchored" data-anchor-id="get-features">Get Features</h2>
+<section id="orbit-features" class="level3">
+<h3 class="anchored" data-anchor-id="orbit-features">Orbit Features</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L54" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L66" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_orbit_features_from_hdf5" class="level3">
 <h3 class="anchored" data-anchor-id="get_orbit_features_from_hdf5">get_orbit_features_from_hdf5</h3>
@@ -265,7 +374,7 @@ ul.task-list li input[type="checkbox"] {
 <pre><code> get_orbit_features_from_hdf5 (file_path:str)</code></pre>
 </blockquote>
 <p><em>Load orbit DataFrame from an HDF5 file.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -292,7 +401,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L76" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L94" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_orbit_features_from_folder" class="level3">
 <h3 class="anchored" data-anchor-id="get_orbit_features_from_folder">get_orbit_features_from_folder</h3>
@@ -300,7 +409,7 @@ ul.task-list li input[type="checkbox"] {
 <pre><code> get_orbit_features_from_folder (folder_path:str)</code></pre>
 </blockquote>
 <p><em>Concatenate orbit DataFrames from all HDF5 files in a folder, preserving original index and adding system column.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -327,23 +436,203 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </section>
+<section id="system-features" class="level3">
+<h3 class="anchored" data-anchor-id="system-features">System Features</h3>
+<div id="cell-9" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_system_data_from_hdf5(file_path: <span class="bu">str</span>              <span class="co"># Path to the HDF5 file.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                             ) <span class="op">-&gt;</span> Dict[<span class="bu">str</span>, <span class="bu">float</span>]:       <span class="co"># Dictionary containing system features.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Load system data from an HDF5 file.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> h5py.File(file_path, <span class="st">'r'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extract system features and labels</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        system_features <span class="op">=</span> <span class="bu">file</span>[<span class="st">'system_features'</span>][:]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        system_labels <span class="op">=</span> <span class="bu">file</span>[<span class="st">'system_labels'</span>][:].astype(<span class="bu">str</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a dictionary for system</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        system_dict <span class="op">=</span> {label: feature[<span class="dv">0</span>] <span class="cf">for</span> label, feature <span class="kw">in</span> <span class="bu">zip</span>(system_labels.flatten().tolist(), system_features)}</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> system_dict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-10" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_system_features_from_folder(folder_path: <span class="bu">str</span>    <span class="co"># Path to the folder</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                                   ) <span class="op">-&gt;</span> pd.DataFrame:   <span class="co"># DataFrame containing concatenated system features.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Concatenate system DataFrames from all HDF5 files in a folder, preserving original index and adding system column.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    all_systems <span class="op">=</span> []  <span class="co"># List to store individual system dictionaries</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Iterate over all files in the folder</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> file_name <span class="kw">in</span> os.listdir(folder_path):</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        file_path <span class="op">=</span> os.path.join(folder_path, file_name)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check if the file is an HDF5 file</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> file_name.endswith(<span class="st">'.h5'</span>) <span class="kw">or</span> file_name.endswith(<span class="st">'.hdf5'</span>):</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Get the system dictionary from the HDF5 file</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            system_dict <span class="op">=</span> get_system_data_from_hdf5(file_path)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Add a new entry to the dictionary for the system name</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            system_dict[<span class="st">'system'</span>] <span class="op">=</span> os.path.splitext(file_name)[<span class="dv">0</span>].split(<span class="st">'_'</span>)[<span class="dv">0</span>]</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Append the dictionary to the list</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>            all_systems.append(system_dict)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert the list of dictionaries to a DataFrame</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    concatenated_df <span class="op">=</span> pd.DataFrame(all_systems)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> concatenated_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="datasets-fixed-period" class="level2">
-<h2 class="anchored" data-anchor-id="datasets-fixed-period">Datasets fixed Period</h2>
+</section>
+<section id="get-classes" class="level2">
+<h2 class="anchored" data-anchor-id="get-classes">Get Classes</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L107" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="get_first_period_dataset" class="level3">
-<h3 class="anchored" data-anchor-id="get_first_period_dataset">get_first_period_dataset</h3>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L125" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="substitute_values_from_df" class="level3">
+<h3 class="anchored" data-anchor-id="substitute_values_from_df">substitute_values_from_df</h3>
 <blockquote class="blockquote">
-<pre><code> get_first_period_dataset (file_path:str)</code></pre>
+<pre><code> substitute_values_from_df (values:List[Any],
+                            df:pandas.core.frame.DataFrame,
+                            goal_column:str, id_column:str='Id')</code></pre>
 </blockquote>
-<p><em>Load and process orbit data from an HDF5 file for the first period.</em></p>
-<table class="table">
+<p>*Substitute values in the given list based on the mapping from a DataFrame’s id column to goal column.</p>
+<p>Parameters: values (List[Any]): List of values to be substituted. df (pd.DataFrame): DataFrame containing the mapping from id_column to goal_column. goal_column (str): Column in the DataFrame to get the substitution values from. id_column (str, optional): Column in the DataFrame to match the values with. Default is ‘Id’.</p>
+<p>Returns: List[Any]: A list with substituted values from the DataFrame’s goal_column.*</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>values</td>
+<td>List</td>
+<td></td>
+<td>List of values to be substituted.</td>
+</tr>
+<tr class="even">
+<td>df</td>
+<td>DataFrame</td>
+<td></td>
+<td>DataFrame containing the mapping.</td>
+</tr>
+<tr class="odd">
+<td>goal_column</td>
+<td>str</td>
+<td></td>
+<td>Column in the DataFrame to get the substitution values from.</td>
+</tr>
+<tr class="even">
+<td>id_column</td>
+<td>str</td>
+<td>Id</td>
+<td>Column in the DataFrame to match the values with. Default is ‘Id’.</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>List</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L151" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_orbit_classes" class="level3">
+<h3 class="anchored" data-anchor-id="get_orbit_classes">get_orbit_classes</h3>
+<blockquote class="blockquote">
+<pre><code> get_orbit_classes (values:List[Any])</code></pre>
+</blockquote>
+<p>*Get orbit classes based on the given values and DataFrame. Returns four lists corresponding to ‘Label’, ‘Type’, ‘Subtype’, and ‘Direction’ columns.</p>
+<p>Parameters: values (List[Any]): List of values to be substituted.</p>
+<p>Returns: Tuple[List[Any], List[Any], List[Any], List[Any]]: Four lists with substituted values from ‘Label’, ‘Type’, ‘Subtype’, and ‘Direction’ columns.*</p>
+<div id="cell-14" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>values <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">7</span>,<span class="dv">23</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>get_orbit_classes(values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(['S_BN', 'S_L1_A', 'S_L4_LP'],
+ ['System-wide', 'L1', 'L4'],
+ ['Butterfly', 'Axial', 'Long Period'],
+ ['North', 'No specification', 'No specification'])</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="get-periods" class="level2">
+<h2 class="anchored" data-anchor-id="get-periods">Get Periods</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L170" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="get_periods_of_orbit_dict" class="level3">
+<h3 class="anchored" data-anchor-id="get_periods_of_orbit_dict">get_periods_of_orbit_dict</h3>
+<blockquote class="blockquote">
+<pre><code> get_periods_of_orbit_dict (orbits:Dict[int,numpy.ndarray],
+                            propagated_periods:Dict[int,int],
+                            desired_periods:int)</code></pre>
+</blockquote>
+<p><em>Process the orbits to extract the desired periods and print the percentage of the dataset returned.</em></p>
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
 <col style="width: 52%">
 </colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>orbits</td>
+<td>Dict</td>
+<td>Dictionary of orbits with numerical keys.</td>
+</tr>
+<tr class="even">
+<td>propagated_periods</td>
+<td>Dict</td>
+<td>Dictionary of propagated periods for each orbit.</td>
+</tr>
+<tr class="odd">
+<td>desired_periods</td>
+<td>int</td>
+<td>Desired number of periods.</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>Dict</strong></td>
+<td><strong>Processed dictionary of orbits.</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="get-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="get-dataset">Get Dataset</h2>
+<section id="fixed-period" class="level3">
+<h3 class="anchored" data-anchor-id="fixed-period">Fixed Period</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L207" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_first_period_of_fixed_period_dataset" class="level3">
+<h3 class="anchored" data-anchor-id="get_first_period_of_fixed_period_dataset">get_first_period_of_fixed_period_dataset</h3>
+<blockquote class="blockquote">
+<pre><code> get_first_period_of_fixed_period_dataset (file_path:str)</code></pre>
+</blockquote>
+<p><em>Load and process orbit data from an HDF5 file for the first period.</em></p>
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th></th>
@@ -359,29 +648,24 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td><strong>Returns</strong></td>
-<td><strong>typing.Tuple[numpy.ndarray, pandas.core.frame.DataFrame, typing.Dict[str, float]]</strong></td>
+<td><strong>Tuple</strong></td>
 <td><strong>3D numpy array of padded orbits.</strong></td>
 </tr>
 </tbody>
 </table>
 </section>
-</section>
-<section id="dataset-fixed-step" class="level2">
-<h2 class="anchored" data-anchor-id="dataset-fixed-step">Dataset fixed Step</h2>
+<section id="fixed-step" class="level3">
+<h3 class="anchored" data-anchor-id="fixed-step">Fixed Step</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L136" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="get_segmented_dataset" class="level3">
-<h3 class="anchored" data-anchor-id="get_segmented_dataset">get_segmented_dataset</h3>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L235" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_full_fixed_step_dataset" class="level3">
+<h3 class="anchored" data-anchor-id="get_full_fixed_step_dataset">get_full_fixed_step_dataset</h3>
 <blockquote class="blockquote">
-<pre><code> get_segmented_dataset (file_path:str, segment_length:int)</code></pre>
+<pre><code> get_full_fixed_step_dataset (file_path:str, segment_length:int)</code></pre>
 </blockquote>
 <p><em>Load and process orbit data from an HDF5 file, segmenting each orbit into specified length.</em></p>
-<table class="table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 38%">
-<col style="width: 52%">
-</colgroup>
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th></th>
@@ -402,11 +686,121 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><strong>Returns</strong></td>
-<td><strong>typing.Tuple[numpy.ndarray, pandas.core.frame.DataFrame, typing.List[int], typing.Dict[str, float]]</strong></td>
+<td><strong>Tuple</strong></td>
 <td><strong>3D numpy array of segmented orbits.</strong></td>
 </tr>
 </tbody>
 </table>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L256" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_first_period_fixed_step_dataset" class="level3">
+<h3 class="anchored" data-anchor-id="get_first_period_fixed_step_dataset">get_first_period_fixed_step_dataset</h3>
+<blockquote class="blockquote">
+<pre><code> get_first_period_fixed_step_dataset (file_path:str, segment_length:int)</code></pre>
+</blockquote>
+<p><em>Load and process orbit data from an HDF5 file, segmenting each orbit into specified length.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>file_path</td>
+<td>str</td>
+<td>Path to the HDF5 file.</td>
+</tr>
+<tr class="even">
+<td>segment_length</td>
+<td>int</td>
+<td>Desired length of each segment.</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>Tuple</strong></td>
+<td><strong>3D numpy array of segmented orbits.</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="first-period" class="level3">
+<h3 class="anchored" data-anchor-id="first-period">First Period</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L283" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_first_period_dataset" class="level3">
+<h3 class="anchored" data-anchor-id="get_first_period_dataset">get_first_period_dataset</h3>
+<blockquote class="blockquote">
+<pre><code> get_first_period_dataset (file_path:str,
+                           segment_length:Optional[int]=100)</code></pre>
+</blockquote>
+<p><em>Load orbit data based on the file path. Calls the appropriate function depending on the name of the file.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>file_path</td>
+<td>str</td>
+<td></td>
+<td>Path to the HDF5 file.</td>
+</tr>
+<tr class="even">
+<td>segment_length</td>
+<td>Optional</td>
+<td>100</td>
+<td>Desired length of each segment, optional.</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>Tuple</strong></td>
+<td></td>
+<td><strong>Memmap of segmented orbits.</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L330" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_first_period_dataset_all_systems" class="level3">
+<h3 class="anchored" data-anchor-id="get_first_period_dataset_all_systems">get_first_period_dataset_all_systems</h3>
+<blockquote class="blockquote">
+<pre><code> get_first_period_dataset_all_systems (folder_path:str,
+                                       segment_length:Optional[int]=100)</code></pre>
+</blockquote>
+<p>*Processes all system files in a folder, concatenates their data while maintaining order.</p>
+<p>Parameters: folder_path (str): Path to the folder containing system files. segment_length (Optional[int]): Desired length of each segment.</p>
+<p>Returns: Tuple[np.memmap, pd.DataFrame, np.ndarray, Dict[str, float]]: - Concatenated orbits as a 3D NumPy memmap. - Concatenated orbit DataFrame with an added ‘system’ column. - Concatenated orbit IDs as a NumPy array. - Merged system dictionary with keys prefixed by system names.*</p>
+</section>
+</section>
+<section id="get-constants" class="level2">
+<h2 class="anchored" data-anchor-id="get-constants">Get Constants</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L394" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="get_system_constants" class="level3">
+<h3 class="anchored" data-anchor-id="get_system_constants">get_system_constants</h3>
+<blockquote class="blockquote">
+<pre><code> get_system_constants (system_dict, system_labels, constant)</code></pre>
+</blockquote>
+<p>*Extracts values for a specified constant from a system dictionary based on system labels.</p>
+<p>Parameters: system_dict (dict): Dictionary containing system constants for different systems. system_labels (np.ndarray): Array of system labels. constant (str): The constant to extract (e.g., ‘mu’, ‘LU’, etc.).</p>
+<p>Returns: np.ndarray: Array of constant values corresponding to the system labels.*</p>
 
 
 </section>
@@ -448,18 +842,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -491,7 +874,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/alvaro-francisco-gil\.github\.io\/orbit-generation");
@@ -499,7 +902,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -596,7 +999,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

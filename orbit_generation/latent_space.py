@@ -397,13 +397,15 @@ def plot_2d_latent_space(
 def plot_combined_2d_latent_space(
     real_latent: np.ndarray,                      # Latent representations of real data.
     synthetic_latent: np.ndarray,                 # Latent representations of synthetic data or arrows.
-    synthetic_labels: Optional[Union[int, List[int]]] = None,  # Labels for synthetic data. Can be None, a single label, or a list of labels.
+    synthetic_labels: Optional[Union[int, List[int], np.ndarray]] = None,  # Labels for synthetic data. Can be None, a single label, or a list of labels.
     figsize: tuple = (12, 9),                     # Size of the figure.
     save_path: Optional[str] = None,              # Optional path to save the plot image.
     show_legend: bool = True,                     # Flag to show or hide the legend.
-    annotation_mode: str = 'legend',              # Mode for annotation: 'legend' for colored dots, 'numbers' for numeric annotations.
     axis_labels: tuple = ('X-axis', 'Y-axis'),    # Labels for the X and Y axes.
-    title: Optional[str] = None                   # Title of the plot.
+    title: Optional[str] = None,                   # Title of the plot.
+    colormap: str = 'viridis',                    # Colormap to use when coloring by features.
+    feature_title: Optional[str] = 'Feature Value', # Title for the feature color bar.
+    label_names: Optional[dict] = None             # New parameter: dictionary mapping label values to names
 ) -> None:
     """
     Plots the combined latent space of real and synthetic data.
@@ -413,13 +415,15 @@ def plot_combined_2d_latent_space(
     Args:
         real_latent (np.ndarray): Latent representations of real data.
         synthetic_latent (np.ndarray): Latent representations of synthetic data or arrows.
-        synthetic_labels (Optional[Union[int, List[int]]]): Labels for synthetic data. Can be None, a single label, or a list of labels.
+        synthetic_labels (Optional[Union[int, List[int], np.ndarray]]): Labels for synthetic data. Can be None, a single label, or a list of labels.
         figsize (tuple): Size of the figure.
         save_path (Optional[str]): Optional path to save the plot image.
         show_legend (bool): Flag to show or hide the legend.
-        annotation_mode (str): Mode for annotation: 'legend' for colored dots, 'numbers' for numeric annotations.
         axis_labels (tuple): Labels for the X and Y axes.
         title (Optional[str]): Title of the plot.
+        colormap (str): Colormap to use when coloring by features.
+        feature_title (Optional[str]): Title for the feature color bar.
+        label_names (Optional[dict]): Dictionary mapping label values to names for discrete labels.
 
     Returns:
         None
@@ -427,63 +431,59 @@ def plot_combined_2d_latent_space(
     plt.figure(figsize=figsize)
 
     if synthetic_latent.ndim == 2:
-        # Handle 2D synthetic_latent as points
         combined_latent = np.concatenate([real_latent, synthetic_latent], axis=0)
 
-        # Create labels for real and synthetic data
-        real_labels = np.zeros(real_latent.shape[0], dtype=int)
         if synthetic_labels is not None:
-            if isinstance(synthetic_labels, int):
-                synthetic_labels_array = np.full(synthetic_latent.shape[0], synthetic_labels, dtype=int)
-            else:
-                synthetic_labels_array = np.array(synthetic_labels)
-            combined_labels = np.concatenate([real_labels, synthetic_labels_array], axis=0)
-        else:
-            combined_labels = real_labels
-
-        # Ensure the latent space is 2D
-        assert combined_latent.shape[1] == 2, "The latent space representations must be 2D."
-
-        # Create a color map with enough colors
-        if synthetic_labels is not None:
-            unique_labels = np.unique(combined_labels)
-            cmap = plt.get_cmap('tab20', len(unique_labels))
-            norm = mcolors.BoundaryNorm(boundaries=np.arange(len(unique_labels)+1)-0.5, ncolors=len(unique_labels))
-        else:
-            cmap = plt.get_cmap('tab20')
-            norm = None
-
-        # Plotting
-        scatter = plt.scatter(
-            combined_latent[:, 0],
-            combined_latent[:, 1],
-            c=combined_labels if synthetic_labels is not None else 'blue',
-            cmap=cmap,
-            norm=norm,
-            alpha=0.2 if synthetic_labels is None else 1,
-            label='Real' if synthetic_labels is None else None
-        )
-        
-        if synthetic_labels is not None:
-            if annotation_mode == 'legend' and show_legend:
-                # Create custom legend
+            if label_names is not None:
+                # Discrete labels with custom names
+                real_labels = np.zeros(real_latent.shape[0], dtype=int)
+                if isinstance(synthetic_labels, int):
+                    synthetic_labels_array = np.full(synthetic_latent.shape[0], synthetic_labels, dtype=int)
+                else:
+                    synthetic_labels_array = np.array(synthetic_labels)
+                combined_labels = np.concatenate([real_labels, synthetic_labels_array], axis=0)
+                
                 unique_labels = np.unique(combined_labels)
-                custom_handles = [
-                    plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=cmap(norm(label)), markersize=10)
-                    for label in unique_labels
-                ]
-                custom_labels = ["Real"] + [f"Synthetic {label}" for label in np.unique(synthetic_labels_array)]
-                plt.legend(custom_handles, custom_labels, title="Classes", loc='upper right')  # Place legend in the upper right corner
+                cmap = plt.get_cmap('tab20', len(unique_labels))
+                norm = mcolors.BoundaryNorm(boundaries=np.arange(len(unique_labels)+1)-0.5, ncolors=len(unique_labels))
+                
+                # Plot real points in gray
+                plt.scatter(real_latent[:, 0], real_latent[:, 1], c='gray', alpha=0.2, label='Real')
+                
+                # Plot synthetic points with discrete colors
+                scatter = plt.scatter(
+                    synthetic_latent[:, 0],
+                    synthetic_latent[:, 1],
+                    c=synthetic_labels_array,
+                    cmap=cmap,
+                    norm=norm,
+                    alpha=1
+                )
+                
+                if show_legend:
+                    # Create custom legend with provided names
+                    custom_handles = [
+                        plt.Line2D([0], [0], marker='o', color='w', 
+                                 markerfacecolor=cmap(norm(label)), markersize=7)  # Reduced marker size
+                        for label in unique_labels[1:]  # Skip 0 (real data)
+                    ]
+                    custom_labels = [label_names.get(label, f"Class {label}") 
+                                   for label in unique_labels[1:]]
+                    plt.legend(custom_handles, custom_labels, title="Classes", loc='upper right', fontsize='small')  # Smaller font size
             
-            elif annotation_mode == 'numbers':
-                # Annotate only synthetic points with their class labels
-                for i in range(real_latent.shape[0], combined_latent.shape[0]):
-                    plt.annotate(
-                        combined_labels[i],
-                        (combined_latent[i, 0], combined_latent[i, 1]),
-                        fontsize=9,
-                        alpha=1
-                    )
+            else:
+                # Continuous feature coloring
+                plt.scatter(real_latent[:, 0], real_latent[:, 1], c='gray', alpha=0.2, label='Real')
+                
+                scatter = plt.scatter(
+                    synthetic_latent[:, 0],
+                    synthetic_latent[:, 1],
+                    c=synthetic_labels,
+                    cmap=colormap,
+                    alpha=1
+                )
+                if show_legend:
+                    plt.colorbar(scatter, label=feature_title)
 
     elif synthetic_latent.ndim == 3:
         # Handle 3D synthetic_latent as arrows
@@ -527,7 +527,7 @@ def plot_combined_2d_latent_space(
                 )
 
         if show_legend and synthetic_labels is not None:
-            plt.legend(title="Classes", loc='upper right')
+            plt.legend(title="Classes", loc='upper right', fontsize='small')  # Smaller font size
 
     else:
         raise ValueError("synthetic_latent must be either a 2D or 3D array.")
@@ -1005,11 +1005,46 @@ def plot_linear_regression(latent_means, features, feature_names, normalize=Fals
         # Add colorbar
         plt.colorbar(scatter, ax=axes[i])
         
-        # Plot regression direction (line)
-        x_vals = np.array(axes[i].get_xlim())
-        y_vals = coefficients[0] * x_vals + intercept
-        axes[i].plot(x_vals, y_vals, '--r', label='Regression Line')
-        axes[i].legend()
+        # Plot normalized regression direction (vector)
+        # Get current axis limits
+        x_min, x_max = axes[i].get_xlim()
+        y_min, y_max = axes[i].get_ylim()
+        
+        # Calculate the center point of the plot
+        center_x = (x_min + x_max) / 2
+        center_y = (y_min + y_max) / 2
+        
+        # Get both coefficients and normalize the direction vector
+        coef_x = coefficients[0]
+        coef_y = coefficients[1] if len(coefficients) > 1 else 0
+        
+        # Normalize the vector to unit length
+        vector_magnitude = np.sqrt(coef_x**2 + coef_y**2)
+        if vector_magnitude > 0:  # Avoid division by zero
+            normalized_coef_x = coef_x / vector_magnitude
+            normalized_coef_y = coef_y / vector_magnitude
+            
+            # Scale to a fixed proportion of the plot size
+            vector_scale = 0.4 * min(x_max - x_min, y_max - y_min)  # 40% of the smaller dimension
+            vector_dx = vector_scale * normalized_coef_x
+            vector_dy = vector_scale * normalized_coef_y
+            
+            # Draw arrow
+            axes[i].arrow(center_x, center_y, vector_dx, vector_dy, 
+                         head_width=0.07*vector_scale, head_length=0.15*vector_scale, 
+                         fc='red', ec='red', linewidth=2)
+        
+        # Maintain axis limits
+        axes[i].set_xlim(x_min, x_max)
+        axes[i].set_ylim(y_min, y_max)
+        
+        # Create a proper legend entry with matching color
+        from matplotlib.lines import Line2D
+        legend_element = Line2D([0], [0], marker='>',
+                                color='red', markerfacecolor='red',
+                                markersize=10, linestyle='-', linewidth=2,
+                                label='Regression Direction')
+        axes[i].legend(handles=[legend_element], loc='best')
     
     plt.tight_layout()
     plt.show()

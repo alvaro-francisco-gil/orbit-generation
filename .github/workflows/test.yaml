@@ -4,4 +4,52 @@ on:  [workflow_dispatch, pull_request, push]
 jobs:
   test:
     runs-on: ubuntu-latest
-    steps: [uses: fastai/workflows/nbdev-ci@master]
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install CUDA dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            git \
+            build-essential \
+            libhdf5-dev \
+            python3-pip \
+            python3-dev \
+            sudo \
+            wget
+          
+      - name: Install PyTorch with CUDA
+        run: |
+          pip install torch --extra-index-url https://download.pytorch.org/whl/cu121
+          
+      - name: Install project dependencies
+        run: |
+          pip install seaborn scikit-learn umap-learn h5py matplotlib plotly pandas pytorch-lightning fastdtw papermill
+          pip install wandb pytest
+          pip install ipykernel jupyter nbdev julia
+          nbdev_install_quarto
+          
+      - name: Install Julia
+        run: |
+          wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.5-linux-x86_64.tar.gz
+          tar -xvzf julia-1.10.5-linux-x86_64.tar.gz
+          sudo mv julia-1.10.5 /opt/julia
+          sudo ln -s /opt/julia/bin/julia /usr/local/bin/julia
+          rm julia-1.10.5-linux-x86_64.tar.gz
+          
+      - name: Set up Julia environment
+        run: |
+          export JULIA_DEPOT_PATH=/opt/julia_depot
+          mkdir -p $JULIA_DEPOT_PATH
+          julia -e 'using Pkg; Pkg.add(["DifferentialEquations", "Polynomials", "LinearAlgebra", "MAT", "NPZ", "IJulia"])'
+          julia -e 'using IJulia; IJulia.installkernel("Julia")'
+          python -c "import julia; julia.install()"
+          
+      - name: Run nbdev CI
+        uses: fastai/workflows/nbdev-ci@master

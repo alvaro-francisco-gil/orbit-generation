@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="Necessary scripts to read orbits from different formats">
 
-<title>orbit-generation - Data</title>
+<title>Data – orbit-generation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -70,10 +70,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e198e139e5394bcefc774cae535a6f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,10 +104,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="orbit-generation - Data">
+<meta property="og:title" content="Data – orbit-generation">
 <meta property="og:description" content="Necessary scripts to read orbits from different formats">
 <meta property="og:site_name" content="orbit-generation">
-<meta name="twitter:title" content="orbit-generation - Data">
+<meta name="twitter:title" content="Data – orbit-generation">
 <meta name="twitter:description" content="Necessary scripts to read orbits from different formats">
 <meta name="twitter:card" content="summary">
 </head>
@@ -130,11 +130,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html">Data</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -165,7 +165,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./processing.html" class="sidebar-item-text sidebar-link">
+  <a href="./orbit_processing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Processing</span></a>
   </div>
 </li>
@@ -177,7 +177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./statistics.html" class="sidebar-item-text sidebar-link">
+  <a href="./orbit_statistics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Statistics</span></a>
   </div>
 </li>
@@ -189,14 +189,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Model</span></a>
+  <a href="./architectures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Architectures</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./propagation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Propagation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Evaluation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vae.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VAE</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model_factory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Factory</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./convergence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Convergence</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./latent_space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Latent Space</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paper</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./path_utils.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Path Utils</span></a>
   </div>
 </li>
     </ul>
@@ -223,9 +271,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#get_example_orbit_data" id="toc-get_example_orbit_data" class="nav-link" data-scroll-target="#get_example_orbit_data">get_example_orbit_data</a></li>
   </ul></li>
+  <li><a href="#order-labels-and-array-given-target" id="toc-order-labels-and-array-given-target" class="nav-link" data-scroll-target="#order-labels-and-array-given-target">Order labels and array given target</a>
+  <ul class="collapse">
+  <li><a href="#order_labels_and_array_with_target" id="toc-order_labels_and_array_with_target" class="nav-link" data-scroll-target="#order_labels_and_array_with_target">order_labels_and_array_with_target</a></li>
+  </ul></li>
   <li><a href="#random-sampler" id="toc-random-sampler" class="nav-link" data-scroll-target="#random-sampler">Random Sampler</a>
   <ul class="collapse">
   <li><a href="#sample_orbits" id="toc-sample_orbits" class="nav-link" data-scroll-target="#sample_orbits">sample_orbits</a></li>
+  </ul></li>
+  <li><a href="#random-discarder" id="toc-random-discarder" class="nav-link" data-scroll-target="#random-discarder">Random Discarder</a>
+  <ul class="collapse">
+  <li><a href="#discard_random_labels" id="toc-discard_random_labels" class="nav-link" data-scroll-target="#discard_random_labels">discard_random_labels</a></li>
+  </ul></li>
+  <li><a href="#remove-duplicates-preserve-order" id="toc-remove-duplicates-preserve-order" class="nav-link" data-scroll-target="#remove-duplicates-preserve-order">Remove Duplicates preserve Order</a>
+  <ul class="collapse">
+  <li><a href="#remove_duplicates_preserve_order" id="toc-remove_duplicates_preserve_order" class="nav-link" data-scroll-target="#remove_duplicates_preserve_order">remove_duplicates_preserve_order</a></li>
+  </ul></li>
+  <li><a href="#dataloaders" id="toc-dataloaders" class="nav-link" data-scroll-target="#dataloaders">Dataloaders</a>
+  <ul class="collapse">
+  <li><a href="#create_dataloaders" id="toc-create_dataloaders" class="nav-link" data-scroll-target="#create_dataloaders">create_dataloaders</a></li>
+  </ul></li>
+  <li><a href="#scaler" id="toc-scaler" class="nav-link" data-scroll-target="#scaler">Scaler</a>
+  <ul class="collapse">
+  <li><a href="#tsfeaturewisescaler" id="toc-tsfeaturewisescaler" class="nav-link" data-scroll-target="#tsfeaturewisescaler">TSFeatureWiseScaler</a></li>
+  <li><a href="#tsglobalscaler" id="toc-tsglobalscaler" class="nav-link" data-scroll-target="#tsglobalscaler">TSGlobalScaler</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
@@ -258,18 +327,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div id="cell-2" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#### change name data utils?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <section id="loading-data" class="level2">
 <h2 class="anchored" data-anchor-id="loading-data">Loading Data</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L19" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L26" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="load_orbit_data" class="level3">
 <h3 class="anchored" data-anchor-id="load_orbit_data">load_orbit_data</h3>
 <blockquote class="blockquote">
-<pre><code> load_orbit_data (file_path:str, variable_name:Union[str,NoneType]=None,
-                  dataset_path:Union[str,NoneType]=None)</code></pre>
+<pre><code> load_orbit_data (file_path:str, variable_name:Optional[str]=None,
+                  dataset_path:Optional[str]=None)</code></pre>
 </blockquote>
 <p><em>Load orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -293,26 +365,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td>variable_name</td>
-<td>typing.Union[str, NoneType]</td>
+<td>Optional</td>
 <td>None</td>
 <td>Name of the variable in the .mat file, optional.</td>
 </tr>
 <tr class="odd">
 <td>dataset_path</td>
-<td>typing.Union[str, NoneType]</td>
+<td>Optional</td>
 <td>None</td>
 <td>Path to the dataset in the .h5 file, optional.</td>
 </tr>
 <tr class="even">
 <td><strong>Returns</strong></td>
-<td><strong>typing.Any</strong></td>
+<td><strong>Any</strong></td>
 <td></td>
 <td><strong>The loaded orbit data.</strong></td>
 </tr>
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L53" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L60" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="load_memmap_array" class="level3">
 <h3 class="anchored" data-anchor-id="load_memmap_array">load_memmap_array</h3>
@@ -322,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*Load a .npy file as a memory-mapped array using numpy.memmap.</p>
 <p>Args: file_path: A string representing the path to the .npy file. mode: The mode in which the file is to be opened. Valid options are: - ‘r’ : Read-only, no data can be modified. - ‘r+’ : Read/write, modifications to the data are written to the file. - ‘w+’ : Read/write, file is created if it does not exist, overwritten if it does. - ‘c’ : Copy-on-write, data can be modified in memory but changes are not saved to the file.</p>
 <p>Returns: A numpy.memmap object that behaves like a numpy array but with data stored on disk instead of in memory.*</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th></th>
@@ -353,17 +425,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L79" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L86" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_orbit_features" class="level3">
 <h3 class="anchored" data-anchor-id="get_orbit_features">get_orbit_features</h3>
 <blockquote class="blockquote">
-<pre><code> get_orbit_features (file_path:str,
-                     variable_name:Union[str,NoneType]=None,
-                     dataset_path:Union[str,NoneType]=None)</code></pre>
+<pre><code> get_orbit_features (file_path:str, variable_name:Optional[str]=None,
+                     dataset_path:Optional[str]=None)</code></pre>
 </blockquote>
 <p><em>Load orbit feature data from a specified file and convert it to a DataFrame.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -387,13 +458,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td>variable_name</td>
-<td>typing.Union[str, NoneType]</td>
+<td>Optional</td>
 <td>None</td>
 <td>Name of the variable in the .mat file, optional.</td>
 </tr>
 <tr class="odd">
 <td>dataset_path</td>
-<td>typing.Union[str, NoneType]</td>
+<td>Optional</td>
 <td>None</td>
 <td>Path to the dataset in the .h5 file, optional.</td>
 </tr>
@@ -410,14 +481,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="save-data" class="level2">
 <h2 class="anchored" data-anchor-id="save-data">Save Data</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L102" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L109" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="save_data" class="level3">
 <h3 class="anchored" data-anchor-id="save_data">save_data</h3>
 <blockquote class="blockquote">
 <pre><code> save_data (data:numpy.ndarray, file_name:str)</code></pre>
 </blockquote>
 <p><em>Save a numpy array to a file based on the file extension specified in <code>file_name</code>. Supports saving to HDF5 (.hdf5) or NumPy (.npy) file formats.</em></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -453,7 +524,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="get-example-data" class="level2">
 <h2 class="anchored" data-anchor-id="get-example-data">Get Example Data</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L125" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L132" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="get_example_orbit_data" class="level3">
 <h3 class="anchored" data-anchor-id="get_example_orbit_data">get_example_orbit_data</h3>
 <blockquote class="blockquote">
@@ -462,11 +533,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*Load orbit data from a hardcoded MAT file located in the <code>data</code> directory.</p>
 <p>The function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.</p>
 <p>:return: A numpy.ndarray containing the transposed data from the MAT file.*</p>
-<div id="cell-10" class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> get_example_orbit_data()</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-11" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> get_example_orbit_data()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>(200, 6, 300)</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="order-labels-and-array-given-target" class="level2">
+<h2 class="anchored" data-anchor-id="order-labels-and-array-given-target">Order labels and array given target</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L158" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="order_labels_and_array_with_target" class="level3">
+<h3 class="anchored" data-anchor-id="order_labels_and_array_with_target">order_labels_and_array_with_target</h3>
+<blockquote class="blockquote">
+<pre><code> order_labels_and_array_with_target (labels, array, target_label,
+                                     place_at_end=False)</code></pre>
+</blockquote>
+<div id="cell-14" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample labels and a sample 3D array</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> np.array([<span class="st">'apple'</span>, <span class="st">'banana'</span>, <span class="st">'apple'</span>, <span class="st">'orange'</span>, <span class="st">'banana'</span>, <span class="st">'grape'</span>])</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>array <span class="op">=</span> np.array([[[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]], </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                  [[<span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">8</span>]], </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                  [[<span class="dv">9</span>, <span class="dv">10</span>], [<span class="dv">11</span>, <span class="dv">12</span>]], </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                  [[<span class="dv">13</span>, <span class="dv">14</span>], [<span class="dv">15</span>, <span class="dv">16</span>]], </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                  [[<span class="dv">17</span>, <span class="dv">18</span>], [<span class="dv">19</span>, <span class="dv">20</span>]], </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                  [[<span class="dv">21</span>, <span class="dv">22</span>], [<span class="dv">23</span>, <span class="dv">24</span>]]])</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>target_label <span class="op">=</span> <span class="st">'apple'</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>ordered_labels, ordered_array <span class="op">=</span> order_labels_and_array_with_target(labels, array, target_label)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ordered_labels)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ordered_array)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['apple' 'apple' 'banana' 'orange' 'banana' 'grape']
+[[[ 1  2]
+  [ 3  4]]
+
+ [[ 9 10]
+  [11 12]]
+
+ [[ 5  6]
+  [ 7  8]]
+
+ [[13 14]
+  [15 16]]
+
+ [[17 18]
+  [19 20]]
+
+ [[21 22]
+  [23 24]]]</code></pre>
 </div>
 </div>
 </section>
@@ -474,7 +593,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="random-sampler" class="level2">
 <h2 class="anchored" data-anchor-id="random-sampler">Random Sampler</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L151" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L180" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="sample_orbits" class="level3">
 <h3 class="anchored" data-anchor-id="sample_orbits">sample_orbits</h3>
 <blockquote class="blockquote">
@@ -484,7 +603,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*Randomly sample orbits from the provided dataset.</p>
 <p>Parameters: orbit_data (np.ndarray): Array of orbit data with shape (num_orbits, 6, num_time_points). sample_spec (dict or int): If int, it is the total number of orbits to sample. If dict, it specifies the number of samples for each class. labels (np.ndarray, optional): Array of labels for each orbit.</p>
 <p>Returns: tuple: A tuple containing the sampled orbit data and corresponding labels (if provided).*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -526,6 +645,67 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
+</section>
+</section>
+<section id="random-discarder" class="level2">
+<h2 class="anchored" data-anchor-id="random-discarder">Random Discarder</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L217" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="discard_random_labels" class="level3">
+<h3 class="anchored" data-anchor-id="discard_random_labels">discard_random_labels</h3>
+<blockquote class="blockquote">
+<pre><code> discard_random_labels (data, labels, discard_labels)</code></pre>
+</blockquote>
+<p>*Discards random or specified labels from the dataset.</p>
+<p>Parameters: - data: np.ndarray, the dataset to filter. - labels: np.ndarray, the labels corresponding to the data. - discard_labels: Can be a list of labels to discard, an integer (number of labels to discard), or a dictionary (treated as a list of keys). If empty, returns the original data.</p>
+<p>Returns: - discarded: List of discarded labels. - filtered_data: Data with specified labels removed. - filtered_labels: Labels with specified labels removed.*</p>
+</section>
+</section>
+<section id="remove-duplicates-preserve-order" class="level2">
+<h2 class="anchored" data-anchor-id="remove-duplicates-preserve-order">Remove Duplicates preserve Order</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L259" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="remove_duplicates_preserve_order" class="level3">
+<h3 class="anchored" data-anchor-id="remove_duplicates_preserve_order">remove_duplicates_preserve_order</h3>
+<blockquote class="blockquote">
+<pre><code> remove_duplicates_preserve_order (input_list)</code></pre>
+</blockquote>
+</section>
+</section>
+<section id="dataloaders" class="level2">
+<h2 class="anchored" data-anchor-id="dataloaders">Dataloaders</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L269" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="create_dataloaders" class="level3">
+<h3 class="anchored" data-anchor-id="create_dataloaders">create_dataloaders</h3>
+<blockquote class="blockquote">
+<pre><code> create_dataloaders (scaled_data, val_split=0.2, batch_size=32)</code></pre>
+</blockquote>
+</section>
+</section>
+<section id="scaler" class="level2">
+<h2 class="anchored" data-anchor-id="scaler">Scaler</h2>
+<pre><code>/usr/local/lib/python3.10/dist-packages/fastcore/docscrape.py:230: UserWarning: Unknown section Parameters:
+  else: warn(msg)
+/usr/local/lib/python3.10/dist-packages/fastcore/docscrape.py:230: UserWarning: Unknown section Attributes:
+  else: warn(msg)</code></pre>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L292" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="tsfeaturewisescaler" class="level3">
+<h3 class="anchored" data-anchor-id="tsfeaturewisescaler">TSFeatureWiseScaler</h3>
+<blockquote class="blockquote">
+<pre><code> TSFeatureWiseScaler (feature_range:tuple=(0, 1))</code></pre>
+</blockquote>
+<p><em>Scales time series data feature-wise using PyTorch tensors.</em></p>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/data.py#L378" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="tsglobalscaler" class="level3">
+<h3 class="anchored" data-anchor-id="tsglobalscaler">TSGlobalScaler</h3>
+<blockquote class="blockquote">
+<pre><code> TSGlobalScaler ()</code></pre>
+</blockquote>
+<p><em>Scales time series data globally using PyTorch tensors.</em></p>
 
 
 </section>
@@ -567,18 +747,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -610,7 +779,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/alvaro-francisco-gil\.github\.io\/orbit-generation");
@@ -618,7 +807,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -715,7 +904,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
