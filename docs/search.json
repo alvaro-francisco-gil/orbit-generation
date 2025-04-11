@@ -2,101 +2,101 @@
   {
     "objectID": "data.html",
     "href": "data.html",
-    "title": "Data",
+    "title": "Data Utils",
     "section": "",
-    "text": "#### change name data utils?",
+    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n load_memmap_array (file_path:str, mode:str='c')\n\nLoad a .npy file as a memory-mapped array using numpy.memmap.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .npy file as a string.\n\n\nmode\nstr\nc\nMode for memory-mapping (‘r’, ‘r+’, ‘w+’, ‘c’).\n\n\nReturns\nmemmap\n\nReturns a memory-mapped array.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
     "crumbs": [
-      "Data"
+      "Data Utils"
     ]
   },
   {
     "objectID": "data.html#loading-data",
     "href": "data.html#loading-data",
-    "title": "Data",
-    "section": "Loading Data",
-    "text": "Loading Data\n\nsource\n\nload_orbit_data\n\n load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\nload_memmap_array\n\n load_memmap_array (file_path:str, mode:str='c')\n\n*Load a .npy file as a memory-mapped array using numpy.memmap.\nArgs: file_path: A string representing the path to the .npy file. mode: The mode in which the file is to be opened. Valid options are: - ‘r’ : Read-only, no data can be modified. - ‘r+’ : Read/write, modifications to the data are written to the file. - ‘w+’ : Read/write, file is created if it does not exist, overwritten if it does. - ‘c’ : Copy-on-write, data can be modified in memory but changes are not saved to the file.\nReturns: A numpy.memmap object that behaves like a numpy array but with data stored on disk instead of in memory.*\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .npy file as a string.\n\n\nmode\nstr\nc\nMode for memory-mapping (‘r’, ‘r+’, ‘w+’, ‘c’).\n\n\nReturns\nmemmap\n\nReturns a memory-mapped array.\n\n\n\n\nsource\n\n\nget_orbit_features\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
+    "title": "Data Utils",
+    "section": "",
+    "text": "source\n\n\n\n load_orbit_data (file_path:str, variable_name:Optional[str]=None,\n                  dataset_path:Optional[str]=None)\n\nLoad orbit data from MATLAB .mat files, HDF5 .h5 files, or NumPy .npy files.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .mat, .h5, or .npy file.\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nAny\n\nThe loaded orbit data.\n\n\n\n\nsource\n\n\n\n\n load_memmap_array (file_path:str, mode:str='c')\n\nLoad a .npy file as a memory-mapped array using numpy.memmap.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the .npy file as a string.\n\n\nmode\nstr\nc\nMode for memory-mapping (‘r’, ‘r+’, ‘w+’, ‘c’).\n\n\nReturns\nmemmap\n\nReturns a memory-mapped array.\n\n\n\n\nsource\n\n\n\n\n get_orbit_features (file_path:str, variable_name:Optional[str]=None,\n                     dataset_path:Optional[str]=None)\n\nLoad orbit feature data from a specified file and convert it to a DataFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfile_path\nstr\n\nThe path to the file (can be .mat, .h5, or .npy).\n\n\nvariable_name\nOptional\nNone\nName of the variable in the .mat file, optional.\n\n\ndataset_path\nOptional\nNone\nPath to the dataset in the .h5 file, optional.\n\n\nReturns\nDataFrame\n\nDataFrame with detailed orbit features.",
     "crumbs": [
-      "Data"
+      "Data Utils"
     ]
   },
   {
     "objectID": "data.html#save-data",
     "href": "data.html#save-data",
-    "title": "Data",
+    "title": "Data Utils",
     "section": "Save Data",
     "text": "Save Data\n\nsource\n\nsave_data\n\n save_data (data:numpy.ndarray, file_name:str)\n\nSave a numpy array to a file based on the file extension specified in file_name. Supports saving to HDF5 (.hdf5) or NumPy (.npy) file formats.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nThe numpy array data to save.\n\n\nfile_name\nstr\nThe name of the file to save the data in, including the extension.\n\n\nReturns\nNone",
     "crumbs": [
-      "Data"
+      "Data Utils"
     ]
   },
   {
     "objectID": "data.html#get-example-data",
     "href": "data.html#get-example-data",
-    "title": "Data",
+    "title": "Data Utils",
     "section": "Get Example Data",
-    "text": "Get Example Data\n\nsource\n\nget_example_orbit_data\n\n get_example_orbit_data ()\n\n*Load orbit data from a hardcoded MAT file located in the data directory.\nThe function is specifically designed to load the ‘Xarray’ variable from the ‘1_L2_S_200_EM_CR3BP.mat’ file. This setup is intended for demonstration or testing purposes, where the data file and the variable of interest are known ahead of time.\n:return: A numpy.ndarray containing the transposed data from the MAT file.*\n\ndata = get_example_orbit_data()\ndata.shape\n\n(200, 6, 300)",
+    "text": "Get Example Data\n\nsource\n\nget_example_orbit_data\n\n get_example_orbit_data ()\n\nLoad example orbit data from a numpy file located in the example_data directory.\n\ndata = get_example_orbit_data()\ndata.shape\n\n(400, 7, 100)",
     "crumbs": [
-      "Data"
+      "Data Utils"
     ]
   },
   {
     "objectID": "data.html#order-labels-and-array-given-target",
     "href": "data.html#order-labels-and-array-given-target",
-    "title": "Data",
+    "title": "Data Utils",
     "section": "Order labels and array given target",
-    "text": "Order labels and array given target\n\nsource\n\norder_labels_and_array_with_target\n\n order_labels_and_array_with_target (labels, array, target_label,\n                                     place_at_end=False)\n\n\n# Sample labels and a sample 3D array\nlabels = np.array(['apple', 'banana', 'apple', 'orange', 'banana', 'grape'])\narray = np.array([[[1, 2], [3, 4]], \n                  [[5, 6], [7, 8]], \n                  [[9, 10], [11, 12]], \n                  [[13, 14], [15, 16]], \n                  [[17, 18], [19, 20]], \n                  [[21, 22], [23, 24]]])\ntarget_label = 'apple'\n\nordered_labels, ordered_array = order_labels_and_array_with_target(labels, array, target_label)\n\nprint(ordered_labels)\nprint(ordered_array)\n\n['apple' 'apple' 'banana' 'orange' 'banana' 'grape']\n[[[ 1  2]\n  [ 3  4]]\n\n [[ 9 10]\n  [11 12]]\n\n [[ 5  6]\n  [ 7  8]]\n\n [[13 14]\n  [15 16]]\n\n [[17 18]\n  [19 20]]\n\n [[21 22]\n  [23 24]]]",
+    "text": "Order labels and array given target\n\nsource\n\norder_labels_and_array_with_target\n\n order_labels_and_array_with_target (labels:numpy.ndarray,\n                                     array:numpy.ndarray,\n                                     target_label:str,\n                                     place_at_end:bool=False)\n\nOrders labels and array by placing entries with target_label either at start or end.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nlabels\nndarray\n\nArray of labels to be ordered\n\n\narray\nndarray\n\nArray to be ordered according to labels\n\n\ntarget_label\nstr\n\nLabel to order by\n\n\nplace_at_end\nbool\nFalse\nWhether to place target label at end\n\n\nReturns\ntuple\n\nReturns ordered labels and array\n\n\n\n\n# Sample labels and a sample 3D array\nlabels = np.array(['apple', 'banana', 'apple', 'orange', 'banana', 'grape'])\narray = np.array([[[1, 2], [3, 4]], \n                  [[5, 6], [7, 8]], \n                  [[9, 10], [11, 12]], \n                  [[13, 14], [15, 16]], \n                  [[17, 18], [19, 20]], \n                  [[21, 22], [23, 24]]])\ntarget_label = 'apple'\n\nordered_labels, ordered_array = order_labels_and_array_with_target(labels, array, target_label)\n\nprint(ordered_labels)\nprint(ordered_array)\n\n['apple' 'apple' 'banana' 'orange' 'banana' 'grape']\n[[[ 1  2]\n  [ 3  4]]\n\n [[ 9 10]\n  [11 12]]\n\n [[ 5  6]\n  [ 7  8]]\n\n [[13 14]\n  [15 16]]\n\n [[17 18]\n  [19 20]]\n\n [[21 22]\n  [23 24]]]",
     "crumbs": [
-      "Data"
+      "Data Utils"
     ]
   },
   {
     "objectID": "data.html#random-sampler",
     "href": "data.html#random-sampler",
-    "title": "Data",
+    "title": "Data Utils",
     "section": "Random Sampler",
-    "text": "Random Sampler\n\nsource\n\nsample_orbits\n\n sample_orbits (orbit_data:numpy.ndarray, sample_spec:dict,\n                labels:numpy.ndarray=None)\n\n*Randomly sample orbits from the provided dataset.\nParameters: orbit_data (np.ndarray): Array of orbit data with shape (num_orbits, 6, num_time_points). sample_spec (dict or int): If int, it is the total number of orbits to sample. If dict, it specifies the number of samples for each class. labels (np.ndarray, optional): Array of labels for each orbit.\nReturns: tuple: A tuple containing the sampled orbit data and corresponding labels (if provided).*\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\norbit_data\nndarray\n\nOrbit data array\n\n\nsample_spec\ndict\n\nNumber of samples per class (dict) or total number of samples (int)\n\n\nlabels\nndarray\nNone\nOptional: Array of labels corresponding to each orbit\n\n\nReturns\n(&lt;class ‘numpy.ndarray’&gt;, &lt;class ‘numpy.ndarray’&gt;)",
+    "text": "Random Sampler\n\nsource\n\nsample_orbits\n\n sample_orbits (orbit_data:numpy.ndarray, sample_spec:Union[dict,int],\n                labels:Optional[numpy.ndarray]=None)\n\nRandomly sample orbits from the provided dataset.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\norbit_data\nndarray\n\nArray of orbit data with shape (num_orbits, 6, num_time_points)\n\n\nsample_spec\nUnion\n\nNumber of samples per class (dict) or total samples (int)\n\n\nlabels\nOptional\nNone\nArray of labels for each orbit\n\n\nReturns\ntuple",
     "crumbs": [
-      "Data"
+      "Data Utils"
     ]
   },
   {
     "objectID": "data.html#random-discarder",
     "href": "data.html#random-discarder",
-    "title": "Data",
+    "title": "Data Utils",
     "section": "Random Discarder",
-    "text": "Random Discarder\n\nsource\n\ndiscard_random_labels\n\n discard_random_labels (data, labels, discard_labels)\n\n*Discards random or specified labels from the dataset.\nParameters: - data: np.ndarray, the dataset to filter. - labels: np.ndarray, the labels corresponding to the data. - discard_labels: Can be a list of labels to discard, an integer (number of labels to discard), or a dictionary (treated as a list of keys). If empty, returns the original data.\nReturns: - discarded: List of discarded labels. - filtered_data: Data with specified labels removed. - filtered_labels: Labels with specified labels removed.*",
+    "text": "Random Discarder\n\nsource\n\ndiscard_random_labels\n\n discard_random_labels (data:numpy.ndarray, labels:numpy.ndarray,\n                        discard_labels:Union[List,Dict,int])\n\n*Discards random or specified labels from the dataset.\nReturns tuple of (discarded labels, filtered data, filtered labels).*\n\n\n\n\nType\nDetails\n\n\n\n\ndata\nndarray\nDataset to filter\n\n\nlabels\nndarray\nLabels corresponding to the data\n\n\ndiscard_labels\nUnion\nLabels to discard - list, dict or number\n\n\nReturns\nTuple",
     "crumbs": [
-      "Data"
+      "Data Utils"
     ]
   },
   {
     "objectID": "data.html#remove-duplicates-preserve-order",
     "href": "data.html#remove-duplicates-preserve-order",
-    "title": "Data",
+    "title": "Data Utils",
     "section": "Remove Duplicates preserve Order",
-    "text": "Remove Duplicates preserve Order\n\nsource\n\nremove_duplicates_preserve_order\n\n remove_duplicates_preserve_order (input_list)",
+    "text": "Remove Duplicates preserve Order\n\nsource\n\nremove_duplicates_preserve_order\n\n remove_duplicates_preserve_order (input_list:List)\n\nRemoves duplicate items from a list while preserving the original order.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\ninput_list\nList\nInput list that may contain duplicates\n\n\nReturns\nList\nReturns list with duplicates removed while preserving order",
     "crumbs": [
-      "Data"
+      "Data Utils"
     ]
   },
   {
     "objectID": "data.html#dataloaders",
     "href": "data.html#dataloaders",
-    "title": "Data",
+    "title": "Data Utils",
     "section": "Dataloaders",
-    "text": "Dataloaders\n\nsource\n\ncreate_dataloaders\n\n create_dataloaders (scaled_data, val_split=0.2, batch_size=32)",
+    "text": "Dataloaders\n\nsource\n\ncreate_dataloaders\n\n create_dataloaders (scaled_data:torch.Tensor, val_split:float=0.2,\n                     batch_size:int=32)\n\nCreates train and validation dataloaders from input tensor data.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nscaled_data\nTensor\n\nInput tensor of scaled data\n\n\nval_split\nfloat\n0.2\nFraction of data to use for validation\n\n\nbatch_size\nint\n32\nBatch size for dataloaders\n\n\nReturns\nTuple\n\nReturns train and optional val dataloaders",
     "crumbs": [
-      "Data"
+      "Data Utils"
     ]
   },
   {
     "objectID": "data.html#scaler",
     "href": "data.html#scaler",
-    "title": "Data",
+    "title": "Data Utils",
     "section": "Scaler",
     "text": "Scaler\n/usr/local/lib/python3.10/dist-packages/fastcore/docscrape.py:230: UserWarning: Unknown section Parameters:\n  else: warn(msg)\n/usr/local/lib/python3.10/dist-packages/fastcore/docscrape.py:230: UserWarning: Unknown section Attributes:\n  else: warn(msg)\n\nsource\n\nTSFeatureWiseScaler\n\n TSFeatureWiseScaler (feature_range:tuple=(0, 1))\n\nScales time series data feature-wise using PyTorch tensors.\n\nsource\n\n\nTSGlobalScaler\n\n TSGlobalScaler ()\n\nScales time series data globally using PyTorch tensors.",
     "crumbs": [
-      "Data"
+      "Data Utils"
     ]
   },
   {
@@ -254,7 +254,7 @@
     "href": "index.html#structure",
     "title": "orbit-generation",
     "section": "Structure",
-    "text": "Structure\n.\n|-- .devcontainer: Configuration for the development container.  \n|  \n|-- .github: workflows for continuous integration in Git.  \n|  \n|-- LICENSE: Project license file.  \n|  \n|-- MANIFEST.in: Specifies which files to include in the package distribution.  \n|  \n|-- README.md: Documentation for the project.  \n|  \n|-- data: Contains datasets, precomputed scalers, and example data. \n|   |-- example_data\n|   |-- input_scaler.pkl\n|   |-- orbit_scaler.pkl\n|   `-- orbits_fix_1500\n|\n|-- docs: Documentation files for the project. \n| \n|-- julia: Scripts written in Julia for specific computations. \n|   `-- convergence_algorithm.jl\n|\n|-- nbs: Jupyter notebooks containing the source code for the library.  \n|   |-- 00_constants.ipynb\n|   |-- 01_data.ipynb\n|   |-- 02_orbit_processing.ipynb\n|   |-- 03_visualization.ipynb\n|   |-- 04_orbit_statistics.ipynb\n|   |-- 05_dataset.ipynb\n|   |-- 06_architectures.ipynb\n|   |-- 07_propagation.ipynb\n|   |-- 08_experiment.ipynb\n|   |-- 09_evaluation.ipynb\n|   |-- 10_vae.ipynb\n|   |-- 11_model_factory.ipynb\n|   |-- 12_convergence.ipynb\n|   |-- 13_latent_space.ipynb\n|   |-- 14_paper_specific.ipynb\n|   |-- index.ipynb\n|\n|-- nbs_experiments: Notebooks with research experiments using the library.  \n|   |-- 01_generative_discovery_em\n|   |-- 02_conditional_generation_systems\n|\n|-- orbit_generation: Auto-generated Python package containing the processed library code.  \n|  \n|-- settings.ini: Configuration file for `nbdev`.  \n|  \n|-- setup.py: Script for installing the package.  \n\n## Library Modules\n\n```sh\npip install orbit_generation\n\n0. Constants\nThis module contains physical constants and orbit labels.\n\nfrom orbit_generation.constants import MU_BY_SYSTEM, EM_POINTS, EXTENDED_ORBIT_CLASSIFICATION\n\n\nMU_BY_SYSTEM\n\n{'SaE': 1.901109735892602e-07,\n 'MP': 1.611081404409632e-08,\n 'SaT': 0.0002366393158331484,\n 'EM': 0.01215058560962404,\n 'JE': 2.52801752854e-05,\n 'SE': 3.0542e-06,\n 'SM': 3.227154996101724e-07}\n\n\n\nEM_POINTS\n\n{'Moon': (0.987849414390376, 0, 0),\n 'Earth': (-0.01215058560962404, 0, 0),\n 'Lagrange 1': (0.8369, 0, 0),\n 'Lagrange 2': (1.1557, 0, 0),\n 'Lagrange 3': (-1.0051, 0, 0),\n 'Lagrange 4': (0.4879, 0.866, 0),\n 'Lagrange 5': (0.4879, -0.866, 0)}\n\n\n\nEXTENDED_ORBIT_CLASSIFICATION.transpose()\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n...\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n\n\n\n\nId\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n...\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n\n\nLabel\nS_BN\nS_BS\nS_DN\nS_DPO\nS_DRO\nS_DS\nS_L1_A\nS_L1_HN\nS_L1_HS\nS_L1_L\n...\nS_R12\nS_R13\nS_R14\nS_R21\nS_R23\nS_R31\nS_R32\nS_R34\nS_R41\nS_R43\n\n\nType\nSystem-wide\nSystem-wide\nSystem-wide\nSystem-wide\nSystem-wide\nSystem-wide\nL1\nL1\nL1\nL1\n...\nResonant\nResonant\nResonant\nResonant\nResonant\nResonant\nResonant\nResonant\nResonant\nResonant\n\n\nSubtype\nButterfly\nButterfly\nDragonfly\nDistant Prograde\nDistant Retrograde\nDragonfly\nAxial\nHalo\nHalo\nLyapunov\n...\nResonant 1,2\nResonant 1,3\nResonant 1,4\nResonant 2,1\nResonant 2,3\nResonant 3,1\nResonant 3,2\nResonant 3,4\nResonant 4,1\nResonant 4,3\n\n\nDirection\nNorth\nSouth\nNorth\nPlanar\nPlanar\nSouth\nNo specification\nNorth\nSouth\nPlanar\n...\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\n\n\n\n\n5 rows × 42 columns\n\n\n\n\n\n1. Data\nThis module provides utilities for handling orbit data.\n\nfrom orbit_generation.data import get_example_orbit_data\n\norbit_data = get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nNumber of orbits: 200\nTime instants: 300\n\nEvery orbit dataset is organized within a three-dimensional NumPy array with the following structure:\n\ndata.shape = (num_orbits, 7, num_time_points)\n\n\nnum_orbits: Total number of distinct orbits in the dataset.\n\n7: Represents the seven scalar values for each orbit at each time point, typically including:\n\ntime: The time corresponding to each recorded state.\n\nposX, posY, posZ: Position components in the X, Y, and Z dimensions, respectively.\n\nvelX, velY, velZ: Velocity components in the X, Y, and Z dimensions, respectively.\n\n\nnum_time_points: Number of time instants at which the data for each orbit is recorded.\n\n\n\n2. Processing\nThis module performs various processing tasks on the orbit data described above, including downsampling, interpolation, and reshaping.\n\nfrom orbit_generation.processing import resample_3d_array\n\nresampled_orbit_data = resample_3d_array(data=orbit_data, axis=2, target_size= 100)\nresampled_orbit_data.shape\n\n(200, 6, 100)\n\n\n\nInitial time instants: 300\nTime instants after Resampling: 100\n\n\n\n3. Visualization\nThis module handles the visualization of orbit trajectories and their features.\n\nfrom orbit_generation.visualize import visualize_static_orbits, export_dynamic_orbits_html\n\nvisualize_static_orbits(orbit_data, show_legend=False)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(resampled_orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nexport_dynamic_orbits_html(data=orbit_data, filename='../data/example_data/example_orbits.html')\n\nVisualization saved to ../data/example_data/example_orbits.html\n\n\nSee the dynamic orbit visualziation here\n\n\n4. Statistics\nThis module analyzes the orbital data using descriptive statistics.\n\nfrom orbit_generation.stats import plot_histograms_position\n\nplot_histograms_position(orbit_data)",
+    "text": "Structure\n.\n|-- .devcontainer: Configuration for the development container.  \n|  \n|-- .github: workflows for continuous integration in Git.  \n|  \n|-- data: The folder where datasets are stored, in GitHub only example data is included. \n|   |-- example_data\n|   |-- orbits_fix_1500 (needs to be downloaded)\n|\n|-- docs: Documentation files for the project. \n|\n|-- experiments: Results about the experiments performed. \n|\n|-- index_files: Auto-generated images to be used in the README.md. \n| \n|-- julia: Scripts written in Julia for specific computations. \n|   `-- convergence_algorithm.jl\n|\n|-- models: Some Machine Learning models used in the experiments.\n|   |-- family_classificators\n|   |-- orbit_generators\n|\n|-- nbs: Jupyter notebooks containing the source code for the library.  \n|   |-- 00_constants.ipynb\n|   |-- 01_data.ipynb\n|   |-- 02_orbit_processing.ipynb\n|   |-- 03_visualization.ipynb\n|   |-- 04_orbit_statistics.ipynb\n|   |-- 05_dataset.ipynb\n|   |-- 06_architectures.ipynb\n|   |-- 07_propagation.ipynb\n|   |-- 08_experiment.ipynb\n|   |-- 09_evaluation.ipynb\n|   |-- 10_vae.ipynb\n|   |-- 11_model_factory.ipynb\n|   |-- 12_convergence.ipynb\n|   |-- 13_latent_space.ipynb\n|   |-- 14_paper_specific.ipynb\n|   |-- index.ipynb\n|\n|-- nbs_experiments: Notebooks with research experiments using the library.  \n|   |-- 01_generative_discovery_em\n|   |-- 02_conditional_generation_systems\n|\n|-- orbit_generation: Auto-generated Python package containing the processed library code. \n|  \n|-- .gitignore: Defines files Git should ignore.\n|  \n|-- LICENSE: Project license file.  \n|  \n|-- MANIFEST.in: Specifies which files to include in the package distribution.   \n|  \n|-- README.md: Documentation for the project, auto-generated from index.ipynb.  \n|  \n|-- settings.ini: Configuration file for `nbdev`.  \n|  \n|-- setup.py: Script for installing the package.  \n\n## Library Modules\n\n```sh\npip install orbit_generation\n\n0. Constants\nThis module contains physical constants and orbit labels.\n\nfrom orbit_generation.constants import MU_BY_SYSTEM, EM_POINTS, EXTENDED_ORBIT_CLASSIFICATION\n\n\nMU_BY_SYSTEM\n\n{'SaE': 1.901109735892602e-07,\n 'MP': 1.611081404409632e-08,\n 'SaT': 0.0002366393158331484,\n 'EM': 0.01215058560962404,\n 'JE': 2.52801752854e-05,\n 'SE': 3.0542e-06,\n 'SM': 3.227154996101724e-07}\n\n\n\nEM_POINTS\n\n{'Moon': (0.987849414390376, 0, 0),\n 'Earth': (-0.01215058560962404, 0, 0),\n 'Lagrange 1': (0.8369, 0, 0),\n 'Lagrange 2': (1.1557, 0, 0),\n 'Lagrange 3': (-1.0051, 0, 0),\n 'Lagrange 4': (0.4879, 0.866, 0),\n 'Lagrange 5': (0.4879, -0.866, 0)}\n\n\n\nEXTENDED_ORBIT_CLASSIFICATION.transpose()\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n...\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n\n\n\n\nId\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n...\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n\n\nLabel\nS_BN\nS_BS\nS_DN\nS_DPO\nS_DRO\nS_DS\nS_L1_A\nS_L1_HN\nS_L1_HS\nS_L1_L\n...\nS_R12\nS_R13\nS_R14\nS_R21\nS_R23\nS_R31\nS_R32\nS_R34\nS_R41\nS_R43\n\n\nType\nSystem-wide\nSystem-wide\nSystem-wide\nSystem-wide\nSystem-wide\nSystem-wide\nL1\nL1\nL1\nL1\n...\nResonant\nResonant\nResonant\nResonant\nResonant\nResonant\nResonant\nResonant\nResonant\nResonant\n\n\nSubtype\nButterfly\nButterfly\nDragonfly\nDistant Prograde\nDistant Retrograde\nDragonfly\nAxial\nHalo\nHalo\nLyapunov\n...\nResonant 1,2\nResonant 1,3\nResonant 1,4\nResonant 2,1\nResonant 2,3\nResonant 3,1\nResonant 3,2\nResonant 3,4\nResonant 4,1\nResonant 4,3\n\n\nDirection\nNorth\nSouth\nNorth\nPlanar\nPlanar\nSouth\nNo specification\nNorth\nSouth\nPlanar\n...\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\nPlanar\n\n\n\n\n5 rows × 42 columns\n\n\n\n\n\n1. Data\nThis module provides utilities for handling orbit data.\n\nfrom orbit_generation.data import get_example_orbit_data\n\norbit_data = get_example_orbit_data()\norbit_data.shape\n\n(200, 6, 300)\n\n\n\nNumber of orbits: 200\nTime instants: 300\n\nEvery orbit dataset is organized within a three-dimensional NumPy array with the following structure:\n\ndata.shape = (num_orbits, 7, num_time_points)\n\n\nnum_orbits: Total number of distinct orbits in the dataset.\n\n7: Represents the seven scalar values for each orbit at each time point, typically including:\n\ntime: The time corresponding to each recorded state.\n\nposX, posY, posZ: Position components in the X, Y, and Z dimensions, respectively.\n\nvelX, velY, velZ: Velocity components in the X, Y, and Z dimensions, respectively.\n\n\nnum_time_points: Number of time instants at which the data for each orbit is recorded.\n\n\n\n2. Processing\nThis module performs various processing tasks on the orbit data described above, including downsampling, interpolation, and reshaping.\n\nfrom orbit_generation.processing import resample_3d_array\n\nresampled_orbit_data = resample_3d_array(data=orbit_data, axis=2, target_size= 100)\nresampled_orbit_data.shape\n\n(200, 6, 100)\n\n\n\nInitial time instants: 300\nTime instants after Resampling: 100\n\n\n\n3. Visualization\nThis module handles the visualization of orbit trajectories and their features.\n\nfrom orbit_generation.visualize import visualize_static_orbits, export_dynamic_orbits_html\n\nvisualize_static_orbits(orbit_data, show_legend=False)\n\n\n\n\n\n\n\n\n\nvisualize_static_orbits(resampled_orbit_data, orbit_indices=[15,20,70,140,190], point_dict=EM_POINTS)\n\n\n\n\n\n\n\n\n\nexport_dynamic_orbits_html(data=orbit_data, filename='../data/example_data/example_orbits.html')\n\nVisualization saved to ../data/example_data/example_orbits.html\n\n\nSee the dynamic orbit visualziation here\n\n\n4. Statistics\nThis module analyzes the orbital data using descriptive statistics.\n\nfrom orbit_generation.stats import plot_histograms_position\n\nplot_histograms_position(orbit_data)",
     "crumbs": [
       "orbit-generation"
     ]
