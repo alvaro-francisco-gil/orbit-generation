@@ -78,5 +78,11 @@ jobs:
           echo "Testing Julia package import..."
           python -c "from julia import Main; print('Julia Main import successful')"
           
+          echo "Setting JULIA_PYTHONCALL_EXE..."
+          export JULIA_PYTHONCALL_EXE=$(which python)
+          
+          echo "Testing full Julia-Python integration..."
+          python -c "from julia.api import Julia; jl = Julia(compiled_modules=False); from julia import Main; Main.eval('using DifferentialEquations'); print('Julia-Python integration successful')"
+          
       - name: Run nbdev CI
         uses: fastai/workflows/nbdev-ci@master
