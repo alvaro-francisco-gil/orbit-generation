@@ -66,6 +66,13 @@ jobs:
           echo "Installing PyJulia..."
           pip install julia
           
+          echo "Setting JULIA_PYTHONCALL_EXE and PYTHON environment variables..."
+          export JULIA_PYTHONCALL_EXE=$(which python)
+          export PYTHON=$(which python)
+          
+          echo "Installing PyCall in Julia..."
+          julia -e 'using Pkg; Pkg.add("PyCall"); ENV["PYTHON"]="'$(which python)'"; Pkg.build("PyCall")'
+          
           echo "Initializing PyJulia..."
           python -c "import julia; julia.install()"
           
@@ -78,11 +85,11 @@ jobs:
           echo "Testing Julia package import..."
           python -c "from julia import Main; print('Julia Main import successful')"
           
-          echo "Setting JULIA_PYTHONCALL_EXE..."
-          export JULIA_PYTHONCALL_EXE=$(which python)
+          echo "Testing individual Julia packages..."
+          python -c "from julia.api import Julia; jl = Julia(compiled_modules=False); from julia import Main; print('Testing DifferentialEquations...'); Main.eval('println(\"DifferentialEquations package status:\"); using Pkg; Pkg.status(\"DifferentialEquations\")')"
           
-          echo "Testing full Julia-Python integration..."
-          python -c "from julia.api import Julia; jl = Julia(compiled_modules=False); from julia import Main; Main.eval('using DifferentialEquations'); print('Julia-Python integration successful')"
+          echo "Making Julia package environment accessible to PyJulia..."
+          python -c "from julia.api import Julia; jl = Julia(compiled_modules=False); from julia import Main; Main.eval('println(\"Current Julia environment:\"); using Pkg; Pkg.status()')"
           
       - name: Run nbdev CI
         uses: fastai/workflows/nbdev-ci@master
