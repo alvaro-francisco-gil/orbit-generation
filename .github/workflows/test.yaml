@@ -56,12 +56,8 @@ jobs:
           echo "JULIA_DEPOT_PATH: $JULIA_DEPOT_PATH"
           
           echo "Installing Julia packages..."
-          julia -e 'using Pkg; Pkg.add(["DifferentialEquations", "Polynomials", "LinearAlgebra", "MAT", "NPZ", "IJulia", "PyCall"])'
-          
-          julia -e 'using Pkg; println("Environment path: ", Base.active_project()); Pkg.status()'
-          
-          export JULIA_ENV_PATH=$(julia -e 'println(Base.active_project())')
-          echo "JULIA_ENV_PATH: $JULIA_ENV_PATH"
+          # Install packages in the default environment that PyJulia will use
+          julia -e 'using Pkg; Pkg.add(["DifferentialEquations", "Polynomials", "LinearAlgebra", "MAT", "NPZ", "IJulia"])'
           
           echo "Setting up IJulia..."
           julia -e 'using IJulia; IJulia.installkernel("Julia")'
@@ -71,14 +67,15 @@ jobs:
           echo "Installing PyJulia..."
           pip install julia
           
-          echo "Setting JULIA_PYTHONCALL_EXE and PYTHON environment variables..."
-          export JULIA_PYTHONCALL_EXE=$(which python)
+          echo "Setting PYTHON environment variable for PyCall..."
           export PYTHON=$(which python)
+          echo "PYTHON set to: $PYTHON"
           
-          echo "Building PyCall with the correct Python..."
-          JULIA_ENV_PATH=$(julia -e 'println(Base.active_project())')
-          echo "Using Julia environment at: $JULIA_ENV_PATH"
-          julia -e 'using Pkg; Pkg.activate(); ENV["PYTHON"]="'$(which python)'"; Pkg.build("PyCall")'
+          echo "Installing PyCall with specific Python executable..."
+          julia -e 'ENV["PYTHON"]="'$(which python)'"; using Pkg; Pkg.add("PyCall"); Pkg.build("PyCall")'
+          
+          # Verify PyCall was installed correctly
+          julia -e 'using Pkg; Pkg.status("PyCall"); using PyCall; println("PyCall successfully loaded")'
           
           echo "Initializing PyJulia..."
           python -c "import julia; julia.install()"
@@ -92,9 +89,7 @@ jobs:
           echo "Testing Julia package import..."
           python -c "from julia import Main; print('Julia Main import successful')"
           
-          echo "Loading and listing installed Julia packages..."
-          python -c "from julia.api import Julia; jl = Julia(compiled_modules=False); from julia import Main; Main.eval('using Pkg; println(\"Environment: \", Base.active_project()); Pkg.status(); println(\"Attempting to load DifferentialEquations\"); try using DifferentialEquations; println(\"DifferentialEquations loaded successfully\") catch e; println(e) end')"
-          
+          # For debugging purposes, export any necessary environment variables to make them available to later steps
           echo "JULIA_DEPOT_PATH=${JULIA_DEPOT_PATH}" >> $GITHUB_ENV
           echo "PYTHON=$(which python)" >> $GITHUB_ENV
           echo "JULIA_PYTHONCALL_EXE=$(which python)" >> $GITHUB_ENV
