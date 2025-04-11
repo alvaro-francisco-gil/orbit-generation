@@ -20,20 +20,16 @@ from scipy import stats
 from typing import Optional, List, Dict, Union, Any
 
 # %% ../nbs/03_visualization.ipynb 5
-def plot_3d_points(data, labels=None, plot_velocity=True, arrow_width=0.005, show_legend=True, figsize=(10, 8)):
+def plot_3d_points(data: np.ndarray,  # Array of shape (samples, 3) for positions or (samples, 6) for positions and velocities.
+                   labels: Optional[List[str]] = None,  # Optional list of labels for color coding the points.
+                   plot_velocity: bool = True,  # If True and velocities are provided, plot arrows representing velocity vectors.
+                   arrow_width: float = 0.005,  # Width of the arrows.
+                   show_legend: bool = True,  # If True, show the legend for color coding.
+                   figsize: tuple = (10, 8)  # Size of the figure in inches (width, height).
+                   ) -> None:
     """
     Plots each point in space with a 3D arrow based on the first 3 coordinates (position)
     and optionally the next 3 coordinates (velocity).
-
-    Parameters:
-    data (numpy.ndarray): Array of shape (samples, 3) for positions or (samples, 6) for positions and velocities.
-                          - data[:, 0:3] represents the 3D positions (x, y, z)
-                          - data[:, 3:6] represents the velocity components (vx, vy, vz) if provided
-    labels (list of str): Optional list of labels for color coding the points.
-    plot_velocity (bool): If True and velocities are provided, plot arrows representing velocity vectors.
-    arrow_width (float): Width of the arrows.
-    show_legend (bool): If True, show the legend for color coding.
-    figsize (tuple): Size of the figure in inches (width, height). Default is (10, 8).
     """
     # Check if velocities are provided by looking at the shape of the input data
     if data.shape[1] == 6:
@@ -98,7 +94,7 @@ def plot_3d_points(data, labels=None, plot_velocity=True, arrow_width=0.005, sho
     plt.show()
 
 # %% ../nbs/03_visualization.ipynb 8
-def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_orbits, 6, num_time_points).
+def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_orbits, 6 or 7, num_time_points).
                             time_instants: Optional[List[int]] = None,  # Time points to highlight; defaults to None.
                             orbit_indices: Optional[List[int]] = None,  # Indices of orbits to visualize; defaults to all.
                             point_dict: Optional[Dict[str, tuple]] = None,  # Dictionary of extra points to plot.
@@ -111,21 +107,7 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
                            ) -> None:
     """
     Visualizes orbits in 3D space and highlights specified time instants for each selected orbit.
-
-    Args:
-        data (np.ndarray): The orbit data with shape (num_orbits, 6, num_time_points).
-        time_instants (Optional[List[int]]): Time points to highlight; defaults to None.
-        orbit_indices (Optional[List[int]]): Indices of orbits to visualize; defaults to all.
-        point_dict (Optional[Dict[str, tuple]]): Dictionary of extra points to plot.
-        show_legend (bool): Flag to indicate whether to show a legend.
-        save_path (Optional[str]): Path to save the figure; defaults to None.
-        plot_reference_box (bool): Flag to indicate whether to plot the reference box.
-        title (Optional[str]): Custom title for the plot.
-        orbit_names (Optional[List[str]]): Custom names for orbits; defaults to "Orbit {index}".
-        equal_aspect (bool): Flag to enforce equal scaling for all axes.
-
-    Returns:
-        None
+    If data has 7 scalars instead of 6, the first scalar (assumed to be time) is removed.
     """
     
     # Use Matplotlib's Computer Modern font
@@ -135,6 +117,11 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
         'font.size': 10,
         'text.usetex': False
     })
+
+    # Check if data has 7 dimensions and remove the first one (time) if needed
+    if data.shape[1] == 7:
+        # Remove the first dimension (time) and keep the position coordinates
+        data = data[:, 1:, :]
 
     if time_instants is None:
         time_instants = []  # Initialize to empty list if None.
@@ -148,7 +135,7 @@ def visualize_static_orbits(data: np.ndarray,  # The orbit data with shape (num_
     # Validate orbit indices are within the range of available orbits.
     num_orbits = data.shape[0]
     if orbit_indices is None:
-        orbit_indices = range(num_orbits)  # Use all orbits by default.
+        orbit_indices = list(range(num_orbits))  # Use all orbits by default.
     else:
         for index in orbit_indices:
             if index < 0 or index >= num_orbits:
@@ -286,31 +273,18 @@ def visualize_orbits_minimal(data: np.ndarray,  # The orbit data with shape (num
     plt.show()
 
 # %% ../nbs/03_visualization.ipynb 10
-def visualize_orbits_comparison(data1: np.ndarray, 
-                             data2: np.ndarray,
-                             title1: Optional[str] = "Set 1",
-                             title2: Optional[str] = "Set 2",
-                             equal_aspect: bool = False,
-                             title_size: int = 18,
-                             title_pad: float = 20.0,
-                             shared_scale: bool = False,
-                             wspace: float = 0.3) -> None:
+def visualize_orbits_comparison(data1: np.ndarray,  # First set of orbit data with shape (num_orbits, 6, num_time_points)
+                                data2: np.ndarray,  # Second set of orbit data with shape (num_orbits, 6, num_time_points)
+                                title1: Optional[str] = "Set 1",  # Title for the first plot
+                                title2: Optional[str] = "Set 2",  # Title for the second plot
+                                equal_aspect: bool = False,  # Flag to enforce equal scaling for all axes
+                                title_size: int = 18,  # Font size for the plot titles
+                                title_pad: float = 20.0,  # Padding between plot and title in points
+                                shared_scale: bool = False,  # If True, both plots will share the same scale and limits
+                                wspace: float = 0.3,  # Width spacing between subplots
+                                ) -> None:
     """
     Visualizes two sets of orbits side by side in 3D space.
-
-    Args:
-        data1 (np.ndarray): First set of orbit data with shape (num_orbits, 6, num_time_points)
-        data2 (np.ndarray): Second set of orbit data with shape (num_orbits, 6, num_time_points)
-        title1 (str): Title for the first plot
-        title2 (str): Title for the second plot
-        equal_aspect (bool): Flag to enforce equal scaling for all axes
-        title_size (int): Font size for the plot titles
-        title_pad (float): Padding between plot and title in points. Default is 20.0
-        shared_scale (bool): If True, both plots will share the same scale and limits
-        wspace (float): Width spacing between subplots. Default is 0.3.
-
-    Returns:
-        None
     """
     # Use Matplotlib's Computer Modern font
     plt.rcParams.update({
@@ -392,7 +366,7 @@ def visualize_orbits_comparison(data1: np.ndarray,
     plt.subplots_adjust(wspace=wspace)  # Adjust spacing between subplots
     plt.show()
 
-# %% ../nbs/03_visualization.ipynb 17
+# %% ../nbs/03_visualization.ipynb 16
 def export_dynamic_orbits_html(data: np.ndarray,  # Orbit data as a 3D numpy array (num_orbits, 6, num_time_points).
                                time_instants: Optional[List[int]] = None,  # Time instants to highlight.
                                orbit_indices: Optional[List[int]] = None,  # Indices of orbits to visualize.
@@ -458,22 +432,15 @@ def export_dynamic_orbits_html(data: np.ndarray,  # Orbit data as a 3D numpy arr
     fig.write_html(filename)
     print(f"Visualization saved to {filename}")
 
-# %% ../nbs/03_visualization.ipynb 22
-def plot_histogram(data, bins=10, title='Histogram', xlabel='Data', ylabel='Frequency'):
+# %% ../nbs/03_visualization.ipynb 21
+def plot_histogram(data: Union[list, np.ndarray, pd.Series],  # The data to be plotted
+                  bins: int = 10,  # Number of histogram bins to use
+                  title: str = 'Histogram',  # Title of the histogram
+                  xlabel: str = 'Data',  # Label for the x-axis
+                  ylabel: str = 'Frequency',  # Label for the y-axis
+                  ) -> None:
     """
     Plots a histogram for the given data.
-
-    Parameters:
-    data : list, array, or pandas Series
-        The data to be plotted.
-    bins : int, optional
-        Number of histogram bins to use (default is 10).
-    title : str, optional
-        Title of the histogram (default is 'Histogram').
-    xlabel : str, optional
-        Label for the x-axis (default is 'Data').
-    ylabel : str, optional
-        Label for the y-axis (default is 'Frequency').
     """
     plt.figure(figsize=(10, 6))
     plt.hist(data, bins=bins, edgecolor='black')
@@ -483,7 +450,7 @@ def plot_histogram(data, bins=10, title='Histogram', xlabel='Data', ylabel='Freq
     plt.grid(True, alpha=0.3)
     plt.show()
 
-# %% ../nbs/03_visualization.ipynb 23
+# %% ../nbs/03_visualization.ipynb 22
 def plot_grouped_features(df: pd.DataFrame,               # DataFrame containing the data.
                           columns: List[str],             # List of column names to plot.
                           group_col: str,                 # Column name to group by.
@@ -493,14 +460,6 @@ def plot_grouped_features(df: pd.DataFrame,               # DataFrame containing
                          ) -> None:
     """
     Group the DataFrame by a specified column and plot the specified type of plot for each column for each group.
-    
-    Parameters:
-    - df : pd.DataFrame : The DataFrame containing the data.
-    - columns : List[str] : List of column names to plot.
-    - group_col : str : Column name to group by.
-    - plot_type : str : Type of plot ('violin', 'box', 'facetgrid', or 'histogram').
-    - figsize : tuple : Size of each subplot (width, height). Default is (5, 5).
-    - fontsize : int : Font size for labels and titles. Default is 10.
     """
     if plot_type not in ['violin', 'box', 'facetgrid', 'histogram']:
         raise ValueError("plot_type must be one of 'violin', 'box', 'facetgrid', or 'histogram'")
@@ -568,7 +527,7 @@ def plot_grouped_features(df: pd.DataFrame,               # DataFrame containing
             plt.tight_layout()
             plt.show()
 
-# %% ../nbs/03_visualization.ipynb 24
+# %% ../nbs/03_visualization.ipynb 23
 def plot_value_proportions(data,  # List or array of labels to plot
                            grid: str = 'horizontal',            # Option to plot in grid (horizontal, vertical, or square) or separate images.
                            show_percentages: bool = True,       # Option to print or not print percentages.
@@ -631,7 +590,7 @@ def plot_value_proportions(data,  # List or array of labels to plot
         plot_pie(ax, label_counts, 'Proportion of values', 0, show_percentages_list[0], show_labels_list[0])
         plt.show()
 
-# %% ../nbs/03_visualization.ipynb 25
+# %% ../nbs/03_visualization.ipynb 24
 def plot_mean_distance_by_group_column(df, group_column, value_column):
     # Calculate mean and standard deviation for each group
     stats_df = df.groupby(group_column)[value_column].agg(['mean', 'std']).reset_index()
@@ -660,19 +619,14 @@ def plot_mean_distance_by_group_column(df, group_column, value_column):
     plt.tight_layout()
     plt.show()
 
-# %% ../nbs/03_visualization.ipynb 28
-def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm', save_path: Optional[str] = None):
+# %% ../nbs/03_visualization.ipynb 27
+def plot_corr_matrix(dataframe: pd.DataFrame,  # The DataFrame containing the data to be analyzed.
+                     figsize: tuple = (14, 10),  # The size of the figure (width, height).
+                     cmap: str = 'coolwarm',  # The color map to be used for the heatmap.
+                     save_path: Optional[str] = None,  # The path to save the plot image. If None, the plot is not saved.
+                     ) -> None:
     """
     Plots a correlation matrix heatmap with annotations.
-    
-    Parameters:
-    dataframe (pd.DataFrame): The DataFrame containing the data to be analyzed.
-    figsize (tuple): The size of the figure (width, height).
-    cmap (str): The color map to be used for the heatmap.
-    save_path (Optional[str]): The path to save the plot image. If None, the plot is not saved.
-    
-    Returns:
-    None: Displays the correlation matrix heatmap.
     """
     # Calculate the correlation matrix
     corr_matrix = dataframe.corr()
@@ -694,7 +648,7 @@ def plot_corr_matrix(dataframe: pd.DataFrame, figsize=(14, 10), cmap='coolwarm',
     # Show the plot
     plt.show()
 
-# %% ../nbs/03_visualization.ipynb 30
+# %% ../nbs/03_visualization.ipynb 29
 def summarize_and_test(
     df: pd.DataFrame, 
     group_col: str, 
@@ -810,21 +764,15 @@ def summarize_and_test(
     }
 
 
-# %% ../nbs/03_visualization.ipynb 33
-def plot_single_image(image_path, crop_length=0, font_size=17, save_path=None, figsize=(15, 15), title=None):
+# %% ../nbs/03_visualization.ipynb 32
+def plot_single_image(image_path: str,  # Path to the image file.
+                      crop_length: int = 0,  # Number of pixels to crop from each side of the image.
+                      font_size: int = 17,  # Font size for the title.
+                      save_path: Optional[str] = None,  # Path to save the plotted image. If None, the image is not saved.
+                      figsize: tuple = (15, 15),  # Size of the figure (width, height).
+                      title: Optional[str] = None) -> None:  # Title for the image.
     """
     Plot a single image with customization options.
-
-    Args:
-        image_path (str): Path to the image file.
-        crop_length (int): Number of pixels to crop from each side of the image.
-        font_size (int): Font size for the title.
-        save_path (str): Path to save the plotted image. If None, the image is not saved.
-        figsize (tuple): Size of the figure (width, height).
-        title (str): Title for the image.
-
-    Returns:
-        None
     """
     if not os.path.exists(image_path):
         print(f"Error: The file '{image_path}' does not exist.")
@@ -851,22 +799,16 @@ def plot_single_image(image_path, crop_length=0, font_size=17, save_path=None, f
     plt.show()
 
 
-# %% ../nbs/03_visualization.ipynb 34
-def create_image_grid_from_routes(image_routes, crop_length=0, font_size=12, save_path=None, grid_size=(3, 2), hspace=-0.37, label_images=None):
+# %% ../nbs/03_visualization.ipynb 33
+def create_image_grid_from_routes(image_routes: list,  # List of image file paths.
+                                   crop_length: int = 0,  # Number of pixels to crop from each side of the image.
+                                   font_size: int = 12,  # Font size for the experiment label.
+                                   save_path: Optional[str] = None,  # Path to save the generated grid image. If None, the grid is not saved.
+                                   grid_size: tuple = (3, 2),  # Number of rows and columns in the grid.
+                                   hspace: float = -0.37,  # Vertical spacing between grid rows.
+                                   label_images: Optional[list] = None) -> None:  # List of labels for images or a boolean to add default labels.
     """
     Create a grid of images from a list of image paths.
-
-    Args:
-        image_routes (list): List of image file paths.
-        crop_length (int): Number of pixels to crop from each side of the image.
-        font_size (int): Font size for the experiment label.
-        save_path (str): Path to save the generated grid image. If None, the grid is not saved.
-        grid_size (tuple): Number of rows and columns in the grid.
-        hspace (float): Vertical spacing between grid rows.
-        label_images (list or bool): List of labels for images or a boolean to add default labels.
-
-    Returns:
-        None
     """
     # Set up the plot with dynamic grid sizing
     fig, axes = plt.subplots(*grid_size, figsize=(5 * grid_size[1], 5 * grid_size[0]))  # Adjusted figsize dynamically
