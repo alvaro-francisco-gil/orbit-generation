@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="Scripts to propagate the orbits">
 
-<title>orbit-generation - Propagation</title>
+<title>Propagation – orbit-generation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -70,10 +70,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e198e139e5394bcefc774cae535a6f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,12 +104,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="orbit-generation - Propagation">
+<meta property="og:title" content="Propagation – orbit-generation">
 <meta property="og:description" content="Scripts to propagate the orbits">
+<meta property="og:image" content="https://alvaro-francisco-gil.github.io/orbit-generation/07_propagation_files/figure-html/cell-4-output-1.png">
 <meta property="og:site_name" content="orbit-generation">
-<meta name="twitter:title" content="orbit-generation - Propagation">
+<meta property="og:image:height" content="470">
+<meta property="og:image:width" content="859">
+<meta name="twitter:title" content="Propagation – orbit-generation">
 <meta name="twitter:description" content="Scripts to propagate the orbits">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://alvaro-francisco-gil.github.io/orbit-generation/07_propagation_files/figure-html/cell-4-output-1.png">
+<meta name="twitter:image-height" content="470">
+<meta name="twitter:image-width" content="859">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-sidebar floating nav-fixed">
@@ -130,11 +136,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./propagation.html">Propagation</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -165,7 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./processing.html" class="sidebar-item-text sidebar-link">
+  <a href="./orbit_processing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Processing</span></a>
   </div>
 </li>
@@ -177,7 +183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./statistics.html" class="sidebar-item-text sidebar-link">
+  <a href="./orbit_statistics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Statistics</span></a>
   </div>
 </li>
@@ -189,14 +195,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Model</span></a>
+  <a href="./architectures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Architectures</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./propagation.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Propagation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Evaluation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vae.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VAE</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model_factory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Factory</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./convergence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Convergence</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./latent_space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Latent Space</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paper</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./path_utils.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Path Utils</span></a>
   </div>
 </li>
     </ul>
@@ -227,6 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#jacobi_test" id="toc-jacobi_test" class="nav-link" data-scroll-target="#jacobi_test">jacobi_test</a></li>
   <li><a href="#dynamics_defect" id="toc-dynamics_defect" class="nav-link" data-scroll-target="#dynamics_defect">dynamics_defect</a></li>
   <li><a href="#calculate_errors" id="toc-calculate_errors" class="nav-link" data-scroll-target="#calculate_errors">calculate_errors</a></li>
+  <li><a href="#calculate_errors_per_orbit" id="toc-calculate_errors_per_orbit" class="nav-link" data-scroll-target="#calculate_errors_per_orbit">calculate_errors_per_orbit</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
@@ -266,7 +321,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="jacobi-constant" class="level2">
 <h2 class="anchored" data-anchor-id="jacobi-constant">Jacobi Constant</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L18" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L20" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="jacobi_constant" class="level3">
 <h3 class="anchored" data-anchor-id="jacobi_constant">jacobi_constant</h3>
 <blockquote class="blockquote">
@@ -275,7 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*State-dependent Jacobi constant for a given state vector X and gravitational parameter mu.</p>
 <p>Parameters: X (np.ndarray): Cartesian state vector with 6 components (x, y, z, xp, yp, zp). mu (float): Gravitational parameter.</p>
 <p>Returns: Tuple[float, float]: Jacobi constant (J) and total energy (E).*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -301,7 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><strong>Returns</strong></td>
-<td><strong>typing.Tuple[float, float]</strong></td>
+<td><strong>Tuple</strong></td>
 <td></td>
 </tr>
 </tbody>
@@ -321,7 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> orbit_index <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">200</span>):</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> time_index <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">300</span>):</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        X <span class="op">=</span> orbit_data[orbit_index, :, time_index]</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        J, E <span class="op">=</span> jacobi_constant(X, MU)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        J, E <span class="op">=</span> jacobi_constant(X, EM_MU)</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        jacobi_constants[orbit_index, time_index] <span class="op">=</span> J</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        total_energies[orbit_index, time_index] <span class="op">=</span> E</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
@@ -367,7 +422,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="equations-of-motion-cr3bp" class="level2">
 <h2 class="anchored" data-anchor-id="equations-of-motion-cr3bp">Equations of motion CR3BP</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L59" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L61" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="eom_cr3bp" class="level3">
 <h3 class="anchored" data-anchor-id="eom_cr3bp">eom_cr3bp</h3>
 <blockquote class="blockquote">
@@ -376,7 +431,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*Equations of motion for the Circular Restricted 3 Body Problem (CR3BP). The form is X_dot = f(t, X, (parameters,)). This formulation is time-independent as it does not depend explicitly on t.</p>
 <p>Parameters: t (float): Time variable (not used in this formulation). X (np.ndarray): State vector with 6 components (x, y, z, v_x, v_y, v_z). mu (float): Gravitational parameter.</p>
 <p>Returns: List[float]: Derivatives of the state vector.*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -407,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><strong>Returns</strong></td>
-<td><strong>typing.List[float]</strong></td>
+<td><strong>List</strong></td>
 <td></td>
 </tr>
 </tbody>
@@ -477,7 +532,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="propagation" class="level2">
 <h2 class="anchored" data-anchor-id="propagation">Propagation</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L98" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L100" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="prop_node" class="level3">
 <h3 class="anchored" data-anchor-id="prop_node">prop_node</h3>
 <blockquote class="blockquote">
@@ -486,7 +541,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>*Return the state X after a given time step dt = T_end - T_start.</p>
 <p>Parameters: X (np.ndarray): Initial state vector with 6 components (x, y, z, v_x, v_y, v_z). dt (float): Time step for propagation. mu (float): Gravitational parameter.</p>
 <p>Returns: np.ndarray: Final state vector after time step dt.*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -560,8 +615,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
 <span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Initial state vector: [ 1.18045482  0.         -0.0211      0.         -0.15838369  0.        ]
-Final state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.01508738 -0.15587703  0.00473808]</code></pre>
+<pre><code>Initial state vector: [ 1.02948208  0.         -0.1867957   0.         -0.11894369  0.        ]
+Final state vector after time step dt: [ 1.02873876 -0.01181343 -0.18439385 -0.01485109 -0.11651009  0.04812437]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -576,7 +631,7 @@ Final state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.0
 <section id="compute-error" class="level2">
 <h2 class="anchored" data-anchor-id="compute-error">Compute Error</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L123" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L125" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="jacobi_test" class="level3">
 <h3 class="anchored" data-anchor-id="jacobi_test">jacobi_test</h3>
 <blockquote class="blockquote">
@@ -585,7 +640,7 @@ Final state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.0
 <p>*Compute the energy error. X can have either 6 columns (state vector) or 7 columns (time + state vector). The returned quantity is the cumulative error with respect to the initial value. If propagation is perfect, err = 0 (or very small).</p>
 <p>Parameters: X (np.ndarray): State vector with shape (n, 6) or (n, 7), where n is the number of samples. mu (float): Gravitational parameter.</p>
 <p>Returns: float: Cumulative energy error with respect to the initial value.*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -617,7 +672,7 @@ Final state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.0
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L151" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L153" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="dynamics_defect" class="level3">
 <h3 class="anchored" data-anchor-id="dynamics_defect">dynamics_defect</h3>
@@ -627,7 +682,7 @@ Final state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.0
 <p>*Compute the dynamical defect for the generated time-state sequence. The returned quantity is the cumulative error on the position and velocity components. The overall metrics can be a combination of these two last errors.</p>
 <p>Parameters: X (np.ndarray): Time-state vector with shape (n, 7), where the first column is the time vector. mu (float): Gravitational parameter.</p>
 <p>Returns: Tuple[float, float]: Cumulative errors in position and velocity.*</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 38%">
@@ -653,7 +708,7 @@ Final state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.0
 </tr>
 <tr class="odd">
 <td><strong>Returns</strong></td>
-<td><strong>typing.Tuple[float, float]</strong></td>
+<td><strong>Tuple</strong></td>
 <td></td>
 </tr>
 </tbody>
@@ -695,9 +750,9 @@ Final state vector after time step dt: [ 1.179697   -0.01575471 -0.02086273 -0.0
 <span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Cumulative energy error for the selected orbit: 0.0004792331893739288
-Cumulative position error for the selected orbit: 0.11278328096143962
-Cumulative velocity error for the selected orbit: 0.23681175915281508</code></pre>
+<pre><code>Cumulative energy error for the selected orbit: 0.00022752154970095972
+Cumulative position error for the selected orbit: 0.07835299756599234
+Cumulative velocity error for the selected orbit: 0.147666860309554</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -715,7 +770,7 @@ Cumulative velocity error for the selected orbit: 0.23681175915281508</code></pr
 </div>
 </div>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L186" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L188" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="calculate_errors" class="level3">
 <h3 class="anchored" data-anchor-id="calculate_errors">calculate_errors</h3>
@@ -723,13 +778,11 @@ Cumulative velocity error for the selected orbit: 0.23681175915281508</code></pr
 <pre><code> calculate_errors (orbit_data:numpy.ndarray, mu:float,
                    orbit_indices:List[int]=None,
                    error_types:List[str]=['position', 'velocity',
-                   'energy'], time_step:Union[float,NoneType]=None,
-                   display_results:bool=True)</code></pre>
+                   'energy'], time_step:Optional[float]=None,
+                   display_results:bool=True, cumulative:bool=False)</code></pre>
 </blockquote>
-<p>*Calculate and return the cumulative error and the average error per time step for the selected orbits together. Optionally, display the evolution of each error as a chart.</p>
-<p>Parameters: orbit_data (np.ndarray): 3D array of orbit data. mu (float): Gravitational parameter. orbit_indices (List[int], optional): List of integers referring to the orbits to analyze. If None, analyze all orbits. Default is None. error_types (List[str]): List of types of errors to calculate: ‘position’, ‘velocity’, and/or ‘energy’. time_step (float, optional): Optional time step if time dimension is not included. Default is None. display_results (bool, optional): Whether to display the results as charts. Default is True.</p>
-<p>Returns: Dict[str, Tuple[float, float]]: A dictionary with keys being the error types and values being tuples of cumulative error and average error per time step.*</p>
-<table class="table">
+<p><em>Calculate and return the cumulative error and the average error per time step for the selected orbits together. Optionally, display the evolution of each error as a chart.</em></p>
+<table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 25%">
@@ -759,19 +812,19 @@ Cumulative velocity error for the selected orbit: 0.23681175915281508</code></pr
 </tr>
 <tr class="odd">
 <td>orbit_indices</td>
-<td>typing.List[int]</td>
+<td>List</td>
 <td>None</td>
 <td>List of integers referring to the orbits to analyze</td>
 </tr>
 <tr class="even">
 <td>error_types</td>
-<td>typing.List[str]</td>
+<td>List</td>
 <td>[‘position’, ‘velocity’, ‘energy’]</td>
 <td>Types of errors to calculate</td>
 </tr>
 <tr class="odd">
 <td>time_step</td>
-<td>typing.Union[float, NoneType]</td>
+<td>Optional</td>
 <td>None</td>
 <td>Optional time step if time dimension is not included</td>
 </tr>
@@ -782,22 +835,24 @@ Cumulative velocity error for the selected orbit: 0.23681175915281508</code></pr
 <td>Boolean to control whether to display the results</td>
 </tr>
 <tr class="odd">
+<td>cumulative</td>
+<td>bool</td>
+<td>False</td>
+<td>Boolean to control cumulative or average error</td>
+</tr>
+<tr class="even">
 <td><strong>Returns</strong></td>
-<td><strong>typing.Dict[str, typing.Tuple[float, float]]</strong></td>
+<td><strong>Dict</strong></td>
 <td></td>
 <td></td>
 </tr>
 </tbody>
 </table>
 <div id="cell-19" class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors(orbit_data, MU, orbit_indices <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>], time_step<span class="op">=</span><span class="fl">0.00917391571278981</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors(orbit_data, EM_MU, orbit_indices <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>], time_step<span class="op">=</span><span class="fl">0.00917391571278981</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Cumulative position error for selected orbits: 0.2316203445866497
-Average position error per time step: 0.0007746499818951495
-Cumulative velocity error for selected orbits: 0.4332810231543765
-Average velocity error per time step: 0.001449100411887547
-Cumulative energy error for selected orbits: 0.05821175030129622
-Average energy error per time step: 0.00019468812809798064</code></pre>
+<pre><code>Cumulative position error for selected orbits: 0.234824159550522
+Average position error per time step: 0.0002617883607029231</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -806,12 +861,9 @@ Average energy error per time step: 0.00019468812809798064</code></pre>
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="07_propagation_files/figure-html/cell-13-output-3.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cumulative velocity error for selected orbits: 0.44235011161515836
+Average velocity error per time step: 0.0004931439371406447</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -819,6 +871,95 @@ Average energy error per time step: 0.00019468812809798064</code></pre>
 <p><img src="07_propagation_files/figure-html/cell-13-output-4.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cumulative energy error for selected orbits: 0.0006821222552635398
+Average energy error per time step: 7.604484451098548e-07</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_propagation_files/figure-html/cell-13-output-6.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/propagation.py#L294" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="calculate_errors_per_orbit" class="level3">
+<h3 class="anchored" data-anchor-id="calculate_errors_per_orbit">calculate_errors_per_orbit</h3>
+<blockquote class="blockquote">
+<pre><code> calculate_errors_per_orbit (orbit_data:numpy.ndarray, mu:float,
+                             error_types:List[str]=['position',
+                             'velocity', 'energy'],
+                             time_step:Optional[float]=None,
+                             display_results:bool=False)</code></pre>
+</blockquote>
+<p><em>Calculate and return the average error per orbit for the selected error types. Optionally, display the evolution of each error as a chart.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>orbit_data</td>
+<td>ndarray</td>
+<td></td>
+<td>3D array of orbit data</td>
+</tr>
+<tr class="even">
+<td>mu</td>
+<td>float</td>
+<td></td>
+<td>Gravitational parameter</td>
+</tr>
+<tr class="odd">
+<td>error_types</td>
+<td>List</td>
+<td>[‘position’, ‘velocity’, ‘energy’]</td>
+<td>Types of errors to calculate</td>
+</tr>
+<tr class="even">
+<td>time_step</td>
+<td>Optional</td>
+<td>None</td>
+<td>Optional time step if time dimension is not included</td>
+</tr>
+<tr class="odd">
+<td>display_results</td>
+<td>bool</td>
+<td>False</td>
+<td>Boolean to control whether to display the results</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>Dict</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div id="cell-21" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors_per_orbit(orbit_data[<span class="dv">0</span>:<span class="dv">3</span>], EM_MU, time_step<span class="op">=</span><span class="fl">0.00917391571278981</span>, display_results<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average Position Error per Orbit:
+[0.00026157 0.00026175 0.00026205]
+Average Velocity Error per Orbit:
+[0.00049252 0.00049305 0.00049387]
+Average Energy Error per Orbit:
+[7.60028806e-07 7.60374891e-07 7.60941638e-07]</code></pre>
 </div>
 </div>
 
@@ -862,18 +1003,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -905,7 +1035,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/alvaro-francisco-gil\.github\.io\/orbit-generation");
@@ -913,7 +1063,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -1010,7 +1160,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

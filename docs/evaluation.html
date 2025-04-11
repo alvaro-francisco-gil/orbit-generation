@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Scripts to perform evaluation on the data">
+
+<title>Evaluation – orbit-generation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7e198e139e5394bcefc774cae535a6f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Evaluation – orbit-generation">
+<meta property="og:description" content="Scripts to perform evaluation on the data">
+<meta property="og:site_name" content="orbit-generation">
+<meta name="twitter:title" content="Evaluation – orbit-generation">
+<meta name="twitter:description" content="Scripts to perform evaluation on the data">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">orbit-generation</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./evaluation.html">Evaluation</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">orbit-generation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./constants.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Constants</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./orbit_processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Processing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./orbit_statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dataset</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./architectures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Architectures</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./propagation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Propagation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./evaluation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Evaluation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vae.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VAE</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model_factory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Factory</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./convergence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Convergence</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./latent_space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Latent Space</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paper</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./path_utils.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Path Utils</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#plot_metric_heatmaps" id="toc-plot_metric_heatmaps" class="nav-link active" data-scroll-target="#plot_metric_heatmaps">plot_metric_heatmaps</a></li>
+  <li><a href="#calculate_closest_feature_distances" id="toc-calculate_closest_feature_distances" class="nav-link" data-scroll-target="#calculate_closest_feature_distances">calculate_closest_feature_distances</a></li>
+  <li><a href="#plot_comparison" id="toc-plot_comparison" class="nav-link" data-scroll-target="#plot_comparison">plot_comparison</a></li>
+  <li><a href="#find_non_matching_elements" id="toc-find_non_matching_elements" class="nav-link" data-scroll-target="#find_non_matching_elements">find_non_matching_elements</a></li>
+  <li><a href="#evaluate-clustering-with-multiple-labels" id="toc-evaluate-clustering-with-multiple-labels" class="nav-link" data-scroll-target="#evaluate-clustering-with-multiple-labels">Evaluate Clustering with Multiple Labels</a>
+  <ul class="collapse">
+  <li><a href="#evaluate_clustering_multiple_labels" id="toc-evaluate_clustering_multiple_labels" class="nav-link" data-scroll-target="#evaluate_clustering_multiple_labels">evaluate_clustering_multiple_labels</a></li>
+  </ul></li>
+  <li><a href="#physical-distances" id="toc-physical-distances" class="nav-link" data-scroll-target="#physical-distances">Physical Distances</a>
+  <ul class="collapse">
+  <li><a href="#euclidean" id="toc-euclidean" class="nav-link" data-scroll-target="#euclidean">Euclidean</a></li>
+  <li><a href="#euclidean_distance" id="toc-euclidean_distance" class="nav-link" data-scroll-target="#euclidean_distance">euclidean_distance</a></li>
+  <li><a href="#manhattan" id="toc-manhattan" class="nav-link" data-scroll-target="#manhattan">Manhattan</a></li>
+  <li><a href="#manhattan_distance" id="toc-manhattan_distance" class="nav-link" data-scroll-target="#manhattan_distance">manhattan_distance</a></li>
+  <li><a href="#cosine" id="toc-cosine" class="nav-link" data-scroll-target="#cosine">Cosine</a></li>
+  <li><a href="#cosine_distance" id="toc-cosine_distance" class="nav-link" data-scroll-target="#cosine_distance">cosine_distance</a></li>
+  <li><a href="#dynamic-time-warping" id="toc-dynamic-time-warping" class="nav-link" data-scroll-target="#dynamic-time-warping">Dynamic Time Warping</a></li>
+  <li><a href="#dtw_distance" id="toc-dtw_distance" class="nav-link" data-scroll-target="#dtw_distance">dtw_distance</a></li>
+  <li><a href="#generic" id="toc-generic" class="nav-link" data-scroll-target="#generic">Generic</a></li>
+  <li><a href="#calculate_distance" id="toc-calculate_distance" class="nav-link" data-scroll-target="#calculate_distance">calculate_distance</a></li>
+  <li><a href="#calculate_pairwise_distances" id="toc-calculate_pairwise_distances" class="nav-link" data-scroll-target="#calculate_pairwise_distances">calculate_pairwise_distances</a></li>
+  <li><a href="#batch" id="toc-batch" class="nav-link" data-scroll-target="#batch">Batch</a></li>
+  <li><a href="#calculate_distances_batch" id="toc-calculate_distances_batch" class="nav-link" data-scroll-target="#calculate_distances_batch">calculate_distances_batch</a></li>
+  <li><a href="#nearest-points" id="toc-nearest-points" class="nav-link" data-scroll-target="#nearest-points">Nearest Points</a></li>
+  <li><a href="#find_nearest_points" id="toc-find_nearest_points" class="nav-link" data-scroll-target="#find_nearest_points">find_nearest_points</a></li>
+  <li><a href="#find_nearest_points_batch" id="toc-find_nearest_points_batch" class="nav-link" data-scroll-target="#find_nearest_points_batch">find_nearest_points_batch</a></li>
+  </ul></li>
+  <li><a href="#orbits-distance" id="toc-orbits-distance" class="nav-link" data-scroll-target="#orbits-distance">Orbits Distance</a>
+  <ul class="collapse">
+  <li><a href="#orbits_distances" id="toc-orbits_distances" class="nav-link" data-scroll-target="#orbits_distances">orbits_distances</a></li>
+  <li><a href="#get-the-closest-orbits" id="toc-get-the-closest-orbits" class="nav-link" data-scroll-target="#get-the-closest-orbits">Get the Closest Orbits</a></li>
+  <li><a href="#find_nearest_orbits" id="toc-find_nearest_orbits" class="nav-link" data-scroll-target="#find_nearest_orbits">find_nearest_orbits</a></li>
+  <li><a href="#find_nearest_orbits_batch" id="toc-find_nearest_orbits_batch" class="nav-link" data-scroll-target="#find_nearest_orbits_batch">find_nearest_orbits_batch</a></li>
+  <li><a href="#calculate-pairwise-distances" id="toc-calculate-pairwise-distances" class="nav-link" data-scroll-target="#calculate-pairwise-distances">Calculate Pairwise distances</a></li>
+  <li><a href="#calculate_pairwise_orbit_distances" id="toc-calculate_pairwise_orbit_distances" class="nav-link" data-scroll-target="#calculate_pairwise_orbit_distances">calculate_pairwise_orbit_distances</a></li>
+  </ul></li>
+  <li><a href="#evaluate-distance-metrics" id="toc-evaluate-distance-metrics" class="nav-link" data-scroll-target="#evaluate-distance-metrics">Evaluate Distance Metrics</a>
+  <ul class="collapse">
+  <li><a href="#evaluate_distance_metrics_and_clustering" id="toc-evaluate_distance_metrics_and_clustering" class="nav-link" data-scroll-target="#evaluate_distance_metrics_and_clustering">evaluate_distance_metrics_and_clustering</a></li>
+  </ul></li>
+  <li><a href="#machine-learning" id="toc-machine-learning" class="nav-link" data-scroll-target="#machine-learning">Machine Learning</a>
+  <ul class="collapse">
+  <li><a href="#machine_learning_evaluation" id="toc-machine_learning_evaluation" class="nav-link" data-scroll-target="#machine_learning_evaluation">machine_learning_evaluation</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Evaluation</h1>
+</div>
+
+<div>
+  <div class="description">
+    Scripts to perform evaluation on the data
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Auxiliar Functions</p>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L39" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="plot_metric_heatmaps" class="level3">
+<h3 class="anchored" data-anchor-id="plot_metric_heatmaps">plot_metric_heatmaps</h3>
+<blockquote class="blockquote">
+<pre><code> plot_metric_heatmaps (results, distance_metrics, clustering_algorithms,
+                       evaluation_metrics)</code></pre>
+</blockquote>
+<p><em>Plot heatmaps for each evaluation metric.</em></p>
+<div id="cell-4" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">### the following function is not being used anymore</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L104" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="calculate_closest_feature_distances" class="level3">
+<h3 class="anchored" data-anchor-id="calculate_closest_feature_distances">calculate_closest_feature_distances</h3>
+<blockquote class="blockquote">
+<pre><code> calculate_closest_feature_distances
+                                      (orbit_df:pandas.core.frame.DataFram
+                                      e, synthetic_orbit_df:pandas.core.fr
+                                      ame.DataFrame, features:list,
+                                      display_comparison:bool=True)</code></pre>
+</blockquote>
+<p>*Calculate the distance from each point in synthetic_orbit_df to the closest point in orbit_df based on specified features, and return both the distances and the indices of the closest orbits.</p>
+<p>Parameters: - orbit_df (pd.DataFrame): DataFrame containing the training data. - synthetic_orbit_df (pd.DataFrame): DataFrame containing the synthetic data. - features (list): List of feature column names to use for calculating the distances. - display_comparison (bool): Whether to display a comparison plot. Defaults to True.</p>
+<p>Returns: - distances (np.ndarray): Array of the minimum distances from each synthetic point to the nearest orbit point. - closest_indices (np.ndarray): Array of indices corresponding to the nearest orbit points in orbit_df.*</p>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L70" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="plot_comparison" class="level3">
+<h3 class="anchored" data-anchor-id="plot_comparison">plot_comparison</h3>
+<blockquote class="blockquote">
+<pre><code> plot_comparison (orbit_df, synthetic_orbit_df)</code></pre>
+</blockquote>
+<p>*Function to create a scatter plot comparing ‘period’ and ‘calculated_jacobi’ between two DataFrames and plot the index of points in synthetic_orbit_df.</p>
+<p>Parameters: - orbit_df: DataFrame containing ‘period’ and ‘calculated_jacobi’ columns - synthetic_orbit_df: DataFrame containing ‘period’ and ‘calculated_jacobi’ columns*</p>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L140" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="find_non_matching_elements" class="level3">
+<h3 class="anchored" data-anchor-id="find_non_matching_elements">find_non_matching_elements</h3>
+<blockquote class="blockquote">
+<pre><code> find_non_matching_elements (main_array, check_array)</code></pre>
+</blockquote>
+<p>*Finds elements in check_array that are not present in main_array.</p>
+<p>Parameters: main_array (numpy.ndarray): The main array with larger set of elements. check_array (numpy.ndarray): The array with elements to check against the main array.</p>
+<p>Returns: numpy.ndarray: Elements in check_array that are not in main_array.*</p>
+</section>
+<section id="evaluate-clustering-with-multiple-labels" class="level2">
+<h2 class="anchored" data-anchor-id="evaluate-clustering-with-multiple-labels">Evaluate Clustering with Multiple Labels</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L164" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="evaluate_clustering_multiple_labels" class="level3">
+<h3 class="anchored" data-anchor-id="evaluate_clustering_multiple_labels">evaluate_clustering_multiple_labels</h3>
+<blockquote class="blockquote">
+<pre><code> evaluate_clustering_multiple_labels
+                                      (latent_representations:numpy.ndarra
+                                      y, list_of_labels:list,
+                                      clustering_method:str='kmeans',
+                                      label_names:list=None, **kwargs)</code></pre>
+</blockquote>
+<p><em>Evaluates the clustering quality of the latent representations for one or multiple sets of labels.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>latent_representations</td>
+<td>ndarray</td>
+<td></td>
+<td>The latent space data.</td>
+</tr>
+<tr class="even">
+<td>list_of_labels</td>
+<td>list</td>
+<td></td>
+<td>List of true labels or a single true labels array.</td>
+</tr>
+<tr class="odd">
+<td>clustering_method</td>
+<td>str</td>
+<td>kmeans</td>
+<td>The clustering algorithm to use (‘kmeans’, ‘gmm’, ‘dbscan’).</td>
+</tr>
+<tr class="even">
+<td>label_names</td>
+<td>list</td>
+<td>None</td>
+<td>Optional names for the label sets.</td>
+</tr>
+<tr class="odd">
+<td>kwargs</td>
+<td>VAR_KEYWORD</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>dict</strong></td>
+<td></td>
+<td><strong>Returns a dictionary with clustering metrics.</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="physical-distances" class="level2">
+<h2 class="anchored" data-anchor-id="physical-distances">Physical Distances</h2>
+<section id="euclidean" class="level3">
+<h3 class="anchored" data-anchor-id="euclidean">Euclidean</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L280" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="euclidean_distance" class="level3">
+<h3 class="anchored" data-anchor-id="euclidean_distance">euclidean_distance</h3>
+<blockquote class="blockquote">
+<pre><code> euclidean_distance (point1:numpy.ndarray, point2:numpy.ndarray)</code></pre>
+</blockquote>
+</section>
+<section id="manhattan" class="level3">
+<h3 class="anchored" data-anchor-id="manhattan">Manhattan</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L284" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="manhattan_distance" class="level3">
+<h3 class="anchored" data-anchor-id="manhattan_distance">manhattan_distance</h3>
+<blockquote class="blockquote">
+<pre><code> manhattan_distance (point1:numpy.ndarray, point2:numpy.ndarray)</code></pre>
+</blockquote>
+</section>
+<section id="cosine" class="level3">
+<h3 class="anchored" data-anchor-id="cosine">Cosine</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L288" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="cosine_distance" class="level3">
+<h3 class="anchored" data-anchor-id="cosine_distance">cosine_distance</h3>
+<blockquote class="blockquote">
+<pre><code> cosine_distance (point1:numpy.ndarray, point2:numpy.ndarray)</code></pre>
+</blockquote>
+</section>
+<section id="dynamic-time-warping" class="level3">
+<h3 class="anchored" data-anchor-id="dynamic-time-warping">Dynamic Time Warping</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L298" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="dtw_distance" class="level3">
+<h3 class="anchored" data-anchor-id="dtw_distance">dtw_distance</h3>
+<blockquote class="blockquote">
+<pre><code> dtw_distance (point1:numpy.ndarray, point2:numpy.ndarray)</code></pre>
+</blockquote>
+</section>
+<section id="generic" class="level3">
+<h3 class="anchored" data-anchor-id="generic">Generic</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L311" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="calculate_distance" class="level3">
+<h3 class="anchored" data-anchor-id="calculate_distance">calculate_distance</h3>
+<blockquote class="blockquote">
+<pre><code> calculate_distance (point1:numpy.ndarray, point2:numpy.ndarray,
+                     distance_metric:str='euclidean')</code></pre>
+</blockquote>
+<p>*Calculates the distance between two points based on the specified distance metric.</p>
+<p>:param point1: First data point array. :param point2: Second data point array. :param distance_metric: The distance metric to use (‘euclidean’, ‘manhattan’, ‘cosine’, ‘dtw’). :return: Distance as a float.*</p>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L332" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="calculate_pairwise_distances" class="level3">
+<h3 class="anchored" data-anchor-id="calculate_pairwise_distances">calculate_pairwise_distances</h3>
+<blockquote class="blockquote">
+<pre><code> calculate_pairwise_distances (array1:numpy.ndarray, array2:numpy.ndarray,
+                               distance_metric:str='euclidean')</code></pre>
+</blockquote>
+<p>*Calculates the distance between corresponding pairs of points from two arrays using the specified distance metric.</p>
+<p>:param array1: A 2D numpy array where each row represents a data point. :param array2: A 2D numpy array where each row represents a data point. :param distance_metric: The distance metric to use (‘euclidean’, ‘manhattan’, ‘cosine’, ‘dtw’). :return: A 1D numpy array containing the distances between corresponding pairs.*</p>
+</section>
+<section id="batch" class="level3">
+<h3 class="anchored" data-anchor-id="batch">Batch</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L352" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="calculate_distances_batch" class="level3">
+<h3 class="anchored" data-anchor-id="calculate_distances_batch">calculate_distances_batch</h3>
+<blockquote class="blockquote">
+<pre><code> calculate_distances_batch (single_points:numpy.ndarray,
+                            points_array:numpy.ndarray,
+                            distance_metric:str='euclidean')</code></pre>
+</blockquote>
+<p>*Calculates the distances between single data points and an array of data points based on the specified distance metric.</p>
+<p>:param single_points: Single data point array or a batch of data points. :param points_array: Array of data points to compare against. :param distance_metric: The distance metric to use (‘euclidean’, ‘manhattan’, ‘cosine’, ‘dtw’). :return: Array of distances.*</p>
+</section>
+<section id="nearest-points" class="level3">
+<h3 class="anchored" data-anchor-id="nearest-points">Nearest Points</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L373" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="find_nearest_points" class="level3">
+<h3 class="anchored" data-anchor-id="find_nearest_points">find_nearest_points</h3>
+<blockquote class="blockquote">
+<pre><code> find_nearest_points (single_point:numpy.ndarray,
+                      points_array:numpy.ndarray, n:int,
+                      distance_metric:str='euclidean')</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L390" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="find_nearest_points_batch" class="level3">
+<h3 class="anchored" data-anchor-id="find_nearest_points_batch">find_nearest_points_batch</h3>
+<blockquote class="blockquote">
+<pre><code> find_nearest_points_batch (single_points:numpy.ndarray,
+                            points_array:numpy.ndarray, n:int,
+                            distance_metric:str='euclidean')</code></pre>
+</blockquote>
+<p>*Finds the nearest indices and distances for a batch of single data points to an array of data points based on the specified distance metric.</p>
+<p>:param single_points: Array of single data points (2D array). :param points_array: Array of data points to compare against (2D array). :param n: Number of nearest points to retrieve for each single point. :param distance_metric: The distance metric to use (‘euclidean’, ‘manhattan’, ‘cosine’, ‘dtw’). :return: Tuple of nearest indices and nearest distances for each single point.*</p>
+</section>
+</section>
+<section id="orbits-distance" class="level2">
+<h2 class="anchored" data-anchor-id="orbits-distance">Orbits Distance</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L411" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="orbits_distances" class="level3">
+<h3 class="anchored" data-anchor-id="orbits_distances">orbits_distances</h3>
+<blockquote class="blockquote">
+<pre><code> orbits_distances (orbit_data1:numpy.ndarray, orbit_data2:numpy.ndarray,
+                   distance_metric:str)</code></pre>
+</blockquote>
+<p>*Calculates distances between orbits in two datasets using a specified distance metric.</p>
+<p>This function is robust to input shapes. If an input is a 2D array (representing a single orbit), it is automatically converted to a 3D array with one sample. This allows for flexible comparisons between single or multiple orbits.</p>
+<p>:param orbit_data1: First set of orbits (shape: [n_samples1, n_features, n_time_steps] or [n_features, n_time_steps]). :param orbit_data2: Second set of orbits or a single orbit. Shape: [n_samples2, n_features, n_time_steps] or [n_features, n_time_steps]. :param distance_metric: A string representing the distance metric to use (‘euclidean’, ‘manhattan’, ‘cosine’, ‘dtw’).</p>
+<table class="caption-top table">
+<caption>return: NumPy array of distances. - If one input is single and the other is multiple: - Shape: [n_samples1] or [n_samples2] - If both inputs are multiple: - Shape: [n_samples1, n_samples2]*</caption>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>orbit_data1</td>
+<td>ndarray</td>
+<td>Shape: [n_samples1, n_features, n_time_steps] or [n_features, n_time_steps]</td>
+</tr>
+<tr class="even">
+<td>orbit_data2</td>
+<td>ndarray</td>
+<td>Shape: [n_samples2, n_features, n_time_steps] or [n_features, n_time_steps]</td>
+</tr>
+<tr class="odd">
+<td>distance_metric</td>
+<td>str</td>
+<td>String representing the distance metric (‘euclidean’, ‘manhattan’, ‘cosine’, ‘dtw’)</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>ndarray</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="get-the-closest-orbits" class="level3">
+<h3 class="anchored" data-anchor-id="get-the-closest-orbits">Get the Closest Orbits</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L494" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="find_nearest_orbits" class="level3">
+<h3 class="anchored" data-anchor-id="find_nearest_orbits">find_nearest_orbits</h3>
+<blockquote class="blockquote">
+<pre><code> find_nearest_orbits (single_orbit:numpy.ndarray,
+                      orbit_data:numpy.ndarray, n:int,
+                      distance_metric:str='euclidean')</code></pre>
+</blockquote>
+<p>*Finds the n closest orbits in orbit_data to the single_orbit based on the specified distance metric.</p>
+<p>:param single_orbit: The reference orbit (shape: [n_features, n_time_steps]). :param orbit_data: The dataset of orbits (shape: [n_samples, n_features, n_time_steps]). :param n: The number of closest orbits to return. :param distance_metric: The distance metric to use (‘euclidean’, ‘manhattan’, ‘cosine’, ‘dtw’). Defaults to ‘euclidean’. :return: A tuple containing: - Indices of the n closest orbits in orbit_data. - Distances of the n closest orbits.*</p>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L533" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="find_nearest_orbits_batch" class="level3">
+<h3 class="anchored" data-anchor-id="find_nearest_orbits_batch">find_nearest_orbits_batch</h3>
+<blockquote class="blockquote">
+<pre><code> find_nearest_orbits_batch (single_orbits:numpy.ndarray,
+                            orbit_data:numpy.ndarray, n:int,
+                            distance_metric:str='euclidean')</code></pre>
+</blockquote>
+<p>*Iteratively finds the n closest orbits in orbit_data for each orbit in single_orbits.</p>
+<table class="caption-top table">
+<caption>param single_orbits: The reference orbits (shape: [num_single_orbits, n_features, n_time_steps]). :param orbit_data: The dataset of orbits to search within (shape: [n_samples, n_features, n_time_steps]). :param n: The number of closest orbits to return for each single_orbit. :param distance_metric: The distance metric to use (‘euclidean’, ‘manhattan’, ‘cosine’, ‘dtw’). Defaults to ‘euclidean’. :return: A tuple containing: - A 2D array of shape [num_single_orbits, n] with indices of the n closest orbits. - A 2D array of shape [num_single_orbits, n] with distances of the n closest orbits.*</caption>
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>single_orbits</td>
+<td>ndarray</td>
+<td></td>
+<td>Shape: [num_single_orbits, n_features, n_time_steps]</td>
+</tr>
+<tr class="even">
+<td>orbit_data</td>
+<td>ndarray</td>
+<td></td>
+<td>Shape: [n_samples, n_features, n_time_steps]</td>
+</tr>
+<tr class="odd">
+<td>n</td>
+<td>int</td>
+<td></td>
+<td>Number of nearest orbits to find</td>
+</tr>
+<tr class="even">
+<td>distance_metric</td>
+<td>str</td>
+<td>euclidean</td>
+<td>Distance metric</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>tuple</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="calculate-pairwise-distances" class="level3">
+<h3 class="anchored" data-anchor-id="calculate-pairwise-distances">Calculate Pairwise distances</h3>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L582" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="calculate_pairwise_orbit_distances" class="level3">
+<h3 class="anchored" data-anchor-id="calculate_pairwise_orbit_distances">calculate_pairwise_orbit_distances</h3>
+<blockquote class="blockquote">
+<pre><code> calculate_pairwise_orbit_distances (orbit_data1:numpy.ndarray,
+                                     orbit_data2:numpy.ndarray,
+                                     distance_metric:str='euclidean')</code></pre>
+</blockquote>
+<p>*Calculates the distance between corresponding orbits in two orbit datasets.</p>
+<table class="caption-top table">
+<caption>param orbit_data1: The first set of orbits (shape: [n_samples, n_features, n_time_steps]). :param orbit_data2: The second set of orbits (shape: [n_samples, n_features, n_time_steps]). :param distance_metric: The distance metric to use (‘euclidean’, ‘manhattan’, ‘cosine’, ‘dtw’). Defaults to ‘euclidean’. :return: An array of distances with shape [n_samples].*</caption>
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>orbit_data1</td>
+<td>ndarray</td>
+<td></td>
+<td>Shape: [n_samples, n_features, n_time_steps]</td>
+</tr>
+<tr class="even">
+<td>orbit_data2</td>
+<td>ndarray</td>
+<td></td>
+<td>Shape: [n_samples, n_features, n_time_steps]</td>
+</tr>
+<tr class="odd">
+<td>distance_metric</td>
+<td>str</td>
+<td>euclidean</td>
+<td>Distance metric</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>ndarray</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="evaluate-distance-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="evaluate-distance-metrics">Evaluate Distance Metrics</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L620" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="evaluate_distance_metrics_and_clustering" class="level3">
+<h3 class="anchored" data-anchor-id="evaluate_distance_metrics_and_clustering">evaluate_distance_metrics_and_clustering</h3>
+<blockquote class="blockquote">
+<pre><code> evaluate_distance_metrics_and_clustering (orbit_data:numpy.ndarray,
+                                           true_labels:numpy.ndarray,
+                                           distance_metrics:list=None, clu
+                                           stering_algorithms:list=None,
+                                           evaluation_metrics:list=None,
+                                           n_clusters:int=None,
+                                           plot_results:bool=True)</code></pre>
+</blockquote>
+<p>*Evaluates specified distance metrics and clustering algorithms on the given orbit data.</p>
+<p>:param orbit_data: The orbit data as either: - multivariate time series (shape: [n_samples, n_features, n_time_steps]) - point data (shape: [n_samples, n_features]) :param true_labels: Array of true labels for the orbit data. :param distance_metrics: List of strings specifying distance metrics to use. If None, all available metrics are used. :param clustering_algorithms: List of strings specifying clustering algorithms to use. If None, all available algorithms are used. :param evaluation_metrics: List of strings specifying evaluation metrics to use. If None, all available metrics are used. :param n_clusters: Number of clusters for algorithms that require it. If None, it will be inferred from labels. :param plot_results: If True, plot heatmaps of the results. :return: A dictionary containing results for all combinations of metrics and clustering algorithms.*</p>
+</section>
+</section>
+<section id="machine-learning" class="level2">
+<h2 class="anchored" data-anchor-id="machine-learning">Machine Learning</h2>
+<hr>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/evaluation.py#L757" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="machine_learning_evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="machine_learning_evaluation">machine_learning_evaluation</h3>
+<blockquote class="blockquote">
+<pre><code> machine_learning_evaluation (X, y, print_results=False,
+                              return_best_model=False, scale_data=True)</code></pre>
+</blockquote>
+<p>*Evaluates multiple machine learning algorithms on the provided dataset.</p>
+<p>Parameters: - X: Features, expected to be a 2D array. If higher dimensions, the function attempts to reshape. - y: Target labels. - print_results: If True, visualizes the evaluation results. - return_best_model: If True, returns the best model based on accuracy. - scale_data: If True, scales the features using StandardScaler.</p>
+<p>Returns: - results: Dictionary containing accuracy and classification report for each algorithm. - best_model: The fitted model with the highest accuracy if return_best_model is True.*</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/alvaro-francisco-gil\.github\.io\/orbit-generation");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

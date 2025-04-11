@@ -17,3 +17,4 @@ website:
       - 12_convergence.ipynb
       - 13_latent_space.ipynb
       - 14_paper_specific.ipynb
+      - 15_path_utils.ipynb
