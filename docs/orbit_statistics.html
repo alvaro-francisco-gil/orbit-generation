@@ -108,12 +108,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta property="og:description" content="Scripts to generate statistics out of orbit data">
 <meta property="og:image" content="https://alvaro-francisco-gil.github.io/orbit-generation/04_orbit_statistics_files/figure-html/cell-10-output-1.png">
 <meta property="og:site_name" content="orbit-generation">
-<meta property="og:image:height" content="955">
+<meta property="og:image:height" content="1430">
 <meta property="og:image:width" content="1489">
 <meta name="twitter:title" content="Statistics – orbit-generation">
 <meta name="twitter:description" content="Scripts to generate statistics out of orbit data">
 <meta name="twitter:image" content="https://alvaro-francisco-gil.github.io/orbit-generation/04_orbit_statistics_files/figure-html/cell-10-output-1.png">
-<meta name="twitter:image-height" content="955">
+<meta name="twitter:image-height" content="1430">
 <meta name="twitter:image-width" content="1489">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -243,12 +243,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Paper</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./path_utils.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Path Utils</span></a>
   </div>
@@ -316,7 +310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>orbit_data <span class="op">=</span> get_example_orbit_data()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>(200, 6, 300)</code></pre>
+<pre><code>(400, 7, 100)</code></pre>
 </div>
 </div>
 <section id="simple-statistics" class="level2">
@@ -328,9 +322,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <pre><code> calculate_overall_spatial_statistics (orbits:numpy.ndarray)</code></pre>
 </blockquote>
-<p>*Calculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.</p>
-<p>Parameters: - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6 or 7, number_of_time_instants) containing orbit data.</p>
-<p>Returns: - np.ndarray: A NumPy array containing statistics for each scalar.*</p>
+<p><em>Calculate the overall min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants and orbits.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>orbits</td>
+<td>ndarray</td>
+<td>Array of shape (number_of_orbits, 6 or 7, number_of_time_instants) containing orbit data</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>ndarray</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <div id="cell-6" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>orbits <span class="op">=</span> np.array([</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    [[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>], [<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>], [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>], [<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>]],  <span class="co"># Orbit 1</span></span>
@@ -360,31 +378,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    test_eq(stats[i, <span class="dv">5</span>], expected_stats[i, <span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L55" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L51" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="calculate_per_orbit_spatial_statistics" class="level3">
 <h3 class="anchored" data-anchor-id="calculate_per_orbit_spatial_statistics">calculate_per_orbit_spatial_statistics</h3>
 <blockquote class="blockquote">
 <pre><code> calculate_per_orbit_spatial_statistics (orbits:numpy.ndarray)</code></pre>
 </blockquote>
-<p>*Calculate per-orbit min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants.</p>
-<p>Parameters: - orbits (np.ndarray): A numpy array of shape (number_of_orbits, 6 or 7, number_of_time_instants) containing orbit data.</p>
-<p>Returns: - np.ndarray: A NumPy array of shape (number_of_orbits, number_of_scalars, number_of_stats) containing statistics for each scalar per orbit.*</p>
+<p><em>Calculate per-orbit min, mean, max, and percentile statistics for each scalar (position and velocity in X, Y, Z) across all time instants.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>orbits</td>
+<td>ndarray</td>
+<td>A numpy array of shape (number_of_orbits, 6 or 7, number_of_time_instants) containing orbit data</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>ndarray</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="plot-time" class="level2">
 <h2 class="anchored" data-anchor-id="plot-time">Plot Time</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L106" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L95" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="plot_time_increments" class="level3">
 <h3 class="anchored" data-anchor-id="plot_time_increments">plot_time_increments</h3>
 <blockquote class="blockquote">
 <pre><code> plot_time_increments (orbit_dataset:numpy.ndarray,
-                       orbits_to_plot:List[int]=None,
+                       orbits_to_plot:Optional[List[int]]=None,
                        show_legend:bool=True)</code></pre>
 </blockquote>
-<p>*Plots the time as a function to visualize how it increments for each orbit.</p>
-<p>Parameters: orbit_dataset (np.ndarray): A 3D numpy array where the first dimension is the number of orbits, the second dimension contains 7 scalars (time, posx, posy, posz, velx, vely, velz), and the third dimension is the time steps. orbits_to_plot (list[int], optional): List of integers referring to the orbits to plot. If None, plots all orbits. show_legend (bool, optional): Whether to display the legend. Default is True.*</p>
+<p><em>Plots the time as a function to visualize how it increments for each orbit.</em></p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
@@ -409,7 +450,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td>orbits_to_plot</td>
-<td>List</td>
+<td>Optional</td>
 <td>None</td>
 <td>Optional list of integers referring to the orbits to plot</td>
 </tr>
@@ -432,25 +473,94 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-histograms" class="level2">
 <h2 class="anchored" data-anchor-id="plot-histograms">Plot Histograms</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L143" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L125" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="plot_orbit_data_lengths" class="level3">
 <h3 class="anchored" data-anchor-id="plot_orbit_data_lengths">plot_orbit_data_lengths</h3>
 <blockquote class="blockquote">
-<pre><code> plot_orbit_data_lengths (orbit_data, key_range=(1, 36072), dimension=0,
-                          bins=30, color='blue', plot=True,
-                          title='Histogram of Orbits Time Steps')</code></pre>
+<pre><code> plot_orbit_data_lengths (orbit_data:Dict[int,numpy.ndarray],
+                          key_range:Tuple[int,int]=(1, 36072),
+                          dimension:int=0, bins:int=30, color:str='blue',
+                          plot:bool=True, title:str='Histogram of Orbits
+                          Time Steps')</code></pre>
 </blockquote>
+<p><em>Analyzes and optionally plots the distribution of time steps across multiple orbits. Returns the list of lengths if plot=False, otherwise displays histogram and returns None.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>orbit_data</td>
+<td>Dict</td>
+<td></td>
+<td>Dictionary mapping orbit IDs to orbit data arrays</td>
+</tr>
+<tr class="even">
+<td>key_range</td>
+<td>Tuple</td>
+<td>(1, 36072)</td>
+<td>Range of orbit IDs to analyze (start, end)</td>
+</tr>
+<tr class="odd">
+<td>dimension</td>
+<td>int</td>
+<td>0</td>
+<td>Dimension of the orbit data to measure length</td>
+</tr>
+<tr class="even">
+<td>bins</td>
+<td>int</td>
+<td>30</td>
+<td>Number of bins for histogram</td>
+</tr>
+<tr class="odd">
+<td>color</td>
+<td>str</td>
+<td>blue</td>
+<td>Color of histogram bars</td>
+</tr>
+<tr class="even">
+<td>plot</td>
+<td>bool</td>
+<td>True</td>
+<td>Whether to plot the histogram</td>
+</tr>
+<tr class="odd">
+<td>title</td>
+<td>str</td>
+<td>Histogram of Orbits Time Steps</td>
+<td>Title of the plot</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>Optional</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L171" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L164" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_histograms_position" class="level3">
 <h3 class="anchored" data-anchor-id="plot_histograms_position">plot_histograms_position</h3>
 <blockquote class="blockquote">
-<pre><code> plot_histograms_position (data:numpy.ndarray, save_path:str=None,
+<pre><code> plot_histograms_position (data:numpy.ndarray,
+                           save_path:Optional[str]=None,
                            last_time_elements:bool=True)</code></pre>
 </blockquote>
-<p>*Plots histograms for the scalar values (position and velocity in X, Y, Z, and optionally time) across all orbits and time points. Handles arrays with 6 or 7 scalar dimensions, with the 7th being ‘time’.</p>
-<p>Parameters: - data (np.ndarray): The orbit data array. - save_path (str, optional): If provided, the plot will be saved to this file path. - last_time_elements (bool): If True, plot only the last elements of the time vectors for the time histogram.*</p>
+<p><em>Plots histograms for the scalar values (position and velocity in X, Y, Z, and optionally time) across all orbits and time points. Handles arrays with 6 or 7 scalar dimensions, with the 7th being ‘time’.</em></p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
@@ -471,19 +581,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>data</td>
 <td>ndarray</td>
 <td></td>
-<td>The orbit data array of shape (num_orbits, num_scalars, num_time_points).</td>
+<td>The orbit data array of shape (num_orbits, num_scalars, num_time_points)</td>
 </tr>
 <tr class="even">
 <td>save_path</td>
-<td>str</td>
+<td>Optional</td>
 <td>None</td>
-<td>Optional path to save the plot image.</td>
+<td>Optional path to save the plot image</td>
 </tr>
 <tr class="odd">
 <td>last_time_elements</td>
 <td>bool</td>
 <td>True</td>
-<td>Whether to plot only the last elements of the time vectors.</td>
+<td>Whether to plot only the last elements of the time vectors</td>
 </tr>
 <tr class="even">
 <td><strong>Returns</strong></td>
@@ -504,7 +614,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L222" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/stats.py#L210" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="plot_histograms_comparison" class="level3">
 <h3 class="anchored" data-anchor-id="plot_histograms_comparison">plot_histograms_comparison</h3>

@@ -203,12 +203,6 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Paper</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./path_utils.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Path Utils</span></a>
   </div>
@@ -299,7 +293,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="sampling" class="level2">
 <h2 class="anchored" data-anchor-id="sampling">Sampling</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L23" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L24" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="sampling-1" class="level3">
 <h3 class="anchored" data-anchor-id="sampling-1">Sampling</h3>
 <blockquote class="blockquote">
@@ -328,7 +322,7 @@ class Model(nn.Module):
 <section id="callback" class="level2">
 <h2 class="anchored" data-anchor-id="callback">Callback</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L30" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L31" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="vaelosshistory" class="level3">
 <h3 class="anchored" data-anchor-id="vaelosshistory">VAELossHistory</h3>
 <blockquote class="blockquote">
@@ -341,7 +335,7 @@ class Model(nn.Module):
 <section id="vaes-encoders-and-decoders" class="level2">
 <h2 class="anchored" data-anchor-id="vaes-encoders-and-decoders">VAEs Encoders and Decoders</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L110" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L111" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="vaeencoder" class="level3">
 <h3 class="anchored" data-anchor-id="vaeencoder">VAEEncoder</h3>
 <blockquote class="blockquote">
@@ -349,7 +343,7 @@ class Model(nn.Module):
 </blockquote>
 <p><em>Helper class that provides a standard way to create an ABC using inheritance.</em></p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L129" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L130" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="vaedecoder" class="level3">
 <h3 class="anchored" data-anchor-id="vaedecoder">VAEDecoder</h3>
@@ -365,7 +359,7 @@ class Model(nn.Module):
 <section id="encoder" class="level5">
 <h5 class="anchored" data-anchor-id="encoder">Encoder</h5>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L148" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L149" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 </section>
 </section>
@@ -379,7 +373,7 @@ class Model(nn.Module):
 <section id="decoder" class="level5">
 <h5 class="anchored" data-anchor-id="decoder">Decoder</h5>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L189" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L190" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 </section>
 <section id="conv5decoder" class="level3">
@@ -392,23 +386,64 @@ class Model(nn.Module):
 <section id="getter" class="level5">
 <h5 class="anchored" data-anchor-id="getter">Getter</h5>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L229" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L230" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 </section>
 <section id="get_conv5_vae_components" class="level3">
 <h3 class="anchored" data-anchor-id="get_conv5_vae_components">get_conv5_vae_components</h3>
 <blockquote class="blockquote">
-<pre><code> get_conv5_vae_components (seq_len, feat_dim, latent_dim, **kwargs)</code></pre>
+<pre><code> get_conv5_vae_components (seq_len:int, feat_dim:int, latent_dim:int,
+                           dropout_rate:float=0.2)</code></pre>
 </blockquote>
-<p>*Returns an instance of Conv5Encoder and Conv5Decoder based on the given parameters.</p>
-<p>Args: seq_len (int): Length of input sequence. feat_dim (int): Dimensionality of input features. latent_dim (int): Dimensionality of the latent space. **kwargs: Additional keyword arguments to be passed to the encoder and decoder.</p>
-<p>Returns: encoder (Conv5Encoder): The encoder part of the VAE. decoder (Conv5Decoder): The decoder part of the VAE.*</p>
+<p><em>Creates and returns encoder and decoder components for a convolutional VAE architecture.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>seq_len</td>
+<td>int</td>
+<td></td>
+<td>Length of input sequence</td>
+</tr>
+<tr class="even">
+<td>feat_dim</td>
+<td>int</td>
+<td></td>
+<td>Dimensionality of input features</td>
+</tr>
+<tr class="odd">
+<td>latent_dim</td>
+<td>int</td>
+<td></td>
+<td>Dimensionality of the latent space</td>
+</tr>
+<tr class="even">
+<td>dropout_rate</td>
+<td>float</td>
+<td>0.2</td>
+<td>Dropout rate for regularization</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>tuple</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <section id="legit-tsgm" class="level4">
 <h4 class="anchored" data-anchor-id="legit-tsgm">Legit Tsgm</h4>
 <section id="encoder-1" class="level5">
 <h5 class="anchored" data-anchor-id="encoder-1">Encoder</h5>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L250" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L244" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 </section>
 </section>
@@ -422,7 +457,7 @@ class Model(nn.Module):
 <section id="decoder-1" class="level5">
 <h5 class="anchored" data-anchor-id="decoder-1">Decoder</h5>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L291" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L285" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 </section>
 <section id="conv5decoderlegittsgm" class="level3">
@@ -435,24 +470,65 @@ class Model(nn.Module):
 <section id="getter-1" class="level5">
 <h5 class="anchored" data-anchor-id="getter-1">Getter</h5>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L329" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L323" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 </section>
 <section id="get_conv5_legit_tsgm_vae_components" class="level3">
 <h3 class="anchored" data-anchor-id="get_conv5_legit_tsgm_vae_components">get_conv5_legit_tsgm_vae_components</h3>
 <blockquote class="blockquote">
-<pre><code> get_conv5_legit_tsgm_vae_components (seq_len, feat_dim, latent_dim,
-                                      **kwargs)</code></pre>
+<pre><code> get_conv5_legit_tsgm_vae_components (seq_len:int, feat_dim:int,
+                                      latent_dim:int,
+                                      dropout_rate:float=0.2)</code></pre>
 </blockquote>
-<p>*Returns an instance of Conv5Encoder and Conv5Decoder based on the given parameters.</p>
-<p>Args: seq_len (int): Length of input sequence. feat_dim (int): Dimensionality of input features. latent_dim (int): Dimensionality of the latent space. **kwargs: Additional keyword arguments to be passed to the encoder and decoder.</p>
-<p>Returns: encoder (Conv5Encoder): The encoder part of the VAE. decoder (Conv5Decoder): The decoder part of the VAE.*</p>
+<p><em>Creates and returns encoder and decoder components for a Conv5 VAE model.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>seq_len</td>
+<td>int</td>
+<td></td>
+<td>Length of input sequence</td>
+</tr>
+<tr class="even">
+<td>feat_dim</td>
+<td>int</td>
+<td></td>
+<td>Dimensionality of input features</td>
+</tr>
+<tr class="odd">
+<td>latent_dim</td>
+<td>int</td>
+<td></td>
+<td>Dimensionality of the latent space</td>
+</tr>
+<tr class="even">
+<td>dropout_rate</td>
+<td>float</td>
+<td>0.2</td>
+<td>Dropout rate for regularization</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>tuple</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="inception-time" class="level3">
 <h3 class="anchored" data-anchor-id="inception-time">Inception Time</h3>
 <p>The implemetation in the following cell is taken from https://github.com/TheMrGhostman/InceptionTime-Pytorch/blob/master/inception.py , the next cell is an adjustment for our problem</p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L444" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L431" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="inceptionblock" class="level3">
 <h3 class="anchored" data-anchor-id="inceptionblock">InceptionBlock</h3>
@@ -480,7 +556,7 @@ class Model(nn.Module):
 <p>.. note:: As per the example above, an <code>__init__()</code> call to the parent class must be made before assignment on the child.</p>
 <p>:ivar training: Boolean represents whether this module is in training or evaluation mode. :vartype training: bool*</p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L359" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L346" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="inception" class="level3">
 <h3 class="anchored" data-anchor-id="inception">Inception</h3>
@@ -508,7 +584,7 @@ class Model(nn.Module):
 <p>.. note:: As per the example above, an <code>__init__()</code> call to the parent class must be made before assignment on the child.</p>
 <p>:ivar training: Boolean represents whether this module is in training or evaluation mode. :vartype training: bool*</p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L355" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L342" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="pass_through" class="level3">
 <h3 class="anchored" data-anchor-id="pass_through">pass_through</h3>
@@ -516,7 +592,7 @@ class Model(nn.Module):
 <pre><code> pass_through (X)</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L350" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L337" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="correct_sizes" class="level3">
 <h3 class="anchored" data-anchor-id="correct_sizes">correct_sizes</h3>
@@ -524,7 +600,7 @@ class Model(nn.Module):
 <pre><code> correct_sizes (sizes)</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L682" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L669" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="inceptiontransposeblockwithoutpool" class="level3">
 <h3 class="anchored" data-anchor-id="inceptiontransposeblockwithoutpool">InceptionTransposeBlockWithoutPool</h3>
@@ -553,7 +629,7 @@ class Model(nn.Module):
 <p>.. note:: As per the example above, an <code>__init__()</code> call to the parent class must be made before assignment on the child.</p>
 <p>:ivar training: Boolean represents whether this module is in training or evaluation mode. :vartype training: bool*</p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L623" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L610" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="inceptiontransposewithoutpool" class="level3">
 <h3 class="anchored" data-anchor-id="inceptiontransposewithoutpool">InceptionTransposeWithoutPool</h3>
@@ -581,7 +657,7 @@ class Model(nn.Module):
 <p>.. note:: As per the example above, an <code>__init__()</code> call to the parent class must be made before assignment on the child.</p>
 <p>:ivar training: Boolean represents whether this module is in training or evaluation mode. :vartype training: bool*</p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L572" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L559" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="inceptionblockwithoutpool" class="level3">
 <h3 class="anchored" data-anchor-id="inceptionblockwithoutpool">InceptionBlockWithoutPool</h3>
@@ -610,7 +686,7 @@ class Model(nn.Module):
 <p>.. note:: As per the example above, an <code>__init__()</code> call to the parent class must be made before assignment on the child.</p>
 <p>:ivar training: Boolean represents whether this module is in training or evaluation mode. :vartype training: bool*</p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L506" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L493" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="inceptionwithoutpool" class="level3">
 <h3 class="anchored" data-anchor-id="inceptionwithoutpool">InceptionWithoutPool</h3>
@@ -639,7 +715,7 @@ class Model(nn.Module):
 <section id="encoder-2" class="level4">
 <h4 class="anchored" data-anchor-id="encoder-2">Encoder</h4>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L732" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L719" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 </section>
 <section id="inceptiontimevaeencoder" class="level3">
@@ -651,7 +727,7 @@ class Model(nn.Module):
 </blockquote>
 <p><em>Helper class that provides a standard way to create an ABC using inheritance.</em></p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L793" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L780" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="wpinceptiontimevaeencoder" class="level3">
 <h3 class="anchored" data-anchor-id="wpinceptiontimevaeencoder">WPInceptionTimeVAEEncoder</h3>
@@ -664,7 +740,7 @@ class Model(nn.Module):
 <section id="decoder-2" class="level4">
 <h4 class="anchored" data-anchor-id="decoder-2">Decoder</h4>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L851" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L838" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 </section>
 <section id="wpinceptiontimevaedecoder" class="level3">
@@ -678,24 +754,78 @@ class Model(nn.Module):
 <section id="getter-2" class="level4">
 <h4 class="anchored" data-anchor-id="getter-2">Getter</h4>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L901" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L888" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 </section>
 <section id="get_inception_time_vae_components" class="level3">
 <h3 class="anchored" data-anchor-id="get_inception_time_vae_components">get_inception_time_vae_components</h3>
 <blockquote class="blockquote">
-<pre><code> get_inception_time_vae_components (seq_len, feat_dim, latent_dim,
-                                    without_pooling=True, **model_kwargs)</code></pre>
+<pre><code> get_inception_time_vae_components (seq_len:int, feat_dim:int,
+                                    latent_dim:int,
+                                    without_pooling:bool=True,
+                                    **model_kwargs:dict)</code></pre>
 </blockquote>
-<p>*Returns an instance of InceptionTimeVAEEncoder or WPInceptionTimeVAEEncoder and InceptionTimeVAEDecoder based on the given parameters.</p>
-<p>Args: seq_len (int): Length of input sequence. feat_dim (int): Dimensionality of input features. latent_dim (int): Dimensionality of the latent space. model_kwargs (dict): Dictionary containing model-specific keyword arguments. without_pooling (bool): If True, returns WPInceptionTimeVAEEncoder instead of InceptionTimeVAEEncoder.</p>
-<p>Returns: encoder (InceptionTimeVAEEncoder or WPInceptionTimeVAEEncoder): The encoder part of the VAE. decoder (InceptionTimeVAEDecoder): The decoder part of the VAE.*</p>
+<p><em>Returns encoder and decoder components for an InceptionTime-based VAE architecture.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>seq_len</td>
+<td>int</td>
+<td></td>
+<td>Length of input sequence</td>
+</tr>
+<tr class="even">
+<td>feat_dim</td>
+<td>int</td>
+<td></td>
+<td>Dimensionality of input features</td>
+</tr>
+<tr class="odd">
+<td>latent_dim</td>
+<td>int</td>
+<td></td>
+<td>Dimensionality of the latent space</td>
+</tr>
+<tr class="even">
+<td>without_pooling</td>
+<td>bool</td>
+<td>True</td>
+<td>If True, returns WPInceptionTimeVAEEncoder instead of InceptionTimeVAEEncoder</td>
+</tr>
+<tr class="odd">
+<td>model_kwargs</td>
+<td>dict</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>tuple</strong></td>
+<td></td>
+<td><strong>Dictionary containing model-specific keyword arguments</strong></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="cvaes-encoders-and-decoders" class="level2">
 <h2 class="anchored" data-anchor-id="cvaes-encoders-and-decoders">cVAEs Encoders and Decoders</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L947" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L928" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="cvaeencoder" class="level3">
 <h3 class="anchored" data-anchor-id="cvaeencoder">cVAEEncoder</h3>
 <blockquote class="blockquote">
@@ -703,7 +833,7 @@ class Model(nn.Module):
 </blockquote>
 <p><em>Abstract base for a conditional VAE encoder: Encodes data + condition into z_mean, z_log_var</em></p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L967" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L948" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="cvaedecoder" class="level3">
 <h3 class="anchored" data-anchor-id="cvaedecoder">cVAEDecoder</h3>
@@ -715,7 +845,7 @@ class Model(nn.Module):
 <section id="simple-convolutions" class="level3">
 <h3 class="anchored" data-anchor-id="simple-convolutions">Simple Convolutions</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L987" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L968" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="cconv5encoderlegittsgm" class="level3">
 <h3 class="anchored" data-anchor-id="cconv5encoderlegittsgm">cConv5EncoderLegitTsgm</h3>
@@ -725,7 +855,7 @@ class Model(nn.Module):
 </blockquote>
 <p><em>Abstract base for a conditional VAE encoder: Encodes data + condition into z_mean, z_log_var</em></p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L1038" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L1019" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="cconv5decoderlegittsgm" class="level3">
 <h3 class="anchored" data-anchor-id="cconv5decoderlegittsgm">cConv5DecoderLegitTsgm</h3>
@@ -735,17 +865,66 @@ class Model(nn.Module):
 </blockquote>
 <p><em>Abstract base for a conditional VAE decoder: Decodes z + condition into reconstructed data</em></p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L1081" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/architectures.py#L1062" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_conditional_conv5_legit_tsgm_vae_components" class="level3">
 <h3 class="anchored" data-anchor-id="get_conditional_conv5_legit_tsgm_vae_components">get_conditional_conv5_legit_tsgm_vae_components</h3>
 <blockquote class="blockquote">
-<pre><code> get_conditional_conv5_legit_tsgm_vae_components (seq_len, feat_dim,
-                                                  latent_dim, **kwargs)</code></pre>
+<pre><code> get_conditional_conv5_legit_tsgm_vae_components (seq_len:int,
+                                                  feat_dim:int,
+                                                  latent_dim:int,
+                                                  dropout_rate:float=0.2,
+                                                  cond_dim:int=1)</code></pre>
 </blockquote>
-<p>*Returns an instance of Conv5Encoder and Conv5Decoder based on the given parameters.</p>
-<p>Args: seq_len (int): Length of input sequence. feat_dim (int): Dimensionality of input features. latent_dim (int): Dimensionality of the latent space. **kwargs: Additional keyword arguments to be passed to the encoder and decoder.</p>
-<p>Returns: encoder (Conv5Encoder): The encoder part of the VAE. decoder (Conv5Decoder): The decoder part of the VAE.*</p>
+<p><em>Creates encoder and decoder components for a conditional convolutional VAE.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>seq_len</td>
+<td>int</td>
+<td></td>
+<td>Length of input sequence</td>
+</tr>
+<tr class="even">
+<td>feat_dim</td>
+<td>int</td>
+<td></td>
+<td>Dimensionality of input features</td>
+</tr>
+<tr class="odd">
+<td>latent_dim</td>
+<td>int</td>
+<td></td>
+<td>Dimensionality of the latent space</td>
+</tr>
+<tr class="even">
+<td>dropout_rate</td>
+<td>float</td>
+<td>0.2</td>
+<td>Dropout rate for regularization</td>
+</tr>
+<tr class="odd">
+<td>cond_dim</td>
+<td>int</td>
+<td>1</td>
+<td>Dimensionality of conditional input</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>tuple</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 
 
 </section>

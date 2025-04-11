@@ -203,12 +203,6 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Paper</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./path_utils.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Path Utils</span></a>
   </div>
@@ -299,7 +293,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="setup" class="level3">
 <h3 class="anchored" data-anchor-id="setup">Setup</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L28" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L29" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="setup_new_experiment" class="level3">
 <h3 class="anchored" data-anchor-id="setup_new_experiment">setup_new_experiment</h3>
@@ -351,7 +345,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L80" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L81" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="create_experiments_json" class="level3">
 <h3 class="anchored" data-anchor-id="create_experiments_json">create_experiments_json</h3>
@@ -365,7 +359,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="add-metrics" class="level3">
 <h3 class="anchored" data-anchor-id="add-metrics">Add Metrics</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L106" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L107" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="convert_numpy_types" class="level3">
 <h3 class="anchored" data-anchor-id="convert_numpy_types">convert_numpy_types</h3>
@@ -374,7 +368,7 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 <p><em>Recursively convert numpy types and tensors to native Python types for JSON serialization.</em></p>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L126" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L127" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="add_experiment_metrics" class="level3">
 <h3 class="anchored" data-anchor-id="add_experiment_metrics">add_experiment_metrics</h3>
@@ -444,7 +438,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="get-metrics" class="level3">
 <h3 class="anchored" data-anchor-id="get-metrics">Get Metrics</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L184" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L185" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_experiment_parameters" class="level3">
 <h3 class="anchored" data-anchor-id="get_experiment_parameters">get_experiment_parameters</h3>
@@ -499,7 +493,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="get-data" class="level3">
 <h3 class="anchored" data-anchor-id="get-data">Get Data</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L215" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L216" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_experiment_data" class="level3">
 <h3 class="anchored" data-anchor-id="get_experiment_data">get_experiment_data</h3>
@@ -507,21 +501,84 @@ ul.task-list li input[type="checkbox"] {
 <pre><code> get_experiment_data (experiments_folder:str, experiment_id:int,
                       json_file:Optional[str]=None)</code></pre>
 </blockquote>
-<p>*Retrieves all data for an experiment from the JSON file based on the given ID.</p>
-<p>Args: experiments_folder (str): Path to the folder containing all experiments. experiment_id (int): ID to identify the experiment. json_file (Optional[str]): Optional path to the JSON file tracking experiment data.</p>
-<p>Returns: Dict[str, Any]: A dictionary containing all data for the specified experiment.</p>
-<p>Raises: FileNotFoundError: If the experiments folder or JSON file doesn’t exist. ValueError: If the experiment with the specified ID is not found.*</p>
+<p><em>Retrieves all data for an experiment from the JSON file based on the given ID.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>experiments_folder</td>
+<td>str</td>
+<td></td>
+<td>Path to the folder containing all experiments</td>
+</tr>
+<tr class="even">
+<td>experiment_id</td>
+<td>int</td>
+<td></td>
+<td>ID to identify the experiment</td>
+</tr>
+<tr class="odd">
+<td>json_file</td>
+<td>Optional</td>
+<td>None</td>
+<td>Optional path to the JSON file tracking experiment data</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>Dict</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L258" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L247" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="read_json_to_dataframe" class="level3">
 <h3 class="anchored" data-anchor-id="read_json_to_dataframe">read_json_to_dataframe</h3>
 <blockquote class="blockquote">
 <pre><code> read_json_to_dataframe (json_path:str)</code></pre>
 </blockquote>
-<p>*Reads a JSON file containing experiment results and returns a DataFrame.</p>
-<p>Args: - json_path (str): The path to the JSON file.</p>
-<p>Returns: - pd.DataFrame: A DataFrame containing the experiment results.*</p>
+<p><em>Reads a JSON file containing experiment results and returns a DataFrame.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>json_path</td>
+<td>str</td>
+<td>Path to the JSON file containing experiment results</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>DataFrame</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="data-management" class="level2">
@@ -529,123 +586,554 @@ ul.task-list li input[type="checkbox"] {
 <section id="get-paths" class="level3">
 <h3 class="anchored" data-anchor-id="get-paths">Get Paths</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L284" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L268" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="generate_image_paths" class="level3">
 <h3 class="anchored" data-anchor-id="generate_image_paths">generate_image_paths</h3>
 <blockquote class="blockquote">
-<pre><code> generate_image_paths (folder_prefix, unique_ids, file_suffix)</code></pre>
+<pre><code> generate_image_paths (folder_prefix:str, unique_ids:list[int],
+                       file_suffix:str)</code></pre>
 </blockquote>
+<p><em>Generates a list of image file paths based on experiment IDs and folder structure.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>folder_prefix</td>
+<td>str</td>
+<td>Base folder path prefix for each experiment</td>
+</tr>
+<tr class="even">
+<td>unique_ids</td>
+<td>list</td>
+<td>List of experiment IDs</td>
+</tr>
+<tr class="odd">
+<td>file_suffix</td>
+<td>str</td>
+<td>Suffix to append to the generated filenames</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>list</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="get-orbits" class="level3">
 <h3 class="anchored" data-anchor-id="get-orbits">Get Orbits</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L293" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L283" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="concatenate_orbits_from_experiment_folder" class="level3">
 <h3 class="anchored" data-anchor-id="concatenate_orbits_from_experiment_folder">concatenate_orbits_from_experiment_folder</h3>
 <blockquote class="blockquote">
-<pre><code> concatenate_orbits_from_experiment_folder (experiments_folder, seq_len,
-                                            file_suffix='_generated_orbits
-                                            ')</code></pre>
+<pre><code> concatenate_orbits_from_experiment_folder (experiments_folder:str,
+                                            seq_len:int, file_suffix:str='
+                                            _generated_orbits')</code></pre>
 </blockquote>
+<p><em>Concatenates orbit data from multiple experiment folders into a single array.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>experiments_folder</td>
+<td>str</td>
+<td></td>
+<td>Root folder containing experiment subfolders</td>
+</tr>
+<tr class="even">
+<td>seq_len</td>
+<td>int</td>
+<td></td>
+<td>Expected sequence length of orbit data</td>
+</tr>
+<tr class="odd">
+<td>file_suffix</td>
+<td>str</td>
+<td>_generated_orbits</td>
+<td>Suffix for orbit data files</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>ndarray</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="get-tables" class="level3">
 <h3 class="anchored" data-anchor-id="get-tables">Get Tables</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L316" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L312" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="concatenate_csvs_from_experiment_folder" class="level3">
 <h3 class="anchored" data-anchor-id="concatenate_csvs_from_experiment_folder">concatenate_csvs_from_experiment_folder</h3>
 <blockquote class="blockquote">
-<pre><code> concatenate_csvs_from_experiment_folder (experiments_folder, file_suffix)</code></pre>
+<pre><code> concatenate_csvs_from_experiment_folder (experiments_folder:str,
+                                          file_suffix:str)</code></pre>
 </blockquote>
+<p><em>Concatenates CSV files from multiple experiment folders into a single DataFrame.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>experiments_folder</td>
+<td>str</td>
+<td>Root folder containing experiment subfolders</td>
+</tr>
+<tr class="even">
+<td>file_suffix</td>
+<td>str</td>
+<td>Suffix for CSV files to concatenate</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>DataFrame</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="get-orbit-and-table" class="level3">
 <h3 class="anchored" data-anchor-id="get-orbit-and-table">Get Orbit and Table</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L343" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L344" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="concatenate_and_check_orbits_from_experiment_folder" class="level3">
 <h3 class="anchored" data-anchor-id="concatenate_and_check_orbits_from_experiment_folder">concatenate_and_check_orbits_from_experiment_folder</h3>
 <blockquote class="blockquote">
-<pre><code> concatenate_and_check_orbits_from_experiment_folder (experiments_folder,
-                                                      csv_file_name='_refi
-                                                      ned_orbits_df.csv', 
-                                                      np_file_name='_refin
-                                                      ed_orbits')</code></pre>
+<pre><code> concatenate_and_check_orbits_from_experiment_folder
+                                                      (experiments_folder:
+                                                      str, csv_file_name:s
+                                                      tr='_refined_orbits_
+                                                      df.csv', np_file_nam
+                                                      e:str='_refined_orbi
+                                                      ts')</code></pre>
 </blockquote>
+<p><em>Concatenates orbit data from multiple experiment folders and checks for consistency between generated and refined orbits.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>experiments_folder</td>
+<td>str</td>
+<td></td>
+<td>Root folder containing experiment subfolders</td>
+</tr>
+<tr class="even">
+<td>csv_file_name</td>
+<td>str</td>
+<td>_refined_orbits_df.csv</td>
+<td>Suffix for CSV files containing refined orbits</td>
+</tr>
+<tr class="odd">
+<td>np_file_name</td>
+<td>str</td>
+<td>_refined_orbits</td>
+<td>Suffix for numpy files containing generated orbits</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>Tuple</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L384" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L392" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="generate_parameter_sets" class="level3">
 <h3 class="anchored" data-anchor-id="generate_parameter_sets">generate_parameter_sets</h3>
 <blockquote class="blockquote">
-<pre><code> generate_parameter_sets (params, model_specific_params)</code></pre>
+<pre><code> generate_parameter_sets (params:Dict[str,Union[Any,List[Any]]],
+                          model_specific_params:Dict[str,Dict])</code></pre>
 </blockquote>
+<p><em>Generates all possible parameter combinations from the given parameter sets and merges them with model-specific parameters.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>params</td>
+<td>Dict</td>
+<td>Dictionary of parameter names and their values/value lists</td>
+</tr>
+<tr class="even">
+<td>model_specific_params</td>
+<td>Dict</td>
+<td>Dictionary mapping model names to their specific parameters</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>List</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="experiment-execution" class="level2">
 <h2 class="anchored" data-anchor-id="experiment-execution">Experiment Execution</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L403" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L416" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="execute_parameter_notebook" class="level3">
 <h3 class="anchored" data-anchor-id="execute_parameter_notebook">execute_parameter_notebook</h3>
 <blockquote class="blockquote">
-<pre><code> execute_parameter_notebook (notebook_to_execute, output_dir, i, params,
-                             extra_parameters=None, checkpoint_file=None)</code></pre>
+<pre><code> execute_parameter_notebook (notebook_to_execute:str, output_dir:str,
+                             i:int, params:Dict,
+                             extra_parameters:Optional[Dict]=None,
+                             checkpoint_file:Optional[str]=None)</code></pre>
 </blockquote>
+<p><em>Executes a Jupyter notebook with given parameters and saves the output. Returns the execution index if successful, None if failed.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>notebook_to_execute</td>
+<td>str</td>
+<td></td>
+<td>Path to the notebook file to execute</td>
+</tr>
+<tr class="even">
+<td>output_dir</td>
+<td>str</td>
+<td></td>
+<td>Directory to save output notebook</td>
+</tr>
+<tr class="odd">
+<td>i</td>
+<td>int</td>
+<td></td>
+<td>Execution index</td>
+</tr>
+<tr class="even">
+<td>params</td>
+<td>Dict</td>
+<td></td>
+<td>Parameters to pass to the notebook</td>
+</tr>
+<tr class="odd">
+<td>extra_parameters</td>
+<td>Optional</td>
+<td>None</td>
+<td>Additional parameters to merge with params</td>
+</tr>
+<tr class="even">
+<td>checkpoint_file</td>
+<td>Optional</td>
+<td>None</td>
+<td>Path to checkpoint file</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>Optional</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L448" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L471" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="paralelize_notebook_experiment" class="level3">
 <h3 class="anchored" data-anchor-id="paralelize_notebook_experiment">paralelize_notebook_experiment</h3>
 <blockquote class="blockquote">
-<pre><code> paralelize_notebook_experiment (parameter_sets, notebook_to_execute,
-                                 output_dir, checkpoint_file,
-                                 max_workers=3, extra_parameters=None)</code></pre>
+<pre><code> paralelize_notebook_experiment (parameter_sets:List[Dict],
+                                 notebook_to_execute:str, output_dir:str,
+                                 checkpoint_file:str, max_workers:int=3,
+                                 extra_parameters:Optional[Dict]=None)</code></pre>
 </blockquote>
+<p><em>Executes a Jupyter notebook multiple times in parallel with different parameter sets, tracking progress with checkpoints.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>parameter_sets</td>
+<td>List</td>
+<td></td>
+<td>List of parameter dictionaries to execute</td>
+</tr>
+<tr class="even">
+<td>notebook_to_execute</td>
+<td>str</td>
+<td></td>
+<td>Path to the notebook file to execute</td>
+</tr>
+<tr class="odd">
+<td>output_dir</td>
+<td>str</td>
+<td></td>
+<td>Directory to save execution outputs</td>
+</tr>
+<tr class="even">
+<td>checkpoint_file</td>
+<td>str</td>
+<td></td>
+<td>Path to checkpoint file tracking execution progress</td>
+</tr>
+<tr class="odd">
+<td>max_workers</td>
+<td>int</td>
+<td>3</td>
+<td>Maximum number of parallel workers</td>
+</tr>
+<tr class="even">
+<td>extra_parameters</td>
+<td>Optional</td>
+<td>None</td>
+<td>Additional parameters to pass to each execution</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>None</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="functions" class="level2">
 <h2 class="anchored" data-anchor-id="functions">Functions</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L506" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L538" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="generate_file_paths" class="level3">
 <h3 class="anchored" data-anchor-id="generate_file_paths">generate_file_paths</h3>
 <blockquote class="blockquote">
-<pre><code> generate_file_paths (experiment_id, images_folder, experiment_folder)</code></pre>
+<pre><code> generate_file_paths (experiment_id:Union[int,str], images_folder:str,
+                      experiment_folder:str)</code></pre>
 </blockquote>
-<p>*Generate a dictionary of file paths for an experiment.</p>
-<p>Parameters: experiment_id (int or str): The unique ID of the experiment. images_folder (str): The folder path where image files are stored. experiment_folder (str): The folder path where experiment-related files are stored.</p>
-<p>Returns: dict: A dictionary containing all generated file paths.*</p>
+<p><em>Generate a dictionary of file paths for an experiment.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>experiment_id</td>
+<td>Union</td>
+<td>Unique ID of the experiment</td>
+</tr>
+<tr class="even">
+<td>images_folder</td>
+<td>str</td>
+<td>Folder path where image files are stored</td>
+</tr>
+<tr class="odd">
+<td>experiment_folder</td>
+<td>str</td>
+<td>Folder path where experiment-related files are stored</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>Dict</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L568" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L595" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="prepare_experiment_data" class="level3">
 <h3 class="anchored" data-anchor-id="prepare_experiment_data">prepare_experiment_data</h3>
 <blockquote class="blockquote">
-<pre><code> prepare_experiment_data (params, experiments_folder, data_path,
-                          want_to_discover)</code></pre>
+<pre><code> prepare_experiment_data (params:Dict[str,Any], experiments_folder:str,
+                          data_path:str, want_to_discover:bool)</code></pre>
 </blockquote>
-<p>*Prepare the experiment data based on the provided parameters and configurations.</p>
-<p>Parameters: params (dict): A dictionary containing all the experiment parameters. experiments_folder (str): The folder where experiments are stored. data_path (str): Path to the dataset file. want_to_discover (bool): Flag indicating whether to discover new families or use existing ones.</p>
-<p>Returns: tuple: Processed scaled data, orbit dataframe, family labels, and additional metadata.*</p>
+<p><em>Prepare the experiment data based on the provided parameters and configurations.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>params</td>
+<td>Dict</td>
+<td>Dictionary containing experiment parameters</td>
+</tr>
+<tr class="even">
+<td>experiments_folder</td>
+<td>str</td>
+<td>Folder where experiments are stored</td>
+</tr>
+<tr class="odd">
+<td>data_path</td>
+<td>str</td>
+<td>Path to the dataset file</td>
+</tr>
+<tr class="even">
+<td>want_to_discover</td>
+<td>bool</td>
+<td>Flag indicating whether to discover new families or use existing ones</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>Tuple</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L661" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/experiment.py#L683" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="prepare_and_train_model" class="level3">
 <h3 class="anchored" data-anchor-id="prepare_and_train_model">prepare_and_train_model</h3>
 <blockquote class="blockquote">
-<pre><code> prepare_and_train_model (params, scaled_data, experiments_folder,
-                          experiment_id, file_paths, want_to_train)</code></pre>
+<pre><code> prepare_and_train_model (params:Dict[str,Any], scaled_data:torch.Tensor,
+                          experiments_folder:str, experiment_id:int,
+                          file_paths:Dict[str,str], want_to_train:bool)</code></pre>
 </blockquote>
-<p>*Prepare the model and either train it or load a pre-trained version based on the provided parameters.</p>
-<p>Parameters: params (dict): A dictionary containing all the experiment parameters. scaled_data (torch.Tensor): The scaled data to be used for training or validation. experiments_folder (str): The folder where experiments are stored. experiment_id (int): The unique ID of the current experiment. file_paths (dict): A dictionary containing file paths for saving/loading model and metrics. want_to_train (bool): Flag indicating whether to train the model or load a pre-trained one.</p>
-<p>Returns: object: The trained or loaded model.*</p>
+<p><em>Prepare the model and either train it or load a pre-trained version based on the provided parameters.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>params</td>
+<td>Dict</td>
+<td>Dictionary containing all experiment parameters</td>
+</tr>
+<tr class="even">
+<td>scaled_data</td>
+<td>Tensor</td>
+<td>Scaled data tensor for training/validation</td>
+</tr>
+<tr class="odd">
+<td>experiments_folder</td>
+<td>str</td>
+<td>Folder where experiments are stored</td>
+</tr>
+<tr class="even">
+<td>experiment_id</td>
+<td>int</td>
+<td>Unique ID of current experiment</td>
+</tr>
+<tr class="odd">
+<td>file_paths</td>
+<td>Dict</td>
+<td>Dictionary of paths for model/metrics files</td>
+</tr>
+<tr class="even">
+<td>want_to_train</td>
+<td>bool</td>
+<td>Whether to train model or load pre-trained</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>Module</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 
 
 </section>

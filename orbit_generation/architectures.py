@@ -15,6 +15,7 @@ __all__ = ['Sampling', 'VAELossHistory', 'VAEEncoder', 'VAEDecoder', 'Conv5Encod
 import torch
 import torch.nn as nn
 from torch import Tensor
+from typing import Union
 from pytorch_lightning.callbacks import Callback
 import matplotlib.pyplot as plt
 from abc import ABC, abstractmethod

@@ -237,12 +237,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Paper</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./path_utils.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Path Utils</span></a>
   </div>
@@ -554,9 +548,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <pre><code> get_orbit_classes (values:List[Any])</code></pre>
 </blockquote>
-<p>*Get orbit classes based on the given values and DataFrame. Returns four lists corresponding to ‘Label’, ‘Type’, ‘Subtype’, and ‘Direction’ columns.</p>
-<p>Parameters: values (List[Any]): List of values to be substituted.</p>
-<p>Returns: Tuple[List[Any], List[Any], List[Any], List[Any]]: Four lists with substituted values from ‘Label’, ‘Type’, ‘Subtype’, and ‘Direction’ columns.*</p>
+<p><em>Get orbit classes by substituting values with their corresponding Label, Type, Subtype and Direction.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>values</td>
+<td>List</td>
+<td>List of values to be substituted with orbit classifications</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>Tuple</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <div id="cell-14" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>values <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">7</span>,<span class="dv">23</span>]</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>get_orbit_classes(values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -572,7 +590,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="get-periods" class="level2">
 <h2 class="anchored" data-anchor-id="get-periods">Get Periods</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L170" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L164" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="get_periods_of_orbit_dict" class="level3">
 <h3 class="anchored" data-anchor-id="get_periods_of_orbit_dict">get_periods_of_orbit_dict</h3>
 <blockquote class="blockquote">
@@ -624,7 +642,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="fixed-period" class="level3">
 <h3 class="anchored" data-anchor-id="fixed-period">Fixed Period</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L207" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L201" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_first_period_of_fixed_period_dataset" class="level3">
 <h3 class="anchored" data-anchor-id="get_first_period_of_fixed_period_dataset">get_first_period_of_fixed_period_dataset</h3>
@@ -657,7 +675,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="fixed-step" class="level3">
 <h3 class="anchored" data-anchor-id="fixed-step">Fixed Step</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L235" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L229" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_full_fixed_step_dataset" class="level3">
 <h3 class="anchored" data-anchor-id="get_full_fixed_step_dataset">get_full_fixed_step_dataset</h3>
@@ -692,7 +710,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L256" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L250" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_first_period_fixed_step_dataset" class="level3">
 <h3 class="anchored" data-anchor-id="get_first_period_fixed_step_dataset">get_first_period_fixed_step_dataset</h3>
@@ -730,7 +748,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="first-period" class="level3">
 <h3 class="anchored" data-anchor-id="first-period">First Period</h3>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L283" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L277" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_first_period_dataset" class="level3">
 <h3 class="anchored" data-anchor-id="get_first_period_dataset">get_first_period_dataset</h3>
@@ -776,7 +794,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L330" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L324" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_first_period_dataset_all_systems" class="level3">
 <h3 class="anchored" data-anchor-id="get_first_period_dataset_all_systems">get_first_period_dataset_all_systems</h3>
@@ -784,23 +802,92 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> get_first_period_dataset_all_systems (folder_path:str,
                                        segment_length:Optional[int]=100)</code></pre>
 </blockquote>
-<p>*Processes all system files in a folder, concatenates their data while maintaining order.</p>
-<p>Parameters: folder_path (str): Path to the folder containing system files. segment_length (Optional[int]): Desired length of each segment.</p>
-<p>Returns: Tuple[np.memmap, pd.DataFrame, np.ndarray, Dict[str, float]]: - Concatenated orbits as a 3D NumPy memmap. - Concatenated orbit DataFrame with an added ‘system’ column. - Concatenated orbit IDs as a NumPy array. - Merged system dictionary with keys prefixed by system names.*</p>
+<p><em>Processes all system files in a folder, concatenates their data while maintaining order.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>folder_path</td>
+<td>str</td>
+<td></td>
+<td>Path to the folder containing system files</td>
+</tr>
+<tr class="even">
+<td>segment_length</td>
+<td>Optional</td>
+<td>100</td>
+<td>Desired length of each segment</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>Tuple</strong></td>
+<td></td>
+<td><strong>Concatenated orbits as a 3D NumPy memmap</strong></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="get-constants" class="level2">
 <h2 class="anchored" data-anchor-id="get-constants">Get Constants</h2>
 <hr>
-<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L394" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/alvaro-francisco-gil/orbit-generation/blob/main/orbit_generation/dataset.py#L382" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="get_system_constants" class="level3">
 <h3 class="anchored" data-anchor-id="get_system_constants">get_system_constants</h3>
 <blockquote class="blockquote">
-<pre><code> get_system_constants (system_dict, system_labels, constant)</code></pre>
+<pre><code> get_system_constants (system_dict:Dict[str,float],
+                       system_labels:numpy.ndarray, constant:str)</code></pre>
 </blockquote>
-<p>*Extracts values for a specified constant from a system dictionary based on system labels.</p>
-<p>Parameters: system_dict (dict): Dictionary containing system constants for different systems. system_labels (np.ndarray): Array of system labels. constant (str): The constant to extract (e.g., ‘mu’, ‘LU’, etc.).</p>
-<p>Returns: np.ndarray: Array of constant values corresponding to the system labels.*</p>
+<p><em>Extracts values for a specified constant from a system dictionary based on system labels.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>system_dict</td>
+<td>Dict</td>
+<td>Dictionary containing system constants for different systems</td>
+</tr>
+<tr class="even">
+<td>system_labels</td>
+<td>ndarray</td>
+<td>Array of system labels</td>
+</tr>
+<tr class="odd">
+<td>constant</td>
+<td>str</td>
+<td>The constant to extract (e.g., ‘mu’, ‘LU’, etc.)</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>ndarray</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 
 
 </section>

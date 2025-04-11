@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A library to handle and generate orbit data">
+<meta name="description" content="A library to handle and generate orbit data + experiments with it">
 
 <title>orbit-generation</title>
 <style>
@@ -58,7 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -101,23 +101,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="orbit-generation">
-<meta property="og:description" content="A library to handle and generate orbit data">
-<meta property="og:image" content="https://alvaro-francisco-gil.github.io/orbit-generation/index_files/figure-html/cell-8-output-1.png">
+<meta property="og:description" content="A library to handle and generate orbit data + experiments with it">
+<meta property="og:image" content="https://alvaro-francisco-gil.github.io/orbit-generation/../nbs_experiments/01_generative_discovery_em/figures/distribution_rediscovered_discarded_fams.png">
 <meta property="og:site_name" content="orbit-generation">
-<meta property="og:image:height" content="657">
-<meta property="og:image:width" content="649">
+<meta property="og:image:height" content="470">
+<meta property="og:image:width" content="629">
 <meta name="twitter:title" content="orbit-generation">
-<meta name="twitter:description" content="A library to handle and generate orbit data">
-<meta name="twitter:image" content="https://alvaro-francisco-gil.github.io/orbit-generation/index_files/figure-html/cell-8-output-1.png">
-<meta name="twitter:image-height" content="657">
-<meta name="twitter:image-width" content="649">
+<meta name="twitter:description" content="A library to handle and generate orbit data + experiments with it">
+<meta name="twitter:image" content="https://alvaro-francisco-gil.github.io/orbit-generation/../nbs_experiments/01_generative_discovery_em/figures/distribution_rediscovered_discarded_fams.png">
+<meta name="twitter:image-height" content="470">
+<meta name="twitter:image-width" content="629">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -246,12 +243,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./paper_specific.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Paper</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./path_utils.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Path Utils</span></a>
   </div>
@@ -266,17 +257,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#structure" id="toc-structure" class="nav-link active" data-scroll-target="#structure">Structure</a>
+  <li><a href="#publications" id="toc-publications" class="nav-link active" data-scroll-target="#publications">Publications</a></li>
+  <li><a href="#structure" id="toc-structure" class="nav-link" data-scroll-target="#structure">Structure</a>
   <ul class="collapse">
   <li><a href="#constants" id="toc-constants" class="nav-link" data-scroll-target="#constants">0. Constants</a></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">1. Data</a></li>
   <li><a href="#processing" id="toc-processing" class="nav-link" data-scroll-target="#processing">2. Processing</a></li>
   <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization">3. Visualization</a></li>
   <li><a href="#statistics" id="toc-statistics" class="nav-link" data-scroll-target="#statistics">4. Statistics</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">5. Dataset</a></li>
+  <li><a href="#architectures" id="toc-architectures" class="nav-link" data-scroll-target="#architectures">6. Architectures</a></li>
+  <li><a href="#propagation" id="toc-propagation" class="nav-link" data-scroll-target="#propagation">7. Propagation</a></li>
+  <li><a href="#experiment-tools" id="toc-experiment-tools" class="nav-link" data-scroll-target="#experiment-tools">8. Experiment Tools</a></li>
+  <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation">9. Evaluation</a></li>
+  <li><a href="#variational-auto-encoder-vae" id="toc-variational-auto-encoder-vae" class="nav-link" data-scroll-target="#variational-auto-encoder-vae">10. Variational Auto Encoder (VAE)</a></li>
+  <li><a href="#model-factory" id="toc-model-factory" class="nav-link" data-scroll-target="#model-factory">11. Model Factory</a></li>
+  <li><a href="#convergence" id="toc-convergence" class="nav-link" data-scroll-target="#convergence">12. Convergence</a></li>
+  <li><a href="#latent-space" id="toc-latent-space" class="nav-link" data-scroll-target="#latent-space">13. Latent Space</a></li>
   </ul></li>
-  <li><a href="#experiments" id="toc-experiments" class="nav-link" data-scroll-target="#experiments">Experiments</a>
+  <li><a href="#generative-discovery-experiment" id="toc-generative-discovery-experiment" class="nav-link" data-scroll-target="#generative-discovery-experiment">Generative Discovery Experiment</a>
   <ul class="collapse">
-  <li><a href="#generative-discovery" id="toc-generative-discovery" class="nav-link" data-scroll-target="#generative-discovery">Generative Discovery</a></li>
+  <li><a href="#figures" id="toc-figures" class="nav-link" data-scroll-target="#figures">0. Figures</a></li>
+  <li><a href="#exploratory-data-analysis-of-earth-moon-periodic-orbits" id="toc-exploratory-data-analysis-of-earth-moon-periodic-orbits" class="nav-link" data-scroll-target="#exploratory-data-analysis-of-earth-moon-periodic-orbits">1. Exploratory Data Analysis of Earth-Moon Periodic Orbits</a></li>
+  <li><a href="#orbit-family-analysis" id="toc-orbit-family-analysis" class="nav-link" data-scroll-target="#orbit-family-analysis">2. Orbit Family Analysis</a></li>
+  <li><a href="#generative-discovery" id="toc-generative-discovery" class="nav-link" data-scroll-target="#generative-discovery">3. Generative Discovery</a></li>
+  <li><a href="#convergence-analysis" id="toc-convergence-analysis" class="nav-link" data-scroll-target="#convergence-analysis">4. Convergence Analysis</a></li>
+  <li><a href="#model-analysis" id="toc-model-analysis" class="nav-link" data-scroll-target="#model-analysis">5. Model Analysis</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/alvaro-francisco-gil/orbit-generation/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
@@ -291,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    A library to handle and generate orbit data
+    A library to handle and generate orbit data + experiments with it
   </div>
 </div>
 
@@ -311,7 +317,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
 <p>This library has been built using <a href="https://nbdev.fast.ai/">nbdev</a>, which means that the source code of the library is stored in Jupyter notebooks inside the <a href="../nbs/"><code>nbs</code></a> folder. These notebooks are then automatically converted into Python files inside the <a href="../orbit_generation/"><code>orbit_generation</code></a> folder.</p>
 <p>Apart from the library, we have included research experiments using the library in the <a href="../nbs_experiments/"><code>nbs_experiments</code></a> folder.</p>
-<p>First, we will review the library structure, functions, and finally, we will explain the experiments conducted.</p>
+<p>First, we will review the library structure, functions, and finally, we will explain the <a href="#Generative-Discovery-Experiment">experiments conducted</a>.</p>
+<section id="publications" class="level2">
+<h2 class="anchored" data-anchor-id="publications">Publications</h2>
+<ul>
+<li><a href="https://zenodo.org/records/13885649">SPAICE 2024: Generative Design of Periodic Orbits in the Restricted Three-Body Problem</a></li>
+<li>AAS 2025: Generative Astrodynamics: Trajectory Analysis and Design in the Restricted Three-Body Problem</li>
+</ul>
+</section>
 <section id="structure" class="level2">
 <h2 class="anchored" data-anchor-id="structure">Structure</h2>
 <pre class="text"><code>.
@@ -356,7 +369,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 |
 |-- nbs_experiments: Notebooks with research experiments using the library.  
 |   |-- 01_generative_discovery_em
-|   |-- 02_conditional_generation_systems
 |
 |-- orbit_generation: Auto-generated Python package containing the processed library code. 
 |  
@@ -379,10 +391,10 @@ pip install orbit_generation</code></pre>
 <section id="constants" class="level3">
 <h3 class="anchored" data-anchor-id="constants">0. Constants</h3>
 <p>This module contains physical constants and orbit labels.</p>
-<div id="cell-9" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.constants <span class="im">import</span> MU_BY_SYSTEM, EM_POINTS, EXTENDED_ORBIT_CLASSIFICATION</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <div id="cell-10" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.constants <span class="im">import</span> MU_BY_SYSTEM, EM_POINTS, EM_MU</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-11" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>MU_BY_SYSTEM</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>{'SaE': 1.901109735892602e-07,
@@ -394,7 +406,7 @@ pip install orbit_generation</code></pre>
  'SM': 3.227154996101724e-07}</code></pre>
 </div>
 </div>
-<div id="cell-11" class="cell">
+<div id="cell-12" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>EM_POINTS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>{'Moon': (0.987849414390376, 0, 0),
@@ -406,183 +418,23 @@ pip install orbit_generation</code></pre>
  'Lagrange 5': (0.4879, -0.866, 0)}</code></pre>
 </div>
 </div>
-<div id="cell-12" class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>EXTENDED_ORBIT_CLASSIFICATION.transpose()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">0</th>
-<th data-quarto-table-cell-role="th">1</th>
-<th data-quarto-table-cell-role="th">2</th>
-<th data-quarto-table-cell-role="th">3</th>
-<th data-quarto-table-cell-role="th">4</th>
-<th data-quarto-table-cell-role="th">5</th>
-<th data-quarto-table-cell-role="th">6</th>
-<th data-quarto-table-cell-role="th">7</th>
-<th data-quarto-table-cell-role="th">8</th>
-<th data-quarto-table-cell-role="th">9</th>
-<th data-quarto-table-cell-role="th">...</th>
-<th data-quarto-table-cell-role="th">32</th>
-<th data-quarto-table-cell-role="th">33</th>
-<th data-quarto-table-cell-role="th">34</th>
-<th data-quarto-table-cell-role="th">35</th>
-<th data-quarto-table-cell-role="th">36</th>
-<th data-quarto-table-cell-role="th">37</th>
-<th data-quarto-table-cell-role="th">38</th>
-<th data-quarto-table-cell-role="th">39</th>
-<th data-quarto-table-cell-role="th">40</th>
-<th data-quarto-table-cell-role="th">41</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Id</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>4</td>
-<td>5</td>
-<td>6</td>
-<td>7</td>
-<td>8</td>
-<td>9</td>
-<td>10</td>
-<td>...</td>
-<td>33</td>
-<td>34</td>
-<td>35</td>
-<td>36</td>
-<td>37</td>
-<td>38</td>
-<td>39</td>
-<td>40</td>
-<td>41</td>
-<td>42</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Label</td>
-<td>S_BN</td>
-<td>S_BS</td>
-<td>S_DN</td>
-<td>S_DPO</td>
-<td>S_DRO</td>
-<td>S_DS</td>
-<td>S_L1_A</td>
-<td>S_L1_HN</td>
-<td>S_L1_HS</td>
-<td>S_L1_L</td>
-<td>...</td>
-<td>S_R12</td>
-<td>S_R13</td>
-<td>S_R14</td>
-<td>S_R21</td>
-<td>S_R23</td>
-<td>S_R31</td>
-<td>S_R32</td>
-<td>S_R34</td>
-<td>S_R41</td>
-<td>S_R43</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Type</td>
-<td>System-wide</td>
-<td>System-wide</td>
-<td>System-wide</td>
-<td>System-wide</td>
-<td>System-wide</td>
-<td>System-wide</td>
-<td>L1</td>
-<td>L1</td>
-<td>L1</td>
-<td>L1</td>
-<td>...</td>
-<td>Resonant</td>
-<td>Resonant</td>
-<td>Resonant</td>
-<td>Resonant</td>
-<td>Resonant</td>
-<td>Resonant</td>
-<td>Resonant</td>
-<td>Resonant</td>
-<td>Resonant</td>
-<td>Resonant</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Subtype</td>
-<td>Butterfly</td>
-<td>Butterfly</td>
-<td>Dragonfly</td>
-<td>Distant Prograde</td>
-<td>Distant Retrograde</td>
-<td>Dragonfly</td>
-<td>Axial</td>
-<td>Halo</td>
-<td>Halo</td>
-<td>Lyapunov</td>
-<td>...</td>
-<td>Resonant 1,2</td>
-<td>Resonant 1,3</td>
-<td>Resonant 1,4</td>
-<td>Resonant 2,1</td>
-<td>Resonant 2,3</td>
-<td>Resonant 3,1</td>
-<td>Resonant 3,2</td>
-<td>Resonant 3,4</td>
-<td>Resonant 4,1</td>
-<td>Resonant 4,3</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Direction</td>
-<td>North</td>
-<td>South</td>
-<td>North</td>
-<td>Planar</td>
-<td>Planar</td>
-<td>South</td>
-<td>No specification</td>
-<td>North</td>
-<td>South</td>
-<td>Planar</td>
-<td>...</td>
-<td>Planar</td>
-<td>Planar</td>
-<td>Planar</td>
-<td>Planar</td>
-<td>Planar</td>
-<td>Planar</td>
-<td>Planar</td>
-<td>Planar</td>
-<td>Planar</td>
-<td>Planar</td>
-</tr>
-</tbody>
-</table>
-
-<p>5 rows × 42 columns</p>
-</div>
-</div>
-</div>
 </section>
 <section id="data" class="level3">
 <h3 class="anchored" data-anchor-id="data">1. Data</h3>
 <p>This module provides utilities for handling orbit data.</p>
 <div id="cell-15" class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.data <span class="im">import</span> get_example_orbit_data</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>orbit_data <span class="op">=</span> get_example_orbit_data()</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.data <span class="im">import</span> get_example_orbit_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-16" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>orbit_data <span class="op">=</span> get_example_orbit_data()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>(200, 6, 300)</code></pre>
+<pre><code>(400, 7, 100)</code></pre>
 </div>
 </div>
 <ul>
-<li>Number of orbits: 200</li>
-<li>Time instants: 300</li>
+<li>Number of orbits: 400</li>
+<li>Time instants: 100</li>
 </ul>
 <p>Every orbit dataset is organized within a three-dimensional NumPy array with the following structure:</p>
 <center>
@@ -606,60 +458,41 @@ pip install orbit_generation</code></pre>
 <section id="processing" class="level3">
 <h3 class="anchored" data-anchor-id="processing">2. Processing</h3>
 <p>This module performs various processing tasks on the orbit data described above, including downsampling, interpolation, and reshaping.</p>
-<div id="cell-20" class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.processing <span class="im">import</span> resample_3d_array</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>resampled_orbit_data <span class="op">=</span> resample_3d_array(data<span class="op">=</span>orbit_data, axis<span class="op">=</span><span class="dv">2</span>, target_size<span class="op">=</span> <span class="dv">100</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>resampled_orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-21" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.processing <span class="im">import</span> resample_3d_array</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-22" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>resampled_orbit_data <span class="op">=</span> resample_3d_array(data<span class="op">=</span>orbit_data, axis<span class="op">=</span><span class="dv">2</span>, target_size<span class="op">=</span> <span class="dv">50</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>resampled_orbit_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>(200, 6, 100)</code></pre>
+<pre><code>(400, 7, 50)</code></pre>
 </div>
 </div>
 <ul>
-<li>Initial time instants: 300</li>
-<li>Time instants after Resampling: 100</li>
+<li>Initial time instants: 100</li>
+<li>Time instants after Resampling: 50</li>
 </ul>
 </section>
 <section id="visualization" class="level3">
 <h3 class="anchored" data-anchor-id="visualization">3. Visualization</h3>
 <p>This module handles the visualization of orbit trajectories and their features.</p>
-<div id="cell-24" class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.visualize <span class="im">import</span> visualize_static_orbits, export_dynamic_orbits_html</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(orbit_data, show_legend<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="orbits" class="level4">
+<h4 class="anchored" data-anchor-id="orbits">Orbits</h4>
+<div id="cell-27" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.visualize <span class="im">import</span> visualize_static_orbits, export_dynamic_orbits_html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-28" class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(orbit_data, show_legend<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="cell-25" class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(resampled_orbit_data, orbit_indices<span class="op">=</span>[<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">70</span>,<span class="dv">140</span>,<span class="dv">190</span>], point_dict<span class="op">=</span>EM_POINTS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="cell-26" class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>export_dynamic_orbits_html(data<span class="op">=</span>orbit_data, filename<span class="op">=</span><span class="st">'../data/example_data/example_orbits.html'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Visualization saved to ../data/example_data/example_orbits.html</code></pre>
-</div>
-</div>
-<p>See the dynamic orbit visualziation <a href="../data/example_data/example_orbits.html"><code>here</code></a></p>
-</section>
-<section id="statistics" class="level3">
-<h3 class="anchored" data-anchor-id="statistics">4. Statistics</h3>
-<p>This module analyzes the orbital data using descriptive statistics.</p>
-<div id="cell-30" class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.stats <span class="im">import</span> plot_histograms_position</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plot_histograms_position(orbit_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-29" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data, orbit_indices<span class="op">=</span>[<span class="dv">315</span>,<span class="dv">120</span>,<span class="dv">70</span>,<span class="dv">180</span>,<span class="dv">190</span>], point_dict<span class="op">=</span>EM_POINTS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -668,22 +501,301 @@ pip install orbit_generation</code></pre>
 </div>
 </div>
 </div>
+<div id="cell-30" class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>visualize_static_orbits(data<span class="op">=</span> orbit_data, time_instants<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">50</span>], orbit_indices<span class="op">=</span>[<span class="dv">40</span>], plot_reference_box<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-31" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>export_dynamic_orbits_html(data<span class="op">=</span>orbit_data, filename<span class="op">=</span><span class="st">'../data/example_training_data/example_orbits_visualization.html'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Visualization saved to ../data/example_training_data/example_orbits_visualization.html</code></pre>
+</div>
+</div>
+<p>See the dynamic orbit visualziation <a href="../data/example_training_data/example_orbits_visualization.html"><code>here</code></a></p>
+</section>
+<section id="features" class="level4">
+<h4 class="anchored" data-anchor-id="features">Features</h4>
+<p>Example plots performed with this module:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../nbs_experiments/01_generative_discovery_em/figures/distribution_rediscovered_discarded_fams.png" class="img-fluid figure-img"></p>
+<figcaption>distribution_rediscovered_discarded_fams</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../nbs_experiments/01_generative_discovery_em/figures/proportions_em.png" class="img-fluid figure-img"></p>
+<figcaption>proportions_em</figcaption>
+</figure>
+</div>
 </section>
 </section>
-<section id="experiments" class="level2">
-<h2 class="anchored" data-anchor-id="experiments">Experiments</h2>
-<section id="generative-discovery" class="level3">
-<h3 class="anchored" data-anchor-id="generative-discovery">Generative Discovery</h3>
-<p>Experiments conducted in <a href="../nbs_experiments/01_generative_discovery_em/">Generative Discovery</a> folder have been presented in the following papers: - <a href="https://zenodo.org/records/13885649">SPAICE 2024: Generative Design of Periodic Orbits in the Restricted Three-Body Problem</a></p>
-<section id="exploratory-data-analysis-of-earth-moon-periodic-orbits" class="level4">
-<h4 class="anchored" data-anchor-id="exploratory-data-analysis-of-earth-moon-periodic-orbits">1. Exploratory Data Analysis of Earth-Moon Periodic Orbits</h4>
+<section id="statistics" class="level3">
+<h3 class="anchored" data-anchor-id="statistics">4. Statistics</h3>
+<p>This module analyzes the orbital data using descriptive statistics.</p>
+<div id="cell-37" class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.stats <span class="im">import</span> plot_histograms_position, plot_histograms_comparison</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-38" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>plot_histograms_position(orbit_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-39" class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plot_histograms_comparison(orbit_data[<span class="dv">0</span>:<span class="dv">200</span>,<span class="dv">1</span>:], orbit_data[<span class="dv">200</span>:<span class="dv">400</span>,<span class="dv">1</span>:], normalize<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="dataset" class="level3">
+<h3 class="anchored" data-anchor-id="dataset">5. Dataset</h3>
+<p>Scripts to build the different datasets used for modeling.</p>
+<p>The following function was used to obtain the datasets for the research:</p>
+<div id="cell-42" class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.dataset <span class="im">import</span> get_first_period_dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The function takes: - file_path: Path to HDF5 file containing orbit data - segment_length: Optional length to segment orbits into (default 100)</p>
+<p>Returns: - Segmented orbits as memory-mapped array - DataFrame with orbit features - Array of segment IDs - Dictionary of system features (mass ratios, etc)</p>
+</section>
+<section id="architectures" class="level3">
+<h3 class="anchored" data-anchor-id="architectures">6. Architectures</h3>
+<p>Module where different model architectures are defined—such as losses, decoders, and callbacks—designed to be modular and reusable.</p>
+<div id="cell-46" class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.architectures <span class="im">import</span> Conv5Encoder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-47" class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Conv5Encoder(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    seq_len<span class="op">=</span><span class="dv">100</span>,      <span class="co"># Sequence length for input data</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    feat_dim<span class="op">=</span><span class="dv">7</span>,       <span class="co"># Feature dimension (number of features per timestep)</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    latent_dim<span class="op">=</span><span class="dv">32</span>,    <span class="co"># Dimension of latent space</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    dropout_rate<span class="op">=</span><span class="fl">0.1</span>  <span class="co"># Dropout rate for regularization</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Conv5Encoder Summary:"</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model._modules) <span class="co"># Access modules dictionary since it extends nn.Module</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Conv5Encoder Summary:
+{'convo_layers': Sequential(
+  (0): Conv1d(7, 64, kernel_size=(3,), stride=(1,), padding=same)
+  (1): ReLU()
+  (2): Dropout(p=0.1, inplace=False)
+  (3): Conv1d(64, 64, kernel_size=(5,), stride=(1,), padding=same)
+  (4): ReLU()
+  (5): Dropout(p=0.1, inplace=False)
+  (6): Conv1d(64, 64, kernel_size=(7,), stride=(1,), padding=same)
+  (7): ReLU()
+  (8): Dropout(p=0.1, inplace=False)
+  (9): Conv1d(64, 64, kernel_size=(9,), stride=(1,), padding=same)
+  (10): ReLU()
+  (11): Dropout(p=0.1, inplace=False)
+  (12): Conv1d(64, 64, kernel_size=(13,), stride=(1,), padding=same)
+  (13): ReLU()
+  (14): Dropout(p=0.1, inplace=False)
+  (15): Flatten(start_dim=1, end_dim=-1)
+), 'dense_layers': Sequential(
+  (0): Linear(in_features=6400, out_features=512, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=512, out_features=64, bias=True)
+  (3): ReLU()
+  (4): Linear(in_features=64, out_features=64, bias=True)
+)}</code></pre>
+</div>
+</div>
+</section>
+<section id="propagation" class="level3">
+<h3 class="anchored" data-anchor-id="propagation">7. Propagation</h3>
+<p>This module enables orbit propagation and measures physical consistency.</p>
+<div id="cell-50" class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.propagation <span class="im">import</span> calculate_errors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-51" class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> calculate_errors(orbit_data, EM_MU, orbit_indices <span class="op">=</span> [<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cumulative position error for selected orbits: 5.095048112547387e-05
+Average position error per time step: 5.14651324499736e-07</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-21-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cumulative velocity error for selected orbits: 0.0001793751728135454
+Average velocity error per time step: 1.8118704324600546e-06</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-21-output-4.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cumulative energy error for selected orbits: 0.0003757476806640625
+Average energy error per time step: 3.7954312119836686e-06</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-21-output-6.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="experiment-tools" class="level3">
+<h3 class="anchored" data-anchor-id="experiment-tools">8. Experiment Tools</h3>
+<p>Scripts to manage data and results and parallelize experiments used in the <a href="../nbs_experiments/"><code>nbs_experiments</code></a> folder.</p>
+</section>
+<section id="evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="evaluation">9. Evaluation</h3>
+<p>Module to evaluate distances, clustering metrics and vanilla machine learning models.</p>
+<div id="cell-56" class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.evaluation <span class="im">import</span> calculate_pairwise_orbit_distances</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-57" class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>calculate_pairwise_orbit_distances(orbit_data[<span class="dv">0</span>:<span class="dv">1</span>], orbit_data[<span class="dv">1</span>:<span class="dv">2</span>], distance_metric<span class="op">=</span><span class="st">'manhattan'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>array([85.13618469])</code></pre>
+</div>
+</div>
+</section>
+<section id="variational-auto-encoder-vae" class="level3">
+<h3 class="anchored" data-anchor-id="variational-auto-encoder-vae">10. Variational Auto Encoder (VAE)</h3>
+<p>This module builds VAE models using the architecures from <a href="../nbs/06_architectures.ipynb"><code>6. Architectures</code></a></p>
+<div id="cell-60" class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.vae <span class="im">import</span> BetaVAE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-61" class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"BetaVAE properties:"</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> BetaVAE.__dict__.items():</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> key.startswith(<span class="st">'_'</span>):</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"- </span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>BetaVAE properties:
+- setup
+- encode
+- decode
+- forward
+- reconstruction_loss_by_axis
+- default_loss_fn
+- training_step
+- validation_step
+- configure_optimizers
+- sample
+- on_train_epoch_start
+- on_validation_epoch_start</code></pre>
+</div>
+</div>
+</section>
+<section id="model-factory" class="level3">
+<h3 class="anchored" data-anchor-id="model-factory">11. Model Factory</h3>
+<p>Module to create model instances based on configuration files.</p>
+<div id="cell-64" class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> orbit_generation.model_factory <span class="im">import</span> get_model</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-65" class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'model_name'</span>: <span class="st">'inception_time_vae'</span>,</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'seq_len'</span>: <span class="dv">100</span>,</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'feature_dim'</span>: <span class="dv">6</span>,</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'latent_dim'</span>: <span class="dv">32</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'model_kwargs'</span>: {</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'beta'</span>: <span class="fl">1.0</span>,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'lr'</span>: <span class="fl">0.001</span>,</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'optimizer_cls'</span>: torch.optim.Adam</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> get_model(params)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="convergence" class="level3">
+<h3 class="anchored" data-anchor-id="convergence">12. Convergence</h3>
+<p>Script to perform a Multiple Shooting algorithm on the synthetic orbits to process differential corrections until they become physically valid.</p>
+<p>Example of synthetic orbits (left) and its refined versions (right):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../nbs_experiments/01_generative_discovery_em/figures/exp116_samplings_gener_ref.png" class="img-fluid figure-img"></p>
+<figcaption>Sampling Generations</figcaption>
+</figure>
+</div>
+</section>
+<section id="latent-space" class="level3">
+<h3 class="anchored" data-anchor-id="latent-space">13. Latent Space</h3>
+<p>Module to explore a model’s latent space, visualize it, apply dimensionality reduction techniques, and perform sampling.</p>
+<p>Examples of plots produced with this module:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../nbs_experiments/01_generative_discovery_em/figures/exp3_latent_space.png" class="img-fluid figure-img"></p>
+<figcaption>exp3_latent_space</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../nbs_experiments/01_generative_discovery_em/figures/combined_latent_spaces.png" class="img-fluid figure-img"></p>
+<figcaption>combined_latent_spaces</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../nbs_experiments/01_generative_discovery_em/figures/exp3_regressions.png" class="img-fluid figure-img"></p>
+<figcaption>exp3_regressions</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="generative-discovery-experiment" class="level2">
+<h2 class="anchored" data-anchor-id="generative-discovery-experiment">Generative Discovery Experiment</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../nbs_experiments/01_generative_discovery_em/figures/exp_diagram.jpg" class="img-fluid figure-img"></p>
+<figcaption>exp_diagram</figcaption>
+</figure>
+</div>
+<section id="figures" class="level3">
+<h3 class="anchored" data-anchor-id="figures">0. Figures</h3>
+<p>Exported images of the experiments below.</p>
+</section>
+<section id="exploratory-data-analysis-of-earth-moon-periodic-orbits" class="level3">
+<h3 class="anchored" data-anchor-id="exploratory-data-analysis-of-earth-moon-periodic-orbits">1. Exploratory Data Analysis of Earth-Moon Periodic Orbits</h3>
 <p>This <a href="../nbs_experiments/01_generative_discovery_em/01_eda_em_system.ipynb">notebook</a> explores the dataset by visualizing the orbits, the proportions within families, the initial conditions, and the distribution of features.</p>
 </section>
-<section id="section" class="level4">
-<h4 class="anchored" data-anchor-id="section">2.</h4>
-
-
+<section id="orbit-family-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="orbit-family-analysis">2. Orbit Family Analysis</h3>
+<p>This <a href="../nbs_experiments/01_generative_discovery_em/02_orbit_family_analysis.ipynb">notebook</a> searches for the best properties of the orbits that define their family through clustering and machine learning techniques.</p>
 </section>
+<section id="generative-discovery" class="level3">
+<h3 class="anchored" data-anchor-id="generative-discovery">3. Generative Discovery</h3>
+<p>These notebooks (<a href="../nbs_experiments/01_generative_discovery_em/03_01_generative_discovery.ipynb">03_01_generative_discovery</a>, <a href="../nbs_experiments/01_generative_discovery_em/03_02_experiment_parameterization.ipynb">03_02_experiment_parameterization</a>, <a href="../nbs_experiments/01_generative_discovery_em/03_03_discovery_results.ipynb">03_03_discovery_results</a>, <a href="../nbs_experiments/01_generative_discovery_em/03_04_ml_classification_discovery.ipynb">03_04_ml_classification_discovery</a>, <a href="../nbs_experiments/01_generative_discovery_em/03_05_distance_discovery.ipynb">03_05_distance_discovery</a>) perform the “Generative Discovery” experiment by training a VAE on a subset of the dataset, generating orbits and refining them, obtaining metrics and visual explorations throughout the entire process. The first notebooks are used for running the experiments and the later ones for analyzing the results.</p>
+</section>
+<section id="convergence-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="convergence-analysis">4. Convergence Analysis</h3>
+<p>This <a href="../nbs_experiments/01_generative_discovery_em/04_convergence_analysis.ipynb">notebook</a> performs a convergence analysis of the synthetic orbits generated by the VAE, studying the effect of certain parameters for the multiple shooting algorithm.</p>
+</section>
+<section id="model-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="model-analysis">5. Model Analysis</h3>
+<p>This <a href="../nbs_experiments/01_generative_discovery_em/05_model_analysis.ipynb">notebook</a> performs an analysis of a specific model to deepen the understanding of the model’s behavior.</p>
+
+
 </section>
 </section>
 
