@@ -5,12 +5,12 @@
 
 This library has been built using [nbdev](https://nbdev.fast.ai/), which
 means that the source code of the library is stored in Jupyter notebooks
-inside the [`nbs`](../nbs/) folder. These notebooks are then
+inside the [`nbs`](./nbs/) folder. These notebooks are then
 automatically converted into Python files inside the
-[`orbit_generation`](../orbit_generation/) folder.
+[`orbit_generation`](./orbit_generation/) folder.
 
 Apart from the library, we have included research experiments using the
-library in the [`nbs_experiments`](../nbs_experiments/) folder.
+library in the [`nbs_experiments`](./nbs_experiments/) folder.
 
 First, we will review the library structure, functions, and finally, we
 will explain the [experiments
@@ -219,9 +219,9 @@ See the dynamic orbit visualziation
 
 Example plots performed with this module:
 
-![distribution_rediscovered_discarded_fams](../nbs_experiments/01_generative_discovery_em/figures/distribution_rediscovered_discarded_fams.png)
+![distribution_rediscovered_discarded_fams](./nbs_experiments/01_generative_discovery_em/figures/distribution_rediscovered_discarded_fams.png)
 
-![proportions_em](../nbs_experiments/01_generative_discovery_em/figures/proportions_em.png)
+![proportions_em](./nbs_experiments/01_generative_discovery_em/figures/proportions_em.png)
 
 ### 4. Statistics
 
