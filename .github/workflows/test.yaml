@@ -35,6 +35,32 @@ jobs:
           pip install ipykernel jupyter nbdev
           nbdev_install_quarto
           
+      # Add this step to properly clean notebooks before testing
+      - name: Setup Git config
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+      - name: Clean and prepare notebooks
+        run: |
+          echo "Installing latest nbdev..."
+          pip install -U nbdev
+          
+          echo "Setting up nbdev hooks..."
+          nbdev_install_hooks
+          
+          echo "Cleaning notebooks..."
+          nbdev_clean
+          
+          echo "Checking if notebooks are properly cleaned..."
+          if [[ -n "$(git status --porcelain -uno)" ]]; then
+            echo "Some notebooks need cleaning. Auto-committing changes..."
+            git add -A
+            git commit -m "Auto-clean notebooks [CI]"
+          else
+            echo "All notebooks are clean."
+          fi
+          
       - name: Install Julia
         run: |
           echo "Installing Julia..."
