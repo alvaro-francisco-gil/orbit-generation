@@ -218,5 +218,60 @@ jobs:
           # Make sure the environment variables are passed to the Python process
           JULIA_DEPOT_PATH=$JULIA_DEPOT_PATH python test_julia_python.py
           
+      - name: Set up nbdev environment for Julia
+        run: |
+          # Create a setup script that nbdev will use
+          cat > ~/.juliarc.py << EOF
+          import os
+          import julia
+          
+          # Set environment variables for Julia
+          os.environ['JULIA_DEPOT_PATH'] = '/opt/julia_depot'
+          os.environ['JULIA_PYTHONCALL_EXE'] = '$(which python)'
+          os.environ['PYTHON'] = '$(which python)'
+          
+          # Pre-initialize Julia to avoid issues during testing
+          from julia.api import Julia
+          jl = Julia(compiled_modules=False)
+          from julia import Main
+          
+          # Preload required packages
+          Main.eval('using PyCall')
+          Main.eval('using DifferentialEquations')
+          print("Julia environment successfully set up")
+          EOF
+          
+          # Create a script that nbdev can find to set up the Julia environment
+          mkdir -p ~/.ipython/profile_default/startup/
+          cat > ~/.ipython/profile_default/startup/01-julia-init.py << EOF
+          import sys
+          import os
+          print("Initializing Julia environment for IPython...")
+          
+          # Set environment variables
+          os.environ['JULIA_DEPOT_PATH'] = '/opt/julia_depot'
+          os.environ['JULIA_PYTHONCALL_EXE'] = '$(which python)'
+          os.environ['PYTHON'] = '$(which python)'
+          
+          try:
+              from julia.api import Julia
+              jl = Julia(compiled_modules=False)
+              from julia import Main
+              Main.eval('using PyCall; println("PyCall loaded")')
+              Main.eval('using DifferentialEquations; println("DifferentialEquations loaded")')
+              print("Julia environment ready")
+          except Exception as e:
+              print(f"Error initializing Julia: {e}")
+              # Don't crash IPython if Julia fails to initialize
+          EOF
+          
+          # Test that the startup script works
+          echo "Testing IPython startup script..."
+          python -c "import IPython; IPython.start_ipython(argv=['--quick', '--quiet', '-c', 'print(\"IPython startup test complete\")'])"
+          
       - name: Run nbdev CI
-        uses: fastai/workflows/nbdev-ci@master
+        env:
+          JULIA_DEPOT_PATH: /opt/julia_depot
+          PYTHON: $(which python)
+          JULIA_PYTHONCALL_EXE: $(which python)
+        run: nbdev_test --flags ""
