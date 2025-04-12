@@ -160,11 +160,38 @@ jobs:
       # Add a step to prepare notebooks for Julia execution
       - name: Prepare notebooks for Julia execution
         run: |
-          echo "Ensuring PyCall is in the default environment..."
-          julia -e 'using Pkg; Pkg.activate(); if !haskey(Pkg.project().dependencies, "PyCall") Pkg.add("PyCall"); end; Pkg.build("PyCall"); using PyCall; println("PyCall successfully loaded in default environment")'
+          echo "Ensuring packages are in the default environment..."
+          julia -e '
+          using Pkg;
           
-          echo "Checking and installing DifferentialEquations if needed..."
-          julia -e 'using Pkg; Pkg.activate(); if !haskey(Pkg.project().dependencies, "DifferentialEquations") Pkg.add("DifferentialEquations"); end; using DifferentialEquations; println("DifferentialEquations successfully loaded in default environment")'
+          # Use the default environment
+          default_env = joinpath(homedir(), ".julia", "environments", "v1.10")
+          println("Using environment at: ", default_env)
+          Pkg.activate(default_env)
+          
+          # Verify PyCall is installed
+          if !haskey(Pkg.project().dependencies, "PyCall")
+              println("Installing PyCall...")
+              Pkg.add("PyCall")
+              Pkg.build("PyCall")
+          else
+              println("PyCall already installed")
+          end
+          
+          # Verify DifferentialEquations is installed
+          if !haskey(Pkg.project().dependencies, "DifferentialEquations")
+              println("Installing DifferentialEquations...")
+              Pkg.add("DifferentialEquations")
+          else
+              println("DifferentialEquations already installed")
+          end
+          
+          # Verify all required packages are functional
+          println("Testing package imports...")
+          using PyCall
+          using DifferentialEquations
+          println("All packages successfully loaded")
+          '
           
           echo "Creating a Julia module to test PyCall and Julia integrations..."
           cat > test_julia_python.py << EOF
