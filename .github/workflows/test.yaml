@@ -115,14 +115,33 @@ jobs:
               Pkg.add("PyCall");
           end
           
-          # Now build it with the correct Python
+          # Install DifferentialEquations in the same environment
+          if !haskey(Pkg.project().dependencies, "DifferentialEquations")
+              println("Installing DifferentialEquations...");
+              Pkg.add("DifferentialEquations");
+          end
+          
+          # Also add other required packages
+          for pkg in ["Polynomials", "LinearAlgebra", "MAT", "NPZ"]
+              if !haskey(Pkg.project().dependencies, pkg)
+                  println("Installing ", pkg, "...");
+                  Pkg.add(pkg);
+              end
+          end
+          
+          # Now build PyCall with the correct Python
           println("Building PyCall...");
           Pkg.build("PyCall");
           
-          # Verify it works
+          # Verify PyCall works
           println("Testing PyCall...");
           using PyCall;
           println("PyCall successfully loaded");
+          
+          # Verify DifferentialEquations works
+          println("Testing DifferentialEquations...");
+          using DifferentialEquations;
+          println("DifferentialEquations successfully loaded");
           '
           
           # Initialize PyJulia (as done in the Dockerfile)
