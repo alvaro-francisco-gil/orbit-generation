@@ -82,11 +82,14 @@ jobs:
           echo "JULIA_DEPOT_PATH: $JULIA_DEPOT_PATH"
           
           echo "Installing Julia packages..."
-          # Install packages in the default environment that PyJulia will use
-          julia -e 'using Pkg; Pkg.add(["DifferentialEquations", "Polynomials", "LinearAlgebra", "MAT", "NPZ", "IJulia"])'
+          # Match exactly the packages listed in the Dockerfile
+          julia -e 'using Pkg; Pkg.add(["DifferentialEquations", "Polynomials", "LinearAlgebra", "MAT", "NPZ"])'
+          
+          # Add PyCall explicitly as the Dockerfile might be missing this
+          julia -e 'using Pkg; Pkg.add("PyCall")'
           
           echo "Setting up IJulia..."
-          julia -e 'using IJulia; IJulia.installkernel("Julia")'
+          julia -e 'using Pkg; Pkg.add("IJulia"); using IJulia; IJulia.installkernel("Julia")'
           
       - name: Install and configure PyJulia
         run: |
@@ -97,28 +100,61 @@ jobs:
           export PYTHON=$(which python)
           echo "PYTHON set to: $PYTHON"
           
-          echo "Installing PyCall with specific Python executable..."
-          julia -e 'ENV["PYTHON"]="'$(which python)'"; using Pkg; Pkg.add("PyCall"); Pkg.build("PyCall")'
+          # Set environment variables for Julia-Python interoperability
+          export JULIA_PYTHONCALL_EXE=$(which python)
+          
+          # Build PyCall with the correct Python executable
+          echo "Building PyCall with the correct Python..."
+          julia -e 'ENV["PYTHON"]="'$(which python)'"; using Pkg; Pkg.build("PyCall")'
           
           # Verify PyCall was installed correctly
           julia -e 'using Pkg; Pkg.status("PyCall"); using PyCall; println("PyCall successfully loaded")'
           
+          # Initialize PyJulia (as done in the Dockerfile)
           echo "Initializing PyJulia..."
           python -c "import julia; julia.install()"
           
-          echo "Testing PyJulia import..."
-          python -c "from julia.api import Julia; print('PyJulia import successful')"
+          # Test the complete Julia-Python interoperability
+          echo "Testing complete Julia-Python integration..."
+          python -c "
+from julia.api import Julia
+jl = Julia(compiled_modules=False)
+from julia import Main
+print('Julia-Python bridge established')
+Main.eval('println(\"Testing imports:\")')
+Main.eval('using PyCall; println(\"PyCall loaded\")')
+Main.eval('using DifferentialEquations; println(\"DifferentialEquations loaded\")')
+"
           
-          echo "Testing Julia initialization..."
-          python -c "from julia.api import Julia; jl = Julia(compiled_modules=False); print('Julia initialization successful')"
-          
-          echo "Testing Julia package import..."
-          python -c "from julia import Main; print('Julia Main import successful')"
-          
-          # For debugging purposes, export any necessary environment variables to make them available to later steps
+          # Export environment variables for later steps
           echo "JULIA_DEPOT_PATH=${JULIA_DEPOT_PATH}" >> $GITHUB_ENV
           echo "PYTHON=$(which python)" >> $GITHUB_ENV
           echo "JULIA_PYTHONCALL_EXE=$(which python)" >> $GITHUB_ENV
+          
+      # Add a step to prepare notebooks for Julia execution
+      - name: Prepare notebooks for Julia execution
+        run: |
+          echo "Ensuring PyCall is in the default environment..."
+          julia -e 'using Pkg; Pkg.activate(); if !haskey(Pkg.project().dependencies, "PyCall") Pkg.add("PyCall"); end; Pkg.build("PyCall"); using PyCall; println("PyCall successfully loaded in default environment")'
+          
+          echo "Checking and installing DifferentialEquations if needed..."
+          julia -e 'using Pkg; Pkg.activate(); if !haskey(Pkg.project().dependencies, "DifferentialEquations") Pkg.add("DifferentialEquations"); end; using DifferentialEquations; println("DifferentialEquations successfully loaded in default environment")'
+          
+          echo "Creating a Julia module to test PyCall and Julia integrations..."
+          cat > test_julia_python.py << EOF
+          from julia.api import Julia
+          jl = Julia(compiled_modules=False)
+          from julia import Main
+          
+          # Test importing PyCall from Julia
+          Main.eval('println("Testing PyCall import from Julia:"); using PyCall; println("PyCall successfully imported")')
+          
+          # Test importing DifferentialEquations from Julia
+          Main.eval('println("Testing DifferentialEquations import from Julia:"); using DifferentialEquations; println("DifferentialEquations successfully imported")')
+          EOF
+          
+          echo "Running Julia-Python integration test..."
+          python test_julia_python.py
           
       - name: Run nbdev CI
         uses: fastai/workflows/nbdev-ci@master
