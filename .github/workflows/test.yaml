@@ -103,12 +103,27 @@ jobs:
           # Set environment variables for Julia-Python interoperability
           export JULIA_PYTHONCALL_EXE=$(which python)
           
-          # Build PyCall with the correct Python executable
-          echo "Building PyCall with the correct Python..."
-          julia -e 'ENV["PYTHON"]="'$(which python)'"; using Pkg; Pkg.build("PyCall")'
+          # Make sure PyCall is properly installed and then build it
+          echo "Installing and building PyCall with the correct Python..."
+          julia -e '
+          ENV["PYTHON"]="'$(which python)'";
+          using Pkg;
           
-          # Verify PyCall was installed correctly
-          julia -e 'using Pkg; Pkg.status("PyCall"); using PyCall; println("PyCall successfully loaded")'
+          # Check if PyCall is installed, install if not
+          if !haskey(Pkg.project().dependencies, "PyCall")
+              println("Installing PyCall...");
+              Pkg.add("PyCall");
+          end
+          
+          # Now build it with the correct Python
+          println("Building PyCall...");
+          Pkg.build("PyCall");
+          
+          # Verify it works
+          println("Testing PyCall...");
+          using PyCall;
+          println("PyCall successfully loaded");
+          '
           
           # Initialize PyJulia (as done in the Dockerfile)
           echo "Initializing PyJulia..."
