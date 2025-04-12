@@ -116,15 +116,7 @@ jobs:
           
           # Test the complete Julia-Python interoperability
           echo "Testing complete Julia-Python integration..."
-          python -c "
-from julia.api import Julia
-jl = Julia(compiled_modules=False)
-from julia import Main
-print('Julia-Python bridge established')
-Main.eval('println(\"Testing imports:\")')
-Main.eval('using PyCall; println(\"PyCall loaded\")')
-Main.eval('using DifferentialEquations; println(\"DifferentialEquations loaded\")')
-"
+          python -c "from julia.api import Julia; jl = Julia(compiled_modules=False); from julia import Main; print('Julia-Python bridge established'); Main.eval('println(\"Testing imports:\")'); Main.eval('using PyCall; println(\"PyCall loaded\")'); Main.eval('using DifferentialEquations; println(\"DifferentialEquations loaded\")')"
           
           # Export environment variables for later steps
           echo "JULIA_DEPOT_PATH=${JULIA_DEPOT_PATH}" >> $GITHUB_ENV
