@@ -160,14 +160,20 @@ jobs:
       # Add a step to prepare notebooks for Julia execution
       - name: Prepare notebooks for Julia execution
         run: |
-          echo "Ensuring packages are in the default environment..."
+          # Ensure JULIA_DEPOT_PATH is set correctly
+          export JULIA_DEPOT_PATH=/opt/julia_depot
+          echo "Using JULIA_DEPOT_PATH: $JULIA_DEPOT_PATH"
+          
+          echo "Ensuring packages are in the correct environment..."
           julia -e '
           using Pkg;
           
-          # Use the default environment
-          default_env = joinpath(homedir(), ".julia", "environments", "v1.10")
-          println("Using environment at: ", default_env)
-          Pkg.activate(default_env)
+          # Print depot information for debugging
+          println("Depot paths: ", DEPOT_PATH)
+          
+          # First ensure we have an active project
+          Pkg.activate()
+          println("Active project path: ", Pkg.project().path)
           
           # Verify PyCall is installed
           if !haskey(Pkg.project().dependencies, "PyCall")
@@ -199,6 +205,8 @@ jobs:
           jl = Julia(compiled_modules=False)
           from julia import Main
           
+          print("Julia depot path from Python:", Main.eval('DEPOT_PATH'))
+          
           # Test importing PyCall from Julia
           Main.eval('println("Testing PyCall import from Julia:"); using PyCall; println("PyCall successfully imported")')
           
@@ -207,7 +215,8 @@ jobs:
           EOF
           
           echo "Running Julia-Python integration test..."
-          python test_julia_python.py
+          # Make sure the environment variables are passed to the Python process
+          JULIA_DEPOT_PATH=$JULIA_DEPOT_PATH python test_julia_python.py
           
       - name: Run nbdev CI
         uses: fastai/workflows/nbdev-ci@master
