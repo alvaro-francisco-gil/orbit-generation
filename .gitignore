@@ -1,5 +1,7 @@
 data/orbits_dt_0_01
 data/orbits_fix_1500
+data/periodic_orbits_prop100_cr3bp_nasa.npy
+/orbit-generation/external_libs/diffusion_ts/Data/orbits.npy
 data/generated_converged_data
 data/input_scaler.pkl
 data/orbit_scaler.pkl

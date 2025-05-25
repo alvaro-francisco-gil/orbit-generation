@@ -16,6 +16,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && pip3 install --upgrade pip
 
+# Install Miniconda
+# Install Miniconda
+ENV CONDA_DIR /opt/conda
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
+    bash miniconda.sh -b -p $CONDA_DIR && \
+    rm miniconda.sh && \
+    $CONDA_DIR/bin/conda clean -afy
+ENV PATH=$CONDA_DIR/bin:$PATH
+
+# 1. Clone the repo
+RUN git clone https://github.com/azencot-group/ImagenTime /external_libs/ImagenTime
+
+# 2. Copy the conda env file from that repo
+COPY /external_libs/ImagenTime/environment.yaml /tmp/imagen_env.yaml
+RUN conda env create -f /tmp/imagen_env.yaml -n imagentime
+
 # Install PyTorch for CUDA 12.1
 RUN pip3 install torch --extra-index-url https://download.pytorch.org/whl/cu121
 
